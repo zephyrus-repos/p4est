@@ -1,0 +1,88 @@
+\hypertarget{structp8est}{}\doxysection{p8est Struct Reference}
+\label{structp8est}\index{p8est@{p8est}}
+
+
+The \mbox{\hyperlink{structp8est}{p8est}} forest datatype.  
+
+
+
+
+{\ttfamily \#include $<$p8est.\+h$>$}
+
+
+
+Collaboration diagram for p8est\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structp8est__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp8est_a5ecd2448e41ff64f8f9c9c8fac630515}\label{structp8est_a5ecd2448e41ff64f8f9c9c8fac630515}} 
+sc\+\_\+\+MPI\+\_\+\+Comm \mbox{\hyperlink{structp8est_a5ecd2448e41ff64f8f9c9c8fac630515}{mpicomm}}
+\begin{DoxyCompactList}\small\item\em MPI communicator. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_a96532e0e31429e5c7e4016b5ab346461}\label{structp8est_a96532e0e31429e5c7e4016b5ab346461}} 
+int \mbox{\hyperlink{structp8est_a96532e0e31429e5c7e4016b5ab346461}{mpisize}}
+\begin{DoxyCompactList}\small\item\em number of MPI processes \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_ac80bf0549da4580a6438da850b1b6a7d}\label{structp8est_ac80bf0549da4580a6438da850b1b6a7d}} 
+int \mbox{\hyperlink{structp8est_ac80bf0549da4580a6438da850b1b6a7d}{mpirank}}
+\begin{DoxyCompactList}\small\item\em this process\textquotesingle{}s MPI rank \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_a89dce7a3bbed16e4cd79117e07d0eb40}\label{structp8est_a89dce7a3bbed16e4cd79117e07d0eb40}} 
+int \mbox{\hyperlink{structp8est_a89dce7a3bbed16e4cd79117e07d0eb40}{mpicomm\+\_\+owned}}
+\begin{DoxyCompactList}\small\item\em flag if communicator is owned \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_a27ffe7f666ad2f67037e744163fa49b2}\label{structp8est_a27ffe7f666ad2f67037e744163fa49b2}} 
+size\+\_\+t \mbox{\hyperlink{structp8est_a27ffe7f666ad2f67037e744163fa49b2}{data\+\_\+size}}
+\begin{DoxyCompactList}\small\item\em size of per-\/quadrant p.\+user\+\_\+data (see \mbox{\hyperlink{unionp8est__quadrant_1_1p8est__quadrant__data_a3fb31e355763349f9da5a3a0faf96ae8}{p8est\+\_\+quadrant\+\_\+t\+::p8est\+\_\+quadrant\+\_\+data\+::user\+\_\+data}}) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_aa71cdbfbf1132325dbee0f06117e6414}\label{structp8est_aa71cdbfbf1132325dbee0f06117e6414}} 
+void $\ast$ \mbox{\hyperlink{structp8est_aa71cdbfbf1132325dbee0f06117e6414}{user\+\_\+pointer}}
+\begin{DoxyCompactList}\small\item\em convenience pointer for users, never touched by \mbox{\hyperlink{structp4est}{p4est}} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_ad2b94ce4b9ad70e8d94409817809626f}\label{structp8est_ad2b94ce4b9ad70e8d94409817809626f}} 
+long \mbox{\hyperlink{structp8est_ad2b94ce4b9ad70e8d94409817809626f}{revision}}
+\begin{DoxyCompactList}\small\item\em Gets bumped on mesh change. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_a3cf58533ee2aff1f907f982e945fc1df}\label{structp8est_a3cf58533ee2aff1f907f982e945fc1df}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{structp8est_a3cf58533ee2aff1f907f982e945fc1df}{first\+\_\+local\+\_\+tree}}
+\begin{DoxyCompactList}\small\item\em 0-\/based index of first local tree, must be -\/1 for an empty processor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_a28ca897e48b3e754f06af7261a8c1ce7}\label{structp8est_a28ca897e48b3e754f06af7261a8c1ce7}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{structp8est_a28ca897e48b3e754f06af7261a8c1ce7}{last\+\_\+local\+\_\+tree}}
+\begin{DoxyCompactList}\small\item\em 0-\/based index of last local tree, must be -\/2 for an empty processor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_a60941542d594321d561746939b2406df}\label{structp8est_a60941542d594321d561746939b2406df}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} \mbox{\hyperlink{structp8est_a60941542d594321d561746939b2406df}{local\+\_\+num\+\_\+quadrants}}
+\begin{DoxyCompactList}\small\item\em number of quadrants on all trees on this processor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_a1e9980043fe220445c91f1a0e727d7aa}\label{structp8est_a1e9980043fe220445c91f1a0e727d7aa}} 
+\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} \mbox{\hyperlink{structp8est_a1e9980043fe220445c91f1a0e727d7aa}{global\+\_\+num\+\_\+quadrants}}
+\begin{DoxyCompactList}\small\item\em number of quadrants on all trees on all processors \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_a3c72996ab19a72fed80af20ebac698bb}\label{structp8est_a3c72996ab19a72fed80af20ebac698bb}} 
+\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est_a3c72996ab19a72fed80af20ebac698bb}{global\+\_\+first\+\_\+quadrant}}
+\begin{DoxyCompactList}\small\item\em first global quadrant index for each process and 1 beyond \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_ac2abc389feed90f016d6cec552d9d61d}\label{structp8est_ac2abc389feed90f016d6cec552d9d61d}} 
+\mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est_ac2abc389feed90f016d6cec552d9d61d}{global\+\_\+first\+\_\+position}}
+\begin{DoxyCompactList}\small\item\em first smallest possible quad for each process and 1 beyond \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_ad572a2e6d0b3bc75ac008ff07aa651d4}\label{structp8est_ad572a2e6d0b3bc75ac008ff07aa651d4}} 
+\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est_ad572a2e6d0b3bc75ac008ff07aa651d4}{connectivity}}
+\begin{DoxyCompactList}\small\item\em connectivity structure, not owned \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_a392c99dd7fe4a2a1280bfd62fbd3a694}\label{structp8est_a392c99dd7fe4a2a1280bfd62fbd3a694}} 
+sc\+\_\+array\+\_\+t $\ast$ \mbox{\hyperlink{structp8est_a392c99dd7fe4a2a1280bfd62fbd3a694}{trees}}
+\begin{DoxyCompactList}\small\item\em array of all trees \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_a88f1128694689204d8fee8c415e6a489}\label{structp8est_a88f1128694689204d8fee8c415e6a489}} 
+sc\+\_\+mempool\+\_\+t $\ast$ \mbox{\hyperlink{structp8est_a88f1128694689204d8fee8c415e6a489}{user\+\_\+data\+\_\+pool}}
+\begin{DoxyCompactList}\small\item\em memory allocator for user data \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_a847b7eb63c6b42f69e13ab528d7f1a82}\label{structp8est_a847b7eb63c6b42f69e13ab528d7f1a82}} 
+sc\+\_\+mempool\+\_\+t $\ast$ \mbox{\hyperlink{structp8est_a847b7eb63c6b42f69e13ab528d7f1a82}{quadrant\+\_\+pool}}
+\begin{DoxyCompactList}\small\item\em memory allocator for temporary quadrants \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est_a8357e416408f3c45d50238a947c7bc76}\label{structp8est_a8357e416408f3c45d50238a947c7bc76}} 
+\mbox{\hyperlink{p8est_8h_a496b529daf5f8d09ec01dcfae7387a83}{p8est\+\_\+inspect\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est_a8357e416408f3c45d50238a947c7bc76}{inspect}}
+\begin{DoxyCompactList}\small\item\em algorithmic switches \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The \mbox{\hyperlink{structp8est}{p8est}} forest datatype. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p8est_8h}{p8est.\+h}}\end{DoxyCompactItemize}

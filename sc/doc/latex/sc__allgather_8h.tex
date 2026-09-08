@@ -1,0 +1,118 @@
+\hypertarget{sc__allgather_8h}{}\doxysection{src/sc\+\_\+allgather.h File Reference}
+\label{sc__allgather_8h}\index{src/sc\_allgather.h@{src/sc\_allgather.h}}
+
+
+Self-\/contained implementation of MPI\+\_\+\+Allgather.  
+
+
+{\ttfamily \#include $<$sc.\+h$>$}\newline
+Include dependency graph for sc\+\_\+allgather.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sc__allgather_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc__allgather_8h_a4ff59526e698180f3f919a86b81ac69f}\label{sc__allgather_8h_a4ff59526e698180f3f919a86b81ac69f}} 
+\#define \mbox{\hyperlink{sc__allgather_8h_a4ff59526e698180f3f919a86b81ac69f}{SC\+\_\+\+ALLGATHER\+\_\+\+ALLTOALL\+\_\+\+MAX}}~5
+\begin{DoxyCompactList}\small\item\em The largest group size that uses direct all-\/to-\/all. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{sc__allgather_8h_a9ee0edcf3e6f3b99d6ba0f66f5911e1d}{sc\+\_\+allgather\+\_\+alltoall}} (\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} mpicomm, char $\ast$data, int datasize, int groupsize, int myoffset, int myrank)
+\begin{DoxyCompactList}\small\item\em Allgather by direct point-\/to-\/point communication. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__allgather_8h_a55d07ddacfb50c53acd7cdd5f001fbc5}{sc\+\_\+allgather\+\_\+recursive}} (\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} mpicomm, char $\ast$data, int datasize, int groupsize, int myoffset, int myrank)
+\begin{DoxyCompactList}\small\item\em Perform recursive bisection allgather. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__allgather_8h_a13ab858823e67a9a04b829454b2d027e}{sc\+\_\+allgather}} (void $\ast$sendbuf, int sendcount, \mbox{\hyperlink{sc__mpi_8h_a34a4ebfb3c1546ae0be1a446de46019f}{sc\+\_\+\+MPI\+\_\+\+Datatype}} sendtype, void $\ast$recvbuf, int recvcount, \mbox{\hyperlink{sc__mpi_8h_a34a4ebfb3c1546ae0be1a446de46019f}{sc\+\_\+\+MPI\+\_\+\+Datatype}} recvtype, \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} mpicomm)
+\begin{DoxyCompactList}\small\item\em Drop-\/in allgather replacement. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Self-\/contained implementation of MPI\+\_\+\+Allgather. 
+
+The algorithm uses a binary communication tree. The recursion terminates at a specified depth by an all-\/to-\/all step. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sc__allgather_8h_a13ab858823e67a9a04b829454b2d027e}\label{sc__allgather_8h_a13ab858823e67a9a04b829454b2d027e}} 
+\index{sc\_allgather.h@{sc\_allgather.h}!sc\_allgather@{sc\_allgather}}
+\index{sc\_allgather@{sc\_allgather}!sc\_allgather.h@{sc\_allgather.h}}
+\doxysubsubsection{\texorpdfstring{sc\_allgather()}{sc\_allgather()}}
+{\footnotesize\ttfamily int sc\+\_\+allgather (\begin{DoxyParamCaption}\item[{void $\ast$}]{sendbuf,  }\item[{int}]{sendcount,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a34a4ebfb3c1546ae0be1a446de46019f}{sc\+\_\+\+MPI\+\_\+\+Datatype}}}]{sendtype,  }\item[{void $\ast$}]{recvbuf,  }\item[{int}]{recvcount,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a34a4ebfb3c1546ae0be1a446de46019f}{sc\+\_\+\+MPI\+\_\+\+Datatype}}}]{recvtype,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{mpicomm }\end{DoxyParamCaption})}
+
+
+
+Drop-\/in allgather replacement. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em sendbuf} & Send buffer conforming to MPI specification. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sendcount} & Number of data items to send. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sendtype} & Valid MPI Datatype. \\
+\hline
+\mbox{\texttt{ out}}  & {\em recvbuf} & Receive buffer conforming to MPI specification. \\
+\hline
+\mbox{\texttt{ in}}  & {\em recvcount} & Number of data items to receive. \\
+\hline
+\mbox{\texttt{ in}}  & {\em recvtype} & Valid MPI Datatype. \\
+\hline
+\mbox{\texttt{ in}}  & {\em mpicomm} & Valid MPI communicator. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int sc\+\_\+\+MPI\+\_\+\+SUCCESS if not aborting on MPI error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__allgather_8h_a9ee0edcf3e6f3b99d6ba0f66f5911e1d}\label{sc__allgather_8h_a9ee0edcf3e6f3b99d6ba0f66f5911e1d}} 
+\index{sc\_allgather.h@{sc\_allgather.h}!sc\_allgather\_alltoall@{sc\_allgather\_alltoall}}
+\index{sc\_allgather\_alltoall@{sc\_allgather\_alltoall}!sc\_allgather.h@{sc\_allgather.h}}
+\doxysubsubsection{\texorpdfstring{sc\_allgather\_alltoall()}{sc\_allgather\_alltoall()}}
+{\footnotesize\ttfamily void sc\+\_\+allgather\+\_\+alltoall (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{mpicomm,  }\item[{char $\ast$}]{data,  }\item[{int}]{datasize,  }\item[{int}]{groupsize,  }\item[{int}]{myoffset,  }\item[{int}]{myrank }\end{DoxyParamCaption})}
+
+
+
+Allgather by direct point-\/to-\/point communication. 
+
+This function is only efficient for small group sizes. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & Valid MPI communicator. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em data} & Send and receive buffer for a subgroup of the communicator. \\
+\hline
+\mbox{\texttt{ in}}  & {\em datasize} & Number of bytes to send. \\
+\hline
+\mbox{\texttt{ in}}  & {\em groupsize} & Number of processes in the subgroup. \\
+\hline
+\mbox{\texttt{ in}}  & {\em myoffset} & Offset of the subgroup in the communicator. \\
+\hline
+\mbox{\texttt{ in}}  & {\em myrank} & MPI rank in the communicator. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__allgather_8h_a55d07ddacfb50c53acd7cdd5f001fbc5}\label{sc__allgather_8h_a55d07ddacfb50c53acd7cdd5f001fbc5}} 
+\index{sc\_allgather.h@{sc\_allgather.h}!sc\_allgather\_recursive@{sc\_allgather\_recursive}}
+\index{sc\_allgather\_recursive@{sc\_allgather\_recursive}!sc\_allgather.h@{sc\_allgather.h}}
+\doxysubsubsection{\texorpdfstring{sc\_allgather\_recursive()}{sc\_allgather\_recursive()}}
+{\footnotesize\ttfamily void sc\+\_\+allgather\+\_\+recursive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{mpicomm,  }\item[{char $\ast$}]{data,  }\item[{int}]{datasize,  }\item[{int}]{groupsize,  }\item[{int}]{myoffset,  }\item[{int}]{myrank }\end{DoxyParamCaption})}
+
+
+
+Perform recursive bisection allgather. 
+
+When size becomes less equal \mbox{\hyperlink{sc__allgather_8h_a4ff59526e698180f3f919a86b81ac69f}{SC\+\_\+\+ALLGATHER\+\_\+\+ALLTOALL\+\_\+\+MAX}}, call \mbox{\hyperlink{sc__allgather_8h_a9ee0edcf3e6f3b99d6ba0f66f5911e1d}{sc\+\_\+allgather\+\_\+alltoall}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & Valid MPI communicator. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em data} & Send and receive buffer for a subgroup of the communicator. \\
+\hline
+\mbox{\texttt{ in}}  & {\em datasize} & Number of bytes to send. \\
+\hline
+\mbox{\texttt{ in}}  & {\em groupsize} & Number of processes in the subgroup. \\
+\hline
+\mbox{\texttt{ in}}  & {\em myoffset} & Offset of the subgroup in the communicator. \\
+\hline
+\mbox{\texttt{ in}}  & {\em myrank} & MPI rank in the communicator. \\
+\hline
+\end{DoxyParams}

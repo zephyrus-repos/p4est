@@ -1,0 +1,256 @@
+.TH "src/sc_shmem.h" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/sc_shmem.h
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <sc\&.h>\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSC_SHMEM_ALLOC\fP(t,  e,  c)   (t *) \fBsc_shmem_malloc\fP(\fBsc_package_id\fP,sizeof(t),e,c)"
+.br
+.ti -1c
+.RI "#define \fBSC_SHMEM_FREE\fP(a,  c)   \fBsc_shmem_free\fP (\fBsc_package_id\fP,a,c)"
+.br
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBsc_shmem_type_t\fP { \fBSC_SHMEM_BASIC\fP = 0, \fBSC_SHMEM_PRESCAN\fP, \fBSC_SHMEM_NUM_TYPES\fP, \fBSC_SHMEM_NOT_SET\fP }"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBsc_shmem_set_type\fP (\fBsc_MPI_Comm\fP comm, \fBsc_shmem_type_t\fP type)"
+.br
+.RI "Set the type of shared memory arrays to use on this mpi communicator\&. "
+.ti -1c
+.RI "\fBsc_shmem_type_t\fP \fBsc_shmem_get_type\fP (\fBsc_MPI_Comm\fP comm)"
+.br
+.RI "Get the type of shared memory arrays to use on this mpi communicator\&. "
+.ti -1c
+.RI "void * \fBsc_shmem_malloc\fP (int package, size_t elem_size, size_t elem_count, \fBsc_MPI_Comm\fP comm)"
+.br
+.RI "Allocate a shmem array: an array that is redundant on every process\&. "
+.ti -1c
+.RI "void \fBsc_shmem_free\fP (int package, void *array, \fBsc_MPI_Comm\fP comm)"
+.br
+.RI "Destroy a shmem array created with sc_shmem_alloc() "
+.ti -1c
+.RI "int \fBsc_shmem_write_start\fP (void *array, \fBsc_MPI_Comm\fP comm)"
+.br
+.RI "Start a write window for a shared array\&. "
+.ti -1c
+.RI "void \fBsc_shmem_write_end\fP (void *array, \fBsc_MPI_Comm\fP comm)"
+.br
+.RI "End a write window for a shared array\&. "
+.ti -1c
+.RI "void \fBsc_shmem_memcpy\fP (void *destarray, void *srcarray, size_t bytes, \fBsc_MPI_Comm\fP comm)"
+.br
+.RI "Copy a shmem array\&. "
+.ti -1c
+.RI "void \fBsc_shmem_allgather\fP (void *sendbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype, void *recvbuf, int recvcount, \fBsc_MPI_Datatype\fP recvtype, \fBsc_MPI_Comm\fP comm)"
+.br
+.RI "Fill a shmem array with an allgather\&. "
+.ti -1c
+.RI "void \fBsc_shmem_prefix\fP (void *sendbuf, void *recvbuf, int count, \fBsc_MPI_Datatype\fP type, \fBsc_MPI_Op\fP op, \fBsc_MPI_Comm\fP comm)"
+.br
+.RI "Fill a shmem array with an allgather of the prefix op over all processes\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "const char * \fBsc_shmem_type_to_string\fP [SC_SHMEM_NUM_TYPES]"
+.br
+.ti -1c
+.RI "\fBsc_shmem_type_t\fP \fBsc_shmem_default_type\fP"
+.br
+.in -1c
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBsc_shmem_type_t\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISC_SHMEM_BASIC \fP\fP
+use allgathers, then sum to simulate scan 
+.TP
+\fB\fISC_SHMEM_PRESCAN \fP\fP
+mpi_scan, then allgather 
+.SH "Function Documentation"
+.PP 
+.SS "void sc_shmem_allgather (void * sendbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype, void * recvbuf, int recvcount, \fBsc_MPI_Datatype\fP recvtype, \fBsc_MPI_Comm\fP comm)"
+
+.PP
+Fill a shmem array with an allgather\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsendbuf\fP the source from this process 
+.br
+\fIsendcount\fP the number of items to allgather 
+.br
+\fIsendtype\fP the type of items to allgather 
+.br
+\fIrecvbuf\fP the destination shmem array 
+.br
+\fIrecvcount\fP the number of items to allgather 
+.br
+\fIrecvtype\fP the type of items to allgather 
+.br
+\fIcomm\fP the mpi communicator 
+.RE
+.PP
+
+.SS "void sc_shmem_free (int package, void * array, \fBsc_MPI_Comm\fP comm)"
+
+.PP
+Destroy a shmem array created with sc_shmem_alloc() 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpackage\fP package freeing memory 
+.br
+\fIarray\fP array to be freed 
+.br
+\fIcomm\fP the mpi communicator 
+.RE
+.PP
+
+.SS "\fBsc_shmem_type_t\fP sc_shmem_get_type (\fBsc_MPI_Comm\fP comm)"
+
+.PP
+Get the type of shared memory arrays to use on this mpi communicator\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcomm\fP the mpi communicator
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the type of shmem array used on this communicator\&. 
+.RE
+.PP
+
+.SS "void* sc_shmem_malloc (int package, size_t elem_size, size_t elem_count, \fBsc_MPI_Comm\fP comm)"
+
+.PP
+Allocate a shmem array: an array that is redundant on every process\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpackage\fP package requesting memory 
+.br
+\fIelem_size\fP the size of each element in the array 
+.br
+\fIelem_count\fP the number of elements in the array 
+.br
+\fIcomm\fP the mpi communicator
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+a shared memory array 
+.RE
+.PP
+
+.SS "void sc_shmem_memcpy (void * destarray, void * srcarray, size_t bytes, \fBsc_MPI_Comm\fP comm)"
+
+.PP
+Copy a shmem array\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdestarray\fP array to write to 
+.br
+\fIsrcarray\fP array to write from 
+.br
+\fIbytes\fP number of bytes to write 
+.br
+\fIcomm\fP the mpi communicator 
+.RE
+.PP
+
+.SS "void sc_shmem_prefix (void * sendbuf, void * recvbuf, int count, \fBsc_MPI_Datatype\fP type, \fBsc_MPI_Op\fP op, \fBsc_MPI_Comm\fP comm)"
+
+.PP
+Fill a shmem array with an allgather of the prefix op over all processes\&. The return array will be (0, send0, send0 op send1, send0 op send1 op send2, \&.\&.\&.)
+.PP
+Note that the first entry of \fIrecvbuf\fP will be set to 0 using memset: if this is not the desired value for the first entry of the array, the user can change it \fIafter\fP calling sc_shmem_prefix\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIsendbuf\fP the source from this process 
+.br
+\fIrecvbuf\fP the destination shmem array 
+.br
+\fIcount\fP the number of items to allgather 
+.br
+\fItype\fP the type of items to allgather 
+.br
+\fIop\fP the operation to prefix (e\&.g\&., sc_MPI_SUM) 
+.br
+\fIcomm\fP the mpi communicator 
+.RE
+.PP
+
+.SS "void sc_shmem_set_type (\fBsc_MPI_Comm\fP comm, \fBsc_shmem_type_t\fP type)"
+
+.PP
+Set the type of shared memory arrays to use on this mpi communicator\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcomm\fP the mpi communicator 
+.br
+\fItype\fP the type of shmem array behavior\&. 
+.RE
+.PP
+
+.SS "void sc_shmem_write_end (void * array, \fBsc_MPI_Comm\fP comm)"
+
+.PP
+End a write window for a shared array\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIarray\fP array that has changed 
+.br
+\fIcomm\fP the mpi communicator 
+.RE
+.PP
+
+.SS "int sc_shmem_write_start (void * array, \fBsc_MPI_Comm\fP comm)"
+
+.PP
+Start a write window for a shared array\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIarray\fP array that will be changed\&. 
+.br
+\fIcomm\fP the mpi communicator
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+1 if I have write access, 0 if my proc should not change the array\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

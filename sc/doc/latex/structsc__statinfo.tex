@@ -1,0 +1,73 @@
+\hypertarget{structsc__statinfo}{}\doxysection{sc\+\_\+statinfo Struct Reference}
+\label{structsc__statinfo}\index{sc\_statinfo@{sc\_statinfo}}
+
+
+Store information of one random variable.  
+
+
+
+
+{\ttfamily \#include $<$sc\+\_\+statistics.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structsc__statinfo_a841f217bffd3c8421a9e13e33c50777f}\label{structsc__statinfo_a841f217bffd3c8421a9e13e33c50777f}} 
+int \mbox{\hyperlink{structsc__statinfo_a841f217bffd3c8421a9e13e33c50777f}{dirty}}
+\begin{DoxyCompactList}\small\item\em Only update stats if this is true. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__statinfo_a79db2eb2377149e6eb370ee1fea5992e}\label{structsc__statinfo_a79db2eb2377149e6eb370ee1fea5992e}} 
+long \mbox{\hyperlink{structsc__statinfo_a79db2eb2377149e6eb370ee1fea5992e}{count}}
+\begin{DoxyCompactList}\small\item\em Inout; global count is 52 bit accurate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__statinfo_ad98723dc4dd40a3f077132c0e5d1e8ca}\label{structsc__statinfo_ad98723dc4dd40a3f077132c0e5d1e8ca}} 
+double \mbox{\hyperlink{structsc__statinfo_ad98723dc4dd40a3f077132c0e5d1e8ca}{sum\+\_\+values}}
+\begin{DoxyCompactList}\small\item\em Inout; global sum of values. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__statinfo_a60f01b36ebbbe4721ba60f584b53665c}\label{structsc__statinfo_a60f01b36ebbbe4721ba60f584b53665c}} 
+double \mbox{\hyperlink{structsc__statinfo_a60f01b36ebbbe4721ba60f584b53665c}{sum\+\_\+squares}}
+\begin{DoxyCompactList}\small\item\em Inout; global sum of squares. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__statinfo_a30a368717d33dceaead10ad1d62be5b1}\label{structsc__statinfo_a30a368717d33dceaead10ad1d62be5b1}} 
+double \mbox{\hyperlink{structsc__statinfo_a30a368717d33dceaead10ad1d62be5b1}{min}}
+\begin{DoxyCompactList}\small\item\em Inout; minimum over values. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__statinfo_a3f2cb53316679d04220444d0155754b5}\label{structsc__statinfo_a3f2cb53316679d04220444d0155754b5}} 
+double \mbox{\hyperlink{structsc__statinfo_a3f2cb53316679d04220444d0155754b5}{max}}
+\begin{DoxyCompactList}\small\item\em Inout; maximum over values. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__statinfo_a470073020502bac618a47ad03e428ac2}\label{structsc__statinfo_a470073020502bac618a47ad03e428ac2}} 
+int {\bfseries min\+\_\+at\+\_\+rank}
+\item 
+\mbox{\Hypertarget{structsc__statinfo_a67dcbb73b6c6d469497c5df55fa64946}\label{structsc__statinfo_a67dcbb73b6c6d469497c5df55fa64946}} 
+int {\bfseries max\+\_\+at\+\_\+rank}
+\item 
+\mbox{\Hypertarget{structsc__statinfo_a0a974f7e71492a67dc8386f7490540dd}\label{structsc__statinfo_a0a974f7e71492a67dc8386f7490540dd}} 
+double {\bfseries average}
+\item 
+\mbox{\Hypertarget{structsc__statinfo_a841d9a6dca4d0eb79d34b090f773fcbd}\label{structsc__statinfo_a841d9a6dca4d0eb79d34b090f773fcbd}} 
+double {\bfseries variance}
+\item 
+\mbox{\Hypertarget{structsc__statinfo_abc96d199f61145a5e42ff20670b61541}\label{structsc__statinfo_abc96d199f61145a5e42ff20670b61541}} 
+double {\bfseries standev}
+\item 
+\mbox{\Hypertarget{structsc__statinfo_a5fbb09a276c936e5f19ce2c9b66eee95}\label{structsc__statinfo_a5fbb09a276c936e5f19ce2c9b66eee95}} 
+double {\bfseries variance\+\_\+mean}
+\item 
+\mbox{\Hypertarget{structsc__statinfo_a9d235c185a2a8844dbfd49d944d401fc}\label{structsc__statinfo_a9d235c185a2a8844dbfd49d944d401fc}} 
+double {\bfseries standev\+\_\+mean}
+\item 
+\mbox{\Hypertarget{structsc__statinfo_a3b2604d69ff392912fd81d62062aa968}\label{structsc__statinfo_a3b2604d69ff392912fd81d62062aa968}} 
+const char $\ast$ \mbox{\hyperlink{structsc__statinfo_a3b2604d69ff392912fd81d62062aa968}{variable}}
+\begin{DoxyCompactList}\small\item\em Name of the variable for output. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__statinfo_aaa6e6767880d427c804a090a8eb2a3e6}\label{structsc__statinfo_aaa6e6767880d427c804a090a8eb2a3e6}} 
+char $\ast$ \mbox{\hyperlink{structsc__statinfo_aaa6e6767880d427c804a090a8eb2a3e6}{variable\+\_\+owned}}
+\begin{DoxyCompactList}\small\item\em NULL or deep copy of variable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__statinfo_a06d486527ea4020b397a3c9f14f593d8}\label{structsc__statinfo_a06d486527ea4020b397a3c9f14f593d8}} 
+int \mbox{\hyperlink{structsc__statinfo_a06d486527ea4020b397a3c9f14f593d8}{group}}
+\begin{DoxyCompactList}\small\item\em Grouping identifier. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__statinfo_a61f815ea4ee8bb608eb4a039b0d32df2}\label{structsc__statinfo_a61f815ea4ee8bb608eb4a039b0d32df2}} 
+int \mbox{\hyperlink{structsc__statinfo_a61f815ea4ee8bb608eb4a039b0d32df2}{prio}}
+\begin{DoxyCompactList}\small\item\em Priority identifier. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Store information of one random variable. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{sc__statistics_8h}{sc\+\_\+statistics.\+h}}\end{DoxyCompactItemize}

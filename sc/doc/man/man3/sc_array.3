@@ -1,0 +1,40 @@
+.TH "sc_array" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sc_array \- The \fBsc_array\fP object provides a dynamic array of equal-size elements\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <sc_containers\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "size_t \fBelem_size\fP"
+.br
+.RI "size of a single element "
+.ti -1c
+.RI "size_t \fBelem_count\fP"
+.br
+.RI "number of valid elements "
+.ti -1c
+.RI "ssize_t \fBbyte_alloc\fP"
+.br
+.RI "number of allocated bytes or -(number of viewed bytes + 1) if this is a view: the '+ 1' distinguishes an array of size 0 from a view of size 0 "
+.ti -1c
+.RI "char * \fBarray\fP"
+.br
+.RI "linear array to store elements "
+.in -1c
+.SH "Detailed Description"
+.PP 
+The \fBsc_array\fP object provides a dynamic array of equal-size elements\&. 
+
+Elements are accessed by their 0-based index\&. Their address may change\&. The number of elements (== elem_count) of the array can be changed by \fBsc_array_resize\fP and \fBsc_array_rewind\fP\&. Elements can be sorted with \fBsc_array_sort\fP\&. If the array is sorted, it can be searched with \fBsc_array_bsearch\fP\&. A priority queue is implemented with pqueue_add and pqueue_pop (untested)\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

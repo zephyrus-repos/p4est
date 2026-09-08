@@ -1,0 +1,317 @@
+\hypertarget{userdata_2userdata2_8c-example}{}\doxysection{userdata/userdata2.\+c}
+A 2D example of managing application data\+: {\bfseries{main program}}.The detailed code for the demonstration resides in \mbox{\hyperlink{userdata_2userdata_run2_8c-example}{userdata/userdata\+\_\+run2.\+c}}.
+
+The workflow is documented more extensively in \mbox{\hyperlink{example_userdata}{A demonstration of how to manage application data}}.
+
+
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{  This file is part of p4est.}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is a C library to manage a collection (a forest) of multiple}}
+\DoxyCodeLine{\textcolor{comment}{  connected adaptive quadtrees or octrees in parallel.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  Copyright (C) 2010 The University of Texas System}}
+\DoxyCodeLine{\textcolor{comment}{  Additional copyright (C) 2011 individual authors}}
+\DoxyCodeLine{\textcolor{comment}{  Written by Carsten Burstedde, Lucas C. Wilcox, and Tobin Isaac}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is free software; you can redistribute it and/or modify}}
+\DoxyCodeLine{\textcolor{comment}{  it under the terms of the GNU General Public License as published by}}
+\DoxyCodeLine{\textcolor{comment}{  the Free Software Foundation; either version 2 of the License, or}}
+\DoxyCodeLine{\textcolor{comment}{  (at your option) any later version.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is distributed in the hope that it will be useful,}}
+\DoxyCodeLine{\textcolor{comment}{  but WITHOUT ANY WARRANTY; without even the implied warranty of}}
+\DoxyCodeLine{\textcolor{comment}{  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the}}
+\DoxyCodeLine{\textcolor{comment}{  GNU General Public License for more details.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  You should have received a copy of the GNU General Public License}}
+\DoxyCodeLine{\textcolor{comment}{  along with p4est; if not, write to the Free Software Foundation, Inc.,}}
+\DoxyCodeLine{\textcolor{comment}{  51 Franklin Street, Fifth Floor, Boston, MA 02110-\/1301, USA.}}
+\DoxyCodeLine{\textcolor{comment}{*/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{ * This example program demonstrates how to manage application data.}}
+\DoxyCodeLine{\textcolor{comment}{ *}}
+\DoxyCodeLine{\textcolor{comment}{ *   p4est\_userdata <OPTIONS> [<configuration> [<level>]]}}
+\DoxyCodeLine{\textcolor{comment}{ *}}
+\DoxyCodeLine{\textcolor{comment}{ * The following options are recognized:}}
+\DoxyCodeLine{\textcolor{comment}{ *   -\/-\/help          Display a usage and help message and exit successfully.}}
+\DoxyCodeLine{\textcolor{comment}{ *   -\/-\/level         The level may alternatively be specified as an option.}}
+\DoxyCodeLine{\textcolor{comment}{ *                   The second command line argument takes precedence.}}
+\DoxyCodeLine{\textcolor{comment}{ *   -\/-\/no-\/vtk        Do NOT write VTK files (default is ON).}}
+\DoxyCodeLine{\textcolor{comment}{ *   -\/-\/no-\/int        Skip the part of the program with internal user data.}}
+\DoxyCodeLine{\textcolor{comment}{ *   -\/-\/no-\/ext        Skip the part of the program with external user data.}}
+\DoxyCodeLine{\textcolor{comment}{ *}}
+\DoxyCodeLine{\textcolor{comment}{ * Invalid options or arguments result in an error message and exit status.}}
+\DoxyCodeLine{\textcolor{comment}{ */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{char}  *p4est\_userdata\_usage =}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}<configuration> is the first optional argument.\(\backslash\)n"{}}}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}  The following values are legal (default is \(\backslash\)"{}unit\(\backslash\)"{}):\(\backslash\)n"{}}}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}  o unit          Refinement on the unit square.\(\backslash\)n"{}}}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}  o periodic      Unit square with all-\/periodic boundary conditions.\(\backslash\)n"{}}}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}  o brick         Refinement on a 2x3 rectangle of quadtrees.\(\backslash\)n"{}}}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}  o disk          Refinement on a spherical disk of five trees.\(\backslash\)n"{}}}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}  o corner        Refinement on a non-\/planar hexagon made of three trees.\(\backslash\)n"{}}}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}  o moebius       Refinement on a 5-\/tree Moebius band embedded in 3D.\(\backslash\)n"{}}}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}  o icosahedron   Refinement on the icosahedron sphere with geometry.\(\backslash\)n"{}}}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}<level> is the second optional argument (default is 4).\(\backslash\)n"{}}}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}  It is clamped into the range of [0, P4EST\_QMAXLEVEL].\(\backslash\)n"{}}}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}  This argument takes precedence over the option of the same name.\(\backslash\)n"{}}}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}No more than two non-\/option arguments may be specified.\(\backslash\)n"{}};}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* This internal header contains application data for both 2D and 3D. */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "{}userdata\_global.h"{}}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* process the command line */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{p4est\_userdata\_process (p4est\_userdata\_global\_t *g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL \&\& g-\/>options != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>configuration != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>conn == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>geom == NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* choose one of the available mesh configurations */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}unit"{}})) \{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p4est__connectivity_8h_aab03936b137ccdc4fa7520e7e017fcf0}{p4est\_connectivity\_new\_unitsquare}} ();}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p8est__connectivity_8h_a53bdb596e76c52c1e23aaecd0aacc763}{p8est\_connectivity\_new\_unitcube}} ();}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}periodic"{}})) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p4est__connectivity_8h_ae65fe72b77b6f6c6825fc33efc101dab}{p4est\_connectivity\_new\_periodic}} ();}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}brick"{}})) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p4est__connectivity_8h_a524e3271ec0560d269403e5ec1c993dc}{p4est\_connectivity\_new\_brick}} (2, 3, 0, 0);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}disk"{}})) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p4est__connectivity_8h_ac39f17faf968325be2eb29e90b81d97d}{p4est\_connectivity\_new\_disk\_nonperiodic}} ();}
+\DoxyCodeLine{    g-\/>geom = \mbox{\hyperlink{p4est__geometry_8h_a555fa98e3fa206cb375d4b61454e815e}{p4est\_geometry\_new\_disk2d}} (g-\/>conn, .4, 1.);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}corner"{}})) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p4est__connectivity_8h_ad6fcb80b167783b7ab298755473c8177}{p4est\_connectivity\_new\_corner}} ();}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}moebius"{}})) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p4est__connectivity_8h_a1e487dc9a4ba345cfffea3763eb822aa}{p4est\_connectivity\_new\_moebius}} ();}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}icosahedron"{}})) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p4est__connectivity_8h_a22189ecf16818e0ad94f7be8070027d1}{p4est\_connectivity\_new\_icosahedron}} ();}
+\DoxyCodeLine{    g-\/>geom = \mbox{\hyperlink{p4est__geometry_8h_af3489702c0cf88298117da44463c2193}{p4est\_geometry\_new\_icosahedron}} (g-\/>conn, 1.);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}periodic"{}})) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p8est__connectivity_8h_a1374c4c2fc06e436e047d32c28b87288}{p8est\_connectivity\_new\_periodic}} ();}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}brick"{}})) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p8est__connectivity_8h_ae103ab738559fee854be2eba2f9cb4cd}{p8est\_connectivity\_new\_brick}} (2, 3, 5, 0, 0, 0);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}rotcubes"{}})) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p8est__connectivity_8h_ac88e4c055b8847d3c9074c17c624da6e}{p8est\_connectivity\_new\_rotcubes}} ();}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}sphere"{}})) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p8est__connectivity_8h_ae77c9a09e22ab4788888ad65045a0722}{p8est\_connectivity\_new\_sphere}} ();}
+\DoxyCodeLine{    g-\/>geom = \mbox{\hyperlink{p8est__geometry_8h_acbbb83633ccbc82ebb0c66bda3d3cd3e}{p8est\_geometry\_new\_sphere}} (g-\/>conn, 1., .6, .3);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}shell"{}})) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p8est__connectivity_8h_a8cbb255251c75f998d200aa3873fd359}{p8est\_connectivity\_new\_shell}} ();}
+\DoxyCodeLine{    g-\/>geom = \mbox{\hyperlink{p8est__geometry_8h_acc7047c9e6923c9dd69bf77febc49301}{p8est\_geometry\_new\_shell}} (g-\/>conn, 1., .5);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (g-\/>configuration, \textcolor{stringliteral}{"{}torus"{}})) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p8est__connectivity_8h_aa50117d066094039f84db7e27600d0a9}{p8est\_connectivity\_new\_torus}} (6);}
+\DoxyCodeLine{    g-\/>geom = \mbox{\hyperlink{p8est__geometry_8h_a5809623dbb9a50f37488fd552f4c17d2}{p8est\_geometry\_new\_torus}} (g-\/>conn, .1, .3, .7);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* clamp level into legal range */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>maxlevel < 0) \{}
+\DoxyCodeLine{    g-\/>maxlevel = 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (g-\/>maxlevel > \mbox{\hyperlink{p4est_8h_a398bac71234696389c90d0f986bb31aa}{P4EST\_QMAXLEVEL}}) \{}
+\DoxyCodeLine{    g-\/>maxlevel = \mbox{\hyperlink{p4est_8h_a398bac71234696389c90d0f986bb31aa}{P4EST\_QMAXLEVEL}};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* this is the only error condition of this function */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>conn == NULL) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: Invalid configuration argument\(\backslash\)n"{}});}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* if no geometry is specified, default to vertex information */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>geom == NULL) \{}
+\DoxyCodeLine{    g-\/>geom = \mbox{\hyperlink{p4est__geometry_8h_af9ba2d7b679c66899ddb82c1623e7ce4}{p4est\_geometry\_new\_connectivity}} (g-\/>conn);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* successful return! */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* process command line options */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{p4est\_userdata\_options (\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char} **argv, p4est\_userdata\_global\_t *g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 erres;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 firstarg;}
+\DoxyCodeLine{  sc\_options\_t       *o;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (argc >= 1);}
+\DoxyCodeLine{  P4EST\_ASSERT (argv != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>options == NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* allocate new options processor */}}
+\DoxyCodeLine{  o = g-\/>options = sc\_options\_new (argv[0]);}
+\DoxyCodeLine{  sc\_options\_add\_switch (o, \textcolor{charliteral}{'h'}, \textcolor{stringliteral}{"{}help"{}}, \&g-\/>help,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}Print help message and exit cleanly"{}});}
+\DoxyCodeLine{  sc\_options\_add\_int (o, \textcolor{charliteral}{'L'}, \textcolor{stringliteral}{"{}maxlevel"{}}, \&g-\/>maxlevel, 4,}
+\DoxyCodeLine{                      \textcolor{stringliteral}{"{}Maximum refinement level"{}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (o, \textcolor{charliteral}{'N'}, \textcolor{stringliteral}{"{}no-\/vtk"{}}, \&g-\/>novtk,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}Do not write VTK graphics files"{}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (o, \textcolor{charliteral}{'I'}, \textcolor{stringliteral}{"{}no-\/int"{}}, \&g-\/>noint,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}Skip the part with internal user data"{}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (o, \textcolor{charliteral}{'E'}, \textcolor{stringliteral}{"{}no-\/ext"{}}, \&g-\/>noext,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}Skip the part with external user data"{}});}
+\DoxyCodeLine{  g-\/>configuration = \textcolor{stringliteral}{"{}unit"{}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* error condition of this function */}}
+\DoxyCodeLine{  erres = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* parse command line options and log eventual errors with priority */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!erres \&\& (erres = ((firstarg = sc\_options\_parse}
+\DoxyCodeLine{                           (\mbox{\hyperlink{p4est__base_8h_a8f1ce3300c283b066cff4d6fe8ce3e52}{p4est\_get\_package\_id}} (), SC\_LP\_ERROR,}
+\DoxyCodeLine{                            o, argc, argv)) < 0))) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: processing options\(\backslash\)n"{}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  P4EST\_ASSERT (erres || (1 <= firstarg \&\& firstarg <= argc));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* process first non-\/option command line argument */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!erres \&\& firstarg < argc) \{}
+\DoxyCodeLine{    g-\/>configuration = argv[firstarg++];}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* process second non-\/option command line argument */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!erres \&\& firstarg < argc) \{}
+\DoxyCodeLine{    g-\/>maxlevel = atoi (argv[firstarg++]);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* we do not permit more than two non-\/option arguments */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!erres \&\& (erres = (firstarg < argc))) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: no more than two arguments are allowed\(\backslash\)n"{}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* initialize variables based on command line */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!erres \&\& (erres = p4est\_userdata\_process (g))) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: processing the command line\(\backslash\)n"{}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>help || erres) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* print a usage message to explain the command line arguments */}}
+\DoxyCodeLine{    sc\_options\_print\_usage (\mbox{\hyperlink{p4est__base_8h_a8f1ce3300c283b066cff4d6fe8ce3e52}{p4est\_get\_package\_id}} (), SC\_LP\_PRODUCTION, o,}
+\DoxyCodeLine{                            p4est\_userdata\_usage);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{comment}{/* on normal operation print options for posteriority */}}
+\DoxyCodeLine{    sc\_options\_print\_summary (\mbox{\hyperlink{p4est__base_8h_a8f1ce3300c283b066cff4d6fe8ce3e52}{p4est\_get\_package\_id}} (), SC\_LP\_PRODUCTION, o);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* this function has processed the command line */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} erres;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* free allocated application memory */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{p4est\_userdata\_cleanup (p4est\_userdata\_global\_t *g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>options != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* this data may or may not have been initialized */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>geom != NULL) \{}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>conn != NULL);}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__geometry_8h_ad389d94045e366e64a0c7854739f1f8f}{p4est\_geometry\_destroy}} (g-\/>geom);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>conn != NULL) \{}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__connectivity_8h_a208e613cae5e1bd3baffb587387b672c}{p4est\_connectivity\_destroy}} (g-\/>conn);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* options are always defined at this point */}}
+\DoxyCodeLine{  sc\_options\_destroy (g-\/>options);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* the main function of the program */}}
+\DoxyCodeLine{\textcolor{keywordtype}{int}}
+\DoxyCodeLine{main (\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char} **argv)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 erres;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret;}
+\DoxyCodeLine{  p4est\_userdata\_global\_t sglobal, *global = \&sglobal;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* initialize MPI subsystem */}}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Init (\&argc, \&argv);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* initialize global application data context */}}
+\DoxyCodeLine{  memset (global, 0, \textcolor{keyword}{sizeof} (*global));}
+\DoxyCodeLine{  global-\/>mpicomm = sc\_MPI\_COMM\_WORLD;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{   * The options 1, 1 catch signals and set an abort handler.}}
+\DoxyCodeLine{\textcolor{comment}{   * This is NOT what you want if (a) you are using p4est purely as a}}
+\DoxyCodeLine{\textcolor{comment}{   * library or (b) your main programs refer to a different framework for}}
+\DoxyCodeLine{\textcolor{comment}{   * such lowlevel functionality.  In these cases please use 0, 0.}}
+\DoxyCodeLine{\textcolor{comment}{   *}}
+\DoxyCodeLine{\textcolor{comment}{   * The log level SC\_LP\_APPLICATION is rather conservative.  If you'd}}
+\DoxyCodeLine{\textcolor{comment}{   * prefer total silence under normal operating conditions you may use}}
+\DoxyCodeLine{\textcolor{comment}{   * SC\_LP\_ERROR.  p4est does not trigger the error priority by itself, but}}
+\DoxyCodeLine{\textcolor{comment}{   * it can be used by the application developer, for example to issue log}}
+\DoxyCodeLine{\textcolor{comment}{   * messages on any usage or file I/O errors detected.}}
+\DoxyCodeLine{\textcolor{comment}{   */}}
+\DoxyCodeLine{  sc\_init (global-\/>mpicomm, 1, 1, NULL, SC\_LP\_APPLICATION);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{   * The setting SC\_LP\_APPLICATION will log levels from SC\_LP\_PRODUCTION}}
+\DoxyCodeLine{\textcolor{comment}{   * upwards.  Thus, if your program should print performance metrics, for}}
+\DoxyCodeLine{\textcolor{comment}{   * example, that can be accomplished (for information available on rank 0)}}
+\DoxyCodeLine{\textcolor{comment}{   * using the logging macros P4EST\_PRODUCTION and P4EST\_PRODUCTIONF.}}
+\DoxyCodeLine{\textcolor{comment}{   */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}{p4est\_init}} (NULL, SC\_LP\_APPLICATION);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* we identify an error status of the program with a nonzero value */}}
+\DoxyCodeLine{  erres = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* process command line options */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!erres \&\& (erres = p4est\_userdata\_options (argc, argv, global)))}
+\DoxyCodeLine{  \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: Usage/options\(\backslash\)n"{}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{   * Run actual demo (except when a help message has been requested).}}
+\DoxyCodeLine{\textcolor{comment}{   * We have moved the code for this function into a separate file.}}
+\DoxyCodeLine{\textcolor{comment}{   * The reason is that the present file is an excellent template}}
+\DoxyCodeLine{\textcolor{comment}{   * for your own p4est application.  Just copy it and hack away.}}
+\DoxyCodeLine{\textcolor{comment}{   */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!erres \&\& !global-\/>help \&\& (erres = p4est\_userdata\_run (global)))}
+\DoxyCodeLine{  \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: running the program\(\backslash\)n"{}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* free all data regardless of the error condition */}}
+\DoxyCodeLine{  p4est\_userdata\_cleanup (global);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* check memory balance and clean up internal registrations */}}
+\DoxyCodeLine{  sc\_finalize ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* release the MPI subsytem */}}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Finalize ();}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* return failure or success to the calling shell */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} erres ? EXIT\_FAILURE : EXIT\_SUCCESS;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCodeInclude}
+ 

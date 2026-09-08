@@ -1,0 +1,45 @@
+.TH "p8est_iter_edge_side" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p8est_iter_edge_side
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "union \fBp8est_iter_edge_side_data\fP"
+.br
+.in -1c
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBp4est_topidx_t\fP \fBtreeid\fP"
+.br
+.RI "the tree on this side "
+.ti -1c
+.RI "int8_t \fBedge\fP"
+.br
+.RI "which quadrant side the edge touches "
+.ti -1c
+.RI "int8_t \fBorientation\fP"
+.br
+.RI "the orientation of each quadrant relative to this edge, as in the definition of p8est_connectivity_t "
+.ti -1c
+.RI "int8_t \fBis_hanging\fP"
+.br
+.RI "boolean: one full quad (0) or two smaller quads (1) "
+.ti -1c
+.RI "union \fBp8est_iter_edge_side::p8est_iter_edge_side_data\fP \fBis\fP"
+.br
+.ti -1c
+.RI "int8_t \fBfaces\fP [2]"
+.br
+.in -1c
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

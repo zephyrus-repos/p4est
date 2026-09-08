@@ -1,0 +1,793 @@
+\hypertarget{p8est__communication_8h}{}\doxysection{src/p8est\+\_\+communication.h File Reference}
+\label{p8est__communication_8h}\index{src/p8est\_communication.h@{src/p8est\_communication.h}}
+
+
+Parallel messaging and support code.  
+
+
+{\ttfamily \#include $<$p8est.\+h$>$}\newline
+Include dependency graph for p8est\+\_\+communication.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p8est__communication_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structp8est__transfer__context}{p8est\+\_\+transfer\+\_\+context}}
+\begin{DoxyCompactList}\small\item\em Context data to allow for split begin/end data transfer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}\label{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}} 
+typedef struct \mbox{\hyperlink{structp8est__transfer__context}{p8est\+\_\+transfer\+\_\+context}} \mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Context data to allow for split begin/end data transfer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{p8est__communication_8h_af2f27364d0838623b47839f178a71cce}{p8est\+\_\+bsearch\+\_\+partition}} (\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} target, const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$gfq, int nmemb)
+\begin{DoxyCompactList}\small\item\em Given target, find index p such that {\ttfamily gfq\mbox{[}p\mbox{]} $<$= target $<$ gfq\mbox{[}p + 1\mbox{]}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_a4c9ed4a3931b7a76fe80dfe00e646a0f}{p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+assign}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, sc\+\_\+\+MPI\+\_\+\+Comm mpicomm)
+\begin{DoxyCompactList}\small\item\em Assign an MPI communicator to \mbox{\hyperlink{structp8est}{p8est}}; retrieve parallel environment. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_ad82406900df56bd76c374ee922a33d08}{p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+duplicate}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}})
+\begin{DoxyCompactList}\small\item\em Duplicate MPI communicator and replace the current one by the duplicate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est__communication_8h_a3467f19f52d6f6cf472c6433ced83d98}\label{p8est__communication_8h_a3467f19f52d6f6cf472c6433ced83d98}} 
+void \mbox{\hyperlink{p8est__communication_8h_a3467f19f52d6f6cf472c6433ced83d98}{p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+release}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}})
+\begin{DoxyCompactList}\small\item\em Release MPI communicator if it is owned by \mbox{\hyperlink{structp8est}{p8est}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_adf37387efbface464fd9230498808329}{p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+replace}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, sc\+\_\+\+MPI\+\_\+\+Comm mpicomm)
+\begin{DoxyCompactList}\small\item\em Replace the current MPI communicator by the one provided as input. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est__communication_8h_a5c1d3d5ec8ebe53261adffbfdabdc7c3}\label{p8est__communication_8h_a5c1d3d5ec8ebe53261adffbfdabdc7c3}} 
+void \mbox{\hyperlink{p8est__communication_8h_a5c1d3d5ec8ebe53261adffbfdabdc7c3}{p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+get\+\_\+info}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}})
+\begin{DoxyCompactList}\small\item\em Retrieve parallel environment information. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__communication_8h_a1a5fb0d1fd85bb0e4d485183f1971643}{p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+is\+\_\+null}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}})
+\begin{DoxyCompactList}\small\item\em Check if the MPI communicator is valid. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__communication_8h_a15b30b042e0d315df481dc401804a1f9}{p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+reduce}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$$\ast$p8est\+\_\+supercomm)
+\begin{DoxyCompactList}\small\item\em Reduce MPI communicator to non-\/empty ranks (i.\+e., nonzero quadrant counts). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__communication_8h_a6cec889c5be453ae20aff2a988af6da1}{p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+reduce\+\_\+ext}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$$\ast$p8est\+\_\+supercomm, sc\+\_\+\+MPI\+\_\+\+Group group\+\_\+add, int add\+\_\+to\+\_\+beginning, int $\ast$$\ast$ranks\+\_\+subcomm)
+\begin{DoxyCompactList}\small\item\em Reduce MPI communicator to non-\/empty ranks and add a group of ranks that will remain in the reduced communicator regardless whether they are empty or not. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_a2d6d550770a99e44b2f5802afc7ac323}{p8est\+\_\+comm\+\_\+count\+\_\+quadrants}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}})
+\begin{DoxyCompactList}\small\item\em Calculate the number and partition of quadrants. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_ab2afcfc164bf5bebde1c421873bcc18e}{p8est\+\_\+comm\+\_\+global\+\_\+partition}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$first\+\_\+quad)
+\begin{DoxyCompactList}\small\item\em Distribute the global partition boundaries. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_a8f2c7c82b1f5b2bfa806ba3bca4ef94c}{p8est\+\_\+comm\+\_\+global\+\_\+first\+\_\+quadrant}} (\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} global\+\_\+num\+\_\+quadrants, int mpisize, \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$gfq)
+\begin{DoxyCompactList}\small\item\em Calculate the global fist quadrant array for a uniform partition. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_a4e63beed48fd34d7afad49af30bc9a74}{p8est\+\_\+comm\+\_\+count\+\_\+pertree}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$pertree)
+\begin{DoxyCompactList}\small\item\em Compute and distribute the cumulative number of quadrants per tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__communication_8h_a0a18e43517f585b0a67e6a5c9a0c25f0}{p8est\+\_\+comm\+\_\+is\+\_\+empty}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, int p)
+\begin{DoxyCompactList}\small\item\em Query whether a processor has no quadrants. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__communication_8h_ac1f6a6808cd1519d3a76e719c05a060f}{p8est\+\_\+comm\+\_\+is\+\_\+empty\+\_\+gfq}} (const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$gfq, int num\+\_\+procs, int p)
+\begin{DoxyCompactList}\small\item\em Query whether a processor has no quadrants. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__communication_8h_a62bc6bf40c910740f06f6c5dd4195e30}{p8est\+\_\+comm\+\_\+is\+\_\+empty\+\_\+gfp}} (const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$gfp, int num\+\_\+procs, int p)
+\begin{DoxyCompactList}\small\item\em Query whether a processor has no quadrants. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__communication_8h_a417c7e10e78e200c444452fe9e23406a}{p8est\+\_\+comm\+\_\+is\+\_\+contained}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} which\+\_\+tree, const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$q, int rank)
+\begin{DoxyCompactList}\small\item\em Test whether a quadrant is fully contained in a rank\textquotesingle{}s owned region. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__communication_8h_a56fdb982fce66a8b60f3234c1fed9a40}{p8est\+\_\+comm\+\_\+is\+\_\+owner}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} which\+\_\+tree, const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$q, int rank)
+\begin{DoxyCompactList}\small\item\em Test ownership of a quadrant via p8est-\/$>$global\+\_\+first\+\_\+position. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__communication_8h_a5c4df11a1e555c988e4a3f89c582da12}{p8est\+\_\+comm\+\_\+is\+\_\+owner\+\_\+gfp}} (const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$gfp, int num\+\_\+procs, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} num\+\_\+trees, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} which\+\_\+tree, const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$q, int rank)
+\begin{DoxyCompactList}\small\item\em Test ownership of a quadrant via a global\+\_\+first\+\_\+position array. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__communication_8h_a91673aaead9f011e366d76d1a34a22a2}{p8est\+\_\+comm\+\_\+find\+\_\+owner}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} which\+\_\+tree, const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$q, int guess)
+\begin{DoxyCompactList}\small\item\em Searches the owner of a quadrant via p8est-\/$>$global\+\_\+first\+\_\+position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_ad5323ac69b1b73521fe1b43eaf4d49c2}{p8est\+\_\+comm\+\_\+tree\+\_\+info}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} which\+\_\+tree, int full\+\_\+tree\mbox{[}$\,$\mbox{]}, int tree\+\_\+contact\mbox{[}$\,$\mbox{]}, const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$$\ast$firstq, const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$$\ast$nextq)
+\begin{DoxyCompactList}\small\item\em Computes information about a tree being fully owned. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__communication_8h_a008411c91f27ad97ce82e7dd343b6595}{p8est\+\_\+comm\+\_\+neighborhood\+\_\+owned}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} which\+\_\+tree, int full\+\_\+tree\mbox{[}$\,$\mbox{]}, int tree\+\_\+contact\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Test if the 3x3 neighborhood of a quadrant is owned by this processor. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__communication_8h_ae1ebbf9763cbfb6143e586c647130366}{p8est\+\_\+comm\+\_\+sync\+\_\+flag}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, int flag, sc\+\_\+\+MPI\+\_\+\+Op operation)
+\begin{DoxyCompactList}\small\item\em Evaluates true/false of a flag among processors. \end{DoxyCompactList}\item 
+unsigned \mbox{\hyperlink{p8est__communication_8h_aff2623ac622b5d7c0d62f6d5af363cef}{p8est\+\_\+comm\+\_\+checksum}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, unsigned local\+\_\+crc, size\+\_\+t local\+\_\+bytes)
+\begin{DoxyCompactList}\small\item\em Compute a parallel partition-\/independent checksum out of local checksums. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_ab1f9fcd673a506cdd31327707c5c0ebe}{p8est\+\_\+transfer\+\_\+fixed}} (const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$dest\+\_\+gfq, const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$src\+\_\+gfq, sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, int tag, void $\ast$dest\+\_\+data, const void $\ast$src\+\_\+data, size\+\_\+t data\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Transfer data associated with one forest partition to another. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__communication_8h_abc4aecbf39fb9072761ed80ed21e6845}{p8est\+\_\+transfer\+\_\+fixed\+\_\+begin}} (const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$dest\+\_\+gfq, const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$src\+\_\+gfq, sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, int tag, void $\ast$dest\+\_\+data, const void $\ast$src\+\_\+data, size\+\_\+t data\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Initiate a fixed-\/size data transfer between partitions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_ae86ea39a81598511f51b217bcb35cf57}{p8est\+\_\+transfer\+\_\+fixed\+\_\+end}} (\mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}} $\ast$tc)
+\begin{DoxyCompactList}\small\item\em Complete a fixed-\/size data transfer between partitions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_a6fb9ab9dcc123e6bf83a8beaeaffbd07}{p8est\+\_\+transfer\+\_\+custom}} (const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$dest\+\_\+gfq, const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$src\+\_\+gfq, sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, int tag, void $\ast$dest\+\_\+data, const int $\ast$dest\+\_\+sizes, const void $\ast$src\+\_\+data, const int $\ast$src\+\_\+sizes)
+\begin{DoxyCompactList}\small\item\em Transfer variable-\/size quadrant data between partitions. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__communication_8h_af4f4d5988dab9c73cefafbdb0b9fa82d}{p8est\+\_\+transfer\+\_\+custom\+\_\+begin}} (const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$dest\+\_\+gfq, const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$src\+\_\+gfq, sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, int tag, void $\ast$dest\+\_\+data, const int $\ast$dest\+\_\+sizes, const void $\ast$src\+\_\+data, const int $\ast$src\+\_\+sizes)
+\begin{DoxyCompactList}\small\item\em Initiate a variable-\/size data transfer between partitions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_abdfe50c4ac9506ca84723d0ba29494bc}{p8est\+\_\+transfer\+\_\+custom\+\_\+end}} (\mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}} $\ast$tc)
+\begin{DoxyCompactList}\small\item\em Complete a variable-\/size data transfer between partitions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_a64e03d939e4e7e6e0adbfd81b4878218}{p8est\+\_\+transfer\+\_\+items}} (const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$dest\+\_\+gfq, const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$src\+\_\+gfq, sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, int tag, void $\ast$dest\+\_\+data, const int $\ast$dest\+\_\+counts, const void $\ast$src\+\_\+data, const int $\ast$src\+\_\+counts, size\+\_\+t item\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Transfer variable-\/count item data between partitions. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__communication_8h_a4d574b82c94eb4df628f505503b3b71d}{p8est\+\_\+transfer\+\_\+items\+\_\+begin}} (const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$dest\+\_\+gfq, const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$src\+\_\+gfq, sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, int tag, void $\ast$dest\+\_\+data, const int $\ast$dest\+\_\+counts, const void $\ast$src\+\_\+data, const int $\ast$src\+\_\+counts, size\+\_\+t item\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Initiate a variable-\/count item transfer between partitions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_a8088020f48f2f581886166167620ec9b}{p8est\+\_\+transfer\+\_\+items\+\_\+end}} (\mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}} $\ast$tc)
+\begin{DoxyCompactList}\small\item\em Complete a variable-\/count item transfer between partitions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__communication_8h_a714bec7a1c12c9734cf8046429ff4aba}{p8est\+\_\+transfer\+\_\+end}} (\mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}} $\ast$tc)
+\begin{DoxyCompactList}\small\item\em Complete any of the transfer\+\_\+begin functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Parallel messaging and support code. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p8est__communication_8h_af2f27364d0838623b47839f178a71cce}\label{p8est__communication_8h_af2f27364d0838623b47839f178a71cce}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_bsearch\_partition@{p8est\_bsearch\_partition}}
+\index{p8est\_bsearch\_partition@{p8est\_bsearch\_partition}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_bsearch\_partition()}{p8est\_bsearch\_partition()}}
+{\footnotesize\ttfamily int p8est\+\_\+bsearch\+\_\+partition (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}}}]{target,  }\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{gfq,  }\item[{int}]{nmemb }\end{DoxyParamCaption})}
+
+
+
+Given target, find index p such that {\ttfamily gfq\mbox{[}p\mbox{]} $<$= target $<$ gfq\mbox{[}p + 1\mbox{]}}. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em target} & The value that is searched in {\itshape gfq}. {\itshape target} has to satisfy {\ttfamily gfq\mbox{[}0\mbox{]} $<$= target $<$ gfq\mbox{[}nmemb\mbox{]}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em gfq} & The sorted array (ascending) in that the function will search. \\
+\hline
+\mbox{\texttt{ in}}  & {\em nmemb} & Number of entries in array MINUS ONE. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Index p such that {\ttfamily gfq\mbox{[}p\mbox{]} $<$= target $<$ gfq\mbox{[}p + 1\mbox{]}}. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This function differs from \mbox{\hyperlink{p8est__search_8h_a6a7a61f65c739051aad3c541403850fc}{p8est\+\_\+find\+\_\+partition}} since \mbox{\hyperlink{p8est__search_8h_a6a7a61f65c739051aad3c541403850fc}{p8est\+\_\+find\+\_\+partition}} searches for two targets using binary search in an optimized way but \mbox{\hyperlink{p8est__communication_8h_af2f27364d0838623b47839f178a71cce}{p8est\+\_\+bsearch\+\_\+partition}} only performs a single binary search. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p8est__communication_8h_aff2623ac622b5d7c0d62f6d5af363cef}\label{p8est__communication_8h_aff2623ac622b5d7c0d62f6d5af363cef}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_checksum@{p8est\_comm\_checksum}}
+\index{p8est\_comm\_checksum@{p8est\_comm\_checksum}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_checksum()}{p8est\_comm\_checksum()}}
+{\footnotesize\ttfamily unsigned p8est\+\_\+comm\+\_\+checksum (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{unsigned}]{local\+\_\+crc,  }\item[{size\+\_\+t}]{local\+\_\+bytes }\end{DoxyParamCaption})}
+
+
+
+Compute a parallel partition-\/independent checksum out of local checksums. 
+
+This checksum depends on the global refinement topology. It does not depend on how the mesh is partitioned. The result is available on all processors. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & The MPI information of this \mbox{\hyperlink{structp8est}{p8est}} will be used. \\
+\hline
+\mbox{\texttt{ in}}  & {\em local\+\_\+crc} & Locally computed adler32 checksum. \\
+\hline
+\mbox{\texttt{ in}}  & {\em local\+\_\+bytes} & Number of bytes used for local checksum. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Parallel checksum on all processors. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_a4e63beed48fd34d7afad49af30bc9a74}\label{p8est__communication_8h_a4e63beed48fd34d7afad49af30bc9a74}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_count\_pertree@{p8est\_comm\_count\_pertree}}
+\index{p8est\_comm\_count\_pertree@{p8est\_comm\_count\_pertree}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_count\_pertree()}{p8est\_comm\_count\_pertree()}}
+{\footnotesize\ttfamily void p8est\+\_\+comm\+\_\+count\+\_\+pertree (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{pertree }\end{DoxyParamCaption})}
+
+
+
+Compute and distribute the cumulative number of quadrants per tree. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & This \mbox{\hyperlink{structp8est}{p8est}} needs to have correct values for global\+\_\+first\+\_\+quadrant and global\+\_\+first\+\_\+position. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em pertree} & On input, memory for num\+\_\+trees + 1 numbers. On output, the cumulative quadrant counts. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__communication_8h_a2d6d550770a99e44b2f5802afc7ac323}\label{p8est__communication_8h_a2d6d550770a99e44b2f5802afc7ac323}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_count\_quadrants@{p8est\_comm\_count\_quadrants}}
+\index{p8est\_comm\_count\_quadrants@{p8est\_comm\_count\_quadrants}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_count\_quadrants()}{p8est\_comm\_count\_quadrants()}}
+{\footnotesize\ttfamily void p8est\+\_\+comm\+\_\+count\+\_\+quadrants (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est }\end{DoxyParamCaption})}
+
+
+
+Calculate the number and partition of quadrants. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & Adds all {\ttfamily p8est-\/$>$local\+\_\+num\+\_\+quadrant} counters and puts cumulative sums in p8est-\/$>$global\+\_\+first\+\_\+quadrant. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__communication_8h_a91673aaead9f011e366d76d1a34a22a2}\label{p8est__communication_8h_a91673aaead9f011e366d76d1a34a22a2}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_find\_owner@{p8est\_comm\_find\_owner}}
+\index{p8est\_comm\_find\_owner@{p8est\_comm\_find\_owner}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_find\_owner()}{p8est\_comm\_find\_owner()}}
+{\footnotesize\ttfamily int p8est\+\_\+comm\+\_\+find\+\_\+owner (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{guess }\end{DoxyParamCaption})}
+
+
+
+Searches the owner of a quadrant via p8est-\/$>$global\+\_\+first\+\_\+position. 
+
+Assumes a tree with no overlaps. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em guess} & Initial guess for the search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the processor id of the owner. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_a8f2c7c82b1f5b2bfa806ba3bca4ef94c}\label{p8est__communication_8h_a8f2c7c82b1f5b2bfa806ba3bca4ef94c}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_global\_first\_quadrant@{p8est\_comm\_global\_first\_quadrant}}
+\index{p8est\_comm\_global\_first\_quadrant@{p8est\_comm\_global\_first\_quadrant}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_global\_first\_quadrant()}{p8est\_comm\_global\_first\_quadrant()}}
+{\footnotesize\ttfamily void p8est\+\_\+comm\+\_\+global\+\_\+first\+\_\+quadrant (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}}}]{global\+\_\+num\+\_\+quadrants,  }\item[{int}]{mpisize,  }\item[{\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{gfq }\end{DoxyParamCaption})}
+
+
+
+Calculate the global fist quadrant array for a uniform partition. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em global\+\_\+num\+\_\+quadrants} & The global number of quadrants. \\
+\hline
+\mbox{\texttt{ in}}  & {\em mpisize} & The number of MPI ranks. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em gfq} & At least allocated mpisize + 1 p4est\+\_\+gloidx\+\_\+t. This array is filled with the global first quadrant array assuming a uniform partition. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__communication_8h_ab2afcfc164bf5bebde1c421873bcc18e}\label{p8est__communication_8h_ab2afcfc164bf5bebde1c421873bcc18e}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_global\_partition@{p8est\_comm\_global\_partition}}
+\index{p8est\_comm\_global\_partition@{p8est\_comm\_global\_partition}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_global\_partition()}{p8est\_comm\_global\_partition()}}
+{\footnotesize\ttfamily void p8est\+\_\+comm\+\_\+global\+\_\+partition (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{\mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$}]{first\+\_\+quad }\end{DoxyParamCaption})}
+
+
+
+Distribute the global partition boundaries. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & Fills {\ttfamily p8est-\/$>$global\+\_\+first\+\_\+position}. p8est-\/$>$first\+\_\+local\+\_\+tree must be set correctly. If this processor is not empty and first\+\_\+quad is NULL, the first quadrant of the first local tree must be set correctly. \\
+\hline
+\mbox{\texttt{ in}}  & {\em first\+\_\+quad} & If not NULL will be used as first quadrant. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__communication_8h_a417c7e10e78e200c444452fe9e23406a}\label{p8est__communication_8h_a417c7e10e78e200c444452fe9e23406a}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_is\_contained@{p8est\_comm\_is\_contained}}
+\index{p8est\_comm\_is\_contained@{p8est\_comm\_is\_contained}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_is\_contained()}{p8est\_comm\_is\_contained()}}
+{\footnotesize\ttfamily int p8est\+\_\+comm\+\_\+is\+\_\+contained (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{rank }\end{DoxyParamCaption})}
+
+
+
+Test whether a quadrant is fully contained in a rank\textquotesingle{}s owned region. 
+
+This function may return false when \mbox{\hyperlink{p8est__communication_8h_a56fdb982fce66a8b60f3234c1fed9a40}{p8est\+\_\+comm\+\_\+is\+\_\+owner}} returns true. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em rank} & Rank whose ownership is tested. Assumes a forest with no overlaps. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if rank is the owner of the whole area of the quadrant. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_a0a18e43517f585b0a67e6a5c9a0c25f0}\label{p8est__communication_8h_a0a18e43517f585b0a67e6a5c9a0c25f0}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_is\_empty@{p8est\_comm\_is\_empty}}
+\index{p8est\_comm\_is\_empty@{p8est\_comm\_is\_empty}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_is\_empty()}{p8est\_comm\_is\_empty()}}
+{\footnotesize\ttfamily int p8est\+\_\+comm\+\_\+is\+\_\+empty (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{int}]{p }\end{DoxyParamCaption})}
+
+
+
+Query whether a processor has no quadrants. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & This forests\textquotesingle{} global\+\_\+first\+\_\+position array must be valid. \\
+\hline
+\mbox{\texttt{ in}}  & {\em p} & Valid processor id. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if and only if processor {\ttfamily is} empty. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_a62bc6bf40c910740f06f6c5dd4195e30}\label{p8est__communication_8h_a62bc6bf40c910740f06f6c5dd4195e30}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_is\_empty\_gfp@{p8est\_comm\_is\_empty\_gfp}}
+\index{p8est\_comm\_is\_empty\_gfp@{p8est\_comm\_is\_empty\_gfp}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_is\_empty\_gfp()}{p8est\_comm\_is\_empty\_gfp()}}
+{\footnotesize\ttfamily int p8est\+\_\+comm\+\_\+is\+\_\+empty\+\_\+gfp (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$}]{gfp,  }\item[{int}]{num\+\_\+procs,  }\item[{int}]{p }\end{DoxyParamCaption})}
+
+
+
+Query whether a processor has no quadrants. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em gfp} & An array encoding the partition shape. Non-\/decreasing; length {\itshape num\+\_\+procs} + 1. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+procs} & Number of processes in the partition. \\
+\hline
+\mbox{\texttt{ in}}  & {\em p} & Valid 0 $<$= {\itshape p} $<$ {\itshape num\+\_\+procs}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if and only if processor {\itshape p} is empty. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_ac1f6a6808cd1519d3a76e719c05a060f}\label{p8est__communication_8h_ac1f6a6808cd1519d3a76e719c05a060f}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_is\_empty\_gfq@{p8est\_comm\_is\_empty\_gfq}}
+\index{p8est\_comm\_is\_empty\_gfq@{p8est\_comm\_is\_empty\_gfq}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_is\_empty\_gfq()}{p8est\_comm\_is\_empty\_gfq()}}
+{\footnotesize\ttfamily int p8est\+\_\+comm\+\_\+is\+\_\+empty\+\_\+gfq (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{gfq,  }\item[{int}]{num\+\_\+procs,  }\item[{int}]{p }\end{DoxyParamCaption})}
+
+
+
+Query whether a processor has no quadrants. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em gfq} & An array encoding the partition offsets in the global quadrant array; length {\itshape num\+\_\+procs} + 1. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+procs} & Number of processes in the partition. \\
+\hline
+\mbox{\texttt{ in}}  & {\em p} & Valid 0 $<$= {\itshape p} $<$ {\itshape num\+\_\+procs}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if and only if processor {\itshape p} is empty. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_a56fdb982fce66a8b60f3234c1fed9a40}\label{p8est__communication_8h_a56fdb982fce66a8b60f3234c1fed9a40}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_is\_owner@{p8est\_comm\_is\_owner}}
+\index{p8est\_comm\_is\_owner@{p8est\_comm\_is\_owner}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_is\_owner()}{p8est\_comm\_is\_owner()}}
+{\footnotesize\ttfamily int p8est\+\_\+comm\+\_\+is\+\_\+owner (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{rank }\end{DoxyParamCaption})}
+
+
+
+Test ownership of a quadrant via p8est-\/$>$global\+\_\+first\+\_\+position. 
+
+The quadrant is considered owned if its first descendant is owned. Thus, a positive result occurs even if its last descendant overlaps a higher process. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & Valid forest. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & Valid tree number wrt. the forest. \\
+\hline
+\mbox{\texttt{ in}}  & {\em q} & Valid quadrant wrt. the forest. \\
+\hline
+\mbox{\texttt{ in}}  & {\em rank} & Rank whose ownership is tested. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if rank is the owner of the first descendant. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_a5c4df11a1e555c988e4a3f89c582da12}\label{p8est__communication_8h_a5c4df11a1e555c988e4a3f89c582da12}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_is\_owner\_gfp@{p8est\_comm\_is\_owner\_gfp}}
+\index{p8est\_comm\_is\_owner\_gfp@{p8est\_comm\_is\_owner\_gfp}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_is\_owner\_gfp()}{p8est\_comm\_is\_owner\_gfp()}}
+{\footnotesize\ttfamily int p8est\+\_\+comm\+\_\+is\+\_\+owner\+\_\+gfp (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$}]{gfp,  }\item[{int}]{num\+\_\+procs,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{num\+\_\+trees,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{rank }\end{DoxyParamCaption})}
+
+
+
+Test ownership of a quadrant via a global\+\_\+first\+\_\+position array. 
+
+This array encodes part of the partition of a valid forest object. The quadrant is considered owned if its first descendant is owned. Thus, a positive result occurs even if its last descendant overlaps a higher process. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em gfp} & Position array of length {\itshape num\+\_\+procs} + 1. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+procs} & Number of processes in this context. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+trees} & Number of trees in this context. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & Valid tree number wrt. the forest. \\
+\hline
+\mbox{\texttt{ in}}  & {\em q} & Valid quadrant wrt. the forest. \\
+\hline
+\mbox{\texttt{ in}}  & {\em rank} & Rank whose ownership is tested. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if rank is the owner of the first descendant. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_a008411c91f27ad97ce82e7dd343b6595}\label{p8est__communication_8h_a008411c91f27ad97ce82e7dd343b6595}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_neighborhood\_owned@{p8est\_comm\_neighborhood\_owned}}
+\index{p8est\_comm\_neighborhood\_owned@{p8est\_comm\_neighborhood\_owned}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_neighborhood\_owned()}{p8est\_comm\_neighborhood\_owned()}}
+{\footnotesize\ttfamily int p8est\+\_\+comm\+\_\+neighborhood\+\_\+owned (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{int}]{full\+\_\+tree\mbox{[}$\,$\mbox{]},  }\item[{int}]{tree\+\_\+contact\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Test if the 3x3 neighborhood of a quadrant is owned by this processor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & The \mbox{\hyperlink{structp8est}{p8est}} to work on. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & The tree index to work on. \\
+\hline
+\mbox{\texttt{ in}}  & {\em full\+\_\+tree} & Flags as computed by p8est\+\_\+comm\+\_\+tree\+\_\+info. \\
+\hline
+\mbox{\texttt{ in}}  & {\em tree\+\_\+contact} & Flags as computed by p8est\+\_\+comm\+\_\+tree\+\_\+info. \\
+\hline
+\mbox{\texttt{ in}}  & {\em q} & The quadrant to be checked. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true iff this quadrant\textquotesingle{}s 3x3 neighborhood is owned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_a4c9ed4a3931b7a76fe80dfe00e646a0f}\label{p8est__communication_8h_a4c9ed4a3931b7a76fe80dfe00e646a0f}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_parallel\_env\_assign@{p8est\_comm\_parallel\_env\_assign}}
+\index{p8est\_comm\_parallel\_env\_assign@{p8est\_comm\_parallel\_env\_assign}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_parallel\_env\_assign()}{p8est\_comm\_parallel\_env\_assign()}}
+{\footnotesize\ttfamily void p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+assign (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm }\end{DoxyParamCaption})}
+
+
+
+Assign an MPI communicator to \mbox{\hyperlink{structp8est}{p8est}}; retrieve parallel environment. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & A valid MPI communicator.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The provided MPI communicator is not owned by \mbox{\hyperlink{structp8est}{p8est}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p8est__communication_8h_ad82406900df56bd76c374ee922a33d08}\label{p8est__communication_8h_ad82406900df56bd76c374ee922a33d08}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_parallel\_env\_duplicate@{p8est\_comm\_parallel\_env\_duplicate}}
+\index{p8est\_comm\_parallel\_env\_duplicate@{p8est\_comm\_parallel\_env\_duplicate}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_parallel\_env\_duplicate()}{p8est\_comm\_parallel\_env\_duplicate()}}
+{\footnotesize\ttfamily void p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+duplicate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est }\end{DoxyParamCaption})}
+
+
+
+Duplicate MPI communicator and replace the current one by the duplicate. 
+
+\begin{DoxyNote}{Note}
+The duplicated MPI communicator is owned by \mbox{\hyperlink{structp8est}{p8est}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p8est__communication_8h_a1a5fb0d1fd85bb0e4d485183f1971643}\label{p8est__communication_8h_a1a5fb0d1fd85bb0e4d485183f1971643}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_parallel\_env\_is\_null@{p8est\_comm\_parallel\_env\_is\_null}}
+\index{p8est\_comm\_parallel\_env\_is\_null@{p8est\_comm\_parallel\_env\_is\_null}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_parallel\_env\_is\_null()}{p8est\_comm\_parallel\_env\_is\_null()}}
+{\footnotesize\ttfamily int p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+is\+\_\+null (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est }\end{DoxyParamCaption})}
+
+
+
+Check if the MPI communicator is valid. 
+
+\begin{DoxyReturn}{Returns}
+True if communicator is not NULL communicator, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_a15b30b042e0d315df481dc401804a1f9}\label{p8est__communication_8h_a15b30b042e0d315df481dc401804a1f9}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_parallel\_env\_reduce@{p8est\_comm\_parallel\_env\_reduce}}
+\index{p8est\_comm\_parallel\_env\_reduce@{p8est\_comm\_parallel\_env\_reduce}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_parallel\_env\_reduce()}{p8est\_comm\_parallel\_env\_reduce()}}
+{\footnotesize\ttfamily int p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+reduce (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$$\ast$}]{p8est\+\_\+supercomm }\end{DoxyParamCaption})}
+
+
+
+Reduce MPI communicator to non-\/empty ranks (i.\+e., nonzero quadrant counts). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em p8est\+\_\+supercomm} & Object which communicator is reduced. Points to NULL if this \mbox{\hyperlink{structp8est}{p8est}} does not exists.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if \mbox{\hyperlink{structp8est}{p8est}} exists on this MPI rank after reduction. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_a6cec889c5be453ae20aff2a988af6da1}\label{p8est__communication_8h_a6cec889c5be453ae20aff2a988af6da1}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_parallel\_env\_reduce\_ext@{p8est\_comm\_parallel\_env\_reduce\_ext}}
+\index{p8est\_comm\_parallel\_env\_reduce\_ext@{p8est\_comm\_parallel\_env\_reduce\_ext}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_parallel\_env\_reduce\_ext()}{p8est\_comm\_parallel\_env\_reduce\_ext()}}
+{\footnotesize\ttfamily int p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+reduce\+\_\+ext (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$$\ast$}]{p8est\+\_\+supercomm,  }\item[{sc\+\_\+\+MPI\+\_\+\+Group}]{group\+\_\+add,  }\item[{int}]{add\+\_\+to\+\_\+beginning,  }\item[{int $\ast$$\ast$}]{ranks\+\_\+subcomm }\end{DoxyParamCaption})}
+
+
+
+Reduce MPI communicator to non-\/empty ranks and add a group of ranks that will remain in the reduced communicator regardless whether they are empty or not. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em p8est\+\_\+supercomm} & Object which communicator is reduced. Points to NULL if this \mbox{\hyperlink{structp8est}{p8est}} does not exists. \\
+\hline
+\mbox{\texttt{ in}}  & {\em group\+\_\+add} & Group of ranks that will remain in communicator. \\
+\hline
+\mbox{\texttt{ in}}  & {\em add\+\_\+to\+\_\+beginning} & If true, ranks will be added to the beginning of the reduced communicator, otherwise to the end. \\
+\hline
+\mbox{\texttt{ out}}  & {\em ranks\+\_\+subcomm} & If not null, array of size \textquotesingle{}subcommsize\textquotesingle{} with subcommrank-\/$>$supercommrank map.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if \mbox{\hyperlink{structp8est}{p8est}} exists on this MPI rank after reduction. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_adf37387efbface464fd9230498808329}\label{p8est__communication_8h_adf37387efbface464fd9230498808329}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_parallel\_env\_replace@{p8est\_comm\_parallel\_env\_replace}}
+\index{p8est\_comm\_parallel\_env\_replace@{p8est\_comm\_parallel\_env\_replace}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_parallel\_env\_replace()}{p8est\_comm\_parallel\_env\_replace()}}
+{\footnotesize\ttfamily void p8est\+\_\+comm\+\_\+parallel\+\_\+env\+\_\+replace (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm }\end{DoxyParamCaption})}
+
+
+
+Replace the current MPI communicator by the one provided as input. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & A valid MPI communicator.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The provided MPI communicator is not owned by \mbox{\hyperlink{structp8est}{p8est}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p8est__communication_8h_ae1ebbf9763cbfb6143e586c647130366}\label{p8est__communication_8h_ae1ebbf9763cbfb6143e586c647130366}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_sync\_flag@{p8est\_comm\_sync\_flag}}
+\index{p8est\_comm\_sync\_flag@{p8est\_comm\_sync\_flag}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_sync\_flag()}{p8est\_comm\_sync\_flag()}}
+{\footnotesize\ttfamily int p8est\+\_\+comm\+\_\+sync\+\_\+flag (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{int}]{flag,  }\item[{sc\+\_\+\+MPI\+\_\+\+Op}]{operation }\end{DoxyParamCaption})}
+
+
+
+Evaluates true/false of a flag among processors. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & The MPI communicator of this \mbox{\hyperlink{structp8est}{p8est}} will be used. \\
+\hline
+\mbox{\texttt{ in}}  & {\em flag} & The variable to communicate. \\
+\hline
+\mbox{\texttt{ in}}  & {\em operation} & Either sc\+\_\+\+MPI\+\_\+\+BAND or sc\+\_\+\+MPI\+\_\+\+BOR (not used bitwise). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the logical AND resp. OR of all processors\textquotesingle{} flags. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_ad5323ac69b1b73521fe1b43eaf4d49c2}\label{p8est__communication_8h_ad5323ac69b1b73521fe1b43eaf4d49c2}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_comm\_tree\_info@{p8est\_comm\_tree\_info}}
+\index{p8est\_comm\_tree\_info@{p8est\_comm\_tree\_info}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_comm\_tree\_info()}{p8est\_comm\_tree\_info()}}
+{\footnotesize\ttfamily void p8est\+\_\+comm\+\_\+tree\+\_\+info (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{int}]{full\+\_\+tree\mbox{[}$\,$\mbox{]},  }\item[{int}]{tree\+\_\+contact\mbox{[}$\,$\mbox{]},  }\item[{const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$$\ast$}]{firstq,  }\item[{const \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$$\ast$}]{nextq }\end{DoxyParamCaption})}
+
+
+
+Computes information about a tree being fully owned. 
+
+This is determined separately for the beginning and end of the tree. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & The \mbox{\hyperlink{structp8est}{p8est}} to work on. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & The tree in question must be partially owned. \\
+\hline
+\mbox{\texttt{ out}}  & {\em full\+\_\+tree} & Full ownership of beginning and end of tree. \\
+\hline
+\mbox{\texttt{ out}}  & {\em tree\+\_\+contact} & True if there are neighbors across the face. \\
+\hline
+\mbox{\texttt{ out}}  & {\em firstq} & Smallest possible first quadrant on this core. \\
+\hline
+\mbox{\texttt{ out}}  & {\em nextq} & Smallest possible first quadrant on next core. Any of tree\+\_\+contact, firstq and nextq may be NULL. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__communication_8h_a6fb9ab9dcc123e6bf83a8beaeaffbd07}\label{p8est__communication_8h_a6fb9ab9dcc123e6bf83a8beaeaffbd07}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_transfer\_custom@{p8est\_transfer\_custom}}
+\index{p8est\_transfer\_custom@{p8est\_transfer\_custom}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_transfer\_custom()}{p8est\_transfer\_custom()}}
+{\footnotesize\ttfamily void p8est\+\_\+transfer\+\_\+custom (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{dest\+\_\+gfq,  }\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{src\+\_\+gfq,  }\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{int}]{tag,  }\item[{void $\ast$}]{dest\+\_\+data,  }\item[{const int $\ast$}]{dest\+\_\+sizes,  }\item[{const void $\ast$}]{src\+\_\+data,  }\item[{const int $\ast$}]{src\+\_\+sizes }\end{DoxyParamCaption})}
+
+
+
+Transfer variable-\/size quadrant data between partitions. 
+
+(See \mbox{\hyperlink{p8est__communication_8h_ab1f9fcd673a506cdd31327707c5c0ebe}{p8est\+\_\+transfer\+\_\+fixed}} that is optimized for fixed-\/size data.) The destination process may not know the data size for the elements it receives. In this case the sizes need to be obtained separately in advance, for example by calling \mbox{\hyperlink{p8est__communication_8h_ab1f9fcd673a506cdd31327707c5c0ebe}{p8est\+\_\+transfer\+\_\+fixed}} with {\bfseries{src\+\_\+sizes}} as payload data, or alternatively its split begin/end versions. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em dest\+\_\+gfq} & The target partition encoded as a {\bfseries{p8est-\/$>$global\+\_\+first\+\_\+quadrant}} array. Has {\bfseries{mpisize}} 
+\begin{DoxyItemize}
+\item 1 members, must be non-\/decreasing and satisfy gfq\mbox{[}0\mbox{]} == 0, gfq\mbox{[}mpisize\mbox{]} == global\+\_\+num\+\_\+quadrants. 
+\end{DoxyItemize}\\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+gfq} & The original partition, analogous to {\bfseries{dest\+\_\+gfq}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em mpicomm} & The communicator to use. Its mpisize must match {\bfseries{dest\+\_\+gfq}} and {\bfseries{src\+\_\+gfq}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em tag} & This tag is used in all messages. The user must guarantee that {\bfseries{mpicomm}} and {\bfseries{tag}} do not conflict with other messages in transit. \\
+\hline
+\mbox{\texttt{ out}}  & {\em dest\+\_\+data} & User-\/allocated memory of sum\+\_\+\{i in {\bfseries{dest-\/$>$local\+\_\+num\+\_\+quadrants\}}} {\bfseries{dest\+\_\+sizes}} \mbox{[}i\mbox{]} many bytes is received into. See below about how to choose its size. \\
+\hline
+\mbox{\texttt{ in}}  & {\em dest\+\_\+sizes} & User-\/allocated memory of one integer for each quadrant, storing the data size to receive for it. We understand that the sizes are often not known a priori, in which case they can be obtained by a prior call to \mbox{\hyperlink{p8est__communication_8h_ab1f9fcd673a506cdd31327707c5c0ebe}{p8est\+\_\+transfer\+\_\+fixed}}. Optionally the split begin/end versions can be used for added flexibility and overlapping of messages. We use the type int to minimize the message size, and to conform to MPI that has no type for size\+\_\+t. \\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+data} & User-\/allocated memory of sum\+\_\+\{i in {\bfseries{src-\/$>$local\+\_\+num\+\_\+quadrants\}}} {\bfseries{src\+\_\+sizes}} \mbox{[}i\mbox{]} many bytes is sent from. \\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+sizes} & User-\/allocated memory of one integer for each quadrant, storing the data size to send for it. We use the type int to minimize the message size, and to conform to MPI that has no type for size\+\_\+t. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__communication_8h_af4f4d5988dab9c73cefafbdb0b9fa82d}\label{p8est__communication_8h_af4f4d5988dab9c73cefafbdb0b9fa82d}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_transfer\_custom\_begin@{p8est\_transfer\_custom\_begin}}
+\index{p8est\_transfer\_custom\_begin@{p8est\_transfer\_custom\_begin}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_transfer\_custom\_begin()}{p8est\_transfer\_custom\_begin()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}}$\ast$ p8est\+\_\+transfer\+\_\+custom\+\_\+begin (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{dest\+\_\+gfq,  }\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{src\+\_\+gfq,  }\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{int}]{tag,  }\item[{void $\ast$}]{dest\+\_\+data,  }\item[{const int $\ast$}]{dest\+\_\+sizes,  }\item[{const void $\ast$}]{src\+\_\+data,  }\item[{const int $\ast$}]{src\+\_\+sizes }\end{DoxyParamCaption})}
+
+
+
+Initiate a variable-\/size data transfer between partitions. 
+
+See \mbox{\hyperlink{p8est__communication_8h_a6fb9ab9dcc123e6bf83a8beaeaffbd07}{p8est\+\_\+transfer\+\_\+custom}} for a full description. Must be matched with \mbox{\hyperlink{p8est__communication_8h_abdfe50c4ac9506ca84723d0ba29494bc}{p8est\+\_\+transfer\+\_\+custom\+\_\+end}} for completion. All parameters must stay alive until the completion has been called. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em dest\+\_\+gfq} & The target partition encoded as a {\bfseries{p8est-\/$>$global\+\_\+first\+\_\+quadrant}} array. Has {\bfseries{mpisize}} 
+\begin{DoxyItemize}
+\item 1 members, must be non-\/decreasing and satisfy gfq\mbox{[}0\mbox{]} == 0, gfq\mbox{[}mpisize\mbox{]} == global\+\_\+num\+\_\+quadrants. 
+\end{DoxyItemize}\\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+gfq} & The original partition, analogous to {\bfseries{dest\+\_\+gfq}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em mpicomm} & The communicator to use. Its mpisize must match {\bfseries{dest\+\_\+gfq}} and {\bfseries{src\+\_\+gfq}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em tag} & This tag is used in all messages. The user must guarantee that {\bfseries{mpicomm}} and {\bfseries{tag}} do not conflict with other messages in transit. \\
+\hline
+\mbox{\texttt{ out}}  & {\em dest\+\_\+data} & User-\/allocated memory of sum\+\_\+\{i in {\bfseries{dest-\/$>$local\+\_\+num\+\_\+quadrants\}}} {\bfseries{dest\+\_\+sizes}} \mbox{[}i\mbox{]} many bytes is received into. It must not be accessed before completion with \mbox{\hyperlink{p8est__communication_8h_abdfe50c4ac9506ca84723d0ba29494bc}{p8est\+\_\+transfer\+\_\+custom\+\_\+end}}. See below about how to choose its size. \\
+\hline
+\mbox{\texttt{ in}}  & {\em dest\+\_\+sizes} & User-\/allocated memory of one integer for each quadrant, storing the data size to receive for it. We understand that the sizes are often not known a priori, in which case they can be obtained by a prior call to \mbox{\hyperlink{p8est__communication_8h_ab1f9fcd673a506cdd31327707c5c0ebe}{p8est\+\_\+transfer\+\_\+fixed}}. Optionally the split begin/end versions can be used for added flexibility and overlapping of messages. We use the type int to minimize the message size, and to conform to MPI that has no type for size\+\_\+t. \\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+data} & User-\/allocated memory of sum\+\_\+\{i in {\bfseries{src-\/$>$local\+\_\+num\+\_\+quadrants\}}} {\bfseries{src\+\_\+sizes}} \mbox{[}i\mbox{]} many bytes is sent from. It must not be accessed before completion with \mbox{\hyperlink{p8est__communication_8h_abdfe50c4ac9506ca84723d0ba29494bc}{p8est\+\_\+transfer\+\_\+custom\+\_\+end}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+sizes} & User-\/allocated memory of one integer for each quadrant, storing the data size to send for it. We use the type int to minimize the message size, and to conform to MPI that has no type for size\+\_\+t. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The context object must be passed to the matching call to \mbox{\hyperlink{p8est__communication_8h_abdfe50c4ac9506ca84723d0ba29494bc}{p8est\+\_\+transfer\+\_\+custom\+\_\+end}}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_abdfe50c4ac9506ca84723d0ba29494bc}\label{p8est__communication_8h_abdfe50c4ac9506ca84723d0ba29494bc}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_transfer\_custom\_end@{p8est\_transfer\_custom\_end}}
+\index{p8est\_transfer\_custom\_end@{p8est\_transfer\_custom\_end}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_transfer\_custom\_end()}{p8est\_transfer\_custom\_end()}}
+{\footnotesize\ttfamily void p8est\+\_\+transfer\+\_\+custom\+\_\+end (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}} $\ast$}]{tc }\end{DoxyParamCaption})}
+
+
+
+Complete a variable-\/size data transfer between partitions. 
+
+Waits for remaining messages to complete and frees the transfer context. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tc} & Context data from \mbox{\hyperlink{p8est__communication_8h_af4f4d5988dab9c73cefafbdb0b9fa82d}{p8est\+\_\+transfer\+\_\+custom\+\_\+begin}}. Is deallocated before this function returns. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__communication_8h_a714bec7a1c12c9734cf8046429ff4aba}\label{p8est__communication_8h_a714bec7a1c12c9734cf8046429ff4aba}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_transfer\_end@{p8est\_transfer\_end}}
+\index{p8est\_transfer\_end@{p8est\_transfer\_end}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_transfer\_end()}{p8est\_transfer\_end()}}
+{\footnotesize\ttfamily void p8est\+\_\+transfer\+\_\+end (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}} $\ast$}]{tc }\end{DoxyParamCaption})}
+
+
+
+Complete any of the transfer\+\_\+begin functions. 
+
+The specialized transfer\+\_\+end functions are recommended over this one for slightly stricter error checking\+: \mbox{\hyperlink{p8est__communication_8h_ae86ea39a81598511f51b217bcb35cf57}{p8est\+\_\+transfer\+\_\+fixed\+\_\+end}}, \mbox{\hyperlink{p8est__communication_8h_abdfe50c4ac9506ca84723d0ba29494bc}{p8est\+\_\+transfer\+\_\+custom\+\_\+end}}, and \mbox{\hyperlink{p8est__communication_8h_a8088020f48f2f581886166167620ec9b}{p8est\+\_\+transfer\+\_\+items\+\_\+end}}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em tc} & A valid context from one of the begin functions. This function waits for remaining communications to complete and frees the transfer context. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__communication_8h_ab1f9fcd673a506cdd31327707c5c0ebe}\label{p8est__communication_8h_ab1f9fcd673a506cdd31327707c5c0ebe}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_transfer\_fixed@{p8est\_transfer\_fixed}}
+\index{p8est\_transfer\_fixed@{p8est\_transfer\_fixed}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_transfer\_fixed()}{p8est\_transfer\_fixed()}}
+{\footnotesize\ttfamily void p8est\+\_\+transfer\+\_\+fixed (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{dest\+\_\+gfq,  }\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{src\+\_\+gfq,  }\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{int}]{tag,  }\item[{void $\ast$}]{dest\+\_\+data,  }\item[{const void $\ast$}]{src\+\_\+data,  }\item[{size\+\_\+t}]{data\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Transfer data associated with one forest partition to another. 
+
+In \mbox{\hyperlink{p8est_8h_a54c8beb09950474b517dd1c4938fe6ec}{p8est\+\_\+partition}}, each quadrant\textquotesingle{}s user data is transferred. If the application maintains per-\/quadrant data outside of the \mbox{\hyperlink{structp8est}{p8est}} object, this function can be used to transfer it, matching the call to partition. This variant of the function assumes that the quadrant data size is fixed. It sends point-\/to-\/point messages only and is blocking collective. There is a split collective version; see the functions \mbox{\hyperlink{p8est__communication_8h_abc4aecbf39fb9072761ed80ed21e6845}{p8est\+\_\+transfer\+\_\+fixed\+\_\+begin}} and \mbox{\hyperlink{p8est__communication_8h_ae86ea39a81598511f51b217bcb35cf57}{p8est\+\_\+transfer\+\_\+fixed\+\_\+end}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em dest\+\_\+gfq} & The target partition encoded as a {\bfseries{p8est-\/$>$global\+\_\+first\+\_\+quadrant}} array. Has {\bfseries{mpisize}} 
+\begin{DoxyItemize}
+\item 1 members, must be non-\/decreasing and satisfy gfq\mbox{[}0\mbox{]} == 0, gfq\mbox{[}mpisize\mbox{]} == global\+\_\+num\+\_\+quadrants. 
+\end{DoxyItemize}\\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+gfq} & The original partition, analogous to {\bfseries{dest\+\_\+gfq}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em mpicomm} & The communicator to use. Its mpisize must match {\bfseries{dest\+\_\+gfq}} and {\bfseries{src\+\_\+gfq}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em tag} & This tag is used in all messages. The user must guarantee that {\bfseries{mpicomm}} and {\bfseries{tag}} do not conflict with other messages in transit. \\
+\hline
+\mbox{\texttt{ out}}  & {\em dest\+\_\+data} & User-\/allocated memory of size {\bfseries{data\+\_\+size}} $\ast$ {\bfseries{dest-\/$>$local\+\_\+num\+\_\+quadrants}} is received into. \\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+data} & User-\/allocated memory of size {\bfseries{data\+\_\+size}} $\ast$ {\bfseries{src-\/$>$local\+\_\+num\+\_\+quadrants}} bytes is sent from. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data\+\_\+size} & Fixed data size per quadrant. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__communication_8h_abc4aecbf39fb9072761ed80ed21e6845}\label{p8est__communication_8h_abc4aecbf39fb9072761ed80ed21e6845}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_transfer\_fixed\_begin@{p8est\_transfer\_fixed\_begin}}
+\index{p8est\_transfer\_fixed\_begin@{p8est\_transfer\_fixed\_begin}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_transfer\_fixed\_begin()}{p8est\_transfer\_fixed\_begin()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}}$\ast$ p8est\+\_\+transfer\+\_\+fixed\+\_\+begin (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{dest\+\_\+gfq,  }\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{src\+\_\+gfq,  }\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{int}]{tag,  }\item[{void $\ast$}]{dest\+\_\+data,  }\item[{const void $\ast$}]{src\+\_\+data,  }\item[{size\+\_\+t}]{data\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Initiate a fixed-\/size data transfer between partitions. 
+
+See \mbox{\hyperlink{p8est__communication_8h_ab1f9fcd673a506cdd31327707c5c0ebe}{p8est\+\_\+transfer\+\_\+fixed}} for a full description. Must be matched with \mbox{\hyperlink{p8est__communication_8h_ae86ea39a81598511f51b217bcb35cf57}{p8est\+\_\+transfer\+\_\+fixed\+\_\+end}} for completion. All parameters must stay alive until the completion has been called. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em dest\+\_\+gfq} & The target partition encoded as a {\bfseries{p8est-\/$>$global\+\_\+first\+\_\+quadrant}} array. Has {\bfseries{mpisize}} 
+\begin{DoxyItemize}
+\item 1 members, must be non-\/decreasing and satisfy gfq\mbox{[}0\mbox{]} == 0, gfq\mbox{[}mpisize\mbox{]} == global\+\_\+num\+\_\+quadrants. 
+\end{DoxyItemize}\\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+gfq} & The original partition, analogous to {\bfseries{dest\+\_\+gfq}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em mpicomm} & The communicator to use. Its mpisize must match {\bfseries{dest\+\_\+gfq}} and {\bfseries{src\+\_\+gfq}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em tag} & This tag is used in all messages. The user must guarantee that {\bfseries{mpicomm}} and {\bfseries{tag}} do not conflict with other messages in transit. \\
+\hline
+\mbox{\texttt{ out}}  & {\em dest\+\_\+data} & User-\/allocated memory of size {\bfseries{data\+\_\+size}} $\ast$ {\bfseries{dest-\/$>$local\+\_\+num\+\_\+quadrants}} bytes is received into. It must not be accessed before completion with \mbox{\hyperlink{p8est__communication_8h_ae86ea39a81598511f51b217bcb35cf57}{p8est\+\_\+transfer\+\_\+fixed\+\_\+end}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+data} & User-\/allocated memory of size {\bfseries{data\+\_\+size}} $\ast$ {\bfseries{src-\/$>$local\+\_\+num\+\_\+quadrants}} bytes is sent from. It must not be accessed before completion with \mbox{\hyperlink{p8est__communication_8h_ae86ea39a81598511f51b217bcb35cf57}{p8est\+\_\+transfer\+\_\+fixed\+\_\+end}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data\+\_\+size} & Fixed data size per quadrant. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The context object must be passed to the matching call to \mbox{\hyperlink{p8est__communication_8h_ae86ea39a81598511f51b217bcb35cf57}{p8est\+\_\+transfer\+\_\+fixed\+\_\+end}}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__communication_8h_ae86ea39a81598511f51b217bcb35cf57}\label{p8est__communication_8h_ae86ea39a81598511f51b217bcb35cf57}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_transfer\_fixed\_end@{p8est\_transfer\_fixed\_end}}
+\index{p8est\_transfer\_fixed\_end@{p8est\_transfer\_fixed\_end}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_transfer\_fixed\_end()}{p8est\_transfer\_fixed\_end()}}
+{\footnotesize\ttfamily void p8est\+\_\+transfer\+\_\+fixed\+\_\+end (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}} $\ast$}]{tc }\end{DoxyParamCaption})}
+
+
+
+Complete a fixed-\/size data transfer between partitions. 
+
+Waits for remaining messages to complete and frees the transfer context. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tc} & Context data from \mbox{\hyperlink{p8est__communication_8h_abc4aecbf39fb9072761ed80ed21e6845}{p8est\+\_\+transfer\+\_\+fixed\+\_\+begin}}. Is deallocated before this function returns. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__communication_8h_a64e03d939e4e7e6e0adbfd81b4878218}\label{p8est__communication_8h_a64e03d939e4e7e6e0adbfd81b4878218}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_transfer\_items@{p8est\_transfer\_items}}
+\index{p8est\_transfer\_items@{p8est\_transfer\_items}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_transfer\_items()}{p8est\_transfer\_items()}}
+{\footnotesize\ttfamily void p8est\+\_\+transfer\+\_\+items (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{dest\+\_\+gfq,  }\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{src\+\_\+gfq,  }\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{int}]{tag,  }\item[{void $\ast$}]{dest\+\_\+data,  }\item[{const int $\ast$}]{dest\+\_\+counts,  }\item[{const void $\ast$}]{src\+\_\+data,  }\item[{const int $\ast$}]{src\+\_\+counts,  }\item[{size\+\_\+t}]{item\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Transfer variable-\/count item data between partitions. 
+
+Each quadrant may have a different number of items (including 0). (See \mbox{\hyperlink{p8est__communication_8h_ab1f9fcd673a506cdd31327707c5c0ebe}{p8est\+\_\+transfer\+\_\+fixed}} that is optimized for fixed-\/count data, and \mbox{\hyperlink{p8est__communication_8h_a6fb9ab9dcc123e6bf83a8beaeaffbd07}{p8est\+\_\+transfer\+\_\+custom}} for data that is not itemized at all.) The destination process may not know the item count for the elements it receives. In this case the counts need to be obtained separately in advance, for example by calling \mbox{\hyperlink{p8est__communication_8h_ab1f9fcd673a506cdd31327707c5c0ebe}{p8est\+\_\+transfer\+\_\+fixed}} with {\bfseries{src\+\_\+counts}} as payload data, or alternatively its split begin/end versions. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em dest\+\_\+gfq} & The target partition encoded as a {\bfseries{p8est-\/$>$global\+\_\+first\+\_\+quadrant}} array. Has {\bfseries{mpisize}} 
+\begin{DoxyItemize}
+\item 1 members, must be non-\/decreasing and satisfy gfq\mbox{[}0\mbox{]} == 0, gfq\mbox{[}mpisize\mbox{]} == global\+\_\+num\+\_\+quadrants. 
+\end{DoxyItemize}\\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+gfq} & The original partition, analogous to {\bfseries{dest\+\_\+gfq}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em mpicomm} & The communicator to use. Its mpisize must match {\bfseries{dest\+\_\+gfq}} and {\bfseries{src\+\_\+gfq}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em tag} & This tag is used in all messages. The user must guarantee that {\bfseries{mpicomm}} and {\bfseries{tag}} do not conflict with other messages in transit. \\
+\hline
+\mbox{\texttt{ out}}  & {\em dest\+\_\+data} & User-\/allocated memory of sum\+\_\+\{i in {\bfseries{dest-\/$>$local\+\_\+num\+\_\+quadrants\}}} item\+\_\+size
+\begin{DoxyItemize}
+\item dest\+\_\+counts\mbox{[}i\mbox{]} many bytes is received into. See below about how to choose its size. If dest has data to transfer, must be non-\/\+NULL. 
+\end{DoxyItemize}\\
+\hline
+\mbox{\texttt{ in}}  & {\em dest\+\_\+counts} & User-\/allocated memory of one integer for each quadrant, storing the item count to receive for it. We understand that the counts are often not known a priori, in which case they can be obtained by a prior call to \mbox{\hyperlink{p8est__communication_8h_ab1f9fcd673a506cdd31327707c5c0ebe}{p8est\+\_\+transfer\+\_\+fixed}}. Optionally the split begin/end versions can be used for added flexibility and overlapping of messages. We use the type int to minimize the message size, and to conform to MPI that has no type for size\+\_\+t. If dest has quadrants, must be non-\/\+NULL. \\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+data} & User-\/allocated memory of sum\+\_\+\{i in {\bfseries{src-\/$>$local\+\_\+num\+\_\+quadrants\}}} item\+\_\+size
+\begin{DoxyItemize}
+\item src\+\_\+counts\mbox{[}i\mbox{]} many bytes is sent from. If src has data to transfer, must be non-\/\+NULL. 
+\end{DoxyItemize}\\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+counts} & User-\/allocated memory of one integer for each quadrant, storing the item count to send for it. We use the type int to minimize the message size, and to conform to MPI that has no type for size\+\_\+t. If src has quadrants, must be non-\/\+NULL. \\
+\hline
+\mbox{\texttt{ in}}  & {\em item\+\_\+size} & Data size for each item in bytes. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__communication_8h_a4d574b82c94eb4df628f505503b3b71d}\label{p8est__communication_8h_a4d574b82c94eb4df628f505503b3b71d}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_transfer\_items\_begin@{p8est\_transfer\_items\_begin}}
+\index{p8est\_transfer\_items\_begin@{p8est\_transfer\_items\_begin}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_transfer\_items\_begin()}{p8est\_transfer\_items\_begin()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}}$\ast$ p8est\+\_\+transfer\+\_\+items\+\_\+begin (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{dest\+\_\+gfq,  }\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{src\+\_\+gfq,  }\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{int}]{tag,  }\item[{void $\ast$}]{dest\+\_\+data,  }\item[{const int $\ast$}]{dest\+\_\+counts,  }\item[{const void $\ast$}]{src\+\_\+data,  }\item[{const int $\ast$}]{src\+\_\+counts,  }\item[{size\+\_\+t}]{item\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Initiate a variable-\/count item transfer between partitions. 
+
+See \mbox{\hyperlink{p8est__communication_8h_a64e03d939e4e7e6e0adbfd81b4878218}{p8est\+\_\+transfer\+\_\+items}} for a full description. This functions calls asynchronous MPI send/receive and returns. Must be matched with \mbox{\hyperlink{p8est__communication_8h_a8088020f48f2f581886166167620ec9b}{p8est\+\_\+transfer\+\_\+items\+\_\+end}} for completion, which calls blocking MPI wait until all messages have been processed. All parameters must stay alive until the completion has been called. \mbox{\Hypertarget{p8est__communication_8h_a8088020f48f2f581886166167620ec9b}\label{p8est__communication_8h_a8088020f48f2f581886166167620ec9b}} 
+\index{p8est\_communication.h@{p8est\_communication.h}!p8est\_transfer\_items\_end@{p8est\_transfer\_items\_end}}
+\index{p8est\_transfer\_items\_end@{p8est\_transfer\_items\_end}!p8est\_communication.h@{p8est\_communication.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_transfer\_items\_end()}{p8est\_transfer\_items\_end()}}
+{\footnotesize\ttfamily void p8est\+\_\+transfer\+\_\+items\+\_\+end (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__communication_8h_a33e032152d0288576af91dc6ee37e9e0}{p8est\+\_\+transfer\+\_\+context\+\_\+t}} $\ast$}]{tc }\end{DoxyParamCaption})}
+
+
+
+Complete a variable-\/count item transfer between partitions. 
+
+Waits for remaining messages to complete and frees the transfer context. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tc} & Context data from \mbox{\hyperlink{p8est__communication_8h_a4d574b82c94eb4df628f505503b3b71d}{p8est\+\_\+transfer\+\_\+items\+\_\+begin}}. Is deallocated before this function returns. \\
+\hline
+\end{DoxyParams}

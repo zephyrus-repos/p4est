@@ -1,0 +1,44 @@
+.TH "sc_mempool" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sc_mempool \- The \fBsc_mempool\fP object provides a large pool of equal-size elements\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <sc_containers\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "size_t \fBelem_size\fP"
+.br
+.RI "size of a single element "
+.ti -1c
+.RI "size_t \fBelem_count\fP"
+.br
+.RI "number of valid elements "
+.ti -1c
+.RI "int \fBzero_and_persist\fP"
+.br
+.RI "Boolean; is set in constructor\&. "
+.ti -1c
+.RI "\fBsc_mstamp_t\fP \fBmstamp\fP"
+.br
+.RI "fixed-size chunk allocator "
+.ti -1c
+.RI "\fBsc_array_t\fP \fBfreed\fP"
+.br
+.RI "buffers the freed elements "
+.in -1c
+.SH "Detailed Description"
+.PP 
+The \fBsc_mempool\fP object provides a large pool of equal-size elements\&. 
+
+The pool grows dynamically for element allocation\&. Elements are referenced by their address which never changes\&. Elements can be freed (that is, returned to the pool) and are transparently reused\&. If the zero_and_persist option is selected, new elements are initialized to all zeros on creation, and the contents of an element are not touched between freeing and re-returning it\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

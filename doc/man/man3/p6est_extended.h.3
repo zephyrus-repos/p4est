@@ -1,0 +1,300 @@
+.TH "src/p6est_extended.h" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/p6est_extended.h \- Interface routines with extended capabilities\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <p6est\&.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBp6est_t\fP * \fBp6est_new_ext\fP (sc_MPI_Comm mpicomm, \fBp6est_connectivity_t\fP *connectivity, \fBp4est_locidx_t\fP min_quadrants, int min_level, int min_zlevel, int num_zroot, int fill_uniform, size_t data_size, \fBp6est_init_t\fP init_fn, void *user_pointer)"
+.br
+.RI "Create a new forest\&. "
+.ti -1c
+.RI "\fBp6est_t\fP * \fBp6est_copy_ext\fP (\fBp6est_t\fP *input, int copy_data, int duplicate_mpicomm)"
+.br
+.RI "Make a deep copy of a \fBp6est\fP\&. "
+.ti -1c
+.RI "void \fBp6est_save_ext\fP (const char *filename, \fBp6est_t\fP *\fBp6est\fP, int save_data, int save_partition)"
+.br
+.RI "Save the complete connectivity/p6est data to disk\&. "
+.ti -1c
+.RI "\fBp6est_t\fP * \fBp6est_load_ext\fP (const char *filename, sc_MPI_Comm mpicomm, size_t data_size, int load_data, int autopartition, int broadcasthead, void *user_pointer, \fBp6est_connectivity_t\fP **connectivity)"
+.br
+.RI "Load the complete connectivity/p6est structure from disk\&. "
+.ti -1c
+.RI "void \fBp6est_refine_columns_ext\fP (\fBp6est_t\fP *\fBp6est\fP, int refine_recursive, int maxlevel, \fBp6est_refine_column_t\fP refine_fn, \fBp6est_init_t\fP init_fn, \fBp6est_replace_t\fP replace_fn)"
+.br
+.RI "Horizontally refine a forest with a bounded refinement level and a replace option\&. "
+.ti -1c
+.RI "void \fBp6est_refine_layers_ext\fP (\fBp6est_t\fP *\fBp6est\fP, int refine_recursive, int maxlevel, \fBp6est_refine_layer_t\fP refine_fn, \fBp6est_init_t\fP init_fn, \fBp6est_replace_t\fP replace_fn)"
+.br
+.RI "Vertically refine a forest with a bounded refinement level and a replace option\&. "
+.ti -1c
+.RI "void \fBp6est_coarsen_columns_ext\fP (\fBp6est_t\fP *\fBp6est\fP, int coarsen_recursive, int callback_orphans, \fBp6est_coarsen_column_t\fP coarsen_fn, \fBp6est_init_t\fP init_fn, \fBp6est_replace_t\fP replace_fn)"
+.br
+.RI "Horizontally coarsen a forest\&. "
+.ti -1c
+.RI "void \fBp6est_coarsen_layers_ext\fP (\fBp6est_t\fP *\fBp6est\fP, int coarsen_recursive, int callback_orphans, \fBp6est_coarsen_layer_t\fP coarsen_fn, \fBp6est_init_t\fP init_fn, \fBp6est_replace_t\fP replace_fn)"
+.br
+.RI "Vertically coarsen a forest\&. "
+.ti -1c
+.RI "\fBp4est_gloidx_t\fP \fBp6est_partition_ext\fP (\fBp6est_t\fP *\fBp6est\fP, int partition_for_coarsening, \fBp6est_weight_t\fP weight_fn)"
+.br
+.RI "Repartition the forest\&. "
+.ti -1c
+.RI "void \fBp6est_balance_ext\fP (\fBp6est_t\fP *\fBp6est\fP, \fBp8est_connect_type_t\fP btype, int max_diff, int min_diff, \fBp6est_init_t\fP init_fn, \fBp6est_replace_t\fP replace_fn)"
+.br
+.RI "2:1 balance the size differences of neighboring elements in a forest\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Interface routines with extended capabilities\&. 
+
+
+.SH "Function Documentation"
+.PP 
+.SS "void p6est_balance_ext (\fBp6est_t\fP * p6est, \fBp8est_connect_type_t\fP btype, int max_diff, int min_diff, \fBp6est_init_t\fP init_fn, \fBp6est_replace_t\fP replace_fn)"
+
+.PP
+2:1 balance the size differences of neighboring elements in a forest\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp6est\fP\fP The \fBp6est\fP to be worked on\&. 
+.br
+\fIbtype\fP Balance type (face or corner/full)\&. Corner balance is almost never required when discretizing a PDE; just causes smoother mesh grading\&. 
+.br
+\fImax_diff\fP The maximum difference between the horizontal refinement level and the vertical refinement level 
+.br
+\fImin_diff\fP The minimum difference between the horizontal refinement level and the vertical refinement level 
+.br
+\fIinit_fn\fP Callback function to initialize the user_data which is already allocated automatically\&. 
+.br
+\fIreplace_fn\fP Callback function that allows the user to change incoming quadrants based on the quadrants they replace\&. 
+.RE
+.PP
+
+.SS "void p6est_coarsen_columns_ext (\fBp6est_t\fP * p6est, int coarsen_recursive, int callback_orphans, \fBp6est_coarsen_column_t\fP coarsen_fn, \fBp6est_init_t\fP init_fn, \fBp6est_replace_t\fP replace_fn)"
+
+.PP
+Horizontally coarsen a forest\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp6est\fP\fP The forest is changed in place\&. 
+.br
+\fIcoarsen_recursive\fP Boolean to decide on recursive coarsening\&. 
+.br
+\fIcallback_orphans\fP Boolean to enable calling coarsen_fn even on non-families\&. In this case, the second quadrant pointer in the argument list of the callback is NULL, subsequent pointers are undefined, and the return value is ignored\&. If coarsen_recursive is true, it is possible that a quadrant is called once or more as an orphan and eventually becomes part of a family\&. 
+.br
+\fIcoarsen_fn\fP Callback function that returns true if a family of quadrants shall be coarsened\&. 
+.br
+\fIinit_fn\fP Callback function to initialize the user_data which is already allocated automatically\&. 
+.br
+\fIreplace_fn\fP Callback function that allows the user to change incoming quadrants based on the quadrants they replace\&. 
+.RE
+.PP
+
+.SS "void p6est_coarsen_layers_ext (\fBp6est_t\fP * p6est, int coarsen_recursive, int callback_orphans, \fBp6est_coarsen_layer_t\fP coarsen_fn, \fBp6est_init_t\fP init_fn, \fBp6est_replace_t\fP replace_fn)"
+
+.PP
+Vertically coarsen a forest\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp6est\fP\fP The forest is changed in place\&. 
+.br
+\fIcoarsen_recursive\fP Boolean to decide on recursive coarsening\&. 
+.br
+\fIcallback_orphans\fP Boolean to enable calling coarsen_fn even on non-families\&. In this case, the second quadrant pointer in the argument list of the callback is NULL, subsequent pointers are undefined, and the return value is ignored\&. If coarsen_recursive is true, it is possible that a quadrant is called once or more as an orphan and eventually becomes part of a family\&. 
+.br
+\fIcoarsen_fn\fP Callback function that returns true if a family of quadrants shall be coarsened\&. 
+.br
+\fIinit_fn\fP Callback function to initialize the user_data which is already allocated automatically\&. 
+.br
+\fIreplace_fn\fP Callback function that allows the user to change incoming quadrants based on the quadrants they replace\&. 
+.RE
+.PP
+
+.SS "\fBp6est_t\fP* p6est_copy_ext (\fBp6est_t\fP * input, int copy_data, int duplicate_mpicomm)"
+
+.PP
+Make a deep copy of a \fBp6est\fP\&. The connectivity is not duplicated\&. Copying of quadrant user data is optional\&. If old and new data sizes are 0, the user_data field is copied regardless\&. The inspect member of the copy is set to NULL\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIcopy_data\fP If true, data are copied\&. If false, data_size is set to 0\&. 
+.br
+\fIduplicate_mpicomm\fP If true, MPI communicator is copied\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a valid \fBp6est\fP that does not depend on the input\&. 
+.RE
+.PP
+
+.SS "\fBp6est_t\fP* p6est_load_ext (const char * filename, sc_MPI_Comm mpicomm, size_t data_size, int load_data, int autopartition, int broadcasthead, void * user_pointer, \fBp6est_connectivity_t\fP ** connectivity)"
+
+.PP
+Load the complete connectivity/p6est structure from disk\&. It is possible to load the file with a different number of processors than has been used to write it\&. The partition will then be uniform\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilename\fP Name of the file to read\&. 
+.br
+\fImpicomm\fP A valid MPI communicator\&. 
+.br
+\fIdata_size\fP Size of data for each quadrant which can be zero\&. Then user_data_pool is set to NULL\&. If data_size is zero, load_data is ignored\&. 
+.br
+\fIload_data\fP If true, the element data is loaded\&. This is only permitted if the saved data size matches\&. If false, the stored data size is ignored\&. 
+.br
+\fIautopartition\fP Ignore saved partition and make it uniform\&. 
+.br
+\fIbroadcasthead\fP Have only rank 0 read headers and bcast them\&. 
+.br
+\fIuser_pointer\fP Assign to the user_pointer member of the \fBp6est\fP before init_fn is called the first time\&. 
+.br
+\fIconnectivity\fP Connectivity must be destroyed separately\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a valid forest structure\&. A pointer to a valid connectivity structure is returned through the last argument\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Aborts on file errors or invalid file contents\&. 
+.RE
+.PP
+
+.SS "\fBp6est_t\fP* p6est_new_ext (sc_MPI_Comm mpicomm, \fBp6est_connectivity_t\fP * connectivity, \fBp4est_locidx_t\fP min_quadrants, int min_level, int min_zlevel, int num_zroot, int fill_uniform, size_t data_size, \fBp6est_init_t\fP init_fn, void * user_pointer)"
+
+.PP
+Create a new forest\&. This is a more general form of \fBp6est_new()\fP\&. See the documentation of \fBp6est_new()\fP for basic usage\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImpicomm\fP Used und remembered in the result\&. 
+.br
+\fIconnectivity\fP Valid connectivity of tree topologies\&. 
+.br
+\fImin_quadrants\fP Minimum initial quadrants per processor\&. Makes the refinement pattern mpisize-specific\&. 
+.br
+\fImin_level\fP The forest is horizontally refined at least to this level\&. May be negative or 0, then it has no effect\&. 
+.br
+\fImin_zlevel\fP The forest is vertically refined at least to this level\&. May be negative or 0, then it has no effect\&. 
+.br
+\fInum_zroot\fP The number of 'root' vertical layers (used when non-power-of-2 layers are desired) 
+.br
+\fIfill_uniform\fP If true, fill the forest with a uniform mesh instead of the coarsest possible one\&. The latter is partition-specific so that is usually not a good idea\&. 
+.br
+\fIdata_size\fP Size of per-quadrant stored user data\&. 
+.br
+\fIinit_fn\fP If not NULL, called on every quadrant created\&. 
+.br
+\fIuser_pointer\fP Stored as is in the result for later reference\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A valid forest structure\&. 
+.RE
+.PP
+
+.SS "\fBp4est_gloidx_t\fP p6est_partition_ext (\fBp6est_t\fP * p6est, int partition_for_coarsening, \fBp6est_weight_t\fP weight_fn)"
+
+.PP
+Repartition the forest\&. The forest is partitioned between processors such that each processor has an approximately equal number of quadrants (or weight)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp6est\fP\fP The forest that will be partitioned\&. 
+.br
+\fIpartition_for_coarsening\fP If true, the partition is modified to allow one level of coarsening\&. 
+.br
+\fIweight_fn\fP A weighting function or NULL for uniform partitioning\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The global number of shipped quadrants 
+.RE
+.PP
+
+.SS "void p6est_refine_columns_ext (\fBp6est_t\fP * p6est, int refine_recursive, int maxlevel, \fBp6est_refine_column_t\fP refine_fn, \fBp6est_init_t\fP init_fn, \fBp6est_replace_t\fP replace_fn)"
+
+.PP
+Horizontally refine a forest with a bounded refinement level and a replace option\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp6est\fP\fP The forest is changed in place\&. 
+.br
+\fIrefine_recursive\fP Boolean to decide on recursive refinement\&. 
+.br
+\fImaxlevel\fP Maximum allowed refinement level (inclusive)\&. If this is negative the level is restricted only by the compile-time constant QMAXLEVEL in \fBp4est\&.h\fP\&. 
+.br
+\fIrefine_fn\fP Callback function that must return true if a quadrant shall be refined\&. If refine_recursive is true, refine_fn is called for every existing and newly created quadrant\&. Otherwise, it is called for every existing quadrant\&. It is possible that a refinement request made by the callback is ignored\&. To catch this case, you can examine whether init_fn or replace_fn gets called\&. 
+.br
+\fIinit_fn\fP Callback function to initialize the user_data for newly created quadrants, which is guaranteed to be allocated\&. This function pointer may be NULL\&. 
+.br
+\fIreplace_fn\fP Callback function that allows the user to change incoming quadrants based on the quadrants they replace; may be NULL\&. 
+.RE
+.PP
+
+.SS "void p6est_refine_layers_ext (\fBp6est_t\fP * p6est, int refine_recursive, int maxlevel, \fBp6est_refine_layer_t\fP refine_fn, \fBp6est_init_t\fP init_fn, \fBp6est_replace_t\fP replace_fn)"
+
+.PP
+Vertically refine a forest with a bounded refinement level and a replace option\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp6est\fP\fP The forest is changed in place\&. 
+.br
+\fIrefine_recursive\fP Boolean to decide on recursive refinement\&. 
+.br
+\fImaxlevel\fP Maximum allowed refinement level (inclusive)\&. If this is negative the level is restricted only by the compile-time constant QMAXLEVEL in \fBp4est\&.h\fP\&. 
+.br
+\fIrefine_fn\fP Callback function that must return true if a quadrant shall be refined\&. If refine_recursive is true, refine_fn is called for every existing and newly created quadrant\&. Otherwise, it is called for every existing quadrant\&. It is possible that a refinement request made by the callback is ignored\&. To catch this case, you can examine whether init_fn or replace_fn gets called\&. 
+.br
+\fIinit_fn\fP Callback function to initialize the user_data for newly created quadrants, which is guaranteed to be allocated\&. This function pointer may be NULL\&. 
+.br
+\fIreplace_fn\fP Callback function that allows the user to change incoming quadrants based on the quadrants they replace; may be NULL\&. 
+.RE
+.PP
+
+.SS "void p6est_save_ext (const char * filename, \fBp6est_t\fP * p6est, int save_data, int save_partition)"
+
+.PP
+Save the complete connectivity/p6est data to disk\&. This is a collective operation that all MPI processes need to call\&. All processes write into the same file, so the filename given needs to be identical over all parallel invocations\&. See \fBp6est_load_ext()\fP for information on the autopartition parameter\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilename\fP Name of the file to write\&. 
+.br
+\fI\fBp6est\fP\fP Valid forest structure\&. 
+.br
+\fIsave_data\fP If true, the element data is saved\&. Otherwise, a data size of 0 is saved\&. 
+.br
+\fIsave_partition\fP If false, save file as if 1 core was used\&. If true, save core count and partition\&. Advantage: Partition can be recovered on loading with same mpisize and autopartition false\&. Disadvantage: Makes the file depend on mpisize\&. Either way the file can be loaded with autopartition true\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Aborts on file errors\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

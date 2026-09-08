@@ -1,0 +1,60 @@
+\hypertarget{structsc__hash}{}\doxysection{sc\+\_\+hash Struct Reference}
+\label{structsc__hash}\index{sc\_hash@{sc\_hash}}
+
+
+The \mbox{\hyperlink{structsc__hash}{sc\+\_\+hash}} implements a hash table.  
+
+
+
+
+{\ttfamily \#include $<$sc\+\_\+containers.\+h$>$}
+
+
+
+Collaboration diagram for sc\+\_\+hash\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{structsc__hash__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structsc__hash_a0e7de4bd0d0970c2254e30f1d137b9e9}\label{structsc__hash_a0e7de4bd0d0970c2254e30f1d137b9e9}} 
+size\+\_\+t \mbox{\hyperlink{structsc__hash_a0e7de4bd0d0970c2254e30f1d137b9e9}{elem\+\_\+count}}
+\begin{DoxyCompactList}\small\item\em total number of objects contained \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__hash_ad51da86b48dc9d86ef22e864b3d7315f}\label{structsc__hash_ad51da86b48dc9d86ef22e864b3d7315f}} 
+void $\ast$ \mbox{\hyperlink{structsc__hash_ad51da86b48dc9d86ef22e864b3d7315f}{user\+\_\+data}}
+\begin{DoxyCompactList}\small\item\em User data passed to hash function. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__hash_aae17362ab05c0bdf9ecee18b1c4561bf}\label{structsc__hash_aae17362ab05c0bdf9ecee18b1c4561bf}} 
+\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$ \mbox{\hyperlink{structsc__hash_aae17362ab05c0bdf9ecee18b1c4561bf}{slots}}
+\begin{DoxyCompactList}\small\item\em The slot count is slots-\/$>$elem\+\_\+count. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__hash_aaf737b4afcf9d29a3dc405bc4001c1d6}\label{structsc__hash_aaf737b4afcf9d29a3dc405bc4001c1d6}} 
+\mbox{\hyperlink{sc__containers_8h_a0a303b68788b49895e85f4a80fb061aa}{sc\+\_\+hash\+\_\+function\+\_\+t}} \mbox{\hyperlink{structsc__hash_aaf737b4afcf9d29a3dc405bc4001c1d6}{hash\+\_\+fn}}
+\begin{DoxyCompactList}\small\item\em Function called to compute the hash value. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__hash_ad7fdb06a8b22c7a550513034a44ae155}\label{structsc__hash_ad7fdb06a8b22c7a550513034a44ae155}} 
+\mbox{\hyperlink{sc__containers_8h_afa3afb1f6aca73ea1b310e6d91c65c36}{sc\+\_\+equal\+\_\+function\+\_\+t}} \mbox{\hyperlink{structsc__hash_ad7fdb06a8b22c7a550513034a44ae155}{equal\+\_\+fn}}
+\begin{DoxyCompactList}\small\item\em Function called to check objects for equality. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__hash_a310cbb9a71bd7a5b9c6027de74785329}\label{structsc__hash_a310cbb9a71bd7a5b9c6027de74785329}} 
+size\+\_\+t \mbox{\hyperlink{structsc__hash_a310cbb9a71bd7a5b9c6027de74785329}{resize\+\_\+checks}}
+\begin{DoxyCompactList}\small\item\em Running count of resize checks. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__hash_ad9496e792c13aaae37d29cb316e7fa83}\label{structsc__hash_ad9496e792c13aaae37d29cb316e7fa83}} 
+size\+\_\+t \mbox{\hyperlink{structsc__hash_ad9496e792c13aaae37d29cb316e7fa83}{resize\+\_\+actions}}
+\begin{DoxyCompactList}\small\item\em Running count of resize actions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__hash_a70cc513d63ebfcc9cab8a9e15619c1fc}\label{structsc__hash_a70cc513d63ebfcc9cab8a9e15619c1fc}} 
+int \mbox{\hyperlink{structsc__hash_a70cc513d63ebfcc9cab8a9e15619c1fc}{allocator\+\_\+owned}}
+\begin{DoxyCompactList}\small\item\em Boolean designating allocator ownership. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__hash_a6e82facf6193a0362e9d9a4aab8d75a5}\label{structsc__hash_a6e82facf6193a0362e9d9a4aab8d75a5}} 
+\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$ \mbox{\hyperlink{structsc__hash_a6e82facf6193a0362e9d9a4aab8d75a5}{allocator}}
+\begin{DoxyCompactList}\small\item\em Must allocate sc\+\_\+link\+\_\+t objects. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The \mbox{\hyperlink{structsc__hash}{sc\+\_\+hash}} implements a hash table. 
+
+It uses an array which has linked lists as elements. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{sc__containers_8h}{sc\+\_\+containers.\+h}}\end{DoxyCompactItemize}

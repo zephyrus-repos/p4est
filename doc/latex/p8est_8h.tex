@@ -1,0 +1,578 @@
+\hypertarget{p8est_8h}{}\doxysection{src/p8est.h File Reference}
+\label{p8est_8h}\index{src/p8est.h@{src/p8est.h}}
+
+
+The top-\/level 3D \mbox{\hyperlink{structp8est}{p8est}} interface.  
+
+
+{\ttfamily \#include $<$p8est\+\_\+connectivity.\+h$>$}\newline
+Include dependency graph for p8est.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p8est_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p8est_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structp8est__quadrant}{p8est\+\_\+quadrant}}
+\begin{DoxyCompactList}\small\item\em The 3D quadrant (i.\+e., octant) datatype. \end{DoxyCompactList}\item 
+union \mbox{\hyperlink{unionp8est__quadrant_1_1p8est__quadrant__data}{p8est\+\_\+quadrant\+::p8est\+\_\+quadrant\+\_\+data}}
+\begin{DoxyCompactList}\small\item\em Union for quadrant data. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp8est__tree}{p8est\+\_\+tree}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structp8est}{p8est}} tree datatype. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp8est}{p8est}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structp8est}{p8est}} forest datatype. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p8est_8h_a547e385d2e3968d16dd761e616607e6b}\label{p8est_8h_a547e385d2e3968d16dd761e616607e6b}} 
+\#define \mbox{\hyperlink{p8est_8h_a547e385d2e3968d16dd761e616607e6b}{P8\+EST\+\_\+\+OLD\+\_\+\+MAXLEVEL}}~19   /$\ast$ old means prior to mid-\/2020 $\ast$/
+\begin{DoxyCompactList}\small\item\em The finest level of the octree for representing nodes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est_8h_a2c2b33c026cc1da5a79d43c84f1fd755}\label{p8est_8h_a2c2b33c026cc1da5a79d43c84f1fd755}} 
+\#define \mbox{\hyperlink{p8est_8h_a2c2b33c026cc1da5a79d43c84f1fd755}{P8\+EST\+\_\+\+MAXLEVEL}}~30
+\begin{DoxyCompactList}\small\item\em The finest level for representing quadrant midpoint coordinates. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est_8h_afb44059065873e9d748b966f31353241}\label{p8est_8h_afb44059065873e9d748b966f31353241}} 
+\#define \mbox{\hyperlink{p8est_8h_afb44059065873e9d748b966f31353241}{P8\+EST\+\_\+\+OLD\+\_\+\+QMAXLEVEL}}~18  /$\ast$ old means prior to mid-\/2020 $\ast$/
+\begin{DoxyCompactList}\small\item\em The finest level of the octree for representing octants. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est_8h_a317bd9849a7b61669fffbe050cf04a5b}\label{p8est_8h_a317bd9849a7b61669fffbe050cf04a5b}} 
+\#define \mbox{\hyperlink{p8est_8h_a317bd9849a7b61669fffbe050cf04a5b}{P8\+EST\+\_\+\+QMAXLEVEL}}~29
+\begin{DoxyCompactList}\small\item\em The finest level of the quadtree for representing quadrant corners. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est_8h_adb6702b5d8fb737c8e3df4dbcaf24ee8}\label{p8est_8h_adb6702b5d8fb737c8e3df4dbcaf24ee8}} 
+\#define \mbox{\hyperlink{p8est_8h_adb6702b5d8fb737c8e3df4dbcaf24ee8}{P8\+EST\+\_\+\+ROOT\+\_\+\+LEN}}~((\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}) 1 $<$$<$ \mbox{\hyperlink{p8est_8h_a2c2b33c026cc1da5a79d43c84f1fd755}{P8\+EST\+\_\+\+MAXLEVEL}})
+\begin{DoxyCompactList}\small\item\em The length of a side of the root quadrant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est_8h_aa444a12e4d4016042b5376476387f7ff}\label{p8est_8h_aa444a12e4d4016042b5376476387f7ff}} 
+\#define \mbox{\hyperlink{p8est_8h_aa444a12e4d4016042b5376476387f7ff}{P8\+EST\+\_\+\+QUADRANT\+\_\+\+LEN}}(l)~((\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}) 1 $<$$<$ (\mbox{\hyperlink{p8est_8h_a2c2b33c026cc1da5a79d43c84f1fd755}{P8\+EST\+\_\+\+MAXLEVEL}} -\/ (l)))
+\begin{DoxyCompactList}\small\item\em The length of a quadrant of level l. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est_8h_a9a29818fce357c90211f57661d8681d9}\label{p8est_8h_a9a29818fce357c90211f57661d8681d9}} 
+\#define \mbox{\hyperlink{p8est_8h_a9a29818fce357c90211f57661d8681d9}{P8\+EST\+\_\+\+QUADRANT\+\_\+\+MASK}}(l)~($\sim$(\mbox{\hyperlink{p8est_8h_aa444a12e4d4016042b5376476387f7ff}{P8\+EST\+\_\+\+QUADRANT\+\_\+\+LEN}} (l) -\/ 1))
+\begin{DoxyCompactList}\small\item\em Create a mask of 1-\/bits from the left and maxlevel-\/level zero bits. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est_8h_afb3af10a1249f9c0aafe4332ceef2c57}\label{p8est_8h_afb3af10a1249f9c0aafe4332ceef2c57}} 
+\#define \mbox{\hyperlink{p8est_8h_afb3af10a1249f9c0aafe4332ceef2c57}{P8\+EST\+\_\+\+LAST\+\_\+\+OFFSET}}(l)~(\mbox{\hyperlink{p8est_8h_adb6702b5d8fb737c8e3df4dbcaf24ee8}{P8\+EST\+\_\+\+ROOT\+\_\+\+LEN}} -\/ \mbox{\hyperlink{p8est_8h_aa444a12e4d4016042b5376476387f7ff}{P8\+EST\+\_\+\+QUADRANT\+\_\+\+LEN}} (l))
+\begin{DoxyCompactList}\small\item\em The offset of the highest (farthest from the origin) quadrant at level l. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est_8h_a70c8a02f88dddd246160e4a17c2c0d02}\label{p8est_8h_a70c8a02f88dddd246160e4a17c2c0d02}} 
+\#define \mbox{\hyperlink{p8est_8h_a70c8a02f88dddd246160e4a17c2c0d02}{P8\+EST\+\_\+\+QUADRANT\+\_\+\+INIT}}(q)~  ((void) memset ((q), -\/1, sizeof (\mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}})))
+\begin{DoxyCompactList}\small\item\em set statically allocated quadrant to defined values \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p8est_8h_afc7b50a120350b7a224598f8e36befb9}\label{p8est_8h_afc7b50a120350b7a224598f8e36befb9}} 
+typedef struct \mbox{\hyperlink{structp8est__quadrant}{p8est\+\_\+quadrant}} \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The 3D quadrant (i.\+e., octant) datatype. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est_8h_a76beb9ba6953d15140eb62348cb2d8ca}\label{p8est_8h_a76beb9ba6953d15140eb62348cb2d8ca}} 
+typedef struct \mbox{\hyperlink{structp8est__tree}{p8est\+\_\+tree}} \mbox{\hyperlink{p8est_8h_a76beb9ba6953d15140eb62348cb2d8ca}{p8est\+\_\+tree\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structp8est}{p8est}} tree datatype. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structp8est__inspect}{p8est\+\_\+inspect}} \mbox{\hyperlink{p8est_8h_a496b529daf5f8d09ec01dcfae7387a83}{p8est\+\_\+inspect\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Data pertaining to selecting, inspecting, and profiling algorithms. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}\label{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}} 
+typedef struct \mbox{\hyperlink{structp8est}{p8est}} \mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structp8est}{p8est}} forest datatype. \end{DoxyCompactList}\item 
+typedef void($\ast$ \mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}}) (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$quadrant)
+\begin{DoxyCompactList}\small\item\em Callback function prototype to initialize the quadrant\textquotesingle{}s user data. \end{DoxyCompactList}\item 
+typedef int($\ast$ \mbox{\hyperlink{p8est_8h_a24565b65860e156a04ba8ccc6f67a936}{p8est\+\_\+refine\+\_\+t}}) (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$quadrant)
+\begin{DoxyCompactList}\small\item\em Callback function prototype to decide for refinement. \end{DoxyCompactList}\item 
+typedef int($\ast$ \mbox{\hyperlink{p8est_8h_a0cc288a63bb18c0adfbd4608fb524044}{p8est\+\_\+coarsen\+\_\+t}}) (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$quadrants\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Callback function prototype to decide for coarsening. \end{DoxyCompactList}\item 
+typedef int($\ast$ \mbox{\hyperlink{p8est_8h_a065466172704df28878d8535b98965a1}{p8est\+\_\+weight\+\_\+t}}) (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$quadrant)
+\begin{DoxyCompactList}\small\item\em Callback function prototype to calculate weights for partitioning. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{p8est_8h_ad589f55d1f325c59f695e78810de94c9}{p8est\+\_\+memory\+\_\+used}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}})
+\begin{DoxyCompactList}\small\item\em Calculate local memory usage of a forest structure. \end{DoxyCompactList}\item 
+long \mbox{\hyperlink{p8est_8h_a2e2a96f815ad364408d00f40ca618986}{p8est\+\_\+revision}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}})
+\begin{DoxyCompactList}\small\item\em Return the revision counter of the forest. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est_8h_a2abb8855bc9c0e22fa61249cf246d381}{p8est\+\_\+qcoord\+\_\+to\+\_\+vertex}} (\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$connectivity, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} treeid, \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} x, \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} y, \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} z, double vxyz\mbox{[}3\mbox{]})
+\begin{DoxyCompactList}\small\item\em Transform a quadrant coordinate into the space spanned by tree vertices. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est_8h_a00b641bbd54c6cbb3d5b938bf2ded273}{p8est\+\_\+new}} (sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, \mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$connectivity, size\+\_\+t data\+\_\+size, \mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}} init\+\_\+fn, void $\ast$user\+\_\+pointer)
+\begin{DoxyCompactList}\small\item\em Create a new forest with an initial coarse mesh. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est_8h_a9129039ec02efe741142119efe6ea4e5}{p8est\+\_\+destroy}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}})
+\begin{DoxyCompactList}\small\item\em Destroy a \mbox{\hyperlink{structp8est}{p8est}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est_8h_a74dbd44bcf48e6622dcc5e773e9eb4f5}{p8est\+\_\+copy}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$input, int copy\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Make a deep copy of a \mbox{\hyperlink{structp8est}{p8est}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est_8h_aa43e319bd13f1694550d0b04431fe523}{p8est\+\_\+reset\+\_\+data}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, size\+\_\+t data\+\_\+size, \mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}} init\+\_\+fn, void $\ast$user\+\_\+pointer)
+\begin{DoxyCompactList}\small\item\em Reset user pointer and element data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est_8h_a33fe631a8680202fa7daf680c31fead8}{p8est\+\_\+refine}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, int refine\+\_\+recursive, \mbox{\hyperlink{p8est_8h_a24565b65860e156a04ba8ccc6f67a936}{p8est\+\_\+refine\+\_\+t}} refine\+\_\+fn, \mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}} init\+\_\+fn)
+\begin{DoxyCompactList}\small\item\em Refine a forest. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est_8h_a586a488e614306ef49569c439527369f}{p8est\+\_\+coarsen}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, int coarsen\+\_\+recursive, \mbox{\hyperlink{p8est_8h_a0cc288a63bb18c0adfbd4608fb524044}{p8est\+\_\+coarsen\+\_\+t}} coarsen\+\_\+fn, \mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}} init\+\_\+fn)
+\begin{DoxyCompactList}\small\item\em Coarsen a forest. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est_8h_ab306b1ad285807c9d326f7e641b9a294}{p8est\+\_\+balance}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p8est__connectivity_8h_aaa5a9d47d1b169507e1095783ab89be1}{p8est\+\_\+connect\+\_\+type\+\_\+t}} btype, \mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}} init\+\_\+fn)
+\begin{DoxyCompactList}\small\item\em 2\+:1 balance the size differences of neighboring elements in a forest. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est_8h_a54c8beb09950474b517dd1c4938fe6ec}{p8est\+\_\+partition}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, int allow\+\_\+for\+\_\+coarsening, \mbox{\hyperlink{p8est_8h_a065466172704df28878d8535b98965a1}{p8est\+\_\+weight\+\_\+t}} weight\+\_\+fn)
+\begin{DoxyCompactList}\small\item\em Equally partition the forest. \end{DoxyCompactList}\item 
+unsigned \mbox{\hyperlink{p8est_8h_af6356de6c6e27288a8c764d5eaf6e462}{p8est\+\_\+checksum}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}})
+\begin{DoxyCompactList}\small\item\em Compute the checksum for a forest. \end{DoxyCompactList}\item 
+unsigned \mbox{\hyperlink{p8est_8h_a578e0c696ce789bbb19303ed0a723308}{p8est\+\_\+checksum\+\_\+partition}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}})
+\begin{DoxyCompactList}\small\item\em Compute a partition-\/dependent checksum for a forest. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est_8h_aa085d8890ad0c5cd2cf1b34acf5e12c6}{p8est\+\_\+save}} (const char $\ast$filename, \mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, int save\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Save the complete connectivity/p8est data to disk. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est_8h_a617eaa5b07df457803ba449cb8ad1373}{p8est\+\_\+load}} (const char $\ast$filename, sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, size\+\_\+t data\+\_\+size, int load\+\_\+data, void $\ast$user\+\_\+pointer, \mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$$\ast$connectivity)
+\begin{DoxyCompactList}\small\item\em Load the complete connectivity/p8est structure from disk. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p8est_8h_a2131296ffb1caa0996a6d4279e97bfd3}\label{p8est_8h_a2131296ffb1caa0996a6d4279e97bfd3}} 
+void $\ast$ {\bfseries P8\+EST\+\_\+\+DATA\+\_\+\+UNINITIALIZED}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The top-\/level 3D \mbox{\hyperlink{structp8est}{p8est}} interface. 
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{p8est_8h_a0cc288a63bb18c0adfbd4608fb524044}\label{p8est_8h_a0cc288a63bb18c0adfbd4608fb524044}} 
+\index{p8est.h@{p8est.h}!p8est\_coarsen\_t@{p8est\_coarsen\_t}}
+\index{p8est\_coarsen\_t@{p8est\_coarsen\_t}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_coarsen\_t}{p8est\_coarsen\_t}}
+{\footnotesize\ttfamily typedef int($\ast$ p8est\+\_\+coarsen\+\_\+t) (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$quadrants\mbox{[}$\,$\mbox{]})}
+
+
+
+Callback function prototype to decide for coarsening. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & the forest \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & the tree containing {\itshape quadrant} \\
+\hline
+\mbox{\texttt{ in}}  & {\em quadrants} & Pointers to 8 siblings in Morton ordering. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nonzero if the quadrants shall be replaced with their parent. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}\label{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}} 
+\index{p8est.h@{p8est.h}!p8est\_init\_t@{p8est\_init\_t}}
+\index{p8est\_init\_t@{p8est\_init\_t}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_init\_t}{p8est\_init\_t}}
+{\footnotesize\ttfamily typedef void($\ast$ p8est\+\_\+init\+\_\+t) (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$quadrant)}
+
+
+
+Callback function prototype to initialize the quadrant\textquotesingle{}s user data. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & the forest \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & the tree containing {\itshape quadrant} \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em quadrant} & the quadrant to be initialized\+: if data\+\_\+size $>$ 0, the data to be initialized is at {\itshape quadrant-\/$>$p.\+user\+\_\+data}; otherwise, the non-\/pointer user data (such as {\itshape quadrant-\/$>$p.\+user\+\_\+int}) can be initialized \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est_8h_a496b529daf5f8d09ec01dcfae7387a83}\label{p8est_8h_a496b529daf5f8d09ec01dcfae7387a83}} 
+\index{p8est.h@{p8est.h}!p8est\_inspect\_t@{p8est\_inspect\_t}}
+\index{p8est\_inspect\_t@{p8est\_inspect\_t}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_inspect\_t}{p8est\_inspect\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structp8est__inspect}{p8est\+\_\+inspect}} \mbox{\hyperlink{p8est_8h_a496b529daf5f8d09ec01dcfae7387a83}{p8est\+\_\+inspect\+\_\+t}}}
+
+
+
+Data pertaining to selecting, inspecting, and profiling algorithms. 
+
+A pointer to this structure is hooked into the \mbox{\hyperlink{structp8est}{p8est}} main structure. Declared in \mbox{\hyperlink{p8est__extended_8h}{p8est\+\_\+extended.\+h}}. Used to profile important algorithms. \mbox{\Hypertarget{p8est_8h_a24565b65860e156a04ba8ccc6f67a936}\label{p8est_8h_a24565b65860e156a04ba8ccc6f67a936}} 
+\index{p8est.h@{p8est.h}!p8est\_refine\_t@{p8est\_refine\_t}}
+\index{p8est\_refine\_t@{p8est\_refine\_t}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_refine\_t}{p8est\_refine\_t}}
+{\footnotesize\ttfamily typedef int($\ast$ p8est\+\_\+refine\+\_\+t) (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$quadrant)}
+
+
+
+Callback function prototype to decide for refinement. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & the forest \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & the tree containing {\itshape quadrant} \\
+\hline
+\mbox{\texttt{ in}}  & {\em quadrant} & the quadrant that may be refined \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nonzero if the quadrant shall be refined. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est_8h_a065466172704df28878d8535b98965a1}\label{p8est_8h_a065466172704df28878d8535b98965a1}} 
+\index{p8est.h@{p8est.h}!p8est\_weight\_t@{p8est\_weight\_t}}
+\index{p8est\_weight\_t@{p8est\_weight\_t}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_weight\_t}{p8est\_weight\_t}}
+{\footnotesize\ttfamily typedef int($\ast$ p8est\+\_\+weight\+\_\+t) (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$quadrant)}
+
+
+
+Callback function prototype to calculate weights for partitioning. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & the forest \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & the tree containing {\itshape quadrant} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a 32bit integer $>$= 0 as the quadrant weight. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Global sum of weights must fit into a 64bit integer. 
+\end{DoxyNote}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p8est_8h_ab306b1ad285807c9d326f7e641b9a294}\label{p8est_8h_ab306b1ad285807c9d326f7e641b9a294}} 
+\index{p8est.h@{p8est.h}!p8est\_balance@{p8est\_balance}}
+\index{p8est\_balance@{p8est\_balance}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_balance()}{p8est\_balance()}}
+{\footnotesize\ttfamily void p8est\+\_\+balance (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{\mbox{\hyperlink{p8est__connectivity_8h_aaa5a9d47d1b169507e1095783ab89be1}{p8est\+\_\+connect\+\_\+type\+\_\+t}}}]{btype,  }\item[{\mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}}}]{init\+\_\+fn }\end{DoxyParamCaption})}
+
+
+
+2\+:1 balance the size differences of neighboring elements in a forest. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & The \mbox{\hyperlink{structp8est}{p8est}} to be worked on. \\
+\hline
+\mbox{\texttt{ in}}  & {\em btype} & Balance type (face, edge, or corner/full). Examples\+: Finite volume or discontinuous Galerkin methods only require face balance. Continuous finite element methods usually require edge balance. Corner balance is almost never required mathematically; it just produces a smoother mesh grading. \\
+\hline
+\mbox{\texttt{ in}}  & {\em init\+\_\+fn} & Callback function to initialize the user\+\_\+data which is already allocated automatically. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est_8h_af6356de6c6e27288a8c764d5eaf6e462}\label{p8est_8h_af6356de6c6e27288a8c764d5eaf6e462}} 
+\index{p8est.h@{p8est.h}!p8est\_checksum@{p8est\_checksum}}
+\index{p8est\_checksum@{p8est\_checksum}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_checksum()}{p8est\_checksum()}}
+{\footnotesize\ttfamily unsigned p8est\+\_\+checksum (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est }\end{DoxyParamCaption})}
+
+
+
+Compute the checksum for a forest. 
+
+Based on quadrant arrays only. It is independent of partition and mpisize. \begin{DoxyReturn}{Returns}
+Returns the checksum on all processors. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est_8h_a578e0c696ce789bbb19303ed0a723308}\label{p8est_8h_a578e0c696ce789bbb19303ed0a723308}} 
+\index{p8est.h@{p8est.h}!p8est\_checksum\_partition@{p8est\_checksum\_partition}}
+\index{p8est\_checksum\_partition@{p8est\_checksum\_partition}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_checksum\_partition()}{p8est\_checksum\_partition()}}
+{\footnotesize\ttfamily unsigned p8est\+\_\+checksum\+\_\+partition (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est }\end{DoxyParamCaption})}
+
+
+
+Compute a partition-\/dependent checksum for a forest. 
+
+\begin{DoxyReturn}{Returns}
+Returns the checksum on all processors. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est_8h_a586a488e614306ef49569c439527369f}\label{p8est_8h_a586a488e614306ef49569c439527369f}} 
+\index{p8est.h@{p8est.h}!p8est\_coarsen@{p8est\_coarsen}}
+\index{p8est\_coarsen@{p8est\_coarsen}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_coarsen()}{p8est\_coarsen()}}
+{\footnotesize\ttfamily void p8est\+\_\+coarsen (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{int}]{coarsen\+\_\+recursive,  }\item[{\mbox{\hyperlink{p8est_8h_a0cc288a63bb18c0adfbd4608fb524044}{p8est\+\_\+coarsen\+\_\+t}}}]{coarsen\+\_\+fn,  }\item[{\mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}}}]{init\+\_\+fn }\end{DoxyParamCaption})}
+
+
+
+Coarsen a forest. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & The forest is changed in place. \\
+\hline
+\mbox{\texttt{ in}}  & {\em coarsen\+\_\+recursive} & Boolean to decide on recursive coarsening. \\
+\hline
+\mbox{\texttt{ in}}  & {\em coarsen\+\_\+fn} & Callback function that returns true if a family of quadrants shall be coarsened \\
+\hline
+\mbox{\texttt{ in}}  & {\em init\+\_\+fn} & Callback function to initialize the user\+\_\+data which is already allocated automatically. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est_8h_a74dbd44bcf48e6622dcc5e773e9eb4f5}\label{p8est_8h_a74dbd44bcf48e6622dcc5e773e9eb4f5}} 
+\index{p8est.h@{p8est.h}!p8est\_copy@{p8est\_copy}}
+\index{p8est\_copy@{p8est\_copy}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_copy()}{p8est\_copy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}}$\ast$ p8est\+\_\+copy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{input,  }\item[{int}]{copy\+\_\+data }\end{DoxyParamCaption})}
+
+
+
+Make a deep copy of a \mbox{\hyperlink{structp8est}{p8est}}. 
+
+The connectivity is not duplicated. Copying of quadrant user data is optional. If old and new data sizes are 0, the user\+\_\+data field is copied regardless. The inspect member of the copy is set to NULL. The revision counter of the copy is set to zero.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em copy\+\_\+data} & If true, data are copied. If false, data\+\_\+size is set to 0. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a valid \mbox{\hyperlink{structp8est}{p8est}} that does not depend on the input, except for borrowing the same connectivity. Its revision counter is 0. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est_8h_a9129039ec02efe741142119efe6ea4e5}\label{p8est_8h_a9129039ec02efe741142119efe6ea4e5}} 
+\index{p8est.h@{p8est.h}!p8est\_destroy@{p8est\_destroy}}
+\index{p8est\_destroy@{p8est\_destroy}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_destroy()}{p8est\_destroy()}}
+{\footnotesize\ttfamily void p8est\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est }\end{DoxyParamCaption})}
+
+
+
+Destroy a \mbox{\hyperlink{structp8est}{p8est}}. 
+
+\begin{DoxyNote}{Note}
+The connectivity structure is not destroyed with the \mbox{\hyperlink{structp8est}{p8est}}. 
+\end{DoxyNote}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est_8h_a617eaa5b07df457803ba449cb8ad1373}\label{p8est_8h_a617eaa5b07df457803ba449cb8ad1373}} 
+\index{p8est.h@{p8est.h}!p8est\_load@{p8est\_load}}
+\index{p8est\_load@{p8est\_load}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_load()}{p8est\_load()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}}$\ast$ p8est\+\_\+load (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename,  }\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{size\+\_\+t}]{data\+\_\+size,  }\item[{int}]{load\+\_\+data,  }\item[{void $\ast$}]{user\+\_\+pointer,  }\item[{\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$$\ast$}]{connectivity }\end{DoxyParamCaption})}
+
+
+
+Load the complete connectivity/p8est structure from disk. 
+
+This is a collective operation that all MPI processes need to call. All processes read from the same file, so the filename given needs to be identical over all parallel invocations.
+
+By default, a file can only be loaded with the same number of processors that it was stored with. The defaults can be changed with \mbox{\hyperlink{p8est__extended_8h_a4e34acca353e0f052aea88eb6bbaa872}{p8est\+\_\+load\+\_\+ext()}} in \mbox{\hyperlink{p8est__extended_8h}{p8est\+\_\+extended.\+h}}.
+
+The revision counter of the loaded \mbox{\hyperlink{structp4est}{p4est}} is set to zero.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em filename} & Name of the file to read. \\
+\hline
+\mbox{\texttt{ in}}  & {\em mpicomm} & A valid MPI communicator. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data\+\_\+size} & Size of data for each quadrant which can be zero. Then user\+\_\+data\+\_\+pool is set to NULL. If data\+\_\+size is zero, load\+\_\+data is ignored. \\
+\hline
+\mbox{\texttt{ in}}  & {\em load\+\_\+data} & If true, the element data is loaded. This is only permitted if the saved data size matches. If false, the stored data size is ignored. \\
+\hline
+\mbox{\texttt{ in}}  & {\em user\+\_\+pointer} & Assign to the user\+\_\+pointer member of the \mbox{\hyperlink{structp8est}{p8est}} before init\+\_\+fn is called the first time. \\
+\hline
+\mbox{\texttt{ out}}  & {\em connectivity} & Connectivity must be destroyed separately. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a valid forest structure. A pointer to a valid connectivity structure is returned through the last argument. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Aborts on file errors or invalid file contents. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p8est_8h_ad589f55d1f325c59f695e78810de94c9}\label{p8est_8h_ad589f55d1f325c59f695e78810de94c9}} 
+\index{p8est.h@{p8est.h}!p8est\_memory\_used@{p8est\_memory\_used}}
+\index{p8est\_memory\_used@{p8est\_memory\_used}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_memory\_used()}{p8est\_memory\_used()}}
+{\footnotesize\ttfamily size\+\_\+t p8est\+\_\+memory\+\_\+used (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est }\end{DoxyParamCaption})}
+
+
+
+Calculate local memory usage of a forest structure. 
+
+Not collective. The memory used on the current rank is returned. The connectivity structure is not counted since it is not owned; use p8est\+\_\+connectivity\+\_\+memory\+\_\+usage (p8est-\/$>$connectivity). 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & Valid forest structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Memory used in bytes. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est_8h_a00b641bbd54c6cbb3d5b938bf2ded273}\label{p8est_8h_a00b641bbd54c6cbb3d5b938bf2ded273}} 
+\index{p8est.h@{p8est.h}!p8est\_new@{p8est\_new}}
+\index{p8est\_new@{p8est\_new}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_new()}{p8est\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}}$\ast$ p8est\+\_\+new (\begin{DoxyParamCaption}\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$}]{connectivity,  }\item[{size\+\_\+t}]{data\+\_\+size,  }\item[{\mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}}}]{init\+\_\+fn,  }\item[{void $\ast$}]{user\+\_\+pointer }\end{DoxyParamCaption})}
+
+
+
+Create a new forest with an initial coarse mesh. 
+
+The new forest consists of equi-\/partitioned root quadrants. When there are more processors than trees, some processors are empty.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & A valid MPI communicator. \\
+\hline
+\mbox{\texttt{ in}}  & {\em connectivity} & This is the connectivity information that the forest is built with. Note the \mbox{\hyperlink{structp8est}{p8est}} does not take ownership of the memory. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data\+\_\+size} & This is the size of data for each quadrant which can be zero. Then user\+\_\+data\+\_\+pool is set to NULL. \\
+\hline
+\mbox{\texttt{ in}}  & {\em init\+\_\+fn} & Callback function to initialize the user\+\_\+data which is already allocated automatically. \\
+\hline
+\mbox{\texttt{ in}}  & {\em user\+\_\+pointer} & Assign to the user\+\_\+pointer member of the \mbox{\hyperlink{structp8est}{p8est}} before init\+\_\+fn is called the first time.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This returns a valid forest.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The connectivity structure must not be destroyed during the lifetime of this forest. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p8est_8h_a54c8beb09950474b517dd1c4938fe6ec}\label{p8est_8h_a54c8beb09950474b517dd1c4938fe6ec}} 
+\index{p8est.h@{p8est.h}!p8est\_partition@{p8est\_partition}}
+\index{p8est\_partition@{p8est\_partition}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_partition()}{p8est\_partition()}}
+{\footnotesize\ttfamily void p8est\+\_\+partition (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{int}]{allow\+\_\+for\+\_\+coarsening,  }\item[{\mbox{\hyperlink{p8est_8h_a065466172704df28878d8535b98965a1}{p8est\+\_\+weight\+\_\+t}}}]{weight\+\_\+fn }\end{DoxyParamCaption})}
+
+
+
+Equally partition the forest. 
+
+The partition can be by element count or by a user-\/defined weight.
+
+The forest will be partitioned between processors such that they have an approximately equal number of quadrants (or sum of weights).
+
+The user data of a quadrant is transferred along within this function.
+
+On one process, the function noops and does not call the weight callback. Otherwise, the weight callback is called once per quadrant in order.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & The forest that will be partitioned. \\
+\hline
+\mbox{\texttt{ in}}  & {\em allow\+\_\+for\+\_\+coarsening} & Slightly modify partition such that quadrant families are not split between ranks. \\
+\hline
+\mbox{\texttt{ in}}  & {\em weight\+\_\+fn} & A weighting function or NULL for uniform partitioning. When running with mpisize == 1, never called. Otherwise, called in order for all quadrants if not NULL. A weighting function with constant weight 1 on each quadrant is equivalent to weight\+\_\+fn == NULL but other constant weightings may result in different uniform partitionings. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est_8h_a2abb8855bc9c0e22fa61249cf246d381}\label{p8est_8h_a2abb8855bc9c0e22fa61249cf246d381}} 
+\index{p8est.h@{p8est.h}!p8est\_qcoord\_to\_vertex@{p8est\_qcoord\_to\_vertex}}
+\index{p8est\_qcoord\_to\_vertex@{p8est\_qcoord\_to\_vertex}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_qcoord\_to\_vertex()}{p8est\_qcoord\_to\_vertex()}}
+{\footnotesize\ttfamily void p8est\+\_\+qcoord\+\_\+to\+\_\+vertex (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$}]{connectivity,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{treeid,  }\item[{\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{x,  }\item[{\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{y,  }\item[{\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{z,  }\item[{double}]{vxyz\mbox{[}3\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Transform a quadrant coordinate into the space spanned by tree vertices. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em connectivity} & Connectivity must provide the vertices. \\
+\hline
+\mbox{\texttt{ in}}  & {\em treeid} & Identify the tree that contains x, y, z. \\
+\hline
+\mbox{\texttt{ in}}  & {\em x,y,z} & Quadrant coordinates relative to treeid. \\
+\hline
+\mbox{\texttt{ out}}  & {\em vxyz} & Transformed coordinates in vertex space. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est_8h_a33fe631a8680202fa7daf680c31fead8}\label{p8est_8h_a33fe631a8680202fa7daf680c31fead8}} 
+\index{p8est.h@{p8est.h}!p8est\_refine@{p8est\_refine}}
+\index{p8est\_refine@{p8est\_refine}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_refine()}{p8est\_refine()}}
+{\footnotesize\ttfamily void p8est\+\_\+refine (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{int}]{refine\+\_\+recursive,  }\item[{\mbox{\hyperlink{p8est_8h_a24565b65860e156a04ba8ccc6f67a936}{p8est\+\_\+refine\+\_\+t}}}]{refine\+\_\+fn,  }\item[{\mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}}}]{init\+\_\+fn }\end{DoxyParamCaption})}
+
+
+
+Refine a forest. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & The forest is changed in place. \\
+\hline
+\mbox{\texttt{ in}}  & {\em refine\+\_\+recursive} & Boolean to decide on recursive refinement. \\
+\hline
+\mbox{\texttt{ in}}  & {\em refine\+\_\+fn} & Callback function that must return true if a quadrant shall be refined. If refine\+\_\+recursive is true, refine\+\_\+fn is called for every existing and newly created quadrant. Otherwise, it is called for every existing quadrant. It is possible that a refinement request made by the callback is ignored. To catch this case, you can examine whether init\+\_\+fn gets called, or use p8est\+\_\+refine\+\_\+ext in \mbox{\hyperlink{p8est__extended_8h}{p8est\+\_\+extended.\+h}} and examine whether replace\+\_\+fn gets called. \\
+\hline
+\mbox{\texttt{ in}}  & {\em init\+\_\+fn} & Callback function to initialize the user\+\_\+data of newly created quadrants, which is already allocated. This function pointer may be NULL. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est_8h_aa43e319bd13f1694550d0b04431fe523}\label{p8est_8h_aa43e319bd13f1694550d0b04431fe523}} 
+\index{p8est.h@{p8est.h}!p8est\_reset\_data@{p8est\_reset\_data}}
+\index{p8est\_reset\_data@{p8est\_reset\_data}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_reset\_data()}{p8est\_reset\_data()}}
+{\footnotesize\ttfamily void p8est\+\_\+reset\+\_\+data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{size\+\_\+t}]{data\+\_\+size,  }\item[{\mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}}}]{init\+\_\+fn,  }\item[{void $\ast$}]{user\+\_\+pointer }\end{DoxyParamCaption})}
+
+
+
+Reset user pointer and element data. 
+
+When the data size is changed the quadrant data is freed and allocated. The initialization callback is invoked on each quadrant. Old user\+\_\+data content is disregarded.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em data\+\_\+size} & This is the size of data for each quadrant which can be zero. Then user\+\_\+data\+\_\+pool is set to NULL. \\
+\hline
+\mbox{\texttt{ in}}  & {\em init\+\_\+fn} & Callback function to initialize the user\+\_\+data which is already allocated automatically. May be NULL. \\
+\hline
+\mbox{\texttt{ in}}  & {\em user\+\_\+pointer} & Assign to the user\+\_\+pointer member of the \mbox{\hyperlink{structp8est}{p8est}} before init\+\_\+fn is called the first time. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est_8h_a2e2a96f815ad364408d00f40ca618986}\label{p8est_8h_a2e2a96f815ad364408d00f40ca618986}} 
+\index{p8est.h@{p8est.h}!p8est\_revision@{p8est\_revision}}
+\index{p8est\_revision@{p8est\_revision}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_revision()}{p8est\_revision()}}
+{\footnotesize\ttfamily long p8est\+\_\+revision (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est }\end{DoxyParamCaption})}
+
+
+
+Return the revision counter of the forest. 
+
+Not collective, even though the revision value is the same on all ranks. A newly created forest starts with a revision counter of zero. Every refine, coarsen, partition, and balance that actually changes the mesh increases the counter by one. Operations with no effect keep the old value. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & The forest must be valid. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Non-\/negative number. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est_8h_aa085d8890ad0c5cd2cf1b34acf5e12c6}\label{p8est_8h_aa085d8890ad0c5cd2cf1b34acf5e12c6}} 
+\index{p8est.h@{p8est.h}!p8est\_save@{p8est\_save}}
+\index{p8est\_save@{p8est\_save}!p8est.h@{p8est.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_save()}{p8est\_save()}}
+{\footnotesize\ttfamily void p8est\+\_\+save (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename,  }\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{int}]{save\+\_\+data }\end{DoxyParamCaption})}
+
+
+
+Save the complete connectivity/p8est data to disk. 
+
+This is a collective operation that all MPI processes need to call. All processes write into the same file, so the filename given needs to be identical over all parallel invocations.
+
+By default, we write the current processor count and partition into the file header. This makes the file depend on mpisize. For changing this see \mbox{\hyperlink{p8est__extended_8h_a77feea00242dedeeff32078510c08e30}{p8est\+\_\+save\+\_\+ext()}} in \mbox{\hyperlink{p8est__extended_8h}{p8est\+\_\+extended.\+h}}.
+
+The revision counter is not saved to the file, since that would make files different that come from different revisions but store the same mesh.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em filename} & Name of the file to write. \\
+\hline
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & Valid forest structure. \\
+\hline
+\mbox{\texttt{ in}}  & {\em save\+\_\+data} & If true, the element data is saved. Otherwise, a data size of 0 is saved. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Aborts on file errors. 
+
+If \mbox{\hyperlink{structp4est}{p4est}} is not configured to use MPI-\/\+IO, some processes return from this function before the file is complete, in which case immediate read-\/access to the file may require a call to sc\+\_\+\+MPI\+\_\+\+Barrier. 
+\end{DoxyNote}

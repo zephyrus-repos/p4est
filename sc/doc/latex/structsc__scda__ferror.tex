@@ -1,0 +1,34 @@
+\hypertarget{structsc__scda__ferror}{}\doxysection{sc\+\_\+scda\+\_\+ferror Struct Reference}
+\label{structsc__scda__ferror}\index{sc\_scda\_ferror@{sc\_scda\_ferror}}
+
+
+Error values for the scda functions.  
+
+
+
+
+{\ttfamily \#include $<$sc\+\_\+scda.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structsc__scda__ferror_ada159cd0c4cff9a779fc0c7771268a83}\label{structsc__scda__ferror_ada159cd0c4cff9a779fc0c7771268a83}} 
+int \mbox{\hyperlink{structsc__scda__ferror_ada159cd0c4cff9a779fc0c7771268a83}{mpiret}}
+\begin{DoxyCompactList}\small\item\em MPI function return value; without MPI this variable can get filled by other I/O operation error codes, which are still interpretable by the error {\bfseries{scda}} examination functions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__scda__ferror_acff30152cb5cad0930f560888e3a4e1c}\label{structsc__scda__ferror_acff30152cb5cad0930f560888e3a4e1c}} 
+\mbox{\hyperlink{sc__scda_8h_a6a411e1b7f8f76778d98f154ac360ba5}{sc\+\_\+scda\+\_\+ret\+\_\+t}} \mbox{\hyperlink{structsc__scda__ferror_acff30152cb5cad0930f560888e3a4e1c}{scdaret}}
+\begin{DoxyCompactList}\small\item\em scda file format related return value \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Error values for the scda functions. 
+
+An error value is a struct since the error can be related to the scda file format or to (MPI) I/O operations. The error code can be converted to a string by \mbox{\hyperlink{sc__scda_8h_a1191840fde06a11537122a5701a75eef}{sc\+\_\+scda\+\_\+ferror\+\_\+string}}, mapped to an error class by \mbox{\hyperlink{sc__scda_8h_a01762ce01ec64b560cff9ba9fbf66548}{sc\+\_\+scda\+\_\+ferror\+\_\+class}} and checked for success by \mbox{\hyperlink{sc__scda_8h_acac9ada6f22a625ee03ed86f08bd47a6}{sc\+\_\+scda\+\_\+ferror\+\_\+is\+\_\+success}}. The user can rely on these functions to parse \mbox{\hyperlink{structsc__scda__ferror}{sc\+\_\+scda\+\_\+ferror}} and does not need to access the members of this structure.
+
+The parsing logic of \mbox{\hyperlink{sc__scda_8h_a3613f101cd3d474bae0609313c45a135}{sc\+\_\+scda\+\_\+ferror\+\_\+t}} is that first {\bfseries{scdaret}} is examined and if {\bfseries{scdaret}} != \mbox{\hyperlink{sc__scda_8h_a859537bb0f5ff43711604b848a8a7477ae1b80690aa0c44c868a9bd37ef7bdcbe}{SC\+\_\+\+SCDA\+\_\+\+FERR\+\_\+\+MPI}}, we know that {\bfseries{mpiret}} = 0. If {\bfseries{scdaret}} = \mbox{\hyperlink{sc__scda_8h_a859537bb0f5ff43711604b848a8a7477ae1b80690aa0c44c868a9bd37ef7bdcbe}{SC\+\_\+\+SCDA\+\_\+\+FERR\+\_\+\+MPI}}, we know that an MPI error occurred and we can examine {\bfseries{mpiret}} for more informartion.
+
+Moreover, a valid \mbox{\hyperlink{structsc__scda__ferror}{sc\+\_\+scda\+\_\+ferror}} always satisfy that if {\bfseries{scdaret}} = 0 then {\bfseries{mpiret}} = 0 and if {\bfseries{scdaret}} = \mbox{\hyperlink{sc__scda_8h_a859537bb0f5ff43711604b848a8a7477ae1b80690aa0c44c868a9bd37ef7bdcbe}{SC\+\_\+\+SCDA\+\_\+\+FERR\+\_\+\+MPI}} then {\bfseries{mpiret}} !=0. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{sc__scda_8h}{sc\+\_\+scda.\+h}}\end{DoxyCompactItemize}

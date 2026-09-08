@@ -1,0 +1,1537 @@
+\hypertarget{p4est__connectivity_8h}{}\doxysection{src/p4est\+\_\+connectivity.h File Reference}
+\label{p4est__connectivity_8h}\index{src/p4est\_connectivity.h@{src/p4est\_connectivity.h}}
+
+
+The connectivity defines the coarse topology of the forest.  
+
+
+{\ttfamily \#include $<$sc\+\_\+io.\+h$>$}\newline
+{\ttfamily \#include $<$p4est\+\_\+base.\+h$>$}\newline
+Include dependency graph for p4est\+\_\+connectivity.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p4est__connectivity_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p4est__connectivity_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structp4est__connectivity}{p4est\+\_\+connectivity}}
+\begin{DoxyCompactList}\small\item\em This structure holds the 2D inter-\/tree connectivity information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp4est__connectivity__shared}{p4est\+\_\+connectivity\+\_\+shared}}
+\begin{DoxyCompactList}\small\item\em Management information for a connectivity shared by MPI3. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp4est__corner__transform__t}{p4est\+\_\+corner\+\_\+transform\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Generic interface for transformations between a tree and any of its corner. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp4est__corner__info__t}{p4est\+\_\+corner\+\_\+info\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Information about the neighbors of a corner. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp4est__neighbor__transform__t}{p4est\+\_\+neighbor\+\_\+transform\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Generic interface for transformations between a tree and any of its neighbors. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}\label{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}} 
+\#define \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4\+EST\+\_\+\+DIM}}~2
+\begin{DoxyCompactList}\small\item\em The spatial dimension. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a69ad217418caeaf00fa92f492ab0faaa}\label{p4est__connectivity_8h_a69ad217418caeaf00fa92f492ab0faaa}} 
+\#define \mbox{\hyperlink{p4est__connectivity_8h_a69ad217418caeaf00fa92f492ab0faaa}{P4\+EST\+\_\+\+FACES}}~(2 $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4\+EST\+\_\+\+DIM}})
+\begin{DoxyCompactList}\small\item\em The number of faces of a quadrant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}\label{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}} 
+\#define \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4\+EST\+\_\+\+CHILDREN}}~4
+\begin{DoxyCompactList}\small\item\em The number of children of a quadrant, also the number of corners. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a23079dfa254ae5df731633a54a8382f0}\label{p4est__connectivity_8h_a23079dfa254ae5df731633a54a8382f0}} 
+\#define \mbox{\hyperlink{p4est__connectivity_8h_a23079dfa254ae5df731633a54a8382f0}{P4\+EST\+\_\+\+HALF}}~(\mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4\+EST\+\_\+\+CHILDREN}} / 2)
+\begin{DoxyCompactList}\small\item\em The number of children/corners touching one face. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a6b0d01b9120eb484106f5a61d2531d8a}\label{p4est__connectivity_8h_a6b0d01b9120eb484106f5a61d2531d8a}} 
+\#define \mbox{\hyperlink{p4est__connectivity_8h_a6b0d01b9120eb484106f5a61d2531d8a}{P4\+EST\+\_\+\+INSUL}}~9
+\begin{DoxyCompactList}\small\item\em The size of insulation layer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_af1f900a89828a2d79936dd6a233d4e05}\label{p4est__connectivity_8h_af1f900a89828a2d79936dd6a233d4e05}} 
+\#define \mbox{\hyperlink{p4est__connectivity_8h_af1f900a89828a2d79936dd6a233d4e05}{P4\+EST\+\_\+\+ONLY\+\_\+\+P8\+\_\+\+LAND}}(x)
+\begin{DoxyCompactList}\small\item\em Only use logical AND term in 3D. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_ae0cf1d101cb8092f5b759a3d3058e7c4}\label{p4est__connectivity_8h_ae0cf1d101cb8092f5b759a3d3058e7c4}} 
+\#define \mbox{\hyperlink{p4est__connectivity_8h_ae0cf1d101cb8092f5b759a3d3058e7c4}{P4\+EST\+\_\+\+ONLY\+\_\+\+P8\+\_\+\+COMMA}}(x)
+\begin{DoxyCompactList}\small\item\em Only use comma and expression in 3D. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a5a89ed26f2aa4bf1a3f5887f51601fd3}\label{p4est__connectivity_8h_a5a89ed26f2aa4bf1a3f5887f51601fd3}} 
+\#define \mbox{\hyperlink{p4est__connectivity_8h_a5a89ed26f2aa4bf1a3f5887f51601fd3}{P4\+EST\+\_\+\+DIM\+\_\+\+POW}}(a)~((a) $\ast$ (a))
+\begin{DoxyCompactList}\small\item\em Exponentiate with dimension. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a393d277d386134e68170ce7fe865f087}\label{p4est__connectivity_8h_a393d277d386134e68170ce7fe865f087}} 
+\#define \mbox{\hyperlink{p4est__connectivity_8h_a393d277d386134e68170ce7fe865f087}{P4\+EST\+\_\+\+FTRANSFORM}}~9
+\begin{DoxyCompactList}\small\item\em Data size of face transformation encoding. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}\label{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}} 
+\#define \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4\+EST\+\_\+\+STRING}}~\char`\"{}p4est\char`\"{}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{structp4est}{p4est}} identification string \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{p4est__connectivity_8h_a9c9e2205fbde0f2c0c4db50b2d4715fa}{P4\+EST\+\_\+\+ONDISK\+\_\+\+FORMAT}}~0x2000009
+\begin{DoxyCompactList}\small\item\em The revision number of the \mbox{\hyperlink{structp4est}{p4est}} ondisk file format. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structp4est__connectivity}{p4est\+\_\+connectivity}} \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em This structure holds the 2D inter-\/tree connectivity information. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a05f97cbf6c3f9e74671a295338e4dbb0}\label{p4est__connectivity_8h_a05f97cbf6c3f9e74671a295338e4dbb0}} 
+typedef struct \mbox{\hyperlink{structp4est__connectivity__shared}{p4est\+\_\+connectivity\+\_\+shared}} \mbox{\hyperlink{p4est__connectivity_8h_a05f97cbf6c3f9e74671a295338e4dbb0}{p4est\+\_\+connectivity\+\_\+shared\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Management information for a connectivity shared by MPI3. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}} \{ \newline
+\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5a7243ef52a3b0bbf2097008354f95dd}{P4\+EST\+\_\+\+CONNECT\+\_\+\+SELF}} = 20
+, \newline
+\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa33499fc87edef5b1226ade261dd0d6e6}{P4\+EST\+\_\+\+CONNECT\+\_\+\+FACE}} = 21
+, \newline
+\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caae492c1d87e898d6ee21f86a1ef366a54}{P4\+EST\+\_\+\+CONNECT\+\_\+\+ALMOST}} = P4\+EST\+\_\+\+CONNECT\+\_\+\+FACE
+, \newline
+\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caaef4ad3651ba57ea3d6603ce64e5484a7}{P4\+EST\+\_\+\+CONNECT\+\_\+\+CORNER}} = 22
+, \newline
+\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4\+EST\+\_\+\+CONNECT\+\_\+\+FULL}} = P4\+EST\+\_\+\+CONNECT\+\_\+\+CORNER
+ \}
+\begin{DoxyCompactList}\small\item\em Characterize a type of adjacency. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{p4est__connectivity_8h_a73f145affc2cbd6773aa6aa28294f0c4}{p4est\+\_\+connectivity\+\_\+encode\+\_\+t}} \{ \newline
+{\bfseries P4\+EST\+\_\+\+CONN\+\_\+\+ENCODE\+\_\+\+NONE} = SC\+\_\+\+IO\+\_\+\+ENCODE\+\_\+\+NONE
+, \newline
+\mbox{\hyperlink{p4est__connectivity_8h_a73f145affc2cbd6773aa6aa28294f0c4ab310fe4f8c0e463da4a569abbd349835}{P4\+EST\+\_\+\+CONN\+\_\+\+ENCODE\+\_\+\+LAST}}
+ \}
+\begin{DoxyCompactList}\small\item\em Typedef for serialization method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{p4est__connectivity_8h_a8beb4a51865b36a35e8f7bfea12828cf}{p4est\+\_\+connect\+\_\+type\+\_\+int}} (\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}} btype)
+\begin{DoxyCompactList}\small\item\em Convert the p4est\+\_\+connect\+\_\+type\+\_\+t into a number. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_ab3fb1ebc8122f9e85b05a8105167385b}{p4est\+\_\+connect\+\_\+type\+\_\+string}} (\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}} btype)
+\begin{DoxyCompactList}\small\item\em Convert the p4est\+\_\+connect\+\_\+type\+\_\+t into a const string. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{p4est__connectivity_8h_a2812bedf1c6b08c269bf0145676a9d8c}{p4est\+\_\+connectivity\+\_\+memory\+\_\+used}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn)
+\begin{DoxyCompactList}\small\item\em Calculate memory usage of a connectivity structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_a6b9da620962d6722f5c3e19fe95bb3dd}{p4est\+\_\+neighbor\+\_\+transform\+\_\+coordinates}} (const \mbox{\hyperlink{structp4est__neighbor__transform__t}{p4est\+\_\+neighbor\+\_\+transform\+\_\+t}} $\ast$nt, const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} self\+\_\+coords\mbox{[}\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4\+EST\+\_\+\+DIM}}\mbox{]}, \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} neigh\+\_\+coords\mbox{[}\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4\+EST\+\_\+\+DIM}}\mbox{]})
+\begin{DoxyCompactList}\small\item\em Transform from self\textquotesingle{}s coordinate system to neighbor\textquotesingle{}s coordinate system. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_a0eeb2dd4083e1a49b823dd60b76071d2}{p4est\+\_\+neighbor\+\_\+transform\+\_\+coordinates\+\_\+reverse}} (const \mbox{\hyperlink{structp4est__neighbor__transform__t}{p4est\+\_\+neighbor\+\_\+transform\+\_\+t}} $\ast$nt, const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} neigh\+\_\+coords\mbox{[}\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4\+EST\+\_\+\+DIM}}\mbox{]}, \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} self\+\_\+coords\mbox{[}\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4\+EST\+\_\+\+DIM}}\mbox{]})
+\begin{DoxyCompactList}\small\item\em Transform from neighbor\textquotesingle{}s coordinate system to self\textquotesingle{}s coordinate system. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_a86d3ebe3c36e1851fc7e7a5682ae4bd6}{p4est\+\_\+connectivity\+\_\+get\+\_\+neighbor\+\_\+transforms}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} tree\+\_\+id, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}} boundary\+\_\+type, int boundary\+\_\+index, sc\+\_\+array\+\_\+t $\ast$neighbor\+\_\+transform\+\_\+array)
+\begin{DoxyCompactList}\small\item\em Fill an array with the neighbor transforms based on a specific boundary type. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_a35a4816ff10305a61d0e749ec9888a6d}{p4est\+\_\+connectivity\+\_\+coordinates\+\_\+canonicalize}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} treeid, const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} coords\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$treeid\+\_\+out, \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} coords\+\_\+out\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Determine the owning tree for a coordinate and transform it there. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__connectivity_8h_a2b4f27136668d5f078f183f87a1251b0}{p4est\+\_\+connectivity\+\_\+face\+\_\+neighbor\+\_\+face\+\_\+corner}} (int fc, int f, int nf, int o)
+\begin{DoxyCompactList}\small\item\em Transform a face corner across one of the adjacent faces into a neighbor tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__connectivity_8h_ae7db4deb7a8afaedc78e05f46f4d5d1c}{p4est\+\_\+connectivity\+\_\+face\+\_\+neighbor\+\_\+corner}} (int c, int f, int nf, int o)
+\begin{DoxyCompactList}\small\item\em Transform a corner across one of the adjacent faces into a neighbor tree. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_abb04eb195bf7aa29b8aeb26ebab07a81}{p4est\+\_\+connectivity\+\_\+new}} (\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} num\+\_\+vertices, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} num\+\_\+trees, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} num\+\_\+corners, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} num\+\_\+ctt)
+\begin{DoxyCompactList}\small\item\em Allocate a connectivity structure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_aee6fba5010f5af2b14833987b29dee23}{p4est\+\_\+connectivity\+\_\+new\+\_\+copy}} (\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} num\+\_\+vertices, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} num\+\_\+trees, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} num\+\_\+corners, const double $\ast$vertices, const \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$ttv, const \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$ttt, const int8\+\_\+t $\ast$ttf, const \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$ttc, const \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$coff, const \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$ctt, const int8\+\_\+t $\ast$ctc)
+\begin{DoxyCompactList}\small\item\em Allocate a connectivity structure and populate from constants. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a8d690261bbfdaf4cea16b7ecd7cd173f}{p4est\+\_\+connectivity\+\_\+copy}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$input, int copy\+\_\+attr)
+\begin{DoxyCompactList}\small\item\em Deep copy a connectivity structure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_ae75350b07743b53c0af735c7683660b4}{p4est\+\_\+connectivity\+\_\+bcast}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn\+\_\+in, int root, sc\+\_\+\+MPI\+\_\+\+Comm comm)
+\begin{DoxyCompactList}\small\item\em Broadcast a connectivity structure that exists only on one process to all. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_a208e613cae5e1bd3baffb587387b672c}{p4est\+\_\+connectivity\+\_\+destroy}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$connectivity)
+\begin{DoxyCompactList}\small\item\em Destroy a connectivity structure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a05f97cbf6c3f9e74671a295338e4dbb0}{p4est\+\_\+connectivity\+\_\+shared\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_afbf34f950b045fb2b4b29440da487660}{p4est\+\_\+connectivity\+\_\+share}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn\+\_\+in, int root, sc\+\_\+\+MPI\+\_\+\+Comm comm)
+\begin{DoxyCompactList}\small\item\em Take a connectivity on a single rank and share it with MPI3. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a05f97cbf6c3f9e74671a295338e4dbb0}{p4est\+\_\+connectivity\+\_\+shared\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a8368869b9ad93ec9b399ecbb2a795fb9}{p4est\+\_\+connectivity\+\_\+mission}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn\+\_\+in, int split\+\_\+type, sc\+\_\+\+MPI\+\_\+\+Comm world\+\_\+comm)
+\begin{DoxyCompactList}\small\item\em Take a connectivity on the world rank zero and share it globally. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_a428c9034659c00ed75b42e688d1b0447}{p4est\+\_\+connectivity\+\_\+shared\+\_\+destroy}} (\mbox{\hyperlink{p4est__connectivity_8h_a05f97cbf6c3f9e74671a295338e4dbb0}{p4est\+\_\+connectivity\+\_\+shared\+\_\+t}} $\ast$cshare)
+\begin{DoxyCompactList}\small\item\em Destroy a shared connectivity structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_a19c58ca9bbc3354e8b799d3945b135ce}{p4est\+\_\+connectivity\+\_\+set\+\_\+attr}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn, size\+\_\+t bytes\+\_\+per\+\_\+tree)
+\begin{DoxyCompactList}\small\item\em Allocate or free the attribute fields in a connectivity. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__connectivity_8h_a3780b75fcd2a5b578c6dc294c4e77a5e}{p4est\+\_\+connectivity\+\_\+is\+\_\+valid}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$connectivity)
+\begin{DoxyCompactList}\small\item\em Examine a connectivity structure. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__connectivity_8h_ac70a673cb5ff8e9cf7d15d29b2acb4bc}{p4est\+\_\+connectivity\+\_\+is\+\_\+equal}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn1, \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn2)
+\begin{DoxyCompactList}\small\item\em Check two connectivity structures for equality. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__connectivity_8h_afd14a6636a66ef65d31535256d7837df}{p4est\+\_\+connectivity\+\_\+sink}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn, sc\+\_\+io\+\_\+sink\+\_\+t $\ast$sink)
+\begin{DoxyCompactList}\small\item\em Write connectivity to a sink object. \end{DoxyCompactList}\item 
+sc\+\_\+array\+\_\+t $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a7fe4379cfff54f43d81787c4e70d8cd6}{p4est\+\_\+connectivity\+\_\+deflate}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn, \mbox{\hyperlink{p4est__connectivity_8h_a73f145affc2cbd6773aa6aa28294f0c4}{p4est\+\_\+connectivity\+\_\+encode\+\_\+t}} code)
+\begin{DoxyCompactList}\small\item\em Allocate memory and store the connectivity information there. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__connectivity_8h_af8be3fd9a6c96e3e2a710f9251952cf3}{p4est\+\_\+connectivity\+\_\+save}} (const char $\ast$filename, \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$connectivity)
+\begin{DoxyCompactList}\small\item\em Save a connectivity structure to disk. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a3ce37622b1ca56764a4b7ff053ae92f7}{p4est\+\_\+connectivity\+\_\+source}} (sc\+\_\+io\+\_\+source\+\_\+t $\ast$source)
+\begin{DoxyCompactList}\small\item\em Read connectivity from a source object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_aee7d9bc6c3b6a0fd1d9a6654752cf5df}{p4est\+\_\+connectivity\+\_\+inflate}} (sc\+\_\+array\+\_\+t $\ast$buffer)
+\begin{DoxyCompactList}\small\item\em Create new connectivity from a memory buffer. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a4d8d6cb8fd999dd939bdf1159d3e2723}{p4est\+\_\+connectivity\+\_\+load}} (const char $\ast$filename, size\+\_\+t $\ast$bytes)
+\begin{DoxyCompactList}\small\item\em Load a connectivity structure from disk. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_aab03936b137ccdc4fa7520e7e017fcf0}\label{p4est__connectivity_8h_aab03936b137ccdc4fa7520e7e017fcf0}} 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_aab03936b137ccdc4fa7520e7e017fcf0}{p4est\+\_\+connectivity\+\_\+new\+\_\+unitsquare}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for the unit square. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_ae65fe72b77b6f6c6825fc33efc101dab}\label{p4est__connectivity_8h_ae65fe72b77b6f6c6825fc33efc101dab}} 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_ae65fe72b77b6f6c6825fc33efc101dab}{p4est\+\_\+connectivity\+\_\+new\+\_\+periodic}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for an all-\/periodic unit square. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_ab1c7dab63222ade77162fa26559d69ed}{p4est\+\_\+connectivity\+\_\+new\+\_\+rotwrap}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for a periodic unit square. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a714aad2519a96504415fa1b90508e628}{p4est\+\_\+connectivity\+\_\+new\+\_\+circle}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for an donut-\/like circle. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_ab13722e52ffe4d776e93afb748aad2d1}{p4est\+\_\+connectivity\+\_\+new\+\_\+drop}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for a five-\/trees geometry with a hole. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a957521f425596c60fea07197ebb17b96}{p4est\+\_\+connectivity\+\_\+new\+\_\+twotrees}} (int l\+\_\+face, int r\+\_\+face, int orientation)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for two trees being rotated w.\+r.\+t. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_ad6fcb80b167783b7ab298755473c8177}\label{p4est__connectivity_8h_ad6fcb80b167783b7ab298755473c8177}} 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_ad6fcb80b167783b7ab298755473c8177}{p4est\+\_\+connectivity\+\_\+new\+\_\+corner}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for a three-\/tree mesh around a corner. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a7d7f9a633aac7e8e1bdca92519050b97}\label{p4est__connectivity_8h_a7d7f9a633aac7e8e1bdca92519050b97}} 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a7d7f9a633aac7e8e1bdca92519050b97}{p4est\+\_\+connectivity\+\_\+new\+\_\+pillow}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for two trees on top of each other. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a1e487dc9a4ba345cfffea3763eb822aa}\label{p4est__connectivity_8h_a1e487dc9a4ba345cfffea3763eb822aa}} 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a1e487dc9a4ba345cfffea3763eb822aa}{p4est\+\_\+connectivity\+\_\+new\+\_\+moebius}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for a five-\/tree moebius band. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a24d49c084093dd00d7a8b29c19541e63}\label{p4est__connectivity_8h_a24d49c084093dd00d7a8b29c19541e63}} 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a24d49c084093dd00d7a8b29c19541e63}{p4est\+\_\+connectivity\+\_\+new\+\_\+star}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for a six-\/tree star. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a3278473387b9dd1a1071d43578bc4ebc}{p4est\+\_\+connectivity\+\_\+new\+\_\+cubed}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for the six sides of a unit cube. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_ac39f17faf968325be2eb29e90b81d97d}{p4est\+\_\+connectivity\+\_\+new\+\_\+disk\+\_\+nonperiodic}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for a five-\/tree flat spherical disk. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a4bf17365036ea364005f0bdbb61779c7}{p4est\+\_\+connectivity\+\_\+new\+\_\+disk}} (int periodic\+\_\+a, int periodic\+\_\+b)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure for a five-\/tree flat spherical disk. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a22189ecf16818e0ad94f7be8070027d1}{p4est\+\_\+connectivity\+\_\+new\+\_\+icosahedron}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity for mapping the sphere using an icosahedron. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a8e063b0be16c74527b1c96a9457bac7b}{p4est\+\_\+connectivity\+\_\+new\+\_\+shell2d}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure that builds a 2d spherical shell. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a81d747e31a2ad5993dcb1a54f900e0e3}{p4est\+\_\+connectivity\+\_\+new\+\_\+disk2d}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure that maps a 2d disk. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_adfa3ba0b09eeff48878ac31ec658a679}{p4est\+\_\+connectivity\+\_\+new\+\_\+bowtie}} (void)
+\begin{DoxyCompactList}\small\item\em Create a connectivity structure that maps a 2d bowtie structure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_a524e3271ec0560d269403e5ec1c993dc}{p4est\+\_\+connectivity\+\_\+new\+\_\+brick}} (int mi, int ni, int periodic\+\_\+a, int periodic\+\_\+b)
+\begin{DoxyCompactList}\small\item\em A rectangular m by n array of trees with configurable periodicity. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_abe5efff8e02a5a42ae13360fbc5a43ea}{p4est\+\_\+connectivity\+\_\+new\+\_\+byname}} (const char $\ast$name)
+\begin{DoxyCompactList}\small\item\em Create connectivity structure from predefined catalogue. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_ac6f25e298421a9283dac60f3a9203601}{p4est\+\_\+connectivity\+\_\+refine}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn, int num\+\_\+per\+\_\+dim)
+\begin{DoxyCompactList}\small\item\em Uniformly refine a connectivity. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_aed57e0d5bcb53770f84510360317352f}{p4est\+\_\+expand\+\_\+face\+\_\+transform}} (int iface, int nface, int ftransform\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Fill an array with the axis combination of a face neighbor transform. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{p4est__connectivity_8h_a034bc4466026f7dbb011da6719a54094}{p4est\+\_\+find\+\_\+face\+\_\+transform}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$connectivity, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} itree, int iface, int ftransform\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Fill an array with the axis combinations of a tree neighbor transform. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_ab5c97685c49510a19d7ad1f2fb223594}{p4est\+\_\+find\+\_\+corner\+\_\+transform}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$connectivity, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} itree, int icorner, \mbox{\hyperlink{structp4est__corner__info__t}{p4est\+\_\+corner\+\_\+info\+\_\+t}} $\ast$ci)
+\begin{DoxyCompactList}\small\item\em Fills an array with information about corner neighbors. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_a179505bcdba35dacfc3a9ffb487ae539}{p4est\+\_\+connectivity\+\_\+complete}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn)
+\begin{DoxyCompactList}\small\item\em Internally connect a connectivity based on tree\+\_\+to\+\_\+vertex information. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_a709da81912bd413ccd8312009a5d2123}{p4est\+\_\+connectivity\+\_\+reduce}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn)
+\begin{DoxyCompactList}\small\item\em Removes corner information of a connectivity such that enough information is left to run p4est\+\_\+connectivity\+\_\+complete successfully. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_af7f9277c2d93f69e73fafd017b22971e}{p4est\+\_\+connectivity\+\_\+permute}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn, sc\+\_\+array\+\_\+t $\ast$perm, int is\+\_\+current\+\_\+to\+\_\+new)
+\begin{DoxyCompactList}\small\item\em p4est\+\_\+connectivity\+\_\+permute Given a permutation {\itshape perm} of the trees in a connectivity {\itshape conn}, permute the trees of {\itshape conn} in place and update {\itshape conn} to match. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_a6fa55094144a0dc59e8dfc16cf33caf0}{p4est\+\_\+connectivity\+\_\+reorder}} (sc\+\_\+\+MPI\+\_\+\+Comm comm, int k, \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}} ctype)
+\begin{DoxyCompactList}\small\item\em Reorder a connectivity using METIS. \end{DoxyCompactList}\item 
+sc\+\_\+array\+\_\+t $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_adf23471dc921f5fa6529232a2e79b7fd}{p4est\+\_\+connectivity\+\_\+reorder\+\_\+newid}} (sc\+\_\+\+MPI\+\_\+\+Comm comm, int k, \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}} ctype, sc\+\_\+array\+\_\+t $\ast$newid)
+\begin{DoxyCompactList}\small\item\em Reorder a connectivity using METIS. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__connectivity_8h_a781589bfc4b4d2d241237ffab50d32ae}{p4est\+\_\+connectivity\+\_\+join\+\_\+faces}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} tree\+\_\+left, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} tree\+\_\+right, int face\+\_\+left, int face\+\_\+right, int orientation)
+\begin{DoxyCompactList}\small\item\em p4est\+\_\+connectivity\+\_\+join\+\_\+faces This function takes an existing valid connectivity {\itshape conn} and modifies it by joining two tree faces that are currently boundary faces. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__connectivity_8h_a7c836f66ecd5acc201793deb6b1f60a2}{p4est\+\_\+connectivity\+\_\+is\+\_\+equivalent}} (\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn1, \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn2)
+\begin{DoxyCompactList}\small\item\em p4est\+\_\+connectivity\+\_\+is\+\_\+equivalent This function compares two connectivities for equivalence\+: it returns {\itshape true} if they are the same connectivity, or if they have the same topology. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__connectivity_8h_aaa47fb092e6375ceec196fdcb177c284}{p4est\+\_\+connectivity\+\_\+read\+\_\+inp\+\_\+stream}} (FILE $\ast$stream, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$num\+\_\+vertices, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$num\+\_\+trees, double $\ast$vertices, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$tree\+\_\+to\+\_\+vertex)
+\begin{DoxyCompactList}\small\item\em Read an ABAQUS input file from a file stream. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__connectivity_8h_af3521f9ecb47a49eefec6077fd97429c}{p4est\+\_\+connectivity\+\_\+read\+\_\+inp}} (const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em Create a \mbox{\hyperlink{structp4est}{p4est}} connectivity from an ABAQUS input file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a8dd5dcac8a82364c4a992206df076397}\label{p4est__connectivity_8h_a8dd5dcac8a82364c4a992206df076397}} 
+const int \mbox{\hyperlink{p4est__connectivity_8h_a8dd5dcac8a82364c4a992206df076397}{p4est\+\_\+volume\+\_\+point}}
+\begin{DoxyCompactList}\small\item\em Store the boundary point of the volume in \mbox{[}0, P4\+EST\+\_\+\+INSUL). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a60f8f254b328f3fe07a162ec13772455}\label{p4est__connectivity_8h_a60f8f254b328f3fe07a162ec13772455}} 
+const int \mbox{\hyperlink{p4est__connectivity_8h_a60f8f254b328f3fe07a162ec13772455}{p4est\+\_\+face\+\_\+corners}} \mbox{[}4\mbox{]}\mbox{[}2\mbox{]}
+\begin{DoxyCompactList}\small\item\em Store the corner numbers 0..4 for each tree face. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a3fb559ba7fa1850907749c196a259962}\label{p4est__connectivity_8h_a3fb559ba7fa1850907749c196a259962}} 
+const int \mbox{\hyperlink{p4est__connectivity_8h_a3fb559ba7fa1850907749c196a259962}{p4est\+\_\+face\+\_\+points}} \mbox{[}4\mbox{]}
+\begin{DoxyCompactList}\small\item\em For each face number, its boundary point in \mbox{[}0, P4\+EST\+\_\+\+INSUL). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_adf87c6725fdc743cfa148c05ac2d0ccf}\label{p4est__connectivity_8h_adf87c6725fdc743cfa148c05ac2d0ccf}} 
+const int \mbox{\hyperlink{p4est__connectivity_8h_adf87c6725fdc743cfa148c05ac2d0ccf}{p4est\+\_\+face\+\_\+dual}} \mbox{[}4\mbox{]}
+\begin{DoxyCompactList}\small\item\em Store the face numbers in the face neighbor\textquotesingle{}s system. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a50356a7d3d0632531a8eacc4872917ec}\label{p4est__connectivity_8h_a50356a7d3d0632531a8eacc4872917ec}} 
+const int \mbox{\hyperlink{p4est__connectivity_8h_a50356a7d3d0632531a8eacc4872917ec}{p4est\+\_\+corner\+\_\+faces}} \mbox{[}4\mbox{]}\mbox{[}2\mbox{]}
+\begin{DoxyCompactList}\small\item\em Store the face numbers 0..3 for each tree corner. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_abb02ad7b7d72173267db45f4bfba52c5}\label{p4est__connectivity_8h_abb02ad7b7d72173267db45f4bfba52c5}} 
+const int \mbox{\hyperlink{p4est__connectivity_8h_abb02ad7b7d72173267db45f4bfba52c5}{p4est\+\_\+corner\+\_\+points}} \mbox{[}4\mbox{]}
+\begin{DoxyCompactList}\small\item\em For each corner number, its boundary point in \mbox{[}0, P4\+EST\+\_\+\+INSUL). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_a61e52334d48c2dbfc3ba2a06ea170215}\label{p4est__connectivity_8h_a61e52334d48c2dbfc3ba2a06ea170215}} 
+const int \mbox{\hyperlink{p4est__connectivity_8h_a61e52334d48c2dbfc3ba2a06ea170215}{p4est\+\_\+corner\+\_\+face\+\_\+corners}} \mbox{[}4\mbox{]}\mbox{[}4\mbox{]}
+\begin{DoxyCompactList}\small\item\em Store the face corner numbers for the faces touching a tree corner. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__connectivity_8h_aebd767dd99bbf319de79dfc583dc80b1}\label{p4est__connectivity_8h_aebd767dd99bbf319de79dfc583dc80b1}} 
+const int \mbox{\hyperlink{p4est__connectivity_8h_aebd767dd99bbf319de79dfc583dc80b1}{p4est\+\_\+child\+\_\+corner\+\_\+faces}} \mbox{[}4\mbox{]}\mbox{[}4\mbox{]}
+\begin{DoxyCompactList}\small\item\em Store the faces for each child and corner, can be -\/1. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The connectivity defines the coarse topology of the forest. 
+
+A 2D forest consists of one or more quadtrees, each of which a logical square. Each tree has a local coordinate system, which defines the origin and the direction of its x-\/ and y-\/axes as well as the numbering of its faces and corners. Each tree may connect to any other tree (including itself) across any of its faces and/or corners, where the neighbor may be arbitrarily rotated and/or flipped. The \mbox{\hyperlink{structp4est__connectivity}{p4est\+\_\+connectivity}} data structure stores these connections.
+
+We impose the following requirement for consistency of \mbox{\hyperlink{p4est_8h_a6b603736cf5007b14755197a9c179a85}{p4est\+\_\+balance}} \+:
+
+\begin{DoxyNote}{Note}
+If a connectivity implies natural connections between trees that are corner neighbors without being face neighbors, these corners shall be encoded explicitly in the connectivity. Please see the documentation of \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} for the exact encoding convention.
+\end{DoxyNote}
+We provide various predefined connectivities by dedicated constructors, such as
+
+
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{p4est__connectivity_8h_aab03936b137ccdc4fa7520e7e017fcf0}{p4est\+\_\+connectivity\+\_\+new\+\_\+unitsquare}} for the unit square,
+\item \mbox{\hyperlink{p4est__connectivity_8h_ae65fe72b77b6f6c6825fc33efc101dab}{p4est\+\_\+connectivity\+\_\+new\+\_\+periodic}} for the periodic unit square,
+\item \mbox{\hyperlink{p4est__connectivity_8h_a524e3271ec0560d269403e5ec1c993dc}{p4est\+\_\+connectivity\+\_\+new\+\_\+brick}} for a rectangular grid of trees,
+\item \mbox{\hyperlink{p4est__connectivity_8h_a1e487dc9a4ba345cfffea3763eb822aa}{p4est\+\_\+connectivity\+\_\+new\+\_\+moebius}} for a nonoriented loop of trees. 
+\end{DoxyItemize}
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{p4est__connectivity_8h_a9c9e2205fbde0f2c0c4db50b2d4715fa}\label{p4est__connectivity_8h_a9c9e2205fbde0f2c0c4db50b2d4715fa}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!P4EST\_ONDISK\_FORMAT@{P4EST\_ONDISK\_FORMAT}}
+\index{P4EST\_ONDISK\_FORMAT@{P4EST\_ONDISK\_FORMAT}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{P4EST\_ONDISK\_FORMAT}{P4EST\_ONDISK\_FORMAT}}
+{\footnotesize\ttfamily \#define P4\+EST\+\_\+\+ONDISK\+\_\+\+FORMAT~0x2000009}
+
+
+
+The revision number of the \mbox{\hyperlink{structp4est}{p4est}} ondisk file format. 
+
+Increase this number whenever the on-\/disk format for \mbox{\hyperlink{structp4est__connectivity}{p4est\+\_\+connectivity}}, \mbox{\hyperlink{structp4est}{p4est}}, or any other 2D data structure changes. The format for reading and writing must be the same. 
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}\label{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_t@{p4est\_connectivity\_t}}
+\index{p4est\_connectivity\_t@{p4est\_connectivity\_t}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_t}{p4est\_connectivity\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structp4est__connectivity}{p4est\+\_\+connectivity}} \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}}
+
+
+
+This structure holds the 2D inter-\/tree connectivity information. 
+
+Identification of arbitrary faces and corners is possible.
+
+The arrays tree\+\_\+to\+\_\+$\ast$ are stored in z ordering. For corners the order wrt. yx is 00 01 10 11. For faces the order is given by the normal directions -\/x +x -\/y +y. Each face has a natural direction by increasing face corner number. Face connections are allocated \mbox{[}0\mbox{]}\mbox{[}0\mbox{]}..\mbox{[}0\mbox{]}\mbox{[}3\mbox{]}..\mbox{[}num\+\_\+trees-\/1\mbox{]}\mbox{[}0\mbox{]}..\mbox{[}num\+\_\+trees-\/1\mbox{]}\mbox{[}3\mbox{]}. If a face is on the physical boundary it must connect to itself.
+
+The values for tree\+\_\+to\+\_\+face are 0..7 where ttf \% 4 gives the face number and ttf / 4 the face orientation code. The orientation is 0 for faces that are mutually direction-\/aligned and 1 for faces that are running in opposite directions.
+
+It is valid to specify num\+\_\+vertices as 0. In this case vertices and tree\+\_\+to\+\_\+vertex are set to NULL. Otherwise the vertex coordinates are stored in the array vertices as \mbox{[}0\mbox{]}\mbox{[}0\mbox{]}..\mbox{[}0\mbox{]}\mbox{[}2\mbox{]}..\mbox{[}num\+\_\+vertices-\/1\mbox{]}\mbox{[}0\mbox{]}..\mbox{[}num\+\_\+vertices-\/1\mbox{]}\mbox{[}2\mbox{]}. Vertex coordinates are optional and not used for inferring topology.
+
+The corners are stored when they connect trees that are not already face neighbors at that specific corner. In this case tree\+\_\+to\+\_\+corner indexes into {\itshape ctt\+\_\+offset}. Otherwise the tree\+\_\+to\+\_\+corner entry must be -\/1 and this corner is ignored. If num\+\_\+corners == 0, tree\+\_\+to\+\_\+corner and corner\+\_\+to\+\_\+$\ast$ arrays are set to NULL.
+
+The arrays corner\+\_\+to\+\_\+$\ast$ store a variable number of entries per corner. For corner c these are at position \mbox{[}ctt\+\_\+offset\mbox{[}c\mbox{]}\mbox{]}..\mbox{[}ctt\+\_\+offset\mbox{[}c+1\mbox{]}-\/1\mbox{]}. Their number for corner c is ctt\+\_\+offset\mbox{[}c+1\mbox{]} -\/ ctt\+\_\+offset\mbox{[}c\mbox{]}. The entries encode all trees adjacent to corner c. The size of the corner\+\_\+to\+\_\+$\ast$ arrays is num\+\_\+ctt = ctt\+\_\+offset\mbox{[}num\+\_\+corners\mbox{]}.
+
+The $\ast$\+\_\+to\+\_\+attr arrays may have arbitrary contents defined by the user. We do not interpret them.
+
+\begin{DoxyNote}{Note}
+If a connectivity implies natural connections between trees that are corner neighbors without being face neighbors, these corners shall be encoded explicitly in the connectivity. 
+\end{DoxyNote}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}\label{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connect\_type\_t@{p4est\_connect\_type\_t}}
+\index{p4est\_connect\_type\_t@{p4est\_connect\_type\_t}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connect\_type\_t}{p4est\_connect\_type\_t}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}}}
+
+
+
+Characterize a type of adjacency. 
+
+Several functions involve relationships between neighboring trees and/or quadrants, and their behavior depends on how one defines adjacency\+: 1) entities are adjacent if they share a face, or 2) entities are adjacent if they share a face or corner. p4est\+\_\+connect\+\_\+type\+\_\+t is used to choose the desired behavior. This enum must fit into an int8\+\_\+t. \begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{P4EST\_CONNECT\_SELF@{P4EST\_CONNECT\_SELF}!p4est\_connectivity.h@{p4est\_connectivity.h}}\index{p4est\_connectivity.h@{p4est\_connectivity.h}!P4EST\_CONNECT\_SELF@{P4EST\_CONNECT\_SELF}}}\mbox{\Hypertarget{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5a7243ef52a3b0bbf2097008354f95dd}\label{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5a7243ef52a3b0bbf2097008354f95dd}} 
+P4\+EST\+\_\+\+CONNECT\+\_\+\+SELF&No balance whatsoever. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{P4EST\_CONNECT\_FACE@{P4EST\_CONNECT\_FACE}!p4est\_connectivity.h@{p4est\_connectivity.h}}\index{p4est\_connectivity.h@{p4est\_connectivity.h}!P4EST\_CONNECT\_FACE@{P4EST\_CONNECT\_FACE}}}\mbox{\Hypertarget{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa33499fc87edef5b1226ade261dd0d6e6}\label{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa33499fc87edef5b1226ade261dd0d6e6}} 
+P4\+EST\+\_\+\+CONNECT\+\_\+\+FACE&Balance across faces only. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{P4EST\_CONNECT\_ALMOST@{P4EST\_CONNECT\_ALMOST}!p4est\_connectivity.h@{p4est\_connectivity.h}}\index{p4est\_connectivity.h@{p4est\_connectivity.h}!P4EST\_CONNECT\_ALMOST@{P4EST\_CONNECT\_ALMOST}}}\mbox{\Hypertarget{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caae492c1d87e898d6ee21f86a1ef366a54}\label{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caae492c1d87e898d6ee21f86a1ef366a54}} 
+P4\+EST\+\_\+\+CONNECT\+\_\+\+ALMOST&= CORNER -\/ 1. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{P4EST\_CONNECT\_CORNER@{P4EST\_CONNECT\_CORNER}!p4est\_connectivity.h@{p4est\_connectivity.h}}\index{p4est\_connectivity.h@{p4est\_connectivity.h}!P4EST\_CONNECT\_CORNER@{P4EST\_CONNECT\_CORNER}}}\mbox{\Hypertarget{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caaef4ad3651ba57ea3d6603ce64e5484a7}\label{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caaef4ad3651ba57ea3d6603ce64e5484a7}} 
+P4\+EST\+\_\+\+CONNECT\+\_\+\+CORNER&Balance across faces and corners. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{P4EST\_CONNECT\_FULL@{P4EST\_CONNECT\_FULL}!p4est\_connectivity.h@{p4est\_connectivity.h}}\index{p4est\_connectivity.h@{p4est\_connectivity.h}!P4EST\_CONNECT\_FULL@{P4EST\_CONNECT\_FULL}}}\mbox{\Hypertarget{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}\label{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}} 
+P4\+EST\+\_\+\+CONNECT\+\_\+\+FULL&= CORNER. \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{p4est__connectivity_8h_a73f145affc2cbd6773aa6aa28294f0c4}\label{p4est__connectivity_8h_a73f145affc2cbd6773aa6aa28294f0c4}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_encode\_t@{p4est\_connectivity\_encode\_t}}
+\index{p4est\_connectivity\_encode\_t@{p4est\_connectivity\_encode\_t}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_encode\_t}{p4est\_connectivity\_encode\_t}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{p4est__connectivity_8h_a73f145affc2cbd6773aa6aa28294f0c4}{p4est\+\_\+connectivity\+\_\+encode\+\_\+t}}}
+
+
+
+Typedef for serialization method. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{P4EST\_CONN\_ENCODE\_LAST@{P4EST\_CONN\_ENCODE\_LAST}!p4est\_connectivity.h@{p4est\_connectivity.h}}\index{p4est\_connectivity.h@{p4est\_connectivity.h}!P4EST\_CONN\_ENCODE\_LAST@{P4EST\_CONN\_ENCODE\_LAST}}}\mbox{\Hypertarget{p4est__connectivity_8h_a73f145affc2cbd6773aa6aa28294f0c4ab310fe4f8c0e463da4a569abbd349835}\label{p4est__connectivity_8h_a73f145affc2cbd6773aa6aa28294f0c4ab310fe4f8c0e463da4a569abbd349835}} 
+P4\+EST\+\_\+\+CONN\+\_\+\+ENCODE\+\_\+\+LAST&Invalid entry to close the list. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p4est__connectivity_8h_a8beb4a51865b36a35e8f7bfea12828cf}\label{p4est__connectivity_8h_a8beb4a51865b36a35e8f7bfea12828cf}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connect\_type\_int@{p4est\_connect\_type\_int}}
+\index{p4est\_connect\_type\_int@{p4est\_connect\_type\_int}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connect\_type\_int()}{p4est\_connect\_type\_int()}}
+{\footnotesize\ttfamily int p4est\+\_\+connect\+\_\+type\+\_\+int (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}}}]{btype }\end{DoxyParamCaption})}
+
+
+
+Convert the p4est\+\_\+connect\+\_\+type\+\_\+t into a number. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em btype} & The balance type to convert. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns 1 or 2. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_ab3fb1ebc8122f9e85b05a8105167385b}\label{p4est__connectivity_8h_ab3fb1ebc8122f9e85b05a8105167385b}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connect\_type\_string@{p4est\_connect\_type\_string}}
+\index{p4est\_connect\_type\_string@{p4est\_connect\_type\_string}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connect\_type\_string()}{p4est\_connect\_type\_string()}}
+{\footnotesize\ttfamily const char$\ast$ p4est\+\_\+connect\+\_\+type\+\_\+string (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}}}]{btype }\end{DoxyParamCaption})}
+
+
+
+Convert the p4est\+\_\+connect\+\_\+type\+\_\+t into a const string. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em btype} & The balance type to convert. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a pointer to a constant string. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_ae75350b07743b53c0af735c7683660b4}\label{p4est__connectivity_8h_ae75350b07743b53c0af735c7683660b4}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_bcast@{p4est\_connectivity\_bcast}}
+\index{p4est\_connectivity\_bcast@{p4est\_connectivity\_bcast}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_bcast()}{p4est\_connectivity\_bcast()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+bcast (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn\+\_\+in,  }\item[{int}]{root,  }\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{comm }\end{DoxyParamCaption})}
+
+
+
+Broadcast a connectivity structure that exists only on one process to all. 
+
+On the other processors, it will be allocated using p4est\+\_\+connectivity\+\_\+new and received. This function is collective over the communicator passed.
+
+This function may be called with a communicator that contains only one rank of every shared memory node in preparation to subsequently calling \mbox{\hyperlink{p4est__connectivity_8h_afbf34f950b045fb2b4b29440da487660}{p4est\+\_\+connectivity\+\_\+share}} with an intranode communicator.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn\+\_\+in} & For the root process the connectivity to be broadcast, for the other processes it must be NULL. \\
+\hline
+\mbox{\texttt{ in}}  & {\em root} & The rank of the process that provides the connectivity. \\
+\hline
+\mbox{\texttt{ in}}  & {\em comm} & The MPI communicator. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+For the root process this is a pointer to {\itshape conn\+\_\+in}. Else, a pointer to a newly allocated connectivity structure with the same values as {\itshape conn\+\_\+in} on the root process. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a179505bcdba35dacfc3a9ffb487ae539}\label{p4est__connectivity_8h_a179505bcdba35dacfc3a9ffb487ae539}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_complete@{p4est\_connectivity\_complete}}
+\index{p4est\_connectivity\_complete@{p4est\_connectivity\_complete}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_complete()}{p4est\_connectivity\_complete()}}
+{\footnotesize\ttfamily void p4est\+\_\+connectivity\+\_\+complete (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn }\end{DoxyParamCaption})}
+
+
+
+Internally connect a connectivity based on tree\+\_\+to\+\_\+vertex information. 
+
+Periodicity that is not inherent in the list of vertices will be lost. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em conn} & The connectivity needs to have proper vertices and tree\+\_\+to\+\_\+vertex fields. The tree\+\_\+to\+\_\+tree and tree\+\_\+to\+\_\+face fields must be allocated and satisfy p4est\+\_\+connectivity\+\_\+is\+\_\+valid (conn) but will be overwritten. The corner fields will be freed and allocated anew. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_a35a4816ff10305a61d0e749ec9888a6d}\label{p4est__connectivity_8h_a35a4816ff10305a61d0e749ec9888a6d}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_coordinates\_canonicalize@{p4est\_connectivity\_coordinates\_canonicalize}}
+\index{p4est\_connectivity\_coordinates\_canonicalize@{p4est\_connectivity\_coordinates\_canonicalize}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_coordinates\_canonicalize()}{p4est\_connectivity\_coordinates\_canonicalize()}}
+{\footnotesize\ttfamily void p4est\+\_\+connectivity\+\_\+coordinates\+\_\+canonicalize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{treeid,  }\item[{const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{coords\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$}]{treeid\+\_\+out,  }\item[{\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{coords\+\_\+out\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Determine the owning tree for a coordinate and transform it there. 
+
+On a boundary between trees, different coordinate systems meet. A coordinate on a tree boundary face or corner generated from the perspective of a specific tree may be transformed into any other touching tree\textquotesingle{}s coordinate system and still refer to the same point in the mesh.
+
+To uniquely identify a coordinate, this function identifies the lowest numbered tree touching this coordinate and transforms the coordinates into that system. The result can be used e. g. in topology hash tables.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn} & A valid connectivity. \\
+\hline
+\mbox{\texttt{ in}}  & {\em treeid} & The original tree index for this coordinate tuple. \\
+\hline
+\mbox{\texttt{ in}}  & {\em coords} & A valid coordinate 2-\/tuple relative to {\itshape treeid}. \\
+\hline
+\mbox{\texttt{ out}}  & {\em treeid\+\_\+out} & The lowest tree index touching the coordinate. \\
+\hline
+\mbox{\texttt{ out}}  & {\em coords\+\_\+out} & The input coordinates, if necessary after transformation into the system of the lowest numbered tree, returned in {\itshape treeid\+\_\+out}. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{test_coordinates2_8c-example}{test\+\_\+coordinates2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_a8d690261bbfdaf4cea16b7ecd7cd173f}\label{p4est__connectivity_8h_a8d690261bbfdaf4cea16b7ecd7cd173f}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_copy@{p4est\_connectivity\_copy}}
+\index{p4est\_connectivity\_copy@{p4est\_connectivity\_copy}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_copy()}{p4est\_connectivity\_copy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+copy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{input,  }\item[{int}]{copy\+\_\+attr }\end{DoxyParamCaption})}
+
+
+
+Deep copy a connectivity structure. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & Valid connectivity. \\
+\hline
+\mbox{\texttt{ in}}  & {\em copy\+\_\+attr} & If true, we copy the tree attribute data. Otherwise, the result has empty attributes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A connectivity equal to the first one except, depending on {\itshape copy\+\_\+attry}, for its attributes. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a7fe4379cfff54f43d81787c4e70d8cd6}\label{p4est__connectivity_8h_a7fe4379cfff54f43d81787c4e70d8cd6}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_deflate@{p4est\_connectivity\_deflate}}
+\index{p4est\_connectivity\_deflate@{p4est\_connectivity\_deflate}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_deflate()}{p4est\_connectivity\_deflate()}}
+{\footnotesize\ttfamily sc\+\_\+array\+\_\+t$\ast$ p4est\+\_\+connectivity\+\_\+deflate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_a73f145affc2cbd6773aa6aa28294f0c4}{p4est\+\_\+connectivity\+\_\+encode\+\_\+t}}}]{code }\end{DoxyParamCaption})}
+
+
+
+Allocate memory and store the connectivity information there. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn} & The connectivity structure to be exported to memory. \\
+\hline
+\mbox{\texttt{ in}}  & {\em code} & Encoding and compression method for serialization. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Newly created array that contains the information. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a208e613cae5e1bd3baffb587387b672c}\label{p4est__connectivity_8h_a208e613cae5e1bd3baffb587387b672c}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_destroy@{p4est\_connectivity\_destroy}}
+\index{p4est\_connectivity\_destroy@{p4est\_connectivity\_destroy}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_destroy()}{p4est\_connectivity\_destroy()}}
+{\footnotesize\ttfamily void p4est\+\_\+connectivity\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{connectivity }\end{DoxyParamCaption})}
+
+
+
+Destroy a connectivity structure. 
+
+Also destroy all attributes. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{particles_2particles2_8c-example}{particles/particles2.\+c}}, \mbox{\hyperlink{points_2generate_points2_8c-example}{points/generate\+\_\+points2.\+c}}, \mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}, \mbox{\hyperlink{spheres_2spheres2_8c-example}{spheres/spheres2.\+c}}, \mbox{\hyperlink{steps_2p4est_step1_8c-example}{steps/p4est\+\_\+step1.\+c}}, \mbox{\hyperlink{steps_2p4est_step3_8c-example}{steps/p4est\+\_\+step3.\+c}}, \mbox{\hyperlink{test_coordinates2_8c-example}{test\+\_\+coordinates2.\+c}}, \mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}, and \mbox{\hyperlink{userdata_2userdata2_8c-example}{userdata/userdata2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_ae7db4deb7a8afaedc78e05f46f4d5d1c}\label{p4est__connectivity_8h_ae7db4deb7a8afaedc78e05f46f4d5d1c}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_face\_neighbor\_corner@{p4est\_connectivity\_face\_neighbor\_corner}}
+\index{p4est\_connectivity\_face\_neighbor\_corner@{p4est\_connectivity\_face\_neighbor\_corner}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_face\_neighbor\_corner()}{p4est\_connectivity\_face\_neighbor\_corner()}}
+{\footnotesize\ttfamily int p4est\+\_\+connectivity\+\_\+face\+\_\+neighbor\+\_\+corner (\begin{DoxyParamCaption}\item[{int}]{c,  }\item[{int}]{f,  }\item[{int}]{nf,  }\item[{int}]{o }\end{DoxyParamCaption})}
+
+
+
+Transform a corner across one of the adjacent faces into a neighbor tree. 
+
+This version expects the neighbor face and orientation separately. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em c} & A corner number in 0..3. \\
+\hline
+\mbox{\texttt{ in}}  & {\em f} & A face number that touches the corner {\itshape c}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em nf} & A neighbor face that is on the other side of {\itshape f}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em o} & The orientation between tree boundary faces {\itshape f} and {\itshape nf}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of the corner seen from the neighbor tree. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a2b4f27136668d5f078f183f87a1251b0}\label{p4est__connectivity_8h_a2b4f27136668d5f078f183f87a1251b0}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_face\_neighbor\_face\_corner@{p4est\_connectivity\_face\_neighbor\_face\_corner}}
+\index{p4est\_connectivity\_face\_neighbor\_face\_corner@{p4est\_connectivity\_face\_neighbor\_face\_corner}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_face\_neighbor\_face\_corner()}{p4est\_connectivity\_face\_neighbor\_face\_corner()}}
+{\footnotesize\ttfamily int p4est\+\_\+connectivity\+\_\+face\+\_\+neighbor\+\_\+face\+\_\+corner (\begin{DoxyParamCaption}\item[{int}]{fc,  }\item[{int}]{f,  }\item[{int}]{nf,  }\item[{int}]{o }\end{DoxyParamCaption})}
+
+
+
+Transform a face corner across one of the adjacent faces into a neighbor tree. 
+
+This version expects the neighbor face and orientation separately. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em fc} & A face corner number in 0..1. \\
+\hline
+\mbox{\texttt{ in}}  & {\em f} & A face that the face corner number {\itshape fc} is relative to. \\
+\hline
+\mbox{\texttt{ in}}  & {\em nf} & A neighbor face that is on the other side of {\itshape f}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em o} & The orientation between tree boundary faces {\itshape f} and {\itshape nf}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The face corner number relative to the neighbor\textquotesingle{}s face. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a86d3ebe3c36e1851fc7e7a5682ae4bd6}\label{p4est__connectivity_8h_a86d3ebe3c36e1851fc7e7a5682ae4bd6}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_get\_neighbor\_transforms@{p4est\_connectivity\_get\_neighbor\_transforms}}
+\index{p4est\_connectivity\_get\_neighbor\_transforms@{p4est\_connectivity\_get\_neighbor\_transforms}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_get\_neighbor\_transforms()}{p4est\_connectivity\_get\_neighbor\_transforms()}}
+{\footnotesize\ttfamily void p4est\+\_\+connectivity\+\_\+get\+\_\+neighbor\+\_\+transforms (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{tree\+\_\+id,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}}}]{boundary\+\_\+type,  }\item[{int}]{boundary\+\_\+index,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{neighbor\+\_\+transform\+\_\+array }\end{DoxyParamCaption})}
+
+
+
+Fill an array with the neighbor transforms based on a specific boundary type. 
+
+This function generalizes all other inter-\/tree transformation objects
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn} & Connectivity structure. \\
+\hline
+\mbox{\texttt{ in}}  & {\em tree\+\_\+id} & The number of the tree. \\
+\hline
+\mbox{\texttt{ in}}  & {\em boundary\+\_\+type} & The type of the boundary connection (self, face, corner). \\
+\hline
+\mbox{\texttt{ in}}  & {\em boundary\+\_\+index} & The index of the boundary. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em neighbor\+\_\+transform\+\_\+array} & Array of the neighbor transforms. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_aee7d9bc6c3b6a0fd1d9a6654752cf5df}\label{p4est__connectivity_8h_aee7d9bc6c3b6a0fd1d9a6654752cf5df}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_inflate@{p4est\_connectivity\_inflate}}
+\index{p4est\_connectivity\_inflate@{p4est\_connectivity\_inflate}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_inflate()}{p4est\_connectivity\_inflate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+inflate (\begin{DoxyParamCaption}\item[{sc\+\_\+array\+\_\+t $\ast$}]{buffer }\end{DoxyParamCaption})}
+
+
+
+Create new connectivity from a memory buffer. 
+
+This function aborts on malloc errors. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em buffer} & The connectivity is created from this memory buffer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The newly created connectivity, or NULL on format error of the buffered connectivity data. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_ac70a673cb5ff8e9cf7d15d29b2acb4bc}\label{p4est__connectivity_8h_ac70a673cb5ff8e9cf7d15d29b2acb4bc}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_is\_equal@{p4est\_connectivity\_is\_equal}}
+\index{p4est\_connectivity\_is\_equal@{p4est\_connectivity\_is\_equal}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_is\_equal()}{p4est\_connectivity\_is\_equal()}}
+{\footnotesize\ttfamily int p4est\+\_\+connectivity\+\_\+is\+\_\+equal (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn1,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn2 }\end{DoxyParamCaption})}
+
+
+
+Check two connectivity structures for equality. 
+
+\begin{DoxyReturn}{Returns}
+Returns true if structures are equal, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a7c836f66ecd5acc201793deb6b1f60a2}\label{p4est__connectivity_8h_a7c836f66ecd5acc201793deb6b1f60a2}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_is\_equivalent@{p4est\_connectivity\_is\_equivalent}}
+\index{p4est\_connectivity\_is\_equivalent@{p4est\_connectivity\_is\_equivalent}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_is\_equivalent()}{p4est\_connectivity\_is\_equivalent()}}
+{\footnotesize\ttfamily int p4est\+\_\+connectivity\+\_\+is\+\_\+equivalent (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn1,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn2 }\end{DoxyParamCaption})}
+
+
+
+p4est\+\_\+connectivity\+\_\+is\+\_\+equivalent This function compares two connectivities for equivalence\+: it returns {\itshape true} if they are the same connectivity, or if they have the same topology. 
+
+The definition of topological sameness is strict\+: there is no attempt made to determine whether permutation and/or rotation of the trees makes the connectivities equivalent.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn1} & a valid connectivity \\
+\hline
+\mbox{\texttt{ out}}  & {\em conn2} & a valid connectivity \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_a3780b75fcd2a5b578c6dc294c4e77a5e}\label{p4est__connectivity_8h_a3780b75fcd2a5b578c6dc294c4e77a5e}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_is\_valid@{p4est\_connectivity\_is\_valid}}
+\index{p4est\_connectivity\_is\_valid@{p4est\_connectivity\_is\_valid}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_is\_valid()}{p4est\_connectivity\_is\_valid()}}
+{\footnotesize\ttfamily int p4est\+\_\+connectivity\+\_\+is\+\_\+valid (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{connectivity }\end{DoxyParamCaption})}
+
+
+
+Examine a connectivity structure. 
+
+\begin{DoxyReturn}{Returns}
+Returns true if structure is valid, false otherwise. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{test_coordinates2_8c-example}{test\+\_\+coordinates2.\+c}}, and \mbox{\hyperlink{userdata_2userdata_run2_8c-example}{userdata/userdata\+\_\+run2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_a781589bfc4b4d2d241237ffab50d32ae}\label{p4est__connectivity_8h_a781589bfc4b4d2d241237ffab50d32ae}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_join\_faces@{p4est\_connectivity\_join\_faces}}
+\index{p4est\_connectivity\_join\_faces@{p4est\_connectivity\_join\_faces}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_join\_faces()}{p4est\_connectivity\_join\_faces()}}
+{\footnotesize\ttfamily void p4est\+\_\+connectivity\+\_\+join\+\_\+faces (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{tree\+\_\+left,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{tree\+\_\+right,  }\item[{int}]{face\+\_\+left,  }\item[{int}]{face\+\_\+right,  }\item[{int}]{orientation }\end{DoxyParamCaption})}
+
+
+
+p4est\+\_\+connectivity\+\_\+join\+\_\+faces This function takes an existing valid connectivity {\itshape conn} and modifies it by joining two tree faces that are currently boundary faces. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em conn} & connectivity that will be altered. \\
+\hline
+\mbox{\texttt{ in}}  & {\em tree\+\_\+left} & tree that will be on the left side of the joined faces. \\
+\hline
+\mbox{\texttt{ in}}  & {\em tree\+\_\+right} & tree that will be on the right side of the joined faces. \\
+\hline
+\mbox{\texttt{ in}}  & {\em face\+\_\+left} & face of {\itshape tree\+\_\+left} that will be joined. \\
+\hline
+\mbox{\texttt{ in}}  & {\em face\+\_\+right} & face of {\itshape tree\+\_\+right} that will be joined. \\
+\hline
+\mbox{\texttt{ in}}  & {\em orientation} & the orientation of {\itshape face\+\_\+left} and {\itshape face\+\_\+right} once joined (see the description of p4est\+\_\+connectivity\+\_\+t to understand orientation). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_a4d8d6cb8fd999dd939bdf1159d3e2723}\label{p4est__connectivity_8h_a4d8d6cb8fd999dd939bdf1159d3e2723}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_load@{p4est\_connectivity\_load}}
+\index{p4est\_connectivity\_load@{p4est\_connectivity\_load}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_load()}{p4est\_connectivity\_load()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+load (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename,  }\item[{size\+\_\+t $\ast$}]{bytes }\end{DoxyParamCaption})}
+
+
+
+Load a connectivity structure from disk. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em filename} & Name of the file to read. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em bytes} & Size in bytes of connectivity on disk or NULL. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns valid connectivity, or NULL on file error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a2812bedf1c6b08c269bf0145676a9d8c}\label{p4est__connectivity_8h_a2812bedf1c6b08c269bf0145676a9d8c}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_memory\_used@{p4est\_connectivity\_memory\_used}}
+\index{p4est\_connectivity\_memory\_used@{p4est\_connectivity\_memory\_used}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_memory\_used()}{p4est\_connectivity\_memory\_used()}}
+{\footnotesize\ttfamily size\+\_\+t p4est\+\_\+connectivity\+\_\+memory\+\_\+used (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn }\end{DoxyParamCaption})}
+
+
+
+Calculate memory usage of a connectivity structure. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn} & Connectivity structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Memory used in bytes. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a8368869b9ad93ec9b399ecbb2a795fb9}\label{p4est__connectivity_8h_a8368869b9ad93ec9b399ecbb2a795fb9}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_mission@{p4est\_connectivity\_mission}}
+\index{p4est\_connectivity\_mission@{p4est\_connectivity\_mission}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_mission()}{p4est\_connectivity\_mission()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a05f97cbf6c3f9e74671a295338e4dbb0}{p4est\+\_\+connectivity\+\_\+shared\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+mission (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn\+\_\+in,  }\item[{int}]{split\+\_\+type,  }\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{world\+\_\+comm }\end{DoxyParamCaption})}
+
+
+
+Take a connectivity on the world rank zero and share it globally. 
+
+To this end, split the input communicator by node and broadcast the input connectivity among the first ranks of every node. In a second step, share it on each node from the first to all ranks.
+
+By the design of our wrappers for communicator splitting, this function also works with MPI but without type splitting available, and without MPI.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn\+\_\+in} & Valid connectivity. We take ownership of it. It must be accessed anymore after returning. \\
+\hline
+\mbox{\texttt{ in}}  & {\em split\+\_\+type} & Should be sc\+\_\+\+MPI\+\_\+\+COMM\+\_\+\+TYPE\+\_\+\+SHARED or an implementation option such as to use the socket as relevant shared memory domain. \\
+\hline
+\mbox{\texttt{ in}}  & {\em world\+\_\+comm} & Communicator encompassing all ranks on one or more shared memory nodes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Shared connectivity. Free with \mbox{\hyperlink{p4est__connectivity_8h_a428c9034659c00ed75b42e688d1b0447}{p4est\+\_\+connectivity\+\_\+shared\+\_\+destroy}}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_abb04eb195bf7aa29b8aeb26ebab07a81}\label{p4est__connectivity_8h_abb04eb195bf7aa29b8aeb26ebab07a81}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new@{p4est\_connectivity\_new}}
+\index{p4est\_connectivity\_new@{p4est\_connectivity\_new}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new()}{p4est\_connectivity\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{num\+\_\+vertices,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{num\+\_\+trees,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{num\+\_\+corners,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{num\+\_\+ctt }\end{DoxyParamCaption})}
+
+
+
+Allocate a connectivity structure. 
+
+The attribute fields are initialized to NULL. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em num\+\_\+vertices} & Number of total vertices (i.\+e. geometric points). \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+trees} & Number of trees in the forest. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+corners} & Number of tree-\/connecting corners. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+ctt} & Number of total trees in corner\+\_\+to\+\_\+tree array. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A connectivity structure with allocated arrays. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_adfa3ba0b09eeff48878ac31ec658a679}\label{p4est__connectivity_8h_adfa3ba0b09eeff48878ac31ec658a679}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_bowtie@{p4est\_connectivity\_new\_bowtie}}
+\index{p4est\_connectivity\_new\_bowtie@{p4est\_connectivity\_new\_bowtie}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_bowtie()}{p4est\_connectivity\_new\_bowtie()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+bowtie (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Create a connectivity structure that maps a 2d bowtie structure. 
+
+The 2 trees are connected by a corner connection at node A3 (0, 0). the nodes are given as\+: \begin{DoxyVerb}   A00   A01
+  /   \ /   \
+A02   A03   A04
+  \   / \   /
+   A05   A06
+\end{DoxyVerb}
+ \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_a524e3271ec0560d269403e5ec1c993dc}\label{p4est__connectivity_8h_a524e3271ec0560d269403e5ec1c993dc}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_brick@{p4est\_connectivity\_new\_brick}}
+\index{p4est\_connectivity\_new\_brick@{p4est\_connectivity\_new\_brick}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_brick()}{p4est\_connectivity\_new\_brick()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+brick (\begin{DoxyParamCaption}\item[{int}]{mi,  }\item[{int}]{ni,  }\item[{int}]{periodic\+\_\+a,  }\item[{int}]{periodic\+\_\+b }\end{DoxyParamCaption})}
+
+
+
+A rectangular m by n array of trees with configurable periodicity. 
+
+The brick is periodic in x and y if periodic\+\_\+a and periodic\+\_\+b are true, respectively. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{particles_2particles2_8c-example}{particles/particles2.\+c}}, \mbox{\hyperlink{points_2generate_points2_8c-example}{points/generate\+\_\+points2.\+c}}, \mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}, and \mbox{\hyperlink{userdata_2userdata2_8c-example}{userdata/userdata2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_abe5efff8e02a5a42ae13360fbc5a43ea}\label{p4est__connectivity_8h_abe5efff8e02a5a42ae13360fbc5a43ea}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_byname@{p4est\_connectivity\_new\_byname}}
+\index{p4est\_connectivity\_new\_byname@{p4est\_connectivity\_new\_byname}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_byname()}{p4est\_connectivity\_new\_byname()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+byname (\begin{DoxyParamCaption}\item[{const char $\ast$}]{name }\end{DoxyParamCaption})}
+
+
+
+Create connectivity structure from predefined catalogue. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em name} & Invokes connectivity\+\_\+new\+\_\+$\ast$ function. brick23 brick (2, 3, 0, 0) corner corner cubed cubed disk disk moebius moebius periodic periodic pillow pillow rotwrap rotwrap star star unit unitsquare \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An initialized connectivity if name is defined, NULL else. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a714aad2519a96504415fa1b90508e628}\label{p4est__connectivity_8h_a714aad2519a96504415fa1b90508e628}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_circle@{p4est\_connectivity\_new\_circle}}
+\index{p4est\_connectivity\_new\_circle@{p4est\_connectivity\_new\_circle}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_circle()}{p4est\_connectivity\_new\_circle()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+circle (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Create a connectivity structure for an donut-\/like circle. 
+
+The circle consists of 6 trees connecting each other by their faces. The trees are laid out as a hexagon between \mbox{[}-\/2, 2\mbox{]} in the y direction and \mbox{[}-\/sqrt(3), sqrt(3)\mbox{]} in the x direction. The hexagon has flat sides along the y direction and pointy ends in x. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_aee6fba5010f5af2b14833987b29dee23}\label{p4est__connectivity_8h_aee6fba5010f5af2b14833987b29dee23}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_copy@{p4est\_connectivity\_new\_copy}}
+\index{p4est\_connectivity\_new\_copy@{p4est\_connectivity\_new\_copy}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_copy()}{p4est\_connectivity\_new\_copy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+copy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{num\+\_\+vertices,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{num\+\_\+trees,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{num\+\_\+corners,  }\item[{const double $\ast$}]{vertices,  }\item[{const \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$}]{ttv,  }\item[{const \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$}]{ttt,  }\item[{const int8\+\_\+t $\ast$}]{ttf,  }\item[{const \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$}]{ttc,  }\item[{const \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$}]{coff,  }\item[{const \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$}]{ctt,  }\item[{const int8\+\_\+t $\ast$}]{ctc }\end{DoxyParamCaption})}
+
+
+
+Allocate a connectivity structure and populate from constants. 
+
+The attribute fields are initialized to NULL. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em num\+\_\+vertices} & Number of total vertices (i.\+e. geometric points). \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+trees} & Number of trees in the forest. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+corners} & Number of tree-\/connecting corners. \\
+\hline
+\mbox{\texttt{ in}}  & {\em vertices} & Coordinates of the vertices of the trees. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ttv} & The tree-\/to-\/vertex array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ttt} & The tree-\/to-\/tree array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ttf} & The tree-\/to-\/face array (int8\+\_\+t). \\
+\hline
+\mbox{\texttt{ in}}  & {\em ttc} & The tree-\/to-\/corner array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em coff} & Corner-\/to-\/tree offsets (num\+\_\+corners + 1 values). This must always be non-\/\+NULL; in trivial cases it is just a pointer to a p4est\+\_\+topix value of 0. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ctt} & The corner-\/to-\/tree array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ctc} & The corner-\/to-\/corner array. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The connectivity is checked for validity. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a3278473387b9dd1a1071d43578bc4ebc}\label{p4est__connectivity_8h_a3278473387b9dd1a1071d43578bc4ebc}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_cubed@{p4est\_connectivity\_new\_cubed}}
+\index{p4est\_connectivity\_new\_cubed@{p4est\_connectivity\_new\_cubed}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_cubed()}{p4est\_connectivity\_new\_cubed()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+cubed (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Create a connectivity structure for the six sides of a unit cube. 
+
+The ordering of the trees is as follows\+: \begin{DoxyVerb}0 1
+  2 3 <-- 3: axis-aligned top side
+    4 5
+\end{DoxyVerb}
+ This choice has been made for maximum symmetry (see tree\+\_\+to\+\_\+$\ast$ in .c file). \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_a4bf17365036ea364005f0bdbb61779c7}\label{p4est__connectivity_8h_a4bf17365036ea364005f0bdbb61779c7}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_disk@{p4est\_connectivity\_new\_disk}}
+\index{p4est\_connectivity\_new\_disk@{p4est\_connectivity\_new\_disk}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_disk()}{p4est\_connectivity\_new\_disk()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+disk (\begin{DoxyParamCaption}\item[{int}]{periodic\+\_\+a,  }\item[{int}]{periodic\+\_\+b }\end{DoxyParamCaption})}
+
+
+
+Create a connectivity structure for a five-\/tree flat spherical disk. 
+
+This disk can just as well be used as a square to test non-\/\+Cartesian maps. Without any mapping this connectivity covers the square \mbox{[}-\/3, 3\mbox{]}$\ast$$\ast$2. \begin{DoxyNote}{Note}
+The API of this function has changed to accept two arguments. You can query the \mbox{\hyperlink{p4est__base_8h_a16ed4740c3269672ea00dedec0be38cc}{P4\+EST\+\_\+\+CONN\+\_\+\+DISK\+\_\+\+PERIODIC}} to check whether the new version with the argument is in effect.
+\end{DoxyNote}
+The ordering of the trees is as follows\+: \begin{DoxyVerb}  4
+1 2 3
+  0
+\end{DoxyVerb}
+ The outside x faces may be identified topologically. The outside y faces may be identified topologically. Both identifications may be specified simultaneously. The general shape and periodicity are the same as those obtained with \mbox{\hyperlink{p4est__connectivity_8h_a524e3271ec0560d269403e5ec1c993dc}{p4est\+\_\+connectivity\+\_\+new\+\_\+brick}} (1, 1, periodic\+\_\+a, periodic\+\_\+b).
+
+When setting {\itshape periodic\+\_\+a} and {\itshape periodic\+\_\+b} to false, the result is the same as that of \mbox{\hyperlink{p4est__connectivity_8h_ac39f17faf968325be2eb29e90b81d97d}{p4est\+\_\+connectivity\+\_\+new\+\_\+disk\+\_\+nonperiodic}}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em periodic\+\_\+a} & Bool to make disk periodic in x direction. \\
+\hline
+\mbox{\texttt{ in}}  & {\em periodic\+\_\+b} & Bool to make disk periodic in y direction. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Initialized and usable connectivity. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_a81d747e31a2ad5993dcb1a54f900e0e3}\label{p4est__connectivity_8h_a81d747e31a2ad5993dcb1a54f900e0e3}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_disk2d@{p4est\_connectivity\_new\_disk2d}}
+\index{p4est\_connectivity\_new\_disk2d@{p4est\_connectivity\_new\_disk2d}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_disk2d()}{p4est\_connectivity\_new\_disk2d()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+disk2d (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Create a connectivity structure that maps a 2d disk. 
+
+This is a 5 trees connectivity meant to be used together with \mbox{\hyperlink{p4est__geometry_8h_a555fa98e3fa206cb375d4b61454e815e}{p4est\+\_\+geometry\+\_\+new\+\_\+disk2d}} to map the disk. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_ac39f17faf968325be2eb29e90b81d97d}\label{p4est__connectivity_8h_ac39f17faf968325be2eb29e90b81d97d}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_disk\_nonperiodic@{p4est\_connectivity\_new\_disk\_nonperiodic}}
+\index{p4est\_connectivity\_new\_disk\_nonperiodic@{p4est\_connectivity\_new\_disk\_nonperiodic}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_disk\_nonperiodic()}{p4est\_connectivity\_new\_disk\_nonperiodic()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+disk\+\_\+nonperiodic (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Create a connectivity structure for a five-\/tree flat spherical disk. 
+
+This disk can just as well be used as a square to test non-\/\+Cartesian maps. Without any mapping this connectivity covers the square \mbox{[}-\/3, 3\mbox{]}$\ast$$\ast$2. \begin{DoxyReturn}{Returns}
+Initialized and usable connectivity. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{userdata_2userdata2_8c-example}{userdata/userdata2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_ab13722e52ffe4d776e93afb748aad2d1}\label{p4est__connectivity_8h_ab13722e52ffe4d776e93afb748aad2d1}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_drop@{p4est\_connectivity\_new\_drop}}
+\index{p4est\_connectivity\_new\_drop@{p4est\_connectivity\_new\_drop}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_drop()}{p4est\_connectivity\_new\_drop()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+drop (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Create a connectivity structure for a five-\/trees geometry with a hole. 
+
+The geometry covers the square \mbox{[}0, 3\mbox{]}$\ast$$\ast$2, where the hole is \mbox{[}1, 2\mbox{]}$\ast$$\ast$2. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_a22189ecf16818e0ad94f7be8070027d1}\label{p4est__connectivity_8h_a22189ecf16818e0ad94f7be8070027d1}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_icosahedron@{p4est\_connectivity\_new\_icosahedron}}
+\index{p4est\_connectivity\_new\_icosahedron@{p4est\_connectivity\_new\_icosahedron}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_icosahedron()}{p4est\_connectivity\_new\_icosahedron()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+icosahedron (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Create a connectivity for mapping the sphere using an icosahedron. 
+
+The regular icosadron is a polyhedron with 20 faces, each of which is an equilateral triangle. To build the \mbox{\hyperlink{structp4est}{p4est}} connectivity, we group faces 2 by 2 to from 10 quadrangles, and thus 10 trees.
+
+This connectivity is meant to be used together with \mbox{\hyperlink{p4est__geometry_8h_af3489702c0cf88298117da44463c2193}{p4est\+\_\+geometry\+\_\+new\+\_\+icosahedron}} to map the sphere.
+
+The flat connectivity looks like that. Vextex numbering\+: \begin{DoxyVerb}   A00   A01   A02   A03   A04
+  /   \ /   \ /   \ /   \ /   \
+A05---A06---A07---A08---A09---A10
+  \   / \   / \   / \   / \   / \
+   A11---A12---A13---A14---A15---A16
+     \  /  \  /  \  /  \  /  \  /
+     A17   A18   A19   A20   A21
+\end{DoxyVerb}
+ Origin in A05.
+
+Tree numbering\+: \begin{DoxyVerb}0  2  4  6  8
+ 1  3  5  7  9
+\end{DoxyVerb}
+ \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}, and \mbox{\hyperlink{userdata_2userdata2_8c-example}{userdata/userdata2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_ab1c7dab63222ade77162fa26559d69ed}\label{p4est__connectivity_8h_ab1c7dab63222ade77162fa26559d69ed}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_rotwrap@{p4est\_connectivity\_new\_rotwrap}}
+\index{p4est\_connectivity\_new\_rotwrap@{p4est\_connectivity\_new\_rotwrap}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_rotwrap()}{p4est\_connectivity\_new\_rotwrap()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+rotwrap (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Create a connectivity structure for a periodic unit square. 
+
+The left and right faces are identified, and bottom and top opposite. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_a8e063b0be16c74527b1c96a9457bac7b}\label{p4est__connectivity_8h_a8e063b0be16c74527b1c96a9457bac7b}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_shell2d@{p4est\_connectivity\_new\_shell2d}}
+\index{p4est\_connectivity\_new\_shell2d@{p4est\_connectivity\_new\_shell2d}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_shell2d()}{p4est\_connectivity\_new\_shell2d()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+shell2d (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Create a connectivity structure that builds a 2d spherical shell. 
+
+\mbox{\hyperlink{p8est__connectivity_8h_a8cbb255251c75f998d200aa3873fd359}{p8est\+\_\+connectivity\+\_\+new\+\_\+shell}} \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__connectivity_8h_a957521f425596c60fea07197ebb17b96}\label{p4est__connectivity_8h_a957521f425596c60fea07197ebb17b96}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_new\_twotrees@{p4est\_connectivity\_new\_twotrees}}
+\index{p4est\_connectivity\_new\_twotrees@{p4est\_connectivity\_new\_twotrees}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_new\_twotrees()}{p4est\_connectivity\_new\_twotrees()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+new\+\_\+twotrees (\begin{DoxyParamCaption}\item[{int}]{l\+\_\+face,  }\item[{int}]{r\+\_\+face,  }\item[{int}]{orientation }\end{DoxyParamCaption})}
+
+
+
+Create a connectivity structure for two trees being rotated w.\+r.\+t. 
+
+each other in a user-\/defined way 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em l\+\_\+face} & index of left face \\
+\hline
+\mbox{\texttt{ in}}  & {\em r\+\_\+face} & index of right face \\
+\hline
+\mbox{\texttt{ in}}  & {\em orientation} & orientation of trees w.\+r.\+t. each other \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_af7f9277c2d93f69e73fafd017b22971e}\label{p4est__connectivity_8h_af7f9277c2d93f69e73fafd017b22971e}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_permute@{p4est\_connectivity\_permute}}
+\index{p4est\_connectivity\_permute@{p4est\_connectivity\_permute}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_permute()}{p4est\_connectivity\_permute()}}
+{\footnotesize\ttfamily void p4est\+\_\+connectivity\+\_\+permute (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{perm,  }\item[{int}]{is\+\_\+current\+\_\+to\+\_\+new }\end{DoxyParamCaption})}
+
+
+
+p4est\+\_\+connectivity\+\_\+permute Given a permutation {\itshape perm} of the trees in a connectivity {\itshape conn}, permute the trees of {\itshape conn} in place and update {\itshape conn} to match. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em conn} & The connectivity whose trees are permuted. \\
+\hline
+\mbox{\texttt{ in}}  & {\em perm} & A permutation array, whose elements are size\+\_\+t\textquotesingle{}s. \\
+\hline
+\mbox{\texttt{ in}}  & {\em is\+\_\+current\+\_\+to\+\_\+new} & if true, the jth entry of perm is the new index for the entry whose current index is j, otherwise the jth entry of perm is the current index of the tree whose index will be j after the permutation. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_af3521f9ecb47a49eefec6077fd97429c}\label{p4est__connectivity_8h_af3521f9ecb47a49eefec6077fd97429c}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_read\_inp@{p4est\_connectivity\_read\_inp}}
+\index{p4est\_connectivity\_read\_inp@{p4est\_connectivity\_read\_inp}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_read\_inp()}{p4est\_connectivity\_read\_inp()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+read\+\_\+inp (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+
+
+Create a \mbox{\hyperlink{structp4est}{p4est}} connectivity from an ABAQUS input file. 
+
+This utility function reads a basic ABAQUS file supporting element type with the prefix C2\+D4, CPS4, and S4 in 2D and of type C3\+D8 reading them as bilinear quadrilateral and trilinear hexahedral trees respectively.
+
+A basic 2D mesh is given below. The {\ttfamily $\ast$\+Node} section gives the vertex number and x, y, and z components for each vertex. The {\ttfamily $\ast$\+Element} section gives the 4 vertices in 2D (8 vertices in 3D) of each element in counter clockwise order. So in 2D the nodes are given as\+: \begin{DoxyVerb}4                     3
+ +-------------------+
+ |                   |
+ |                   |
+ |                   |
+ |                   |
+ |                   |
+ |                   |
+ +-------------------+
+1                     2
+\end{DoxyVerb}
+ and in 3D they are given as\+: \begin{DoxyVerb}8                     7
+ +---------------------+
+ |\                    |\
+ | \                   | \
+ |  \                  |  \
+ |   \                 |   \
+ |   5+---------------------+6
+ |    |                |    |
+ +----|----------------+    |
+ 4\   |               3 \   |
+   \  |                  \  |
+    \ |                   \ |
+     \|                    \|
+      +---------------------+
+      1                     2
+\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*Heading}
+\DoxyCodeLine{ box.inp}
+\DoxyCodeLine{*Node}
+\DoxyCodeLine{1,  -\/5, -\/5, 0}
+\DoxyCodeLine{2,   5, -\/5, 0}
+\DoxyCodeLine{3,   5,  5, 0}
+\DoxyCodeLine{4,  -\/5,  5, 0}
+\DoxyCodeLine{5,   0, -\/5, 0}
+\DoxyCodeLine{6,   5,  0, 0}
+\DoxyCodeLine{7,   0,  5, 0}
+\DoxyCodeLine{8,  -\/5,  0, 0}
+\DoxyCodeLine{9,   1, -\/1, 0}
+\DoxyCodeLine{10,  0,  0, 0}
+\DoxyCodeLine{11, -\/2,  1, 0}
+\DoxyCodeLine{*Element, type=CPS4, ELSET=Surface1}
+\DoxyCodeLine{1,  1, 10, 11, 8}
+\DoxyCodeLine{2,  3, 10, 9,  6}
+\DoxyCodeLine{3,  9, 10, 1,  5}
+\DoxyCodeLine{4,  7,  4, 8, 11}
+\DoxyCodeLine{5, 11, 10, 3,  7}
+\DoxyCodeLine{6,  2,  6, 9,  5}
+
+\end{DoxyCode}
+
+
+This function reads a mesh from {\itshape filename} and returns an associated \mbox{\hyperlink{structp4est}{p4est}} connectivity.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em filename} & file to read the connectivity from\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an allocated connectivity associated with the mesh in {\itshape filename} or NULL if an error occurred. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_aaa47fb092e6375ceec196fdcb177c284}\label{p4est__connectivity_8h_aaa47fb092e6375ceec196fdcb177c284}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_read\_inp\_stream@{p4est\_connectivity\_read\_inp\_stream}}
+\index{p4est\_connectivity\_read\_inp\_stream@{p4est\_connectivity\_read\_inp\_stream}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_read\_inp\_stream()}{p4est\_connectivity\_read\_inp\_stream()}}
+{\footnotesize\ttfamily int p4est\+\_\+connectivity\+\_\+read\+\_\+inp\+\_\+stream (\begin{DoxyParamCaption}\item[{FILE $\ast$}]{stream,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$}]{num\+\_\+vertices,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$}]{num\+\_\+trees,  }\item[{double $\ast$}]{vertices,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$}]{tree\+\_\+to\+\_\+vertex }\end{DoxyParamCaption})}
+
+
+
+Read an ABAQUS input file from a file stream. 
+
+This utility function reads a basic ABAQUS file supporting element type with the prefix C2\+D4, CPS4, and S4 in 2D and of type C3\+D8 reading them as bilinear quadrilateral and trilinear hexahedral trees respectively.
+
+A basic 2D mesh is given below. The {\ttfamily $\ast$\+Node} section gives the vertex number and x, y, and z components for each vertex. The {\ttfamily $\ast$\+Element} section gives the 4 vertices in 2D (8 vertices in 3D) of each element in counter clockwise order. So in 2D the nodes are given as\+: \begin{DoxyVerb}4                     3
+ +-------------------+
+ |                   |
+ |                   |
+ |                   |
+ |                   |
+ |                   |
+ |                   |
+ +-------------------+
+1                     2
+\end{DoxyVerb}
+ and in 3D they are given as\+: \begin{DoxyVerb}8                     7
+ +---------------------+
+ |\                    |\
+ | \                   | \
+ |  \                  |  \
+ |   \                 |   \
+ |   5+---------------------+6
+ |    |                |    |
+ +----|----------------+    |
+ 4\   |               3 \   |
+   \  |                  \  |
+    \ |                   \ |
+     \|                    \|
+      +---------------------+
+      1                     2
+\end{DoxyVerb}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*Heading}
+\DoxyCodeLine{ box.inp}
+\DoxyCodeLine{*Node}
+\DoxyCodeLine{1,  -\/5, -\/5, 0}
+\DoxyCodeLine{2,   5, -\/5, 0}
+\DoxyCodeLine{3,   5,  5, 0}
+\DoxyCodeLine{4,  -\/5,  5, 0}
+\DoxyCodeLine{5,   0, -\/5, 0}
+\DoxyCodeLine{6,   5,  0, 0}
+\DoxyCodeLine{7,   0,  5, 0}
+\DoxyCodeLine{8,  -\/5,  0, 0}
+\DoxyCodeLine{9,   1, -\/1, 0}
+\DoxyCodeLine{10,  0,  0, 0}
+\DoxyCodeLine{11, -\/2,  1, 0}
+\DoxyCodeLine{*Element, type=CPS4, ELSET=Surface1}
+\DoxyCodeLine{1,  1, 10, 11, 8}
+\DoxyCodeLine{2,  3, 10, 9,  6}
+\DoxyCodeLine{3,  9, 10, 1,  5}
+\DoxyCodeLine{4,  7,  4, 8, 11}
+\DoxyCodeLine{5, 11, 10, 3,  7}
+\DoxyCodeLine{6,  2,  6, 9,  5}
+
+\end{DoxyCode}
+
+
+This code can be called two ways. The first, when {\ttfamily vertex==NULL} and {\ttfamily tree\+\_\+to\+\_\+vertex==NULL}, is used to count the number of trees and vertices in the connectivity to be generated by the {\ttfamily }.inp mesh in the {\itshape stream}. The second, when {\ttfamily vertices!=NULL} and {\ttfamily tree\+\_\+to\+\_\+vertex!=NULL}, fill {\ttfamily vertices} and {\ttfamily tree\+\_\+to\+\_\+vertex}. In this case {\ttfamily num\+\_\+vertices} and {\ttfamily num\+\_\+trees} need to be set to the maximum number of entries allocated in {\ttfamily vertices} and {\ttfamily tree\+\_\+to\+\_\+vertex}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em stream} & file stream to read the connectivity from \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em num\+\_\+vertices} & the number of vertices in the connectivity \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em num\+\_\+trees} & the number of trees in the connectivity \\
+\hline
+\mbox{\texttt{ out}}  & {\em vertices} & the list of {\ttfamily vertices} of the connectivity \\
+\hline
+\mbox{\texttt{ out}}  & {\em tree\+\_\+to\+\_\+vertex} & the {\ttfamily tree\+\_\+to\+\_\+vertex} map of the connectivity\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if successful and nonzero if not 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a709da81912bd413ccd8312009a5d2123}\label{p4est__connectivity_8h_a709da81912bd413ccd8312009a5d2123}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_reduce@{p4est\_connectivity\_reduce}}
+\index{p4est\_connectivity\_reduce@{p4est\_connectivity\_reduce}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_reduce()}{p4est\_connectivity\_reduce()}}
+{\footnotesize\ttfamily void p4est\+\_\+connectivity\+\_\+reduce (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn }\end{DoxyParamCaption})}
+
+
+
+Removes corner information of a connectivity such that enough information is left to run p4est\+\_\+connectivity\+\_\+complete successfully. 
+
+The reduced connectivity still passes p4est\+\_\+connectivity\+\_\+is\+\_\+valid. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em conn} & The connectivity to be reduced. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_ac6f25e298421a9283dac60f3a9203601}\label{p4est__connectivity_8h_ac6f25e298421a9283dac60f3a9203601}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_refine@{p4est\_connectivity\_refine}}
+\index{p4est\_connectivity\_refine@{p4est\_connectivity\_refine}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_refine()}{p4est\_connectivity\_refine()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+refine (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{int}]{num\+\_\+per\+\_\+dim }\end{DoxyParamCaption})}
+
+
+
+Uniformly refine a connectivity. 
+
+This is useful if you would like to uniformly refine by something other than a power of 2.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn} & A valid connectivity \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+per\+\_\+dim} & The number of new trees in each direction. Must use no more than \mbox{\hyperlink{p4est_8h_a3b1db23d8d65123e379f46d35c6046d1}{P4\+EST\+\_\+\+OLD\+\_\+\+QMAXLEVEL}} bits.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a refined connectivity. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a6fa55094144a0dc59e8dfc16cf33caf0}\label{p4est__connectivity_8h_a6fa55094144a0dc59e8dfc16cf33caf0}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_reorder@{p4est\_connectivity\_reorder}}
+\index{p4est\_connectivity\_reorder@{p4est\_connectivity\_reorder}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_reorder()}{p4est\_connectivity\_reorder()}}
+{\footnotesize\ttfamily void p4est\+\_\+connectivity\+\_\+reorder (\begin{DoxyParamCaption}\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{comm,  }\item[{int}]{k,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}}}]{ctype }\end{DoxyParamCaption})}
+
+
+
+Reorder a connectivity using METIS. 
+
+\begin{DoxyNote}{Note}
+This function is only available if configured successfully {\ttfamily -\/-\/with-\/metis}.
+\end{DoxyNote}
+This function takes a connectivity {\itshape conn} and a parameter {\itshape k}, which will typically be the number of processes, and reorders the trees such that if every processes is assigned (num\+\_\+trees / k) trees, the communication volume will be minimized. This is intended for use with connectivities that contain a large number of trees. This should be done BEFORE a \mbox{\hyperlink{structp4est}{p4est}} is created using the connectivity. This is done in place\+: any data structures that use indices to refer to trees before this procedure will be invalid. Note that this routine calls metis and not parmetis because the connectivity is copied on every process. A communicator is required because I\textquotesingle{}m not positive that metis is deterministic. {\itshape ctype} determines when an edge exist between two trees in the dual graph used by metis in the reordering. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em comm} & MPI communicator. \\
+\hline
+\mbox{\texttt{ in}}  & {\em k} & if k $>$ 0, the number of pieces metis will use to guide the reordering; if k = 0, the number of pieces will be determined from the MPI communicator. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em conn} & connectivity that will be reordered. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ctype} & determines when an edge exists in the dual graph of the connectivity structure. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_adf23471dc921f5fa6529232a2e79b7fd}\label{p4est__connectivity_8h_adf23471dc921f5fa6529232a2e79b7fd}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_reorder\_newid@{p4est\_connectivity\_reorder\_newid}}
+\index{p4est\_connectivity\_reorder\_newid@{p4est\_connectivity\_reorder\_newid}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_reorder\_newid()}{p4est\_connectivity\_reorder\_newid()}}
+{\footnotesize\ttfamily sc\+\_\+array\+\_\+t$\ast$ p4est\+\_\+connectivity\+\_\+reorder\+\_\+newid (\begin{DoxyParamCaption}\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{comm,  }\item[{int}]{k,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}}}]{ctype,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{newid }\end{DoxyParamCaption})}
+
+
+
+Reorder a connectivity using METIS. 
+
+\begin{DoxyNote}{Note}
+This function is only available if configured successfully {\ttfamily -\/-\/with-\/metis}.
+\end{DoxyNote}
+This is the same form as \mbox{\hyperlink{p4est__connectivity_8h_a6fa55094144a0dc59e8dfc16cf33caf0}{p4est\+\_\+connectivity\+\_\+reorder}} but it takes an initialized sc array {\itshape newid} as extra argument. In this way, the users can map old indices to new indices in the case it is necessary (for instance to retrieve high-\/order nodes previously stored in an array with old indices). 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em comm} & MPI communicator. \\
+\hline
+\mbox{\texttt{ in}}  & {\em k} & if k $>$ 0, the number of pieces metis will use to guide the reordering; if k = 0, the number of pieces will be determined from the MPI communicator. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em conn} & connectivity that will be reordered. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ctype} & determines when an edge exists in the dual graph of the connectivity structure. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em newid} & array that maps old tree indices to new ones. newid has to be an sc\+\_\+array and it has to be initialized (non-\/\+NULL) with element size of size\+\_\+t (using sc\+\_\+array\+\_\+new (sizeof (size\+\_\+t))). Input length arbitrary, output length modified. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_af8be3fd9a6c96e3e2a710f9251952cf3}\label{p4est__connectivity_8h_af8be3fd9a6c96e3e2a710f9251952cf3}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_save@{p4est\_connectivity\_save}}
+\index{p4est\_connectivity\_save@{p4est\_connectivity\_save}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_save()}{p4est\_connectivity\_save()}}
+{\footnotesize\ttfamily int p4est\+\_\+connectivity\+\_\+save (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{connectivity }\end{DoxyParamCaption})}
+
+
+
+Save a connectivity structure to disk. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em filename} & Name of the file to write. \\
+\hline
+\mbox{\texttt{ in}}  & {\em connectivity} & Valid connectivity structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns 0 on success, nonzero on file error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a19c58ca9bbc3354e8b799d3945b135ce}\label{p4est__connectivity_8h_a19c58ca9bbc3354e8b799d3945b135ce}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_set\_attr@{p4est\_connectivity\_set\_attr}}
+\index{p4est\_connectivity\_set\_attr@{p4est\_connectivity\_set\_attr}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_set\_attr()}{p4est\_connectivity\_set\_attr()}}
+{\footnotesize\ttfamily void p4est\+\_\+connectivity\+\_\+set\+\_\+attr (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{size\+\_\+t}]{bytes\+\_\+per\+\_\+tree }\end{DoxyParamCaption})}
+
+
+
+Allocate or free the attribute fields in a connectivity. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em conn} & The conn-\/$>$$\ast$\+\_\+to\+\_\+attr fields must either be NULL or previously be allocated by this function. \\
+\hline
+\mbox{\texttt{ in}}  & {\em bytes\+\_\+per\+\_\+tree} & If 0, tree\+\_\+to\+\_\+attr is freed (being NULL is ok). If positive, requested space is allocated. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_afbf34f950b045fb2b4b29440da487660}\label{p4est__connectivity_8h_afbf34f950b045fb2b4b29440da487660}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_share@{p4est\_connectivity\_share}}
+\index{p4est\_connectivity\_share@{p4est\_connectivity\_share}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_share()}{p4est\_connectivity\_share()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a05f97cbf6c3f9e74671a295338e4dbb0}{p4est\+\_\+connectivity\+\_\+shared\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+share (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn\+\_\+in,  }\item[{int}]{root,  }\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{comm }\end{DoxyParamCaption})}
+
+
+
+Take a connectivity on a single rank and share it with MPI3. 
+
+If MPI shared windows are not found at configure time, this function calls \mbox{\hyperlink{p4est__connectivity_8h_ae75350b07743b53c0af735c7683660b4}{p4est\+\_\+connectivity\+\_\+bcast}} instead and wraps its result in the result. The function is collective over the communicator passed.
+
+This function is only well defined for an intranode communicator. Before calling it, the input connectivity may be made available on the {\itshape root} rank using \mbox{\hyperlink{p4est__connectivity_8h_ae75350b07743b53c0af735c7683660b4}{p4est\+\_\+connectivity\+\_\+bcast}} with a surrounding communicator that contains one root process of every node.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn\+\_\+in} & For the root process a valid connectivity to be shared by MPI3. This function takes ownership of this argument, so it must no longer be used. For all other processes it must be NULL. \\
+\hline
+\mbox{\texttt{ in}}  & {\em root} & The rank of the process that provides the input connectivity. Must be legal wrt. {\itshape comm}. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em comm} & When configured with MPI3 enabled, this intranode communicator must permit MPI3 windows. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The new connectivity object stores all data of the input {\itshape conn} in MPI3 shared windows. Must be freed by \mbox{\hyperlink{p4est__connectivity_8h_a428c9034659c00ed75b42e688d1b0447}{p4est\+\_\+connectivity\+\_\+shared\+\_\+destroy}}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a428c9034659c00ed75b42e688d1b0447}\label{p4est__connectivity_8h_a428c9034659c00ed75b42e688d1b0447}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_shared\_destroy@{p4est\_connectivity\_shared\_destroy}}
+\index{p4est\_connectivity\_shared\_destroy@{p4est\_connectivity\_shared\_destroy}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_shared\_destroy()}{p4est\_connectivity\_shared\_destroy()}}
+{\footnotesize\ttfamily void p4est\+\_\+connectivity\+\_\+shared\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a05f97cbf6c3f9e74671a295338e4dbb0}{p4est\+\_\+connectivity\+\_\+shared\+\_\+t}} $\ast$}]{cshare }\end{DoxyParamCaption})}
+
+
+
+Destroy a shared connectivity structure. 
+
+Call this eventually on the result of \mbox{\hyperlink{p4est__connectivity_8h_afbf34f950b045fb2b4b29440da487660}{p4est\+\_\+connectivity\+\_\+share}} or \mbox{\hyperlink{p4est__connectivity_8h_a8368869b9ad93ec9b399ecbb2a795fb9}{p4est\+\_\+connectivity\+\_\+mission}} (which calls the former internally). 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cshare} & Valid shared connectivity structure; cf. \mbox{\hyperlink{p4est__connectivity_8h_afbf34f950b045fb2b4b29440da487660}{p4est\+\_\+connectivity\+\_\+share}}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_afd14a6636a66ef65d31535256d7837df}\label{p4est__connectivity_8h_afd14a6636a66ef65d31535256d7837df}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_sink@{p4est\_connectivity\_sink}}
+\index{p4est\_connectivity\_sink@{p4est\_connectivity\_sink}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_sink()}{p4est\_connectivity\_sink()}}
+{\footnotesize\ttfamily int p4est\+\_\+connectivity\+\_\+sink (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{sc\+\_\+io\+\_\+sink\+\_\+t $\ast$}]{sink }\end{DoxyParamCaption})}
+
+
+
+Write connectivity to a sink object. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn} & The connectivity to be written. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em sink} & The connectivity is written into this sink. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, nonzero on error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a3ce37622b1ca56764a4b7ff053ae92f7}\label{p4est__connectivity_8h_a3ce37622b1ca56764a4b7ff053ae92f7}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_connectivity\_source@{p4est\_connectivity\_source}}
+\index{p4est\_connectivity\_source@{p4est\_connectivity\_source}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_connectivity\_source()}{p4est\_connectivity\_source()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}}$\ast$ p4est\+\_\+connectivity\+\_\+source (\begin{DoxyParamCaption}\item[{sc\+\_\+io\+\_\+source\+\_\+t $\ast$}]{source }\end{DoxyParamCaption})}
+
+
+
+Read connectivity from a source object. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em source} & The connectivity is read from this source. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The newly created connectivity, or NULL on error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_aed57e0d5bcb53770f84510360317352f}\label{p4est__connectivity_8h_aed57e0d5bcb53770f84510360317352f}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_expand\_face\_transform@{p4est\_expand\_face\_transform}}
+\index{p4est\_expand\_face\_transform@{p4est\_expand\_face\_transform}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_expand\_face\_transform()}{p4est\_expand\_face\_transform()}}
+{\footnotesize\ttfamily void p4est\+\_\+expand\+\_\+face\+\_\+transform (\begin{DoxyParamCaption}\item[{int}]{iface,  }\item[{int}]{nface,  }\item[{int}]{ftransform\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Fill an array with the axis combination of a face neighbor transform. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em iface} & The number of the originating face. \\
+\hline
+\mbox{\texttt{ in}}  & {\em nface} & Encoded as nface = r $\ast$ 4 + nf, where nf = 0..3 is the neigbbor\textquotesingle{}s connecting face number and r = 0..1 is the relative orientation to the neighbor\textquotesingle{}s face. This encoding matches p4est\+\_\+connectivity\+\_\+t. \\
+\hline
+\mbox{\texttt{ out}}  & {\em ftransform} & This array holds 9 integers. \mbox{[}0,2\mbox{]} The coordinate axis sequence of the origin face, the first referring to the tangential and the second to the normal. A permutation of (0, 1). \mbox{[}3,5\mbox{]} The coordinate axis sequence of the target face. \mbox{[}6,8\mbox{]} Face reversal flag for tangential axis (boolean); face code in \mbox{[}0, 3\mbox{]} for the normal coordinate q\+: 0\+: q\textquotesingle{} = -\/q 1\+: q\textquotesingle{} = q + 1 2\+: q\textquotesingle{} = q -\/ 1 3\+: q\textquotesingle{} = 2 -\/ q \mbox{[}1,4,7\mbox{]} 0 (unused for compatibility with 3D). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_ab5c97685c49510a19d7ad1f2fb223594}\label{p4est__connectivity_8h_ab5c97685c49510a19d7ad1f2fb223594}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_find\_corner\_transform@{p4est\_find\_corner\_transform}}
+\index{p4est\_find\_corner\_transform@{p4est\_find\_corner\_transform}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_find\_corner\_transform()}{p4est\_find\_corner\_transform()}}
+{\footnotesize\ttfamily void p4est\+\_\+find\+\_\+corner\+\_\+transform (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{connectivity,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{itree,  }\item[{int}]{icorner,  }\item[{\mbox{\hyperlink{structp4est__corner__info__t}{p4est\+\_\+corner\+\_\+info\+\_\+t}} $\ast$}]{ci }\end{DoxyParamCaption})}
+
+
+
+Fills an array with information about corner neighbors. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em connectivity} & Connectivity structure. \\
+\hline
+\mbox{\texttt{ in}}  & {\em itree} & The number of the originating tree. \\
+\hline
+\mbox{\texttt{ in}}  & {\em icorner} & The number of the originating corner. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em ci} & A \mbox{\hyperlink{structp4est__corner__info__t}{p4est\+\_\+corner\+\_\+info\+\_\+t}} structure with initialized array. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_a034bc4466026f7dbb011da6719a54094}\label{p4est__connectivity_8h_a034bc4466026f7dbb011da6719a54094}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_find\_face\_transform@{p4est\_find\_face\_transform}}
+\index{p4est\_find\_face\_transform@{p4est\_find\_face\_transform}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_find\_face\_transform()}{p4est\_find\_face\_transform()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} p4est\+\_\+find\+\_\+face\+\_\+transform (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{connectivity,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{itree,  }\item[{int}]{iface,  }\item[{int}]{ftransform\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Fill an array with the axis combinations of a tree neighbor transform. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em connectivity} & Connectivity structure. \\
+\hline
+\mbox{\texttt{ in}}  & {\em itree} & The number of the originating tree. \\
+\hline
+\mbox{\texttt{ in}}  & {\em iface} & The number of the originating tree\textquotesingle{}s face. \\
+\hline
+\mbox{\texttt{ out}}  & {\em ftransform} & This array holds 9 integers. \mbox{[}0,2\mbox{]} The coordinate axis sequence of the origin face. \mbox{[}3,5\mbox{]} The coordinate axis sequence of the target face. \mbox{[}6,8\mbox{]} Face reversal flag for axis t; face code for axis n. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{p4est__connectivity_8h_aed57e0d5bcb53770f84510360317352f}{p4est\+\_\+expand\+\_\+face\+\_\+transform}}. \mbox{[}1,4,7\mbox{]} 0 (unused for compatibility with 3D). 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+The face neighbor tree if it exists, -\/1 otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__connectivity_8h_a6b9da620962d6722f5c3e19fe95bb3dd}\label{p4est__connectivity_8h_a6b9da620962d6722f5c3e19fe95bb3dd}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_neighbor\_transform\_coordinates@{p4est\_neighbor\_transform\_coordinates}}
+\index{p4est\_neighbor\_transform\_coordinates@{p4est\_neighbor\_transform\_coordinates}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_neighbor\_transform\_coordinates()}{p4est\_neighbor\_transform\_coordinates()}}
+{\footnotesize\ttfamily void p4est\+\_\+neighbor\+\_\+transform\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structp4est__neighbor__transform__t}{p4est\+\_\+neighbor\+\_\+transform\+\_\+t}} $\ast$}]{nt,  }\item[{const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{self\+\_\+coords\mbox{[}\+P4\+EST\+\_\+\+DIM\mbox{]},  }\item[{\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{neigh\+\_\+coords\mbox{[}\+P4\+EST\+\_\+\+DIM\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Transform from self\textquotesingle{}s coordinate system to neighbor\textquotesingle{}s coordinate system. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em nt} & A neighbor transform. \\
+\hline
+\mbox{\texttt{ in}}  & {\em self\+\_\+coords} & Input quadrant coordinates in self coordinates. \\
+\hline
+\mbox{\texttt{ out}}  & {\em neigh\+\_\+coords} & Coordinates transformed into neighbor coordinates. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__connectivity_8h_a0eeb2dd4083e1a49b823dd60b76071d2}\label{p4est__connectivity_8h_a0eeb2dd4083e1a49b823dd60b76071d2}} 
+\index{p4est\_connectivity.h@{p4est\_connectivity.h}!p4est\_neighbor\_transform\_coordinates\_reverse@{p4est\_neighbor\_transform\_coordinates\_reverse}}
+\index{p4est\_neighbor\_transform\_coordinates\_reverse@{p4est\_neighbor\_transform\_coordinates\_reverse}!p4est\_connectivity.h@{p4est\_connectivity.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_neighbor\_transform\_coordinates\_reverse()}{p4est\_neighbor\_transform\_coordinates\_reverse()}}
+{\footnotesize\ttfamily void p4est\+\_\+neighbor\+\_\+transform\+\_\+coordinates\+\_\+reverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structp4est__neighbor__transform__t}{p4est\+\_\+neighbor\+\_\+transform\+\_\+t}} $\ast$}]{nt,  }\item[{const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{neigh\+\_\+coords\mbox{[}\+P4\+EST\+\_\+\+DIM\mbox{]},  }\item[{\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{self\+\_\+coords\mbox{[}\+P4\+EST\+\_\+\+DIM\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Transform from neighbor\textquotesingle{}s coordinate system to self\textquotesingle{}s coordinate system. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em nt} & A neighbor transform. \\
+\hline
+\mbox{\texttt{ in}}  & {\em neigh\+\_\+coords} & Input quadrant coordinates in self coordinates. \\
+\hline
+\mbox{\texttt{ out}}  & {\em self\+\_\+coords} & Coordinates transformed into neighbor coordinates. \\
+\hline
+\end{DoxyParams}

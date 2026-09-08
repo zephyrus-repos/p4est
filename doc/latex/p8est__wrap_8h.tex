@@ -1,0 +1,477 @@
+\hypertarget{p8est__wrap_8h}{}\doxysection{src/p8est\+\_\+wrap.h File Reference}
+\label{p8est__wrap_8h}\index{src/p8est\_wrap.h@{src/p8est\_wrap.h}}
+
+
+This wrapper API encapsulates core \mbox{\hyperlink{structp4est}{p4est}} data structures and provides functions that clarify the mark-\/adapt-\/partition cycle.  
+
+
+{\ttfamily \#include $<$p8est\+\_\+extended.\+h$>$}\newline
+{\ttfamily \#include $<$sc\+\_\+refcount.\+h$>$}\newline
+Include dependency graph for p8est\+\_\+wrap.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p8est__wrap_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structp8est__wrap__params__t}{p8est\+\_\+wrap\+\_\+params\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em This structure contains the different parameters of wrap creation. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}}
+\begin{DoxyCompactList}\small\item\em Wrapping a \mbox{\hyperlink{group__p8est}{p8est}} object for an alternative API. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp8est__wrap__leaf}{p8est\+\_\+wrap\+\_\+leaf}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p8est__wrap_8h_ab0caa712a773fbcbf81b0cc2e4c95abe}\label{p8est__wrap_8h_ab0caa712a773fbcbf81b0cc2e4c95abe}} 
+\#define \mbox{\hyperlink{p8est__wrap_8h_ab0caa712a773fbcbf81b0cc2e4c95abe}{P8\+EST\+\_\+\+LEAF\+\_\+\+IS\+\_\+\+FIRST\+\_\+\+IN\+\_\+\+TREE}}(wleaf)~((wleaf)-\/$>$which\+\_\+quad == 0)
+\begin{DoxyCompactList}\small\item\em Determine whether we have just entered a different tree. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p8est__wrap_8h_a663acfc38f07f223ad35d2705d96414c}\label{p8est__wrap_8h_a663acfc38f07f223ad35d2705d96414c}} 
+typedef enum p8est\+\_\+wrap\+\_\+flags {\bfseries p8est\+\_\+wrap\+\_\+flags\+\_\+t}
+\item 
+\mbox{\Hypertarget{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}\label{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}} 
+typedef struct \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}} \mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Wrapping a \mbox{\hyperlink{group__p8est}{p8est}} object for an alternative API. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est__wrap_8h_adfe946ac9482f667578c8f0e8e921baf}\label{p8est__wrap_8h_adfe946ac9482f667578c8f0e8e921baf}} 
+typedef struct \mbox{\hyperlink{structp8est__wrap__leaf}{p8est\+\_\+wrap\+\_\+leaf}} {\bfseries p8est\+\_\+wrap\+\_\+leaf\+\_\+t}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p8est__wrap_8h_a5e6b5aa6ba49031747ae4286f383ad11}\label{p8est__wrap_8h_a5e6b5aa6ba49031747ae4286f383ad11}} 
+enum {\bfseries p8est\+\_\+wrap\+\_\+flags} \{ \newline
+{\bfseries P8\+EST\+\_\+\+WRAP\+\_\+\+NONE} = 0
+, \newline
+{\bfseries P8\+EST\+\_\+\+WRAP\+\_\+\+REFINE} = 0x01
+, \newline
+{\bfseries P8\+EST\+\_\+\+WRAP\+\_\+\+COARSEN} = 0x02
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{p8est__wrap_8h_ac13d7a983c3e60391630dbd69cff9d23}{p8est\+\_\+wrap\+\_\+params\+\_\+init}} (\mbox{\hyperlink{structp8est__wrap__params__t}{p8est\+\_\+wrap\+\_\+params\+\_\+t}} $\ast$params)
+\begin{DoxyCompactList}\small\item\em Initialize a default \mbox{\hyperlink{structp8est__wrap__params__t}{p8est\+\_\+wrap\+\_\+params\+\_\+t}} structure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__wrap_8h_a3a1ce39c991332bdc61dfaa461cf3c91}{p8est\+\_\+wrap\+\_\+new\+\_\+conn}} (sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, \mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$conn, int initial\+\_\+level)
+\begin{DoxyCompactList}\small\item\em Create a \mbox{\hyperlink{structp8est}{p8est}} wrapper from a given connectivity structure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__wrap_8h_abf74d41e313f9f01a60a141dd6939e75}{p8est\+\_\+wrap\+\_\+new\+\_\+p8est}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, int hollow, \mbox{\hyperlink{p8est__connectivity_8h_aaa5a9d47d1b169507e1095783ab89be1}{p8est\+\_\+connect\+\_\+type\+\_\+t}} btype, \mbox{\hyperlink{p8est__extended_8h_aba389735f21cee010df09655d967958f}{p8est\+\_\+replace\+\_\+t}} replace\+\_\+fn, void $\ast$user\+\_\+pointer)
+\begin{DoxyCompactList}\small\item\em Create a wrapper for a given \mbox{\hyperlink{structp8est}{p8est}} structure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__wrap_8h_a83b3eb6f58f996b1c06535055eb64d69}{p8est\+\_\+wrap\+\_\+new\+\_\+p8est\+\_\+params}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{structp8est__wrap__params__t}{p8est\+\_\+wrap\+\_\+params\+\_\+t}} $\ast$params)
+\begin{DoxyCompactList}\small\item\em Create a wrapper for a given \mbox{\hyperlink{structp8est}{p8est}} structure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__wrap_8h_a93e157b9ea65c52071e53ac3a25d1864}{p8est\+\_\+wrap\+\_\+new\+\_\+ext}} (sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, \mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$conn, int initial\+\_\+level, int hollow, \mbox{\hyperlink{p8est__connectivity_8h_aaa5a9d47d1b169507e1095783ab89be1}{p8est\+\_\+connect\+\_\+type\+\_\+t}} btype, \mbox{\hyperlink{p8est__extended_8h_aba389735f21cee010df09655d967958f}{p8est\+\_\+replace\+\_\+t}} replace\+\_\+fn, void $\ast$user\+\_\+pointer)
+\begin{DoxyCompactList}\small\item\em Create a \mbox{\hyperlink{structp8est}{p8est}} wrapper from a given connectivity structure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__wrap_8h_af205c54b0e045f94ae6768a7481e5aec}{p8est\+\_\+wrap\+\_\+new\+\_\+params}} (sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, \mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$conn, int initial\+\_\+level, \mbox{\hyperlink{structp8est__wrap__params__t}{p8est\+\_\+wrap\+\_\+params\+\_\+t}} $\ast$params)
+\begin{DoxyCompactList}\small\item\em Create a \mbox{\hyperlink{structp8est}{p8est}} wrapper from a given connectivity structure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__wrap_8h_acb4713adfd23df0c26b2f1557550b66f}{p8est\+\_\+wrap\+\_\+new\+\_\+copy}} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$source, size\+\_\+t data\+\_\+size, \mbox{\hyperlink{p8est__extended_8h_aba389735f21cee010df09655d967958f}{p8est\+\_\+replace\+\_\+t}} replace\+\_\+fn, void $\ast$user\+\_\+pointer)
+\begin{DoxyCompactList}\small\item\em Create a \mbox{\hyperlink{structp8est}{p8est}} wrapper from an existing one. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__wrap_8h_a9cd676114762a1a54b4753f43b8fd768}{p8est\+\_\+wrap\+\_\+new\+\_\+unitcube}} (sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, int initial\+\_\+level)
+\begin{DoxyCompactList}\small\item\em Create a \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}} and internal helper data structures. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est__wrap_8h_a67a55fa0084a2eec4de2337cd6f6e890}\label{p8est__wrap_8h_a67a55fa0084a2eec4de2337cd6f6e890}} 
+\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$ {\bfseries p8est\+\_\+wrap\+\_\+new\+\_\+rotwrap} (sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, int initial\+\_\+level)
+\item 
+\mbox{\Hypertarget{p8est__wrap_8h_aa436aeefdf54f87b2397f1ed3f8bddf0}\label{p8est__wrap_8h_aa436aeefdf54f87b2397f1ed3f8bddf0}} 
+\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$ {\bfseries p8est\+\_\+wrap\+\_\+new\+\_\+brick} (sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, int bx, int by, int bz, int px, int py, int pz, int initial\+\_\+level)
+\item 
+\mbox{\Hypertarget{p8est__wrap_8h_a224a77786519c23cd823a8f99265b82a}\label{p8est__wrap_8h_a224a77786519c23cd823a8f99265b82a}} 
+\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__wrap_8h_a224a77786519c23cd823a8f99265b82a}{p8est\+\_\+wrap\+\_\+new\+\_\+world}} (int initial\+\_\+level)
+\begin{DoxyCompactList}\small\item\em Passes sc\+\_\+\+MPI\+\_\+\+COMM\+\_\+\+WORLD to p8est\+\_\+wrap\+\_\+new\+\_\+unitcube. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est__wrap_8h_a9aafdb179f59c439bbde50e3f120c514}\label{p8est__wrap_8h_a9aafdb179f59c439bbde50e3f120c514}} 
+void {\bfseries p8est\+\_\+wrap\+\_\+destroy} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$pp)
+\item 
+void \mbox{\hyperlink{p8est__wrap_8h_a2875c9180880891680e4b226af449993}{p8est\+\_\+wrap\+\_\+set\+\_\+hollow}} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$pp, int hollow)
+\begin{DoxyCompactList}\small\item\em Change hollow status of the wrap. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__wrap_8h_ac920142a9d670ad25787b91b1a122158}{p8est\+\_\+wrap\+\_\+set\+\_\+coarsen\+\_\+delay}} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$pp, int coarsen\+\_\+delay, int coarsen\+\_\+affect)
+\begin{DoxyCompactList}\small\item\em Set a parameter that delays coarsening after adaptation. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__wrap_8h_a32f35c3f173165a3e8faab19ba0a1a99}{p8est\+\_\+wrap\+\_\+set\+\_\+partitioning}} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$pp, int partition\+\_\+for\+\_\+coarsening)
+\begin{DoxyCompactList}\small\item\em Set a parameter that ensures future partitions allow one level of coarsening. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__ghost_8h_a01f7ba9154de22adb8e8f8c342d697ba}{p8est\+\_\+ghost\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__wrap_8h_a8b41067c54e4772c49abc646c193dcc3}{p8est\+\_\+wrap\+\_\+get\+\_\+ghost}} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$pp)
+\begin{DoxyCompactList}\small\item\em Return the appropriate ghost layer. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structp8est__mesh__t}{p8est\+\_\+mesh\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__wrap_8h_a0adf92ebd558b7b73cd707a10b3b6f40}{p8est\+\_\+wrap\+\_\+get\+\_\+mesh}} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$pp)
+\begin{DoxyCompactList}\small\item\em Return the appropriate mesh structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__wrap_8h_a646e829b494626242e89c19e7d25243f}{p8est\+\_\+wrap\+\_\+mark\+\_\+refine}} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$pp, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} which\+\_\+quad)
+\begin{DoxyCompactList}\small\item\em Mark a local element for refinement. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__wrap_8h_a61a7805a31cff042720983a4e612aafb}{p8est\+\_\+wrap\+\_\+mark\+\_\+coarsen}} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$pp, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} which\+\_\+quad)
+\begin{DoxyCompactList}\small\item\em Mark a local element for coarsening. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__wrap_8h_a352e162ccaa7261d81056e8f20583bcb}{p8est\+\_\+wrap\+\_\+adapt}} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$pp)
+\begin{DoxyCompactList}\small\item\em Call p8est\+\_\+refine, coarsen, and balance to update pp-\/$>$\mbox{\hyperlink{structp8est}{p8est}}. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__wrap_8h_a97f2b63d58895787d7114db18c2a3381}{p8est\+\_\+wrap\+\_\+partition}} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$pp, int weight\+\_\+exponent, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$unchanged\+\_\+first, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$unchanged\+\_\+length, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$unchanged\+\_\+old\+\_\+first)
+\begin{DoxyCompactList}\small\item\em Call p8est\+\_\+partition for equal leaf distribution. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__wrap_8h_a1830061b0c15fd8cebfd9340185694ee}{p8est\+\_\+wrap\+\_\+complete}} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$pp)
+\begin{DoxyCompactList}\small\item\em Free memory for the intermediate mesh. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p8est__wrap_8h_ac662673c1747541d6af101398460d1ad}\label{p8est__wrap_8h_ac662673c1747541d6af101398460d1ad}} 
+\mbox{\hyperlink{structp8est__wrap__leaf}{p8est\+\_\+wrap\+\_\+leaf\+\_\+t}} $\ast$ {\bfseries p8est\+\_\+wrap\+\_\+leaf\+\_\+first} (\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$pp, int track\+\_\+mirrors)
+\item 
+\mbox{\Hypertarget{p8est__wrap_8h_a4e58e26df3c5dee9a5f3f46244f06d9c}\label{p8est__wrap_8h_a4e58e26df3c5dee9a5f3f46244f06d9c}} 
+\mbox{\hyperlink{structp8est__wrap__leaf}{p8est\+\_\+wrap\+\_\+leaf\+\_\+t}} $\ast$ {\bfseries p8est\+\_\+wrap\+\_\+leaf\+\_\+next} (\mbox{\hyperlink{structp8est__wrap__leaf}{p8est\+\_\+wrap\+\_\+leaf\+\_\+t}} $\ast$leaf)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This wrapper API encapsulates core \mbox{\hyperlink{structp4est}{p4est}} data structures and provides functions that clarify the mark-\/adapt-\/partition cycle. 
+
+There is also an element iterator that can replace the nested loops over trees and tree quadrants, respectively, which can help make application code cleaner.
+
+For most new code, using this API is likely not necessary. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p8est__wrap_8h_a352e162ccaa7261d81056e8f20583bcb}\label{p8est__wrap_8h_a352e162ccaa7261d81056e8f20583bcb}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_adapt@{p8est\_wrap\_adapt}}
+\index{p8est\_wrap\_adapt@{p8est\_wrap\_adapt}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_adapt()}{p8est\_wrap\_adapt()}}
+{\footnotesize\ttfamily int p8est\+\_\+wrap\+\_\+adapt (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$}]{pp }\end{DoxyParamCaption})}
+
+
+
+Call p8est\+\_\+refine, coarsen, and balance to update pp-\/$>$\mbox{\hyperlink{structp8est}{p8est}}. 
+
+Checks pp-\/$>$flags as per-\/quadrant input against p8est\+\_\+wrap\+\_\+flags\+\_\+t. The pp-\/$>$flags array is updated along with \mbox{\hyperlink{structp8est}{p8est}} and reset to zeros. Creates ghost\+\_\+aux and mesh\+\_\+aux to represent the intermediate mesh. If zlib is available, the routine checks whether coarsening and balancing the \mbox{\hyperlink{structp8est}{p8est}} canceled out and skips computing ghost\+\_\+aux and mesh\+\_\+aux when possible. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em pp} & The \mbox{\hyperlink{structp8est}{p8est}} wrapper to work with, must not be hollow. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean whether \mbox{\hyperlink{structp8est}{p8est}} has changed. If true, partition must be called. If false, partition must not be called, and complete must not be called either. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__wrap_8h_a1830061b0c15fd8cebfd9340185694ee}\label{p8est__wrap_8h_a1830061b0c15fd8cebfd9340185694ee}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_complete@{p8est\_wrap\_complete}}
+\index{p8est\_wrap\_complete@{p8est\_wrap\_complete}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_complete()}{p8est\_wrap\_complete()}}
+{\footnotesize\ttfamily void p8est\+\_\+wrap\+\_\+complete (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$}]{pp }\end{DoxyParamCaption})}
+
+
+
+Free memory for the intermediate mesh. 
+
+Sets mesh\+\_\+aux and ghost\+\_\+aux to NULL. This function must be used if both refinement and partition effect changes. After this call, we are ready for another mark-\/refine-\/partition cycle. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em pp} & The \mbox{\hyperlink{structp8est}{p8est}} wrapper to work with, must not be hollow. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__wrap_8h_a8b41067c54e4772c49abc646c193dcc3}\label{p8est__wrap_8h_a8b41067c54e4772c49abc646c193dcc3}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_get\_ghost@{p8est\_wrap\_get\_ghost}}
+\index{p8est\_wrap\_get\_ghost@{p8est\_wrap\_get\_ghost}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_get\_ghost()}{p8est\_wrap\_get\_ghost()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__ghost_8h_a01f7ba9154de22adb8e8f8c342d697ba}{p8est\+\_\+ghost\+\_\+t}}$\ast$ p8est\+\_\+wrap\+\_\+get\+\_\+ghost (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$}]{pp }\end{DoxyParamCaption})}
+
+
+
+Return the appropriate ghost layer. 
+
+This function is necessary since two versions may exist simultaneously after refinement and before partition/complete. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em pp} & The \mbox{\hyperlink{structp8est}{p8est}} wrapper to work with, must not be hollow. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__wrap_8h_a0adf92ebd558b7b73cd707a10b3b6f40}\label{p8est__wrap_8h_a0adf92ebd558b7b73cd707a10b3b6f40}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_get\_mesh@{p8est\_wrap\_get\_mesh}}
+\index{p8est\_wrap\_get\_mesh@{p8est\_wrap\_get\_mesh}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_get\_mesh()}{p8est\_wrap\_get\_mesh()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structp8est__mesh__t}{p8est\+\_\+mesh\+\_\+t}}$\ast$ p8est\+\_\+wrap\+\_\+get\+\_\+mesh (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$}]{pp }\end{DoxyParamCaption})}
+
+
+
+Return the appropriate mesh structure. 
+
+This function is necessary since two versions may exist simultaneously after refinement and before partition/complete. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em pp} & The \mbox{\hyperlink{structp8est}{p8est}} wrapper to work with, must not be hollow. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__wrap_8h_a61a7805a31cff042720983a4e612aafb}\label{p8est__wrap_8h_a61a7805a31cff042720983a4e612aafb}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_mark\_coarsen@{p8est\_wrap\_mark\_coarsen}}
+\index{p8est\_wrap\_mark\_coarsen@{p8est\_wrap\_mark\_coarsen}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_mark\_coarsen()}{p8est\_wrap\_mark\_coarsen()}}
+{\footnotesize\ttfamily void p8est\+\_\+wrap\+\_\+mark\+\_\+coarsen (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$}]{pp,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}}]{which\+\_\+quad }\end{DoxyParamCaption})}
+
+
+
+Mark a local element for coarsening. 
+
+This will cancel any refinement mark set previously for this element. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em pp} & The \mbox{\hyperlink{structp8est}{p8est}} wrapper to work with, must not be hollow. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & The number of the tree this element lives in. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+quad} & The number of this element relative to its tree. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__wrap_8h_a646e829b494626242e89c19e7d25243f}\label{p8est__wrap_8h_a646e829b494626242e89c19e7d25243f}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_mark\_refine@{p8est\_wrap\_mark\_refine}}
+\index{p8est\_wrap\_mark\_refine@{p8est\_wrap\_mark\_refine}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_mark\_refine()}{p8est\_wrap\_mark\_refine()}}
+{\footnotesize\ttfamily void p8est\+\_\+wrap\+\_\+mark\+\_\+refine (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$}]{pp,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}}]{which\+\_\+quad }\end{DoxyParamCaption})}
+
+
+
+Mark a local element for refinement. 
+
+This will cancel any coarsening mark set previously for this element. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em pp} & The \mbox{\hyperlink{structp8est}{p8est}} wrapper to work with, must not be hollow. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & The number of the tree this element lives in. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+quad} & The number of this element relative to its tree. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__wrap_8h_a3a1ce39c991332bdc61dfaa461cf3c91}\label{p8est__wrap_8h_a3a1ce39c991332bdc61dfaa461cf3c91}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_new\_conn@{p8est\_wrap\_new\_conn}}
+\index{p8est\_wrap\_new\_conn@{p8est\_wrap\_new\_conn}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_new\_conn()}{p8est\_wrap\_new\_conn()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}}$\ast$ p8est\+\_\+wrap\+\_\+new\+\_\+conn (\begin{DoxyParamCaption}\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{int}]{initial\+\_\+level }\end{DoxyParamCaption})}
+
+
+
+Create a \mbox{\hyperlink{structp8est}{p8est}} wrapper from a given connectivity structure. 
+
+The ghost and mesh members are initialized as well as the flags. The btype is set to P8\+EST\+\_\+\+CONNECT\+\_\+\+FULL. This function sets a subset of the wrap creation parameters. For full control use \mbox{\hyperlink{p8est__wrap_8h_af205c54b0e045f94ae6768a7481e5aec}{p8est\+\_\+wrap\+\_\+new\+\_\+params}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & We expect sc\+\_\+\+MPI\+\_\+\+Init to be called already. \\
+\hline
+\mbox{\texttt{ in}}  & {\em conn} & Connectivity structure. Wrap takes ownership. \\
+\hline
+\mbox{\texttt{ in}}  & {\em initial\+\_\+level} & Initial level of uniform refinement. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A fully initialized \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}} structure. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__wrap_8h_acb4713adfd23df0c26b2f1557550b66f}\label{p8est__wrap_8h_acb4713adfd23df0c26b2f1557550b66f}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_new\_copy@{p8est\_wrap\_new\_copy}}
+\index{p8est\_wrap\_new\_copy@{p8est\_wrap\_new\_copy}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_new\_copy()}{p8est\_wrap\_new\_copy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}}$\ast$ p8est\+\_\+wrap\+\_\+new\+\_\+copy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$}]{source,  }\item[{size\+\_\+t}]{data\+\_\+size,  }\item[{\mbox{\hyperlink{p8est__extended_8h_aba389735f21cee010df09655d967958f}{p8est\+\_\+replace\+\_\+t}}}]{replace\+\_\+fn,  }\item[{void $\ast$}]{user\+\_\+pointer }\end{DoxyParamCaption})}
+
+
+
+Create a \mbox{\hyperlink{structp8est}{p8est}} wrapper from an existing one. 
+
+\begin{DoxyNote}{Note}
+This wrapper must be destroyed before the original one. We set it to hollow and copy the original \mbox{\hyperlink{structp8est}{p8est}} data structure. 
+\end{DoxyNote}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em source} & We access the source for debugging purposes. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data\+\_\+size} & The data size installed in the copied forest. \\
+\hline
+\mbox{\texttt{ in}}  & {\em replace\+\_\+fn} & Callback to replace quadrants during refinement, coarsening or balancing in \mbox{\hyperlink{p8est__wrap_8h_a352e162ccaa7261d81056e8f20583bcb}{p8est\+\_\+wrap\+\_\+adapt}}. May be NULL. \\
+\hline
+\mbox{\texttt{ in}}  & {\em user\+\_\+pointer} & Set the user pointer in \mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}}. Subsequently, we will never access it. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A fully initialized \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}} structure. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__wrap_8h_a93e157b9ea65c52071e53ac3a25d1864}\label{p8est__wrap_8h_a93e157b9ea65c52071e53ac3a25d1864}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_new\_ext@{p8est\_wrap\_new\_ext}}
+\index{p8est\_wrap\_new\_ext@{p8est\_wrap\_new\_ext}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_new\_ext()}{p8est\_wrap\_new\_ext()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}}$\ast$ p8est\+\_\+wrap\+\_\+new\+\_\+ext (\begin{DoxyParamCaption}\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{int}]{initial\+\_\+level,  }\item[{int}]{hollow,  }\item[{\mbox{\hyperlink{p8est__connectivity_8h_aaa5a9d47d1b169507e1095783ab89be1}{p8est\+\_\+connect\+\_\+type\+\_\+t}}}]{btype,  }\item[{\mbox{\hyperlink{p8est__extended_8h_aba389735f21cee010df09655d967958f}{p8est\+\_\+replace\+\_\+t}}}]{replace\+\_\+fn,  }\item[{void $\ast$}]{user\+\_\+pointer }\end{DoxyParamCaption})}
+
+
+
+Create a \mbox{\hyperlink{structp8est}{p8est}} wrapper from a given connectivity structure. 
+
+Like \mbox{\hyperlink{p8est__wrap_8h_a3a1ce39c991332bdc61dfaa461cf3c91}{p8est\+\_\+wrap\+\_\+new\+\_\+conn}}, but with extra parameters {\itshape hollow} and {\itshape btype}. This function sets a subset of the wrap creation parameters. For full control use \mbox{\hyperlink{p8est__wrap_8h_af205c54b0e045f94ae6768a7481e5aec}{p8est\+\_\+wrap\+\_\+new\+\_\+params}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & We expect sc\+\_\+\+MPI\+\_\+\+Init to be called already. \\
+\hline
+\mbox{\texttt{ in}}  & {\em conn} & Connectivity structure. Wrap takes ownership. \\
+\hline
+\mbox{\texttt{ in}}  & {\em initial\+\_\+level} & Initial level of uniform refinement. No effect if less/equal to zero. \\
+\hline
+\mbox{\texttt{ in}}  & {\em hollow} & Do not allocate flags, ghost, and mesh members. \\
+\hline
+\mbox{\texttt{ in}}  & {\em btype} & The neighborhood used for balance, ghost, mesh. \\
+\hline
+\mbox{\texttt{ in}}  & {\em replace\+\_\+fn} & Callback to replace quadrants during refinement, coarsening or balancing in \mbox{\hyperlink{p8est__wrap_8h_a352e162ccaa7261d81056e8f20583bcb}{p8est\+\_\+wrap\+\_\+adapt}}. May be NULL. \\
+\hline
+\mbox{\texttt{ in}}  & {\em user\+\_\+pointer} & Set the user pointer in \mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}}. Subsequently, we will never access it. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A fully initialized \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}} structure. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__wrap_8h_abf74d41e313f9f01a60a141dd6939e75}\label{p8est__wrap_8h_abf74d41e313f9f01a60a141dd6939e75}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_new\_p8est@{p8est\_wrap\_new\_p8est}}
+\index{p8est\_wrap\_new\_p8est@{p8est\_wrap\_new\_p8est}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_new\_p8est()}{p8est\_wrap\_new\_p8est()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}}$\ast$ p8est\+\_\+wrap\+\_\+new\+\_\+p8est (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{int}]{hollow,  }\item[{\mbox{\hyperlink{p8est__connectivity_8h_aaa5a9d47d1b169507e1095783ab89be1}{p8est\+\_\+connect\+\_\+type\+\_\+t}}}]{btype,  }\item[{\mbox{\hyperlink{p8est__extended_8h_aba389735f21cee010df09655d967958f}{p8est\+\_\+replace\+\_\+t}}}]{replace\+\_\+fn,  }\item[{void $\ast$}]{user\+\_\+pointer }\end{DoxyParamCaption})}
+
+
+
+Create a wrapper for a given \mbox{\hyperlink{structp8est}{p8est}} structure. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & Valid \mbox{\hyperlink{structp8est}{p8est}} object that we will own. We take ownership of its connectivity too. Its user pointer must be NULL and will be changed. Its data size will be set to 0 and the quadrant data will be freed. \\
+\hline
+\mbox{\texttt{ in}}  & {\em hollow} & Do not allocate flags, ghost, and mesh members. \\
+\hline
+\mbox{\texttt{ in}}  & {\em btype} & The neighborhood used for balance, ghost, mesh. \\
+\hline
+\mbox{\texttt{ in}}  & {\em replace\+\_\+fn} & Callback to replace quadrants during refinement, coarsening or balancing in \mbox{\hyperlink{p8est__wrap_8h_a352e162ccaa7261d81056e8f20583bcb}{p8est\+\_\+wrap\+\_\+adapt}}. May be NULL. \\
+\hline
+\mbox{\texttt{ in}}  & {\em user\+\_\+pointer} & Set the user pointer in \mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}}. Subsequently, we will never access it. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A fully initialized \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}} structure. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__wrap_8h_a83b3eb6f58f996b1c06535055eb64d69}\label{p8est__wrap_8h_a83b3eb6f58f996b1c06535055eb64d69}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_new\_p8est\_params@{p8est\_wrap\_new\_p8est\_params}}
+\index{p8est\_wrap\_new\_p8est\_params@{p8est\_wrap\_new\_p8est\_params}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_new\_p8est\_params()}{p8est\_wrap\_new\_p8est\_params()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}}$\ast$ p8est\+\_\+wrap\+\_\+new\+\_\+p8est\+\_\+params (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{\mbox{\hyperlink{structp8est__wrap__params__t}{p8est\+\_\+wrap\+\_\+params\+\_\+t}} $\ast$}]{params }\end{DoxyParamCaption})}
+
+
+
+Create a wrapper for a given \mbox{\hyperlink{structp8est}{p8est}} structure. 
+
+Like \mbox{\hyperlink{p8est__wrap_8h_abf74d41e313f9f01a60a141dd6939e75}{p8est\+\_\+wrap\+\_\+new\+\_\+p8est}}, but with {\itshape params} to completely control the wrap creation process. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & Valid \mbox{\hyperlink{structp8est}{p8est}} object that we will own. We take ownership of its connectivity too. Its user pointer must be NULL and will be changed. Its data size will be set to 0 and the quadrant data will be freed. \\
+\hline
+\mbox{\texttt{ in}}  & {\em params} & The wrap creation parameters. If NULL, the function defaults to the parameters of \mbox{\hyperlink{p8est__wrap_8h_ac13d7a983c3e60391630dbd69cff9d23}{p8est\+\_\+wrap\+\_\+params\+\_\+init}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A fully initialized \mbox{\hyperlink{structp4est__wrap}{p4est\+\_\+wrap}} structure. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__wrap_8h_af205c54b0e045f94ae6768a7481e5aec}\label{p8est__wrap_8h_af205c54b0e045f94ae6768a7481e5aec}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_new\_params@{p8est\_wrap\_new\_params}}
+\index{p8est\_wrap\_new\_params@{p8est\_wrap\_new\_params}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_new\_params()}{p8est\_wrap\_new\_params()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}}$\ast$ p8est\+\_\+wrap\+\_\+new\+\_\+params (\begin{DoxyParamCaption}\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{int}]{initial\+\_\+level,  }\item[{\mbox{\hyperlink{structp8est__wrap__params__t}{p8est\+\_\+wrap\+\_\+params\+\_\+t}} $\ast$}]{params }\end{DoxyParamCaption})}
+
+
+
+Create a \mbox{\hyperlink{structp8est}{p8est}} wrapper from a given connectivity structure. 
+
+Like \mbox{\hyperlink{p8est__wrap_8h_a3a1ce39c991332bdc61dfaa461cf3c91}{p8est\+\_\+wrap\+\_\+new\+\_\+conn}}, but with {\itshape params} to completely control the wrap creation process. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & We expect sc\+\_\+\+MPI\+\_\+\+Init to be called already. \\
+\hline
+\mbox{\texttt{ in}}  & {\em conn} & Connectivity structure. Wrap takes ownership. \\
+\hline
+\mbox{\texttt{ in}}  & {\em initial\+\_\+level} & Initial level of uniform refinement. No effect if less/equal to zero. \\
+\hline
+\mbox{\texttt{ in}}  & {\em params} & The wrap creation parameters. If NULL, the function defaults to the parameters of \mbox{\hyperlink{p8est__wrap_8h_ac13d7a983c3e60391630dbd69cff9d23}{p8est\+\_\+wrap\+\_\+params\+\_\+init}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A fully initialized \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}} structure. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__wrap_8h_a9cd676114762a1a54b4753f43b8fd768}\label{p8est__wrap_8h_a9cd676114762a1a54b4753f43b8fd768}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_new\_unitcube@{p8est\_wrap\_new\_unitcube}}
+\index{p8est\_wrap\_new\_unitcube@{p8est\_wrap\_new\_unitcube}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_new\_unitcube()}{p8est\_wrap\_new\_unitcube()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}}$\ast$ p8est\+\_\+wrap\+\_\+new\+\_\+unitcube (\begin{DoxyParamCaption}\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{int}]{initial\+\_\+level }\end{DoxyParamCaption})}
+
+
+
+Create a \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}} and internal helper data structures. 
+
+Expects sc\+\_\+\+MPI\+\_\+\+Init to be called beforehand. \mbox{\Hypertarget{p8est__wrap_8h_ac13d7a983c3e60391630dbd69cff9d23}\label{p8est__wrap_8h_ac13d7a983c3e60391630dbd69cff9d23}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_params\_init@{p8est\_wrap\_params\_init}}
+\index{p8est\_wrap\_params\_init@{p8est\_wrap\_params\_init}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_params\_init()}{p8est\_wrap\_params\_init()}}
+{\footnotesize\ttfamily void p8est\+\_\+wrap\+\_\+params\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structp8est__wrap__params__t}{p8est\+\_\+wrap\+\_\+params\+\_\+t}} $\ast$}]{params }\end{DoxyParamCaption})}
+
+
+
+Initialize a default \mbox{\hyperlink{structp8est__wrap__params__t}{p8est\+\_\+wrap\+\_\+params\+\_\+t}} structure. 
+
+The parameters are set to create the most basic, hollow wrap structure. \mbox{\Hypertarget{p8est__wrap_8h_a97f2b63d58895787d7114db18c2a3381}\label{p8est__wrap_8h_a97f2b63d58895787d7114db18c2a3381}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_partition@{p8est\_wrap\_partition}}
+\index{p8est\_wrap\_partition@{p8est\_wrap\_partition}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_partition()}{p8est\_wrap\_partition()}}
+{\footnotesize\ttfamily int p8est\+\_\+wrap\+\_\+partition (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$}]{pp,  }\item[{int}]{weight\+\_\+exponent,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$}]{unchanged\+\_\+first,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$}]{unchanged\+\_\+length,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$}]{unchanged\+\_\+old\+\_\+first }\end{DoxyParamCaption})}
+
+
+
+Call p8est\+\_\+partition for equal leaf distribution. 
+
+Frees the old ghost and mesh first and updates pp-\/$>$flags along with \mbox{\hyperlink{structp8est}{p8est}}. Creates ghost and mesh to represent the new mesh. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em pp} & The \mbox{\hyperlink{structp8est}{p8est}} wrapper to work with, must not be hollow. \\
+\hline
+\mbox{\texttt{ in}}  & {\em weight\+\_\+exponent} & Integer weight assigned to each leaf according to 2 $\ast$$\ast$ (level $\ast$ exponent). Passing 0 assigns equal weight to all leaves. Passing 1 increases the leaf weight by a factor of two for each level increase. CURRENTLY ONLY 0 AND 1 ARE LEGAL VALUES. \\
+\hline
+\mbox{\texttt{ out}}  & {\em unchanged\+\_\+first} & If not NULL, is assigned the processor-\/local index of the first local quadrant that has stayed on this processor. If no quadrant has stayed, the value is set to zero. This number is in reference to the new (output) partition. \\
+\hline
+\mbox{\texttt{ out}}  & {\em unchanged\+\_\+length} & If not NULL, is assigned the number of quadrants that have stayed on this processor. If no quadrant has stayed, the value is set to zero. \\
+\hline
+\mbox{\texttt{ out}}  & {\em unchanged\+\_\+old\+\_\+first} & If not NULL, is assigned the processor-\/local index of the first local quadrant that has stayed with reference to the old (input) partition. If no quadrant has stayed, the value is set to zero. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean whether \mbox{\hyperlink{structp8est}{p8est}} has changed. If true, complete must be called. If false, complete must not be called. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__wrap_8h_ac920142a9d670ad25787b91b1a122158}\label{p8est__wrap_8h_ac920142a9d670ad25787b91b1a122158}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_set\_coarsen\_delay@{p8est\_wrap\_set\_coarsen\_delay}}
+\index{p8est\_wrap\_set\_coarsen\_delay@{p8est\_wrap\_set\_coarsen\_delay}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_set\_coarsen\_delay()}{p8est\_wrap\_set\_coarsen\_delay()}}
+{\footnotesize\ttfamily void p8est\+\_\+wrap\+\_\+set\+\_\+coarsen\+\_\+delay (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$}]{pp,  }\item[{int}]{coarsen\+\_\+delay,  }\item[{int}]{coarsen\+\_\+affect }\end{DoxyParamCaption})}
+
+
+
+Set a parameter that delays coarsening after adaptation. 
+
+If positive each quadrant counts the number of adaptations it has survived. Calling this function initializes all quadrant counters to zero. On adaptation we only coarsen a quadrant if it is old enough. Optionally, we can also delay the time between subsequent coarsenings. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em pp} & A valid \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}} structure. \\
+\hline
+\mbox{\texttt{ in}}  & {\em coarsen\+\_\+delay} & Set how many adaptation cycles a quadrant has to wait to be allowed to coarsen. Non-\/negative number; 0 disables the feature. Suggested default value\+: not larger than 2. \\
+\hline
+\mbox{\texttt{ in}}  & {\em coarsen\+\_\+affect} & Boolean; If true, we not only count from the most recent refinement but also between subsequent coarsenings. Suggested default\+: 0. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__wrap_8h_a2875c9180880891680e4b226af449993}\label{p8est__wrap_8h_a2875c9180880891680e4b226af449993}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_set\_hollow@{p8est\_wrap\_set\_hollow}}
+\index{p8est\_wrap\_set\_hollow@{p8est\_wrap\_set\_hollow}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_set\_hollow()}{p8est\_wrap\_set\_hollow()}}
+{\footnotesize\ttfamily void p8est\+\_\+wrap\+\_\+set\+\_\+hollow (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$}]{pp,  }\item[{int}]{hollow }\end{DoxyParamCaption})}
+
+
+
+Change hollow status of the wrap. 
+
+It is legal to set to the current hollow status. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em pp} & The present wrap structure, hollow or not. \\
+\hline
+\mbox{\texttt{ in}}  & {\em hollow} & The desired hollow status. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__wrap_8h_a32f35c3f173165a3e8faab19ba0a1a99}\label{p8est__wrap_8h_a32f35c3f173165a3e8faab19ba0a1a99}} 
+\index{p8est\_wrap.h@{p8est\_wrap.h}!p8est\_wrap\_set\_partitioning@{p8est\_wrap\_set\_partitioning}}
+\index{p8est\_wrap\_set\_partitioning@{p8est\_wrap\_set\_partitioning}!p8est\_wrap.h@{p8est\_wrap.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_wrap\_set\_partitioning()}{p8est\_wrap\_set\_partitioning()}}
+{\footnotesize\ttfamily void p8est\+\_\+wrap\+\_\+set\+\_\+partitioning (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__wrap_8h_a4f45d147ccb4d0ebbd1fdfa4238c6cb9}{p8est\+\_\+wrap\+\_\+t}} $\ast$}]{pp,  }\item[{int}]{partition\+\_\+for\+\_\+coarsening }\end{DoxyParamCaption})}
+
+
+
+Set a parameter that ensures future partitions allow one level of coarsening. 
+
+The partition\+\_\+for\+\_\+coarsening parameter is passed to \mbox{\hyperlink{p8est__extended_8h_a236c44cd97be1b3095233b8ac4d385b8}{p8est\+\_\+partition\+\_\+ext}} in \mbox{\hyperlink{p8est__wrap_8h_a97f2b63d58895787d7114db18c2a3381}{p8est\+\_\+wrap\+\_\+partition}}. If not zero, all future calls to \mbox{\hyperlink{p8est__wrap_8h_a97f2b63d58895787d7114db18c2a3381}{p8est\+\_\+wrap\+\_\+partition}} will partition in a manner that allows one level of coarsening. This function does not automatically repartition the mesh, when switching partition\+\_\+for\+\_\+coarsening to a non-\/zero value.
+
+\begin{DoxyRefDesc}{Deprecated}
+\item[\mbox{\hyperlink{deprecated__deprecated000002}{Deprecated}}]The function will be removed in the future. Flags for partitioning can be set using \mbox{\hyperlink{p8est__wrap_8h_af205c54b0e045f94ae6768a7481e5aec}{p8est\+\_\+wrap\+\_\+new\+\_\+params}}.\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em pp} & A valid \mbox{\hyperlink{structp4est__wrap}{p4est\+\_\+wrap}} structure. \\
+\hline
+\mbox{\texttt{ in}}  & {\em partition\+\_\+for\+\_\+coarsening} & Boolean\+: If true, all future partitions of the wrap allow one level of coarsening. Suggested default\+: 1. \\
+\hline
+\end{DoxyParams}

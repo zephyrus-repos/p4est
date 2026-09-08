@@ -1,0 +1,42 @@
+.TH "sc_list" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sc_list \- The \fBsc_list\fP object provides a linked list\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <sc_containers\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "size_t \fBelem_count\fP"
+.br
+.RI "Number of elements in this list\&. "
+.ti -1c
+.RI "\fBsc_link_t\fP * \fBfirst\fP"
+.br
+.RI "Pointer to first element in list\&. "
+.ti -1c
+.RI "\fBsc_link_t\fP * \fBlast\fP"
+.br
+.RI "Pointer to last element in list\&. "
+.ti -1c
+.RI "int \fBallocator_owned\fP"
+.br
+.RI "Boolean to designate owned allocator\&. "
+.ti -1c
+.RI "\fBsc_mempool_t\fP * \fBallocator\fP"
+.br
+.RI "Must allocate objects of sc_link_t\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+The \fBsc_list\fP object provides a linked list\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

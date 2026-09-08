@@ -1,0 +1,61 @@
+\hypertarget{structsc__io__source}{}\doxysection{sc\+\_\+io\+\_\+source Struct Reference}
+\label{structsc__io__source}\index{sc\_io\_source@{sc\_io\_source}}
+
+
+A generic data source.  
+
+
+
+
+{\ttfamily \#include $<$sc\+\_\+io.\+h$>$}
+
+
+
+Collaboration diagram for sc\+\_\+io\+\_\+source\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=254pt]{structsc__io__source__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structsc__io__source_adc72f8aa073a7827e20dac7cf66bfb3c}\label{structsc__io__source_adc72f8aa073a7827e20dac7cf66bfb3c}} 
+\mbox{\hyperlink{sc__io_8h_a4a1276d327fb08fa6e653e75601c3bcc}{sc\+\_\+io\+\_\+type\+\_\+t}} \mbox{\hyperlink{structsc__io__source_adc72f8aa073a7827e20dac7cf66bfb3c}{iotype}}
+\begin{DoxyCompactList}\small\item\em type of the I/O operation \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__io__source_a0fc70e5d4eb0c15da0e8bfedece02d51}\label{structsc__io__source_a0fc70e5d4eb0c15da0e8bfedece02d51}} 
+\mbox{\hyperlink{sc__io_8h_aba4b29f5f9ed6b61e7b5672d3098315b}{sc\+\_\+io\+\_\+encode\+\_\+t}} \mbox{\hyperlink{structsc__io__source_a0fc70e5d4eb0c15da0e8bfedece02d51}{encode}}
+\begin{DoxyCompactList}\small\item\em encoding of data \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__io__source_aeb91669383e263aa4e14a67514b19f74}\label{structsc__io__source_aeb91669383e263aa4e14a67514b19f74}} 
+\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$ \mbox{\hyperlink{structsc__io__source_aeb91669383e263aa4e14a67514b19f74}{buffer}}
+\begin{DoxyCompactList}\small\item\em buffer for the iotype \mbox{\hyperlink{sc__io_8h_a4a1276d327fb08fa6e653e75601c3bcca9f8320af9147bb482644137c23c8b8d7}{SC\+\_\+\+IO\+\_\+\+TYPE\+\_\+\+BUFFER}} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__io__source_aea29cc777b5e40dbcc9c7110353c1ac4}\label{structsc__io__source_aea29cc777b5e40dbcc9c7110353c1ac4}} 
+size\+\_\+t \mbox{\hyperlink{structsc__io__source_aea29cc777b5e40dbcc9c7110353c1ac4}{buffer\+\_\+bytes}}
+\begin{DoxyCompactList}\small\item\em distinguish from array elements \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__io__source_a5524020c37338c2d7db7587eb6acde7f}\label{structsc__io__source_a5524020c37338c2d7db7587eb6acde7f}} 
+FILE $\ast$ \mbox{\hyperlink{structsc__io__source_a5524020c37338c2d7db7587eb6acde7f}{file}}
+\begin{DoxyCompactList}\small\item\em file pointer for iotype unequal to \mbox{\hyperlink{sc__io_8h_a4a1276d327fb08fa6e653e75601c3bcca9f8320af9147bb482644137c23c8b8d7}{SC\+\_\+\+IO\+\_\+\+TYPE\+\_\+\+BUFFER}} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__io__source_ac17d595b53cadc79d2ad349e5aab6e43}\label{structsc__io__source_ac17d595b53cadc79d2ad349e5aab6e43}} 
+size\+\_\+t \mbox{\hyperlink{structsc__io__source_ac17d595b53cadc79d2ad349e5aab6e43}{bytes\+\_\+in}}
+\begin{DoxyCompactList}\small\item\em input bytes count \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__io__source_a3f7e0eb7e23e623e68b5b8a601bce7a9}\label{structsc__io__source_a3f7e0eb7e23e623e68b5b8a601bce7a9}} 
+size\+\_\+t \mbox{\hyperlink{structsc__io__source_a3f7e0eb7e23e623e68b5b8a601bce7a9}{bytes\+\_\+out}}
+\begin{DoxyCompactList}\small\item\em read bytes count \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__io__source_a8cef85c7bc315d7b0472c1cac7279a9a}\label{structsc__io__source_a8cef85c7bc315d7b0472c1cac7279a9a}} 
+int \mbox{\hyperlink{structsc__io__source_a8cef85c7bc315d7b0472c1cac7279a9a}{is\+\_\+eof}}
+\begin{DoxyCompactList}\small\item\em Have we reached the end of file? \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__io__source_a4a909ca4222310429dad43570af9f0ea}\label{structsc__io__source_a4a909ca4222310429dad43570af9f0ea}} 
+\mbox{\hyperlink{sc__io_8h_a24e09d62a26d3f849b112f577158a3d1}{sc\+\_\+io\+\_\+sink\+\_\+t}} $\ast$ \mbox{\hyperlink{structsc__io__source_a4a909ca4222310429dad43570af9f0ea}{mirror}}
+\begin{DoxyCompactList}\small\item\em if activated, a sink to store the data \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__io__source_ad93d8c82ca93c11f9e6ae7360e3e9821}\label{structsc__io__source_ad93d8c82ca93c11f9e6ae7360e3e9821}} 
+\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$ \mbox{\hyperlink{structsc__io__source_ad93d8c82ca93c11f9e6ae7360e3e9821}{mirror\+\_\+buffer}}
+\begin{DoxyCompactList}\small\item\em if activated, the buffer for the mirror \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A generic data source. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{sc__io_8h}{sc\+\_\+io.\+h}}\end{DoxyCompactItemize}

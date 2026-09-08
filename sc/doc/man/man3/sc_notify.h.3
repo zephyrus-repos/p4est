@@ -1,0 +1,674 @@
+.TH "src/sc_notify.h" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/sc_notify.h \- We provide various algorithms to invert the communication pattern\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <sc_statistics\&.h>\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSC_NOTIFY_STR_ALLGATHER\fP   'allgather'"
+.br
+.RI "String for the allgather variant\&. "
+.ti -1c
+.RI "#define \fBSC_NOTIFY_STR_BINARY\fP   'binary'"
+.br
+.RI "String for the binary tree variant\&. "
+.ti -1c
+.RI "#define \fBSC_NOTIFY_STR_NARY\fP   'nary'"
+.br
+.RI "String for the n-ary tree variant\&. "
+.ti -1c
+.RI "#define \fBSC_NOTIFY_STR_PEX\fP   'pex'"
+.br
+.RI "String for the PEX variant\&. "
+.ti -1c
+.RI "#define \fBSC_NOTIFY_STR_PCX\fP   'pcx'"
+.br
+.RI "String for the PCX variant\&. "
+.ti -1c
+.RI "#define \fBSC_NOTIFY_STR_RSX\fP   'rsx'"
+.br
+.RI "String for the RSX variant\&. "
+.ti -1c
+.RI "#define \fBSC_NOTIFY_STR_NBX\fP   'nbx'"
+.br
+.RI "String for the NBX variant\&. "
+.ti -1c
+.RI "#define \fBSC_NOTIFY_STR_RANGES\fP   'ranges'"
+.br
+.RI "String for the ranges variant\&. "
+.ti -1c
+.RI "#define \fBSC_NOTIFY_STR_SUPERSET\fP   'superset'"
+.br
+.RI "String for the superset variant\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct sc_notify_s \fBsc_notify_t\fP"
+.br
+.RI "Opaque object used for controlling notification (AKA dynamic sparse data exchange) operations\&. "
+.ti -1c
+.RI "typedef void(* \fBsc_compute_superset_t\fP) (\fBsc_array_t\fP *, \fBsc_array_t\fP *, \fBsc_array_t\fP *, \fBsc_notify_t\fP *, void *)"
+.br
+.RI "Type of callback function for the \fBSC_NOTIFY_SUPERSET\fP variant\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBsc_notify_type_t\fP { \fBSC_NOTIFY_DEFAULT\fP = -1, \fBSC_NOTIFY_ALLGATHER\fP = 0, \fBSC_NOTIFY_BINARY\fP, \fBSC_NOTIFY_NARY\fP, \fBSC_NOTIFY_PEX\fP, \fBSC_NOTIFY_PCX\fP, \fBSC_NOTIFY_RSX\fP, \fBSC_NOTIFY_NBX\fP, \fBSC_NOTIFY_RANGES\fP, \fBSC_NOTIFY_SUPERSET\fP, \fBSC_NOTIFY_NUM_TYPES\fP }"
+.br
+.RI "Various equivalent implementations of the functionality\&. "
+.in -1c
+.SS "Functions"
+
+.PP
+.RI "\fBClassic, simple interface\&.\fP"
+.br
+
+.in +1c
+.in +1c
+.ti -1c
+.RI "int \fBsc_notify_allgather\fP (int *receivers, int num_receivers, int *senders, int *num_senders, \fBsc_MPI_Comm\fP mpicomm)"
+.br
+.RI "Collective call to notify a set of receiver ranks of current rank\&. "
+.ti -1c
+.RI "int \fBsc_notify\fP (int *receivers, int num_receivers, int *senders, int *num_senders, \fBsc_MPI_Comm\fP mpicomm)"
+.br
+.RI "Collective call to notify a set of receiver ranks of current rank\&. "
+.ti -1c
+.RI "void \fBsc_notify_nary\fP (\fBsc_array_t\fP *receivers, \fBsc_array_t\fP *senders, \fBsc_array_t\fP *in_payload, \fBsc_array_t\fP *out_payload, \fBsc_MPI_Comm\fP mpicomm)"
+.br
+.RI "The n-ary tree implementation of the notify functionality\&. "
+.ti -1c
+.RI "void \fBsc_notify_ext\fP (\fBsc_array_t\fP *receivers, \fBsc_array_t\fP *senders, \fBsc_array_t\fP *in_payload, \fBsc_array_t\fP *out_payload, \fBsc_MPI_Comm\fP mpicomm)"
+.br
+.RI "The default implementation of the notify functionality, currently PEX\&. "
+.in -1c
+.in -1c
+.PP
+.RI "\fBOptional, most general interface\&.\fP"
+.br
+
+.in +1c
+.in +1c
+.ti -1c
+.RI "\fBsc_notify_t\fP * \fBsc_notify_new\fP (\fBsc_MPI_Comm\fP mpicomm)"
+.br
+.RI "Create a notify controller that can be used in \fBsc_notify_payload\fP and \fBsc_notify_payloadv\fP\&. "
+.ti -1c
+.RI "void \fBsc_notify_destroy\fP (\fBsc_notify_t\fP *notify)"
+.br
+.RI "Destroy a notify controller constructed with \fBsc_notify_new\fP\&. "
+.ti -1c
+.RI "size_t \fBsc_notify_get_eager_threshold\fP (\fBsc_notify_t\fP *notify)"
+.br
+.RI "Get the payload size above which payloads are no longer transferred with notification packets in \fBsc_notify_payload\fP\&. "
+.ti -1c
+.RI "void \fBsc_notify_set_eager_threshold\fP (\fBsc_notify_t\fP *notify, size_t thresh)"
+.br
+.RI "Get the payload size above which payloads are no longer transferred with notification packets in \fBsc_notify_payload\fP\&. "
+.ti -1c
+.RI "\fBsc_statistics_t\fP * \fBsc_notify_get_stats\fP (\fBsc_notify_t\fP *notify)"
+.br
+.RI "Get the \fBsc_statistics_t\fP object for logging runtimes (added by function name)\&. "
+.ti -1c
+.RI "void \fBsc_notify_set_stats\fP (\fBsc_notify_t\fP *notify, \fBsc_statistics_t\fP *stats)"
+.br
+.RI "Set a \fBsc_statistics_t\fP object for logging runtimes (added by function name)\&. "
+.ti -1c
+.RI "\fBsc_MPI_Comm\fP \fBsc_notify_get_comm\fP (\fBsc_notify_t\fP *notify)"
+.br
+.RI "Get the MPI communicator of a notify controller\&. "
+.ti -1c
+.RI "int \fBsc_notify_supports_type\fP (\fBsc_notify_type_t\fP type)"
+.br
+.RI "Query whether \fBsc_notify_set_type\fP supports a given type\&. "
+.ti -1c
+.RI "\fBsc_notify_type_t\fP \fBsc_notify_get_type\fP (\fBsc_notify_t\fP *notify)"
+.br
+.RI "Get the type of a notify controller\&. "
+.ti -1c
+.RI "int \fBsc_notify_set_type\fP (\fBsc_notify_t\fP *notify, \fBsc_notify_type_t\fP type)"
+.br
+.RI "Set the type of a notify controller\&. "
+.ti -1c
+.RI "void \fBsc_notify_nary_get_widths\fP (\fBsc_notify_t\fP *notify, int *ntop, int *nint, int *nbot)"
+.br
+.RI "For a notify of type \fBSC_NOTIFY_NARY\fP, get the branching widths of the recursive algorithm\&. "
+.ti -1c
+.RI "void \fBsc_notify_nary_set_widths\fP (\fBsc_notify_t\fP *notify, int ntop, int nint, int nbot)"
+.br
+.RI "For a notify of type \fBSC_NOTIFY_NARY\fP, set the branching widths of the recursive algorithm\&. "
+.ti -1c
+.RI "int \fBsc_notify_ranges_get_num_ranges\fP (\fBsc_notify_t\fP *notify)"
+.br
+.RI "Query the number of ranges for the \fBSC_NOTIFY_RANGES\fP method\&. "
+.ti -1c
+.RI "void \fBsc_notify_ranges_set_num_ranges\fP (\fBsc_notify_t\fP *notify, int num_ranges)"
+.br
+.RI "Set the number of ranges for the \fBSC_NOTIFY_RANGES\fP method\&. "
+.ti -1c
+.RI "void \fBsc_notify_superset_get_callback\fP (\fBsc_notify_t\fP *notify, \fBsc_compute_superset_t\fP *compute_superset, void *ctx)"
+.br
+.RI "Query the callback for the \fBSC_NOTIFY_SUPERSET\fP method\&. "
+.ti -1c
+.RI "void \fBsc_notify_superset_set_callback\fP (\fBsc_notify_t\fP *notify, \fBsc_compute_superset_t\fP compute_superset, void *ctx)"
+.br
+.RI "Set the callback for the \fBSC_NOTIFY_SUPERSET\fP method\&. "
+.ti -1c
+.RI "void \fBsc_notify_payload\fP (\fBsc_array_t\fP *receivers, \fBsc_array_t\fP *senders, \fBsc_array_t\fP *in_payload, \fBsc_array_t\fP *out_payload, int sorted, \fBsc_notify_t\fP *notify)"
+.br
+.RI "Collective call to notify a set of receiver ranks of current rank\&. "
+.ti -1c
+.RI "void \fBsc_notify_payloadv\fP (\fBsc_array_t\fP *receivers, \fBsc_array_t\fP *senders, \fBsc_array_t\fP *out_payload, \fBsc_array_t\fP *in_payload, \fBsc_array_t\fP *out_offsets, \fBsc_array_t\fP *in_offsets, int sorted, \fBsc_notify_t\fP *notify)"
+.br
+.RI "Collective call to notify a set of receiver ranks of current rank and send a variable size message to the receiver\&. "
+.in -1c
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBsc_notify_nary_ntop_default\fP"
+.br
+.RI "Default number of children at root node of nary tree; initialized to 2\&. "
+.ti -1c
+.RI "int \fBsc_notify_nary_nint_default\fP"
+.br
+.RI "Default number of children at intermediate tree nodes; initialized to 2\&. "
+.ti -1c
+.RI "int \fBsc_notify_nary_nbot_default\fP"
+.br
+.RI "Default number of children at deepest level of tree; initialized to 2\&. "
+.ti -1c
+.RI "const char * \fBsc_notify_type_strings\fP [\fBSC_NOTIFY_NUM_TYPES\fP]"
+.br
+.RI "Names for each notify method\&. "
+.ti -1c
+.RI "\fBsc_notify_type_t\fP \fBsc_notify_type_default\fP"
+.br
+.RI "The default type used when constructing a notify controller; initialized to \fBSC_NOTIFY_PEX\fP\&. "
+.ti -1c
+.RI "size_t \fBsc_notify_eager_threshold_default\fP"
+.br
+.RI "The default threshold for payload sizes (in bytes) that are communicated with the notification packet\&. "
+.ti -1c
+.RI "int \fBsc_notify_ranges_num_ranges_default\fP"
+.br
+.RI "For the \fBSC_NOTIFY_RANGES\fP method, the default is 25\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+We provide various algorithms to invert the communication pattern\&. 
+
+The task at hand is: given an individual set of receiver ranks for each process in a sender role, compute efficiently for the receiver role of each rank the set of senders to it\&.
+.PP
+This file implements two approaches that solve the problem scalably\&.
+.PP
+.IP "1." 4
+The first and original historic one offers the choice between a binary tree recursion, an n-ary tree recursion, optionally with payload data, and an allgather version\&. The n-ary tree version contains the binary one as a special case\&. It is called \fBsc_notify_nary\fP and can be configured by the global variables
+.IP "  \(bu" 4
+\fBsc_notify_nary_ntop_default\fP; #children of the root tree node,
+.IP "  \(bu" 4
+\fBsc_notify_nary_nint_default\fP; #children of intermediate nodes,
+.IP "  \(bu" 4
+\fBsc_notify_nary_nbot_default\fP; #siblings of each leaf node\&.
+.PP
+.PP
+Thus it can be tailored to match for example distributed NUMA architectures\&. The default for each variable is a conservative 2 to choose a binary tree\&.
+.PP
+Another addition to the family is \fBsc_notify_ext\fP for the best known default, which is currently the PEX algorithm\&.
+.IP "2." 4
+The more recent and general variant allows to choose between practically all currently known algorithms, enumerated by \fBsc_notify_type_t\fP\&. This is managed by first creating a configuration object \fBsc_notify_t\fP, setting its type and further parameters, and passing it into the general \fBsc_notify_payload\fP or \fBsc_notify_payloadv\fP functions\&. 
+.PP
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBsc_notify_type_t\fP"
+
+.PP
+Various equivalent implementations of the functionality\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISC_NOTIFY_DEFAULT \fP\fP
+Choose whatever type is stored in sc_notify_type_default\&. 
+.TP
+\fB\fISC_NOTIFY_ALLGATHER \fP\fP
+Choose allgather algorithm\&. Likely suboptimal\&. 
+.TP
+\fB\fISC_NOTIFY_BINARY \fP\fP
+Choose simple binary recursion\&. 
+.TP
+\fB\fISC_NOTIFY_NARY \fP\fP
+Choose nary (k-way) recursion\&. 
+.TP
+\fB\fISC_NOTIFY_PEX \fP\fP
+Choose alltoall algorithm (AKA personalized exchange)\&. Current best choice\&. 
+.TP
+\fB\fISC_NOTIFY_PCX \fP\fP
+Choose reduce_scatter algorithm (AKA personalized census)\&. 
+.TP
+\fB\fISC_NOTIFY_RSX \fP\fP
+Choose remote summation algorithm\&. 
+.TP
+\fB\fISC_NOTIFY_NBX \fP\fP
+Choose non-blocking consensus algorithm\&. 
+.TP
+\fB\fISC_NOTIFY_RANGES \fP\fP
+Use the sc_ranges functionality\&. Likely suboptimal\&. 
+.TP
+\fB\fISC_NOTIFY_SUPERSET \fP\fP
+Use a computable superset of communicators, computed by a callback function\&. 
+.TP
+\fB\fISC_NOTIFY_NUM_TYPES \fP\fP
+End of list marker for notify algorithms\&. 
+.SH "Function Documentation"
+.PP 
+.SS "int sc_notify (int * receivers, int num_receivers, int * senders, int * num_senders, \fBsc_MPI_Comm\fP mpicomm)"
+
+.PP
+Collective call to notify a set of receiver ranks of current rank\&. More generally, this function serves to transpose the nonzero pattern of a matrix, where each row and column corresponds to an MPI rank in order\&. We use a binary tree to construct the communication pattern\&. This minimizes the number of messages at the cost of more messages compared to a fatter tree such as configurable with \fBsc_notify_nary\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIreceivers\fP Sorted and unique array of MPI ranks to inform\&. 
+.br
+\fInum_receivers\fP Count of ranks contained in receivers\&. 
+.br
+\fIsenders\fP Array of at least size sc_MPI_Comm_size\&. On output it contains the notifying ranks, whose number is returned in \fBnum_senders\fP\&. 
+.br
+\fInum_senders\fP On output the number of notifying ranks\&. 
+.br
+\fImpicomm\fP MPI communicator to use\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Aborts on MPI error or returns sc_MPI_SUCCESS\&. 
+.RE
+.PP
+
+.SS "int sc_notify_allgather (int * receivers, int num_receivers, int * senders, int * num_senders, \fBsc_MPI_Comm\fP mpicomm)"
+
+.PP
+Collective call to notify a set of receiver ranks of current rank\&. This version uses one call to sc_MPI_Allgather and one to sc_MPI_Allgatherv\&. We provide hand-coded alternatives \fBsc_notify\fP and \fBsc_notify_nary\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIreceivers\fP Sorted and unique array of MPI ranks to inform\&. 
+.br
+\fInum_receivers\fP Count of ranks contained in receivers\&. 
+.br
+\fIsenders\fP Array of at least size sc_MPI_Comm_size\&. On output it contains the notifying ranks\&. 
+.br
+\fInum_senders\fP On output the number of notifying ranks\&. 
+.br
+\fImpicomm\fP MPI communicator to use\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Aborts on MPI error or returns sc_MPI_SUCCESS\&. 
+.RE
+.PP
+
+.SS "void sc_notify_destroy (\fBsc_notify_t\fP * notify)"
+
+.PP
+Destroy a notify controller constructed with \fBsc_notify_new\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP The notify controller that will be destroyed\&. Pointer is invalid on completion\&. 
+.RE
+.PP
+
+.SS "void sc_notify_ext (\fBsc_array_t\fP * receivers, \fBsc_array_t\fP * senders, \fBsc_array_t\fP * in_payload, \fBsc_array_t\fP * out_payload, \fBsc_MPI_Comm\fP mpicomm)"
+
+.PP
+The default implementation of the notify functionality, currently PEX\&. This function optionally transfers a fixed-size payload per rank\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIreceivers\fP Sorted, unique array of int members\&. If \fIsenders\fP is NULL, repurposed as output\&. 
+.br
+\fIsenders\fP Aarray of int members, resized on output\&. If NULL, the output is placed in \fIreceivers\fP\&. 
+.br
+\fIin_payload\fP Array of same length as \fIreceivers\fP with arbitrary data to be transmitted to senders\&. If \fIout_payload\fP is NULL, repurposed as output\&. Both payload arrays may be NULL altogether\&. 
+.br
+\fIout_payload\fP Of same type as \fIin_payload\fP, resized on output\&. If NULL, the result is placed in \fIin_payload\fP\&. 
+.br
+\fImpicomm\fP MPI communicator to use\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Aborts on MPI error or returns sc_MPI_SUCCESS\&. 
+.RE
+.PP
+
+.SS "\fBsc_MPI_Comm\fP sc_notify_get_comm (\fBsc_notify_t\fP * notify)"
+
+.PP
+Get the MPI communicator of a notify controller\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP The notify controller\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The mpi communicator over which the notification occurs\&. 
+.RE
+.PP
+
+.SS "size_t sc_notify_get_eager_threshold (\fBsc_notify_t\fP * notify)"
+
+.PP
+Get the payload size above which payloads are no longer transferred with notification packets in \fBsc_notify_payload\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP The notify controller\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The size in bytes of the maximum eager payload size\&. 
+.RE
+.PP
+
+.SS "\fBsc_statistics_t\fP* sc_notify_get_stats (\fBsc_notify_t\fP * notify)"
+
+.PP
+Get the \fBsc_statistics_t\fP object for logging runtimes (added by function name)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP The notify controller\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The sc_statistics_t * object, may be NULL\&. 
+.RE
+.PP
+
+.SS "\fBsc_notify_type_t\fP sc_notify_get_type (\fBsc_notify_t\fP * notify)"
+
+.PP
+Get the type of a notify controller\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP The notify controller\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The type of the notify controller (see \fIsc_notify_type_t\fP)\&. 
+.RE
+.PP
+
+.SS "void sc_notify_nary (\fBsc_array_t\fP * receivers, \fBsc_array_t\fP * senders, \fBsc_array_t\fP * in_payload, \fBsc_array_t\fP * out_payload, \fBsc_MPI_Comm\fP mpicomm)"
+
+.PP
+The n-ary tree implementation of the notify functionality\&. This function optionally transfers a fixed-size payload per rank\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIreceivers\fP Sorted, unique array of int members\&. If \fIsenders\fP is NULL, repurposed as output\&. 
+.br
+\fIsenders\fP Aarray of int members, resized on output\&. If NULL, the output is placed in \fIreceivers\fP\&. 
+.br
+\fIin_payload\fP Array of same length as \fIreceivers\fP with arbitrary data to be transmitted to senders\&. If \fIout_payload\fP is NULL, repurposed as output\&. Both payload arrays may be NULL altogether\&. If \fIout_payload\fP is not NULL, \fIin_payload\fP must not be NULL either\&. 
+.br
+\fIout_payload\fP Of same type as \fIin_payload\fP, resized on output\&. If NULL, the result is placed in \fIin_payload\fP\&. 
+.br
+\fImpicomm\fP MPI communicator to use\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Aborts on MPI error or returns sc_MPI_SUCCESS\&. 
+.RE
+.PP
+
+.SS "void sc_notify_nary_get_widths (\fBsc_notify_t\fP * notify, int * ntop, int * nint, int * nbot)"
+
+.PP
+For a notify of type \fBSC_NOTIFY_NARY\fP, get the branching widths of the recursive algorithm\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP The notify controller must be of type \fBSC_NOTIFY_NARY\fP\&. 
+.br
+\fIntop\fP The number of children at root node of nary tree\&. 
+.br
+\fInint\fP The number of children at intermediate tree nodes\&. 
+.br
+\fInbot\fP The number of children at deepest level of the tree\&. 
+.RE
+.PP
+
+.SS "void sc_notify_nary_set_widths (\fBsc_notify_t\fP * notify, int ntop, int nint, int nbot)"
+
+.PP
+For a notify of type \fBSC_NOTIFY_NARY\fP, set the branching widths of the recursive algorithm\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP The notify controller must be of type \fBSC_NOTIFY_NARY\fP\&. 
+.br
+\fIntop\fP The number of children at root node of nary tree\&. 
+.br
+\fInint\fP The number of children at intermediate tree nodes\&. 
+.br
+\fInbot\fP The number of children at deepest level of the tree\&. 
+.RE
+.PP
+
+.SS "\fBsc_notify_t\fP* sc_notify_new (\fBsc_MPI_Comm\fP mpicomm)"
+
+.PP
+Create a notify controller that can be used in \fBsc_notify_payload\fP and \fBsc_notify_payloadv\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpicomm\fP The MPI communicator over which the notification occurs\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to a notify controller that should be destroyed with \fBsc_notify_destroy\fP\&. 
+.RE
+.PP
+
+.SS "void sc_notify_payload (\fBsc_array_t\fP * receivers, \fBsc_array_t\fP * senders, \fBsc_array_t\fP * in_payload, \fBsc_array_t\fP * out_payload, int sorted, \fBsc_notify_t\fP * notify)"
+
+.PP
+Collective call to notify a set of receiver ranks of current rank\&. This function aborts on MPI error\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIreceivers\fP On input, sorted and uniqued array of type int\&. Contains the MPI ranks to inform\&. If \fBsenders\fP is not NULL, treated read-only\&. If \fBsenders\fP is NULL, takes its role on output\&. In this case it must not be a view\&. 
+.br
+\fIsenders\fP If NULL, the result is placed in \fBreceivers\fP as written below for the non-NULL case\&. If not NULL, array of type int and any length\&. Its entries on input are ignored and overwritten\&. On output it is resized to the number of notifying ranks, which it contains in order\&. Thus, it must not be a view\&. 
+.br
+\fIin_payload\fP This array pointer may be NULL\&. If not NULL, it must have \fBnum_receivers\fP entries that are the same size on every process\&. If not NULL and \fBout_payload\fP is NULL, it must not be a view, and it will be resized to contain the output and have \fB*num_senders\fP entries\&. 
+.br
+\fIout_payload\fP This array pointer may be NULL\&. If not, it must not be a view, and on output will have \fB*\fP num_senders entries\&. 
+.br
+\fIsorted\fP whether \fBreceivers\fP and \fBsenders\fP are required to be sorted by MPI rank\&. 
+.br
+\fInotify\fP Notify controller to use\&. 
+.RE
+.PP
+
+.SS "void sc_notify_payloadv (\fBsc_array_t\fP * receivers, \fBsc_array_t\fP * senders, \fBsc_array_t\fP * out_payload, \fBsc_array_t\fP * in_payload, \fBsc_array_t\fP * out_offsets, \fBsc_array_t\fP * in_offsets, int sorted, \fBsc_notify_t\fP * notify)"
+
+.PP
+Collective call to notify a set of receiver ranks of current rank and send a variable size message to the receiver\&. This function aborts on MPI error\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIreceivers\fP On input, sorted and uniqued array of type int\&. Contains the MPI ranks to inform\&. If \fBsenders\fP is not NULL, treated read-only\&. If \fBsenders\fP is NULL, takes its role on output\&. In this case it must not be a view\&. 
+.br
+\fIsenders\fP If NULL, the result is placed in \fBreceivers\fP as written below for the non-NULL case\&. If not NULL, array of type int and any length\&. Its entries on input are ignored and overwritten\&. On output it is resized to the number of notifying ranks, which it contains in order\&. Thus, it must not be a view\&. 
+.br
+\fIin_payload\fP This array pointer may be NULL\&. If not, it must not be a view and have entries that are the same size on every process\&. This data will be communicated to the receivers\&. If \fBout_payload\fP is NULL, this will be resized to contain the received payload\&. 
+.br
+\fIout_payload\fP This array pointer may be NULL\&. If not, it must not be a view and have entries that are the same size on every process\&. If not NULL, this array will be resized to contain the received payload\&. 
+.br
+\fIin_offsets\fP If \fBin_payload\fP is not NULL, this is an array of int's of size \fBnum_receivers\fP + 1, giving offsets for the portion of the payload to be sent to every receiver\&. If \fBout_offsets\fP is NULL, it will be resized to give offsets of the received payload\&. 
+.br
+\fIout_offsets\fP This array pointer may be NULL\&. If \fBin_payload\fP is not NULL, it is an array of int's that will be resized to \fBnum_senders\fP + 1, giving offsets for the portion of the payload received from each sender\&. 
+.br
+\fIsorted\fP whether \fBreceivers\fP and \fBsenders\fP (and thus \fBin_offsets\fP and \fBout_offsets\fP) are required to be sorted by MPI rank\&. 
+.br
+\fInotify\fP Notify controller to use\&. 
+.RE
+.PP
+
+.SS "int sc_notify_ranges_get_num_ranges (\fBsc_notify_t\fP * notify)"
+
+.PP
+Query the number of ranges for the \fBSC_NOTIFY_RANGES\fP method\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP Must be of type \fBSC_NOTIFY_RANGES\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Number of ranges\&. 
+.RE
+.PP
+
+.SS "void sc_notify_ranges_set_num_ranges (\fBsc_notify_t\fP * notify, int num_ranges)"
+
+.PP
+Set the number of ranges for the \fBSC_NOTIFY_RANGES\fP method\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP Must be of type \fBSC_NOTIFY_RANGES\fP\&. 
+.br
+\fInum_ranges\fP Number of ranges\&. 
+.RE
+.PP
+
+.SS "void sc_notify_set_eager_threshold (\fBsc_notify_t\fP * notify, size_t thresh)"
+
+.PP
+Get the payload size above which payloads are no longer transferred with notification packets in \fBsc_notify_payload\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP The notify controller\&. 
+.br
+\fIthresh\fP The size in bytes of the maximum eager payload size\&. 
+.RE
+.PP
+
+.SS "void sc_notify_set_stats (\fBsc_notify_t\fP * notify, \fBsc_statistics_t\fP * stats)"
+
+.PP
+Set a \fBsc_statistics_t\fP object for logging runtimes (added by function name)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP The notify controller\&. 
+.br
+\fIstats\fP The \fBsc_statistics_t\fP object\&. The notify controller will add timings for functions to the object, listed under their function names\&. 
+.RE
+.PP
+
+.SS "int sc_notify_set_type (\fBsc_notify_t\fP * notify, \fBsc_notify_type_t\fP type)"
+
+.PP
+Set the type of a notify controller\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP The notify controller\&. 
+.br
+\fItype\fP The type of algorithm used to affect the dynamic sparse data exchange\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+false if the type is supported by the current MPI version, true otherwise\&. 
+.RE
+.PP
+
+.SS "void sc_notify_superset_get_callback (\fBsc_notify_t\fP * notify, \fBsc_compute_superset_t\fP * compute_superset, void * ctx)"
+
+.PP
+Query the callback for the \fBSC_NOTIFY_SUPERSET\fP method\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP Must be of type \fBSC_NOTIFY_SUPERSET\fP\&. 
+.br
+\fIcompute_superset\fP Output the callback function\&. 
+.br
+\fIctx\fP Output the callback Context\&. 
+.RE
+.PP
+
+.SS "void sc_notify_superset_set_callback (\fBsc_notify_t\fP * notify, \fBsc_compute_superset_t\fP compute_superset, void * ctx)"
+
+.PP
+Set the callback for the \fBSC_NOTIFY_SUPERSET\fP method\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInotify\fP Must be of type \fBSC_NOTIFY_SUPERSET\fP\&. 
+.br
+\fIcompute_superset\fP Callback function\&. 
+.br
+\fIctx\fP Context passed to callback function\&. 
+.RE
+.PP
+
+.SS "int sc_notify_supports_type (\fBsc_notify_type_t\fP type)"
+
+.PP
+Query whether \fBsc_notify_set_type\fP supports a given type\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItype\fP Notify algorithm type from \fBsc_notify_type_t\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if supported, false if not\&. 
+.RE
+.PP
+
+.SH "Variable Documentation"
+.PP 
+.SS "size_t sc_notify_eager_threshold_default\fC [extern]\fP"
+
+.PP
+The default threshold for payload sizes (in bytes) that are communicated with the notification packet\&. Initialized to 1024 (2^10) 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

@@ -1,0 +1,45 @@
+\hypertarget{structp4est__iter__corner__info}{}\doxysection{p4est\+\_\+iter\+\_\+corner\+\_\+info Struct Reference}
+\label{structp4est__iter__corner__info}\index{p4est\_iter\_corner\_info@{p4est\_iter\_corner\_info}}
+
+
+The information that is available to the user-\/defined p4est\+\_\+iter\+\_\+corner\+\_\+t callback.  
+
+
+
+
+{\ttfamily \#include $<$p4est\+\_\+iterate.\+h$>$}
+
+
+
+Collaboration diagram for p4est\+\_\+iter\+\_\+corner\+\_\+info\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structp4est__iter__corner__info__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp4est__iter__corner__info_a590faf58277b7b52dda185c4909d7268}\label{structp4est__iter__corner__info_a590faf58277b7b52dda185c4909d7268}} 
+\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$ {\bfseries p4est}
+\item 
+\mbox{\Hypertarget{structp4est__iter__corner__info_a5ffb026b0bb8cb1d57922497b6841cba}\label{structp4est__iter__corner__info_a5ffb026b0bb8cb1d57922497b6841cba}} 
+\mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$ {\bfseries ghost\+\_\+layer}
+\item 
+\mbox{\Hypertarget{structp4est__iter__corner__info_af5123fd257e2843cff9622a0db8b7374}\label{structp4est__iter__corner__info_af5123fd257e2843cff9622a0db8b7374}} 
+int8\+\_\+t \mbox{\hyperlink{structp4est__iter__corner__info_af5123fd257e2843cff9622a0db8b7374}{tree\+\_\+boundary}}
+\begin{DoxyCompactList}\small\item\em boolean\+: interior face (0), tree boundary face (true) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__iter__corner__info_a5d62b7822968328e04f13cf5d5649f30}\label{structp4est__iter__corner__info_a5d62b7822968328e04f13cf5d5649f30}} 
+sc\+\_\+array\+\_\+t \mbox{\hyperlink{structp4est__iter__corner__info_a5d62b7822968328e04f13cf5d5649f30}{sides}}
+\begin{DoxyCompactList}\small\item\em array of type p4est\+\_\+iter\+\_\+corner\+\_\+side\+\_\+t type \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The information that is available to the user-\/defined p4est\+\_\+iter\+\_\+corner\+\_\+t callback. 
+
+If tree\+\_\+boundary is false, the corner is on the interior of a tree. When tree\+\_\+boundary is false, sides\mbox{[}0\mbox{]} contains the lowest z-\/order quadrant that touches the corner. When tree\+\_\+boundary is true, its value is P4\+EST\+\_\+\+CONNECT\+\_\+\+FACE/\+CORNER depending on the location of the corner relative to the tree. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p4est__iterate_8h}{p4est\+\_\+iterate.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,1048 @@
+.TH "src/sc_io.h" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/sc_io.h \- Helper routines for general and parallel I/O\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <sc_containers\&.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBsc_io_sink\fP"
+.br
+.RI "A generic data sink\&. "
+.ti -1c
+.RI "struct \fBsc_io_source\fP"
+.br
+.RI "A generic data source\&. "
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSC_CHECK_MPI_VERBOSE\fP(errcode,  user_msg)"
+.br
+.RI "Examine the MPI return value and print an error if there is one\&. "
+.ti -1c
+.RI "#define \fBsc_mpi_read\fP   \fBsc_io_read\fP"
+.br
+.RI "For backwards compatibility\&. "
+.ti -1c
+.RI "#define \fBsc_mpi_write\fP   \fBsc_io_write\fP"
+.br
+.RI "For backwards compatibility\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBsc_io_sink\fP \fBsc_io_sink_t\fP"
+.br
+.RI "A generic data sink\&. "
+.ti -1c
+.RI "typedef struct \fBsc_io_source\fP \fBsc_io_source_t\fP"
+.br
+.RI "A generic data source\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBsc_io_error_t\fP { \fBSC_IO_ERROR_NONE\fP, \fBSC_IO_ERROR_FATAL\fP = -1, \fBSC_IO_ERROR_AGAIN\fP = -2 }"
+.br
+.RI "Error values for io\&. "
+.ti -1c
+.RI "enum \fBsc_io_mode_t\fP { \fBSC_IO_MODE_WRITE\fP, \fBSC_IO_MODE_APPEND\fP, \fBSC_IO_MODE_LAST\fP }"
+.br
+.RI "The I/O mode for writing using \fBsc_io_sink\fP\&. "
+.ti -1c
+.RI "enum \fBsc_io_encode_t\fP { \fBSC_IO_ENCODE_NONE\fP, \fBSC_IO_ENCODE_LAST\fP }"
+.br
+.RI "Enum to specify encoding for \fBsc_io_sink\fP and \fBsc_io_source\fP\&. "
+.ti -1c
+.RI "enum \fBsc_io_type_t\fP { \fBSC_IO_TYPE_BUFFER\fP, \fBSC_IO_TYPE_FILENAME\fP, \fBSC_IO_TYPE_FILEFILE\fP, \fBSC_IO_TYPE_LAST\fP }"
+.br
+.RI "The type of I/O operation \fBsc_io_sink\fP and \fBsc_io_source\fP\&. "
+.ti -1c
+.RI "enum \fBsc_io_open_mode_t\fP { \fBSC_IO_READ\fP, \fBSC_IO_WRITE_CREATE\fP, \fBSC_IO_WRITE_APPEND\fP }"
+.br
+.RI "Open modes for \fBsc_io_open\fP\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBsc_io_sink_t\fP * \fBsc_io_sink_new\fP (int iotype, int iomode, int ioencode,\&.\&.\&.)"
+.br
+.RI "Create a generic data sink\&. "
+.ti -1c
+.RI "int \fBsc_io_sink_destroy\fP (\fBsc_io_sink_t\fP *sink)"
+.br
+.RI "Free data sink\&. "
+.ti -1c
+.RI "int \fBsc_io_sink_destroy_null\fP (\fBsc_io_sink_t\fP **sink)"
+.br
+.RI "Free data sink and NULL the pointer to it\&. "
+.ti -1c
+.RI "int \fBsc_io_sink_write\fP (\fBsc_io_sink_t\fP *sink, const void *data, size_t bytes_avail)"
+.br
+.RI "Write data to a sink\&. "
+.ti -1c
+.RI "int \fBsc_io_sink_complete\fP (\fBsc_io_sink_t\fP *sink, size_t *bytes_in, size_t *bytes_out)"
+.br
+.RI "Flush all buffered output data to sink\&. "
+.ti -1c
+.RI "int \fBsc_io_sink_align\fP (\fBsc_io_sink_t\fP *sink, size_t bytes_align)"
+.br
+.RI "Align sink to a byte boundary by writing zeros\&. "
+.ti -1c
+.RI "\fBsc_io_source_t\fP * \fBsc_io_source_new\fP (int iotype, int ioencode,\&.\&.\&.)"
+.br
+.RI "Create a generic data source\&. "
+.ti -1c
+.RI "int \fBsc_io_source_destroy\fP (\fBsc_io_source_t\fP *source)"
+.br
+.RI "Free data source\&. "
+.ti -1c
+.RI "int \fBsc_io_source_destroy_null\fP (\fBsc_io_source_t\fP **source)"
+.br
+.RI "Free data source and NULL the pointer to it\&. "
+.ti -1c
+.RI "int \fBsc_io_source_read\fP (\fBsc_io_source_t\fP *source, void *data, size_t bytes_avail, size_t *bytes_out)"
+.br
+.RI "Read data from a source\&. "
+.ti -1c
+.RI "int \fBsc_io_source_complete\fP (\fBsc_io_source_t\fP *source, size_t *bytes_in, size_t *bytes_out)"
+.br
+.RI "Determine whether all data buffered from source has been returned by read\&. "
+.ti -1c
+.RI "int \fBsc_io_source_align\fP (\fBsc_io_source_t\fP *source, size_t bytes_align)"
+.br
+.RI "Align source to a byte boundary by skipping\&. "
+.ti -1c
+.RI "int \fBsc_io_source_activate_mirror\fP (\fBsc_io_source_t\fP *source)"
+.br
+.RI "Activate a buffer that mirrors (i\&.e\&., stores) the data that was read\&. "
+.ti -1c
+.RI "int \fBsc_io_source_read_mirror\fP (\fBsc_io_source_t\fP *source, void *data, size_t bytes_avail, size_t *bytes_out)"
+.br
+.RI "Read data from the source's mirror\&. "
+.ti -1c
+.RI "int \fBsc_io_file_save\fP (const char *filename, \fBsc_array_t\fP *buffer)"
+.br
+.RI "Save a buffer to a file in one call\&. "
+.ti -1c
+.RI "int \fBsc_io_file_load\fP (const char *filename, \fBsc_array_t\fP *buffer)"
+.br
+.RI "Read a file into a buffer in one call\&. "
+.ti -1c
+.RI "void \fBsc_io_encode\fP (\fBsc_array_t\fP *data, \fBsc_array_t\fP *out)"
+.br
+.RI "Encode a block of arbitrary data with the default sc_io format\&. "
+.ti -1c
+.RI "void \fBsc_io_encode_zlib\fP (\fBsc_array_t\fP *data, \fBsc_array_t\fP *out, int zlib_compression_level, int line_break_character)"
+.br
+.RI "Encode a block of arbitrary data, compressed, into an ASCII string\&. "
+.ti -1c
+.RI "int \fBsc_io_decode_info\fP (\fBsc_array_t\fP *data, size_t *original_size, char *format_char, void *re)"
+.br
+.RI "Decode length and format of original input from encoded data\&. "
+.ti -1c
+.RI "int \fBsc_io_decode\fP (\fBsc_array_t\fP *data, \fBsc_array_t\fP *out, size_t max_original_size, void *re)"
+.br
+.RI "Decode a block of base 64 encoded compressed data\&. "
+.ti -1c
+.RI "int \fBsc_vtk_write_binary\fP (FILE *vtkfile, char *numeric_data, size_t byte_length)"
+.br
+.RI "This function writes numeric binary data in VTK base64 encoding\&. "
+.ti -1c
+.RI "int \fBsc_vtk_write_compressed\fP (FILE *vtkfile, char *numeric_data, size_t byte_length)"
+.br
+.RI "This function writes numeric binary data in VTK compressed format\&. "
+.ti -1c
+.RI "FILE * \fBsc_fopen\fP (const char *filename, const char *mode, const char *errmsg)"
+.br
+.RI "Wrapper for fopen(3)\&. "
+.ti -1c
+.RI "void \fBsc_fwrite\fP (const void *ptr, size_t size, size_t nmemb, FILE *file, const char *errmsg)"
+.br
+.RI "Write memory content to a file\&. "
+.ti -1c
+.RI "void \fBsc_fread\fP (void *ptr, size_t size, size_t nmemb, FILE *file, const char *errmsg)"
+.br
+.RI "Read file content into memory\&. "
+.ti -1c
+.RI "void \fBsc_fflush_fsync_fclose\fP (FILE *file)"
+.br
+.RI "Best effort to flush a file's data to disc and close it\&. "
+.ti -1c
+.RI "int \fBsc_io_open\fP (\fBsc_MPI_Comm\fP mpicomm, const char *filename, \fBsc_io_open_mode_t\fP amode, \fBsc_MPI_Info\fP mpiinfo, \fBsc_MPI_File\fP *mpifile)"
+.br
+.RI "Opens a MPI file or without MPI a file context\&. "
+.ti -1c
+.RI "void \fBsc_io_read\fP (\fBsc_MPI_File\fP mpifile, void *ptr, size_t zcount, \fBsc_MPI_Datatype\fP t, const char *errmsg)"
+.br
+.RI "Read MPI file content into memory\&. "
+.ti -1c
+.RI "int \fBsc_io_read_at\fP (\fBsc_MPI_File\fP mpifile, \fBsc_MPI_Offset\fP offset, void *ptr, int count, \fBsc_MPI_Datatype\fP t, int *ocount)"
+.br
+.RI "Read MPI file content into memory for an explicit offset\&. "
+.ti -1c
+.RI "int \fBsc_io_read_at_all\fP (\fBsc_MPI_File\fP mpifile, \fBsc_MPI_Offset\fP offset, void *ptr, int count, \fBsc_MPI_Datatype\fP t, int *ocount)"
+.br
+.RI "Read MPI file content collectively into memory for an explicit offset\&. "
+.ti -1c
+.RI "void \fBsc_io_write\fP (\fBsc_MPI_File\fP mpifile, const void *ptr, size_t zcount, \fBsc_MPI_Datatype\fP t, const char *errmsg)"
+.br
+.RI "Write memory content to an MPI file\&. "
+.ti -1c
+.RI "int \fBsc_io_write_at\fP (\fBsc_MPI_File\fP mpifile, \fBsc_MPI_Offset\fP offset, const void *ptr, int count, \fBsc_MPI_Datatype\fP t, int *ocount)"
+.br
+.RI "Write MPI file content into memory for an explicit offset\&. "
+.ti -1c
+.RI "int \fBsc_io_write_at_all\fP (\fBsc_MPI_File\fP mpifile, \fBsc_MPI_Offset\fP offset, const void *ptr, int count, \fBsc_MPI_Datatype\fP t, int *ocount)"
+.br
+.RI "Write MPI file content collectively into memory for an explicit offset\&. "
+.ti -1c
+.RI "int \fBsc_io_close\fP (\fBsc_MPI_File\fP *file)"
+.br
+.RI "Close collectively a sc_MPI_File\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Helper routines for general and parallel I/O\&. 
+
+This file provides various sets of functions related to write and read data as well es to encode and decode it to certain formats\&.
+.PP
+.IP "\(bu" 2
+To abstract transparent writing/reading into/from files or buffers, we provide functions centered around \fBsc_io_sink_new\fP and \fBsc_io_source_new\fP\&.
+.IP "\(bu" 2
+To abstract parallel file I/O in a way that works both with and without MPI support, we provide \fBsc_io_open\fP, \fBsc_io_write\fP and friends\&.
+.IP "\(bu" 2
+To write to the VTK binary compressed format, we provide suitable functions to base64 encode and zlib-compress as required; see \fBsc_vtk_write_binary\fP and \fBsc_vtk_write_compressed\fP\&.
+.IP "\(bu" 2
+To support self-contained ASCII-armored compression, we provide the functions \fBsc_io_encode\fP, \fBsc_io_decode_info\fP and \fBsc_io_decode\fP\&. They losslessly transform a block of arbitrary data into a compressed and base64-encoded format and back that is unambiguously defined and human-friendly\&. 
+.PP
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define SC_CHECK_MPI_VERBOSE(errcode, user_msg)"
+\fBValue:\fP
+.PP
+.nf
+  do {            \
+  char sc_msg[sc_MPI_MAX_ERROR_STRING];                        \
+  int sc_msglen;                                               \
+  if ((errcode) != sc_MPI_SUCCESS) {                           \
+    sc_MPI_Error_string (errcode, sc_msg, &sc_msglen);         \
+    SC_LERRORF ("%s at %s:%d: %s\n",                           \
+                (user_msg), __FILE__, __LINE__, sc_msg);       \
+  }} while (0)
+.fi
+.PP
+Examine the MPI return value and print an error if there is one\&. The message passed is appended to MPI, file and line information\&. 
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBsc_io_encode_t\fP"
+
+.PP
+Enum to specify encoding for \fBsc_io_sink\fP and \fBsc_io_source\fP\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISC_IO_ENCODE_NONE \fP\fP
+No encoding\&. 
+.TP
+\fB\fISC_IO_ENCODE_LAST \fP\fP
+Invalid entry to close list\&. 
+.SS "enum \fBsc_io_error_t\fP"
+
+.PP
+Error values for io\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISC_IO_ERROR_NONE \fP\fP
+The value of zero means no error\&. 
+.TP
+\fB\fISC_IO_ERROR_FATAL \fP\fP
+The io object is now dysfunctional\&. 
+.TP
+\fB\fISC_IO_ERROR_AGAIN \fP\fP
+Another io operation may resolve it\&. The function just returned was a noop\&. 
+.SS "enum \fBsc_io_mode_t\fP"
+
+.PP
+The I/O mode for writing using \fBsc_io_sink\fP\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISC_IO_MODE_WRITE \fP\fP
+Semantics as 'w' in fopen\&. 
+.TP
+\fB\fISC_IO_MODE_APPEND \fP\fP
+Semantics as 'a' in fopen\&. 
+.TP
+\fB\fISC_IO_MODE_LAST \fP\fP
+Invalid entry to close list\&. 
+.SS "enum \fBsc_io_open_mode_t\fP"
+
+.PP
+Open modes for \fBsc_io_open\fP\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISC_IO_READ \fP\fP
+open a file in read-only mode 
+.TP
+\fB\fISC_IO_WRITE_CREATE \fP\fP
+open a file in write-only mode; if the file exists, the file will be truncated to length zero and then overwritten 
+.TP
+\fB\fISC_IO_WRITE_APPEND \fP\fP
+append to an already existing file 
+.SS "enum \fBsc_io_type_t\fP"
+
+.PP
+The type of I/O operation \fBsc_io_sink\fP and \fBsc_io_source\fP\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISC_IO_TYPE_BUFFER \fP\fP
+Write to a buffer\&. 
+.TP
+\fB\fISC_IO_TYPE_FILENAME \fP\fP
+Write to a file to be opened\&. 
+.TP
+\fB\fISC_IO_TYPE_FILEFILE \fP\fP
+Write to an already opened file\&. 
+.TP
+\fB\fISC_IO_TYPE_LAST \fP\fP
+Invalid entry to close list\&. 
+.SH "Function Documentation"
+.PP 
+.SS "void sc_fflush_fsync_fclose (FILE * file)"
+
+.PP
+Best effort to flush a file's data to disc and close it\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfile\fP File open for writing\&. 
+.RE
+.PP
+
+.SS "FILE* sc_fopen (const char * filename, const char * mode, const char * errmsg)"
+
+.PP
+Wrapper for fopen(3)\&. We provide an additional argument that contains the error message\&. 
+.SS "void sc_fread (void * ptr, size_t size, size_t nmemb, FILE * file, const char * errmsg)"
+
+.PP
+Read file content into memory\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIptr\fP Data array to read from disk\&. 
+.br
+\fIsize\fP Size of one array member\&. 
+.br
+\fInmemb\fP Number of array members\&. 
+.br
+\fIfile\fP File pointer, must be opened for reading\&. 
+.br
+\fIerrmsg\fP Error message passed to SC_CHECK_ABORT\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+This function aborts on file errors\&. 
+.RE
+.PP
+
+.SS "void sc_fwrite (const void * ptr, size_t size, size_t nmemb, FILE * file, const char * errmsg)"
+
+.PP
+Write memory content to a file\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIptr\fP Data array to write to disk\&. 
+.br
+\fIsize\fP Size of one array member\&. 
+.br
+\fInmemb\fP Number of array members\&. 
+.br
+\fIfile\fP File pointer, must be opened for writing\&. 
+.br
+\fIerrmsg\fP Error message passed to SC_CHECK_ABORT\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+This function aborts on file errors\&. 
+.RE
+.PP
+
+.SS "int sc_io_close (\fBsc_MPI_File\fP * file)"
+
+.PP
+Close collectively a sc_MPI_File\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfile\fP MPI file object that is closed\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A sc_MPI_ERR_* as defined in \fBsc_mpi\&.h\fP\&. The error code can be passed to \fBsc_MPI_Error_string\fP\&. 
+.RE
+.PP
+
+.SS "int sc_io_decode (\fBsc_array_t\fP * data, \fBsc_array_t\fP * out, size_t max_original_size, void * re)"
+
+.PP
+Decode a block of base 64 encoded compressed data\&. The base 64 data must contain two arbitrary bytes after every 76 code characters and also at the end of the last line if it is short, and then a final NUL character\&. This function does not require zlib but benefits for speed\&.
+.PP
+This is a two-stage process: we decode the input from base 64 first\&. Then we extract the 8-byte big-endian original data size, the character 'z', and execute a zlib decompression on the remaining decoded data\&. This function detects malformed input by erroring out\&.
+.PP
+If we should add another format in the future, the format character may be something else than 'z', as permitted by our specification\&. To this end, we reserve the characters A-C and d-z indefinitely\&.
+.PP
+Any error condition is indicated by a negative return value\&. Possible causes for error are:
+.PP
+.IP "\(bu" 2
+the input data string is not NUL-terminated
+.IP "\(bu" 2
+the first 12 characters of input do not decode properly
+.IP "\(bu" 2
+the input data is corrupt for decoding or decompression
+.IP "\(bu" 2
+the output data array has non-unit element size and the length of the output data is not divisible by the size
+.IP "\(bu" 2
+the output data would exceed the specified threshold
+.IP "\(bu" 2
+the output array is a view of insufficient length
+.PP
+.PP
+We also error out if the data requires a compression dictionary, which would be a violation of above encode format specification\&.
+.PP
+The corresponding encode function is \fBsc_io_encode\fP\&. When passing an array as output, we resize it properly\&. This function cannot crash unless out of memory\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIdata\fP If \fIout\fP is NULL, we work in place\&. In that case, output is written into this array after a suitable resize\&. Either way, we expect a NUL-terminated base 64 encoded string on input that has in turn been obtained by zlib compression\&. It must be in the exact format produced by \fBsc_io_encode\fP; please see documentation\&. The element size of the input array must be 1\&. 
+.br
+\fIout\fP If not NULL, a valid array (may be a view)\&. If NULL, the input array becomes the output\&. If the output array is a view and the output data larger than its view size, we error out\&. We expect commensurable element and data size and resize the output to fit exactly, which restores the original input passed to encoding\&. An output view array of matching size may be constructed using \fBsc_io_decode_info\fP\&. 
+.br
+\fImax_original_size\fP If nonzero, this is the maximal data size that we will accept after uncompression\&. If exceeded, return a negative value\&. 
+.br
+\fIre\fP Provided for error reporting, presently must be NULL\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, negative on malformed input data or insufficient output space\&. 
+.RE
+.PP
+
+.SS "int sc_io_decode_info (\fBsc_array_t\fP * data, size_t * original_size, char * format_char, void * re)"
+
+.PP
+Decode length and format of original input from encoded data\&. We expect at least 12 bytes of the format produced by \fBsc_io_encode\fP\&. No matter how much data has been encoded by it, this much is available\&. We decode the original data size and the character indicating the format\&.
+.PP
+This function does not require zlib\&. It works with any well-defined data\&.
+.PP
+Note that this function is not required before \fBsc_io_decode\fP\&. Calling this function on any result produced by \fBsc_io_encode\fP will succeed and report a legal format\&. This function cannot crash\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIdata\fP This must be an array with element size 1\&. If it contains less than 12 code bytes we error out\&. It its first 12 bytes do not base 64 decode to 9 bytes we error out\&. We generally ignore the remaining data\&. 
+.br
+\fIoriginal_size\fP If not NULL and we do not error out, set to the original size as encoded in the data\&. 
+.br
+\fIformat_char\fP If not NULL and we do not error out, the ninth character of decoded data indicating the format\&. 
+.br
+\fIre\fP Provided for error reporting, presently must be NULL\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, negative value on error\&. 
+.RE
+.PP
+
+.SS "void sc_io_encode (\fBsc_array_t\fP * data, \fBsc_array_t\fP * out)"
+
+.PP
+Encode a block of arbitrary data with the default sc_io format\&. The corresponding decoder function is \fBsc_io_decode\fP\&. This function cannot crash unless out of memory\&.
+.PP
+Currently this function calls \fBsc_io_encode_zlib\fP with compression level Z_BEST_COMPRESSION (subject to change)\&. Without zlib configured that function works uncompressed\&.
+.PP
+The encoding method and input data size can be retrieved, optionally, from the encoded data by \fBsc_io_decode_info\fP\&. This function decodes the method as a character, which is 'z' for \fBsc_io_encode_zlib\fP\&. We reserve the characters A-C, d-z indefinitely\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIdata\fP If \fIout\fP is NULL, we work in place\&. In this case, the array must on input have an element size of 1 byte, which is preserved\&. After reading all data from this array, it assumes the identity of the \fIout\fP argument below\&. Otherwise, this is a read-only argument that may have arbitrary element size\&. On input, all data in the array is used\&. 
+.br
+\fIout\fP If not NULL, a valid array of element size 1\&. It must be resizable (not a view)\&. We resize the array to the output data, which always includes a final terminating zero\&. 
+.RE
+.PP
+
+.SS "void sc_io_encode_zlib (\fBsc_array_t\fP * data, \fBsc_array_t\fP * out, int zlib_compression_level, int line_break_character)"
+
+.PP
+Encode a block of arbitrary data, compressed, into an ASCII string\&. This is a two-stage process: zlib compress and then encode to base 64\&. The output is a NUL-terminated string of printable characters\&.
+.PP
+We first compress the data into the zlib deflate format (RFC 1951)\&. The compressor must use no preset dictionary (this is the default)\&. If zlib is detected on configuration, we compress with the given level\&. If zlib is not detected, we write data equivalent to Z_NO_COMPRESSION\&. The status of zlib detection can be queried at compile time using #ifdef SC_HAVE_ZLIB or at run time using \fBsc_have_zlib\fP\&. Both types of result are readable by a standard zlib uncompress call\&.
+.PP
+Secondly, we process the input data size as an 8-byte big-endian number, then the letter 'z', and then the zlib compressed data, concatenated, with a base 64 encoder\&. We break lines after 76 code characters\&. Each line break consists of two configurable but arbitrary bytes\&. The line breaks are considered part of the output data specification\&. The last line is terminated with the same line break and then a NUL\&.
+.PP
+This routine can work in place or write to an output array\&. The corresponding decoder function is \fBsc_io_decode\fP\&. This function cannot crash unless out of memory\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIdata\fP If \fIout\fP is NULL, we work in place\&. In this case, the array must on input have an element size of 1 byte, which is preserved\&. After reading all data from this array, it assumes the identity of the \fIout\fP argument below\&. Otherwise, this is a read-only argument that may have arbitrary element size\&. On input, all data in the array is used\&. 
+.br
+\fIout\fP If not NULL, a valid array of element size 1\&. It must be resizable (not a view)\&. We resize the array to the output data, which always includes a final terminating zero\&. 
+.br
+\fIzlib_compression_level\fP Compression level between 0 (no compression) and 9 (best compression)\&. The value -1 indicates some default level\&. 
+.br
+\fIline_break_character\fP This character is arbitrary and specifies the first of two line break bytes\&. The second byte is always '
+.br
+'\&. 
+.RE
+.PP
+
+.SS "int sc_io_file_load (const char * filename, \fBsc_array_t\fP * buffer)"
+
+.PP
+Read a file into a buffer in one call\&. This function performs error checking and always returns cleanly\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilename\fP Name of the file to load\&. 
+.br
+\fIbuffer\fP On input, an array (not a view) of element size 1 and arbitrary contents\&. On output and success, the complete file contents\&. On error, contents are undefined\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, -1 on error\&. 
+.RE
+.PP
+
+.SS "int sc_io_file_save (const char * filename, \fBsc_array_t\fP * buffer)"
+
+.PP
+Save a buffer to a file in one call\&. This function performs error checking and always returns cleanly\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilename\fP Name of the file to save\&. 
+.br
+\fIbuffer\fP An array of element size 1 and arbitrary contents, which are written to the file\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, -1 on error\&. 
+.RE
+.PP
+
+.SS "int sc_io_open (\fBsc_MPI_Comm\fP mpicomm, const char * filename, \fBsc_io_open_mode_t\fP amode, \fBsc_MPI_Info\fP mpiinfo, \fBsc_MPI_File\fP * mpifile)"
+
+.PP
+Opens a MPI file or without MPI a file context\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpicomm\fP MPI communicator 
+.br
+\fIfilename\fP The path to the file that we want to open\&. 
+.br
+\fIamode\fP An access mode\&. 
+.br
+\fImpiinfo\fP The MPI info 
+.br
+\fImpifile\fP The MPI file that is opened\&. This can be a an actual MPI IO file or an internal file conntext to preserve some IO functionalities without MPI IO and to have working code without MPI at all\&. This output variable is only filled if the return value of the function is \fBsc_MPI_SUCCESS\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A sc_MPI_ERR_* as defined in \fBsc_mpi\&.h\fP\&. The error code can be passed to \fBsc_MPI_Error_string\fP\&. If the return value is not \fBsc_MPI_SUCCESS\fP, \fBmpifile\fP is not filled\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+This function does not exactly follow the MPI_File semantic in the sense that it truncates files to the length zero before overwriting them\&. 
+.RE
+.PP
+
+.SS "void sc_io_read (\fBsc_MPI_File\fP mpifile, void * ptr, size_t zcount, \fBsc_MPI_Datatype\fP t, const char * errmsg)"
+
+.PP
+Read MPI file content into memory\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpifile\fP MPI file object opened for reading\&. 
+.br
+\fIptr\fP Data array to read in from disk\&. 
+.br
+\fIzcount\fP Number of array members\&. 
+.br
+\fIt\fP The MPI type for each array member\&. 
+.br
+\fIerrmsg\fP Error message passed to SC_CHECK_ABORT\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+This function aborts on MPI file and count errors\&. This function does not use the calling convention and error handling as the other sc_io MPI file functions to ensure backwards compatibility\&. 
+.PP
+This function aborts if MPI I/O is not enabled\&. 
+.RE
+.PP
+
+.SS "int sc_io_read_at (\fBsc_MPI_File\fP mpifile, \fBsc_MPI_Offset\fP offset, void * ptr, int count, \fBsc_MPI_Datatype\fP t, int * ocount)"
+
+.PP
+Read MPI file content into memory for an explicit offset\&. This function does not update the file pointer of the MPI file\&. Contrary to \fBsc_io_read\fP, it does not abort on read errors\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImpifile\fP MPI file object opened for reading\&. 
+.br
+\fIoffset\fP Starting offset in counts of the type \fBt\fP\&. 
+.br
+\fIptr\fP Data array to read from disk\&. 
+.br
+\fIcount\fP Number of array members\&. 
+.br
+\fIt\fP The MPI type for each array member\&. 
+.br
+\fIocount\fP The number of read elements of type \fBt\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A sc_MPI_ERR_* as defined in \fBsc_mpi\&.h\fP\&. The error code can be passed to \fBsc_MPI_Error_string\fP\&. 
+.RE
+.PP
+
+.SS "int sc_io_read_at_all (\fBsc_MPI_File\fP mpifile, \fBsc_MPI_Offset\fP offset, void * ptr, int count, \fBsc_MPI_Datatype\fP t, int * ocount)"
+
+.PP
+Read MPI file content collectively into memory for an explicit offset\&. This function does not update the file pointer of the MPI file\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImpifile\fP MPI file object opened for reading\&. 
+.br
+\fIoffset\fP Starting offset in counts of the type \fBt\fP\&. 
+.br
+\fIptr\fP Data array to read from disk\&. 
+.br
+\fIcount\fP Number of array members\&. 
+.br
+\fIt\fP The MPI type for each array member\&. 
+.br
+\fIocount\fP The number of read elements of type \fBt\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A sc_MPI_ERR_* as defined in \fBsc_mpi\&.h\fP\&. The error code can be passed to \fBsc_MPI_Error_string\fP\&. 
+.RE
+.PP
+
+.SS "int sc_io_sink_align (\fBsc_io_sink_t\fP * sink, size_t bytes_align)"
+
+.PP
+Align sink to a byte boundary by writing zeros\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsink\fP The sink object to align\&. 
+.br
+\fIbytes_align\fP Byte boundary\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, nonzero on error\&. 
+.RE
+.PP
+
+.SS "int sc_io_sink_complete (\fBsc_io_sink_t\fP * sink, size_t * bytes_in, size_t * bytes_out)"
+
+.PP
+Flush all buffered output data to sink\&. This function may return SC_IO_ERROR_AGAIN if another write is required\&. Currently this may happen if BUFFER requires an integer multiple of bytes\&. If successful, the updated value of bytes read and written is returned in bytes_in/out, and the sink status is reset as if the sink had just been created\&. In particular, the bytes counters are reset to zero\&. The internal state of the sink is not changed otherwise\&. It is legal to continue writing to the sink hereafter\&. The sink actions taken depend on its type\&. BUFFER, FILEFILE: none\&. FILENAME: call fclose on sink->file\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsink\fP The sink object to write to\&. 
+.br
+\fIbytes_in\fP Bytes received since the last new or complete call\&. May be NULL\&. 
+.br
+\fIbytes_out\fP Bytes written since the last new or complete call\&. May be NULL\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if completed, nonzero on error\&. 
+.RE
+.PP
+
+.SS "int sc_io_sink_destroy (\fBsc_io_sink_t\fP * sink)"
+
+.PP
+Free data sink\&. Calls sc_io_sink_complete and discards the final counts\&. Errors from complete lead to SC_IO_ERROR_FATAL returned from this function\&. Call sc_io_sink_complete yourself if bytes_out is of interest\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsink\fP The sink object to complete and free\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, nonzero on error\&. 
+.RE
+.PP
+
+.SS "int sc_io_sink_destroy_null (\fBsc_io_sink_t\fP ** sink)"
+
+.PP
+Free data sink and NULL the pointer to it\&. Except for the handling of the pointer argument, the behavior is the same as for \fBsc_io_sink_destroy\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsink\fP Non-NULL pointer to sink pointer\&. The sink pointer may be NULL, in which case this function does nothing successfully, or a valid \fBsc_io_sink\fP, which is passed to \fBsc_io_sink_destroy\fP, and the sink pointer is set to NULL afterwards\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, nonzero on error\&. 
+.RE
+.PP
+
+.SS "\fBsc_io_sink_t\fP* sc_io_sink_new (int iotype, int iomode, int ioencode,  \&.\&.\&.)"
+
+.PP
+Create a generic data sink\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIiotype\fP Type must be a value from \fBsc_io_type_t\fP\&. Depending on iotype, varargs must follow: BUFFER: sc_array_t * (existing array)\&. FILENAME: const char * (name of file to open)\&. FILEFILE: FILE * (file open for writing)\&. These buffers are only borrowed by the sink\&. 
+.br
+\fIiomode\fP Mode must be a value from \fBsc_io_mode_t\fP\&. For type FILEFILE, data is always appended\&. 
+.br
+\fIioencode\fP Must be a value from \fBsc_io_encode_t\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Newly allocated sink, or NULL on error\&. 
+.RE
+.PP
+
+.SS "int sc_io_sink_write (\fBsc_io_sink_t\fP * sink, const void * data, size_t bytes_avail)"
+
+.PP
+Write data to a sink\&. Data may be buffered and sunk in a later call\&. The internal counters sink->bytes_in and sink->bytes_out are updated\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsink\fP The sink object to write to\&. 
+.br
+\fIdata\fP Data passed into sink must be non-NULL\&. 
+.br
+\fIbytes_avail\fP Number of data bytes passed in\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, nonzero on error\&. 
+.RE
+.PP
+
+.SS "int sc_io_source_activate_mirror (\fBsc_io_source_t\fP * source)"
+
+.PP
+Activate a buffer that mirrors (i\&.e\&., stores) the data that was read\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP The source object to activate mirror in\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, nonzero on error\&. 
+.RE
+.PP
+
+.SS "int sc_io_source_align (\fBsc_io_source_t\fP * source, size_t bytes_align)"
+
+.PP
+Align source to a byte boundary by skipping\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP The source object to align\&. 
+.br
+\fIbytes_align\fP Byte boundary\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, nonzero on error\&. 
+.RE
+.PP
+
+.SS "int sc_io_source_complete (\fBsc_io_source_t\fP * source, size_t * bytes_in, size_t * bytes_out)"
+
+.PP
+Determine whether all data buffered from source has been returned by read\&. If it returns SC_IO_ERROR_AGAIN, another sc_io_source_read is required\&. If the call returns no error, the internal counters source->bytes_in and source->bytes_out are returned to the caller if requested, and reset to 0\&. The internal state of the source is not changed otherwise\&. It is legal to continue reading from the source hereafter\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP The source object to read from\&. 
+.br
+\fIbytes_in\fP If not NULL and true is returned, the total size of the data sourced\&. 
+.br
+\fIbytes_out\fP If not NULL and true is returned, total bytes passed out by source_read\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+SC_IO_ERROR_AGAIN if buffered data remaining\&. Otherwise return ERROR_NONE and reset counters\&. 
+.RE
+.PP
+
+.SS "int sc_io_source_destroy (\fBsc_io_source_t\fP * source)"
+
+.PP
+Free data source\&. Calls sc_io_source_complete and requires it to return no error\&. This is to avoid discarding buffered data that has not been passed to read\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP The source object to free\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success\&. Nonzero if an error is encountered or is_complete returns one\&. 
+.RE
+.PP
+
+.SS "int sc_io_source_destroy_null (\fBsc_io_source_t\fP ** source)"
+
+.PP
+Free data source and NULL the pointer to it\&. Except for the handling of the pointer argument, the behavior is the same as for \fBsc_io_source_destroy\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP Non-NULL pointer to source pointer\&. The source pointer may be NULL, in which case this function does nothing successfully, or a valid \fBsc_io_source\fP, which is passed to \fBsc_io_source_destroy\fP, and the source pointer is set to NULL afterwards\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, nonzero on error\&. 
+.RE
+.PP
+
+.SS "\fBsc_io_source_t\fP* sc_io_source_new (int iotype, int ioencode,  \&.\&.\&.)"
+
+.PP
+Create a generic data source\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIiotype\fP Type must be a value from \fBsc_io_type_t\fP\&. Depending on iotype, varargs must follow: BUFFER: sc_array_t * (existing array)\&. FILENAME: const char * (name of file to open)\&. FILEFILE: FILE * (file open for reading)\&. 
+.br
+\fIioencode\fP Encoding value from \fBsc_io_encode_t\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Newly allocated source, or NULL on error\&. 
+.RE
+.PP
+
+.SS "int sc_io_source_read (\fBsc_io_source_t\fP * source, void * data, size_t bytes_avail, size_t * bytes_out)"
+
+.PP
+Read data from a source\&. The internal counters source->bytes_in and source->bytes_out are updated\&. Data is read until the data buffer has not enough room anymore, or source becomes empty\&. It is possible that data already read internally remains in the source object for the next call\&. Call sc_io_source_complete and check its return value to find out\&. Returns an error if bytes_out is NULL and less than bytes_avail are read\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP The source object to read from\&. 
+.br
+\fIdata\fP Data buffer for reading from source\&. If NULL the output data will be ignored and we seek forward in the input\&. 
+.br
+\fIbytes_avail\fP Number of bytes available in data buffer\&. 
+.br
+\fIbytes_out\fP If not NULL, byte count read into data buffer\&. Otherwise, requires to read exactly bytes_avail\&. If this condition is not met, return an error\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, nonzero on error\&. 
+.RE
+.PP
+
+.SS "int sc_io_source_read_mirror (\fBsc_io_source_t\fP * source, void * data, size_t bytes_avail, size_t * bytes_out)"
+
+.PP
+Read data from the source's mirror\&. Same behaviour as sc_io_source_read\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP The source object to read mirror data from\&. 
+.br
+\fIdata\fP Data buffer for reading from source's mirror\&. If NULL the output data will be thrown away\&. 
+.br
+\fIbytes_avail\fP Number of bytes available in data buffer\&. 
+.br
+\fIbytes_out\fP If not NULL, byte count read into data buffer\&. Otherwise, requires to read exactly bytes_avail\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, nonzero on error\&. 
+.RE
+.PP
+
+.SS "void sc_io_write (\fBsc_MPI_File\fP mpifile, const void * ptr, size_t zcount, \fBsc_MPI_Datatype\fP t, const char * errmsg)"
+
+.PP
+Write memory content to an MPI file\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpifile\fP MPI file object opened for writing\&. 
+.br
+\fIptr\fP Data array to write to disk\&. 
+.br
+\fIzcount\fP Number of array members\&. 
+.br
+\fIt\fP The MPI type for each array member\&. 
+.br
+\fIerrmsg\fP Error message passed to SC_CHECK_ABORT\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+This function aborts on MPI file and count errors\&. This function does not use the calling convention and error handling as the other sc_io MPI file functions to ensure backwards compatibility\&. 
+.PP
+This function aborts if MPI I/O is not enabled\&. 
+.RE
+.PP
+
+.SS "int sc_io_write_at (\fBsc_MPI_File\fP mpifile, \fBsc_MPI_Offset\fP offset, const void * ptr, int count, \fBsc_MPI_Datatype\fP t, int * ocount)"
+
+.PP
+Write MPI file content into memory for an explicit offset\&. This function does not update the file pointer that is part of mpifile\&. Contrary to \fBsc_io_write\fP, it does not abort on read errors\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImpifile\fP MPI file object opened for reading\&. 
+.br
+\fIoffset\fP Starting offset in etype, where the etype is given by the type t\&. 
+.br
+\fIptr\fP Data array to write to disk\&. 
+.br
+\fIcount\fP Number of array members\&. 
+.br
+\fIt\fP The MPI type for each array member\&. 
+.br
+\fIocount\fP The number of written elements of type \fBt\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A sc_MPI_ERR_* as defined in \fBsc_mpi\&.h\fP\&. The error code can be passed to \fBsc_MPI_Error_string\fP\&. 
+.RE
+.PP
+
+.SS "int sc_io_write_at_all (\fBsc_MPI_File\fP mpifile, \fBsc_MPI_Offset\fP offset, const void * ptr, int count, \fBsc_MPI_Datatype\fP t, int * ocount)"
+
+.PP
+Write MPI file content collectively into memory for an explicit offset\&. This function does not update the file pointer that is part of mpifile\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImpifile\fP MPI file object opened for reading\&. 
+.br
+\fIoffset\fP Starting offset in etype, where the etype is given by the type t\&. 
+.br
+\fIptr\fP Data array to write to disk\&. 
+.br
+\fIcount\fP Number of array members\&. 
+.br
+\fIt\fP The MPI type for each array member\&. 
+.br
+\fIocount\fP The number of written elements of type \fBt\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A sc_MPI_ERR_* as defined in \fBsc_mpi\&.h\fP\&. The error code can be passed to \fBsc_MPI_Error_string\fP\&. 
+.RE
+.PP
+
+.SS "int sc_vtk_write_binary (FILE * vtkfile, char * numeric_data, size_t byte_length)"
+
+.PP
+This function writes numeric binary data in VTK base64 encoding\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvtkfile\fP Stream opened for writing\&. 
+.br
+\fInumeric_data\fP A pointer to a numeric data array\&. 
+.br
+\fIbyte_length\fP The length of the data array in bytes\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns 0 on success, -1 on file error\&. 
+.RE
+.PP
+
+.SS "int sc_vtk_write_compressed (FILE * vtkfile, char * numeric_data, size_t byte_length)"
+
+.PP
+This function writes numeric binary data in VTK compressed format\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvtkfile\fP Stream opened for writing\&. 
+.br
+\fInumeric_data\fP A pointer to a numeric data array\&. 
+.br
+\fIbyte_length\fP The length of the data array in bytes\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns 0 on success, -1 on file error\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

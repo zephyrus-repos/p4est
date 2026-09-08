@@ -1,0 +1,228 @@
+\hypertarget{p4est__iterate_8h}{}\doxysection{src/p4est\+\_\+iterate.h File Reference}
+\label{p4est__iterate_8h}\index{src/p4est\_iterate.h@{src/p4est\_iterate.h}}
+
+
+Iteration over mesh topology via callbacks.  
+
+
+{\ttfamily \#include $<$p4est\+\_\+ghost.\+h$>$}\newline
+Include dependency graph for p4est\+\_\+iterate.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p4est__iterate_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=326pt]{p4est__iterate_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structp4est__iter__volume__info}{p4est\+\_\+iter\+\_\+volume\+\_\+info}}
+\begin{DoxyCompactList}\small\item\em The information that is available to the user-\/defined p4est\+\_\+iter\+\_\+volume\+\_\+t callback function. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp4est__iter__face__side__full}{p4est\+\_\+iter\+\_\+face\+\_\+side\+\_\+full}}
+\begin{DoxyCompactList}\small\item\em Shortcut to access full face information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp4est__iter__face__side__hanging}{p4est\+\_\+iter\+\_\+face\+\_\+side\+\_\+hanging}}
+\begin{DoxyCompactList}\small\item\em Shortcut to access hanging face information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp4est__iter__face__side}{p4est\+\_\+iter\+\_\+face\+\_\+side}}
+\begin{DoxyCompactList}\small\item\em Information about one side of a face in the forest. \end{DoxyCompactList}\item 
+union \mbox{\hyperlink{unionp4est__iter__face__side_1_1p4est__iter__face__side__data}{p4est\+\_\+iter\+\_\+face\+\_\+side\+::p4est\+\_\+iter\+\_\+face\+\_\+side\+\_\+data}}
+\item 
+struct \mbox{\hyperlink{structp4est__iter__face__info}{p4est\+\_\+iter\+\_\+face\+\_\+info}}
+\begin{DoxyCompactList}\small\item\em The information that is available to the user-\/defined p4est\+\_\+iter\+\_\+face\+\_\+t callback. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp4est__iter__corner__side}{p4est\+\_\+iter\+\_\+corner\+\_\+side}}
+\begin{DoxyCompactList}\small\item\em Information about one side of a corner in the forest. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp4est__iter__corner__info}{p4est\+\_\+iter\+\_\+corner\+\_\+info}}
+\begin{DoxyCompactList}\small\item\em The information that is available to the user-\/defined p4est\+\_\+iter\+\_\+corner\+\_\+t callback. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structp4est__iter__volume__info}{p4est\+\_\+iter\+\_\+volume\+\_\+info}} \mbox{\hyperlink{p4est__iterate_8h_a88b48ea881f61002c65331a5047f89af}{p4est\+\_\+iter\+\_\+volume\+\_\+info\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The information that is available to the user-\/defined p4est\+\_\+iter\+\_\+volume\+\_\+t callback function. \end{DoxyCompactList}\item 
+typedef void($\ast$ \mbox{\hyperlink{p4est__iterate_8h_adb709fe6510c4f0b3a918d2f976dbfbc}{p4est\+\_\+iter\+\_\+volume\+\_\+t}}) (\mbox{\hyperlink{p4est__iterate_8h_a88b48ea881f61002c65331a5047f89af}{p4est\+\_\+iter\+\_\+volume\+\_\+info\+\_\+t}} $\ast$info, void $\ast$user\+\_\+data)
+\begin{DoxyCompactList}\small\item\em The prototype for a function that p4est\+\_\+iterate will execute at every quadrant local to the current process. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__iterate_8h_ae7b4fbd912b1e0cceb907eb33990aede}\label{p4est__iterate_8h_ae7b4fbd912b1e0cceb907eb33990aede}} 
+typedef struct \mbox{\hyperlink{structp4est__iter__face__side__full}{p4est\+\_\+iter\+\_\+face\+\_\+side\+\_\+full}} \mbox{\hyperlink{p4est__iterate_8h_ae7b4fbd912b1e0cceb907eb33990aede}{p4est\+\_\+iter\+\_\+face\+\_\+side\+\_\+full\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Shortcut to access full face information. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__iterate_8h_a22fae597568ec7c85120f0aa610d6ea1}\label{p4est__iterate_8h_a22fae597568ec7c85120f0aa610d6ea1}} 
+typedef struct \mbox{\hyperlink{structp4est__iter__face__side__hanging}{p4est\+\_\+iter\+\_\+face\+\_\+side\+\_\+hanging}} \mbox{\hyperlink{p4est__iterate_8h_a22fae597568ec7c85120f0aa610d6ea1}{p4est\+\_\+iter\+\_\+face\+\_\+side\+\_\+hanging\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Shortcut to access hanging face information. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structp4est__iter__face__side}{p4est\+\_\+iter\+\_\+face\+\_\+side}} \mbox{\hyperlink{p4est__iterate_8h_ae99ecd3270ff75868955f19133b63b25}{p4est\+\_\+iter\+\_\+face\+\_\+side\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Information about one side of a face in the forest. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structp4est__iter__face__info}{p4est\+\_\+iter\+\_\+face\+\_\+info}} \mbox{\hyperlink{p4est__iterate_8h_a41a789a379e63967b54c5af80ceb2b0e}{p4est\+\_\+iter\+\_\+face\+\_\+info\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The information that is available to the user-\/defined p4est\+\_\+iter\+\_\+face\+\_\+t callback. \end{DoxyCompactList}\item 
+typedef void($\ast$ \mbox{\hyperlink{p4est__iterate_8h_adf0ec67c0903d955e578d6eeac842273}{p4est\+\_\+iter\+\_\+face\+\_\+t}}) (\mbox{\hyperlink{p4est__iterate_8h_a41a789a379e63967b54c5af80ceb2b0e}{p4est\+\_\+iter\+\_\+face\+\_\+info\+\_\+t}} $\ast$info, void $\ast$user\+\_\+data)
+\begin{DoxyCompactList}\small\item\em The prototype for a function that p4est\+\_\+iterate will execute wherever two quadrants share a face\+: the face can be a 2\+:1 hanging face, it does not have to be conformal. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structp4est__iter__corner__side}{p4est\+\_\+iter\+\_\+corner\+\_\+side}} \mbox{\hyperlink{p4est__iterate_8h_ac6595da933541a97db6a5fef63fde441}{p4est\+\_\+iter\+\_\+corner\+\_\+side\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Information about one side of a corner in the forest. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structp4est__iter__corner__info}{p4est\+\_\+iter\+\_\+corner\+\_\+info}} \mbox{\hyperlink{p4est__iterate_8h_ac633d521f838e9b8e731555e501f50fb}{p4est\+\_\+iter\+\_\+corner\+\_\+info\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The information that is available to the user-\/defined p4est\+\_\+iter\+\_\+corner\+\_\+t callback. \end{DoxyCompactList}\item 
+typedef void($\ast$ \mbox{\hyperlink{p4est__iterate_8h_a24b4919c3c2b7b6854a43db8b1174016}{p4est\+\_\+iter\+\_\+corner\+\_\+t}}) (\mbox{\hyperlink{p4est__iterate_8h_ac633d521f838e9b8e731555e501f50fb}{p4est\+\_\+iter\+\_\+corner\+\_\+info\+\_\+t}} $\ast$info, void $\ast$user\+\_\+data)
+\begin{DoxyCompactList}\small\item\em The prototype for a function that p4est\+\_\+iterate will execute wherever quadrants meet at a conformal corner. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\+\_\+iterate}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$ghost\+\_\+layer, void $\ast$user\+\_\+data, \mbox{\hyperlink{p4est__iterate_8h_adb709fe6510c4f0b3a918d2f976dbfbc}{p4est\+\_\+iter\+\_\+volume\+\_\+t}} iter\+\_\+volume, \mbox{\hyperlink{p4est__iterate_8h_adf0ec67c0903d955e578d6eeac842273}{p4est\+\_\+iter\+\_\+face\+\_\+t}} iter\+\_\+face, \mbox{\hyperlink{p4est__iterate_8h_a24b4919c3c2b7b6854a43db8b1174016}{p4est\+\_\+iter\+\_\+corner\+\_\+t}} iter\+\_\+corner)
+\begin{DoxyCompactList}\small\item\em Execute user supplied callbacks at every volume, face, and corner in the local forest. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Iteration over mesh topology via callbacks. 
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{p4est__iterate_8h_ac633d521f838e9b8e731555e501f50fb}\label{p4est__iterate_8h_ac633d521f838e9b8e731555e501f50fb}} 
+\index{p4est\_iterate.h@{p4est\_iterate.h}!p4est\_iter\_corner\_info\_t@{p4est\_iter\_corner\_info\_t}}
+\index{p4est\_iter\_corner\_info\_t@{p4est\_iter\_corner\_info\_t}!p4est\_iterate.h@{p4est\_iterate.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_iter\_corner\_info\_t}{p4est\_iter\_corner\_info\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structp4est__iter__corner__info}{p4est\+\_\+iter\+\_\+corner\+\_\+info}} \mbox{\hyperlink{p4est__iterate_8h_ac633d521f838e9b8e731555e501f50fb}{p4est\+\_\+iter\+\_\+corner\+\_\+info\+\_\+t}}}
+
+
+
+The information that is available to the user-\/defined p4est\+\_\+iter\+\_\+corner\+\_\+t callback. 
+
+If tree\+\_\+boundary is false, the corner is on the interior of a tree. When tree\+\_\+boundary is false, sides\mbox{[}0\mbox{]} contains the lowest z-\/order quadrant that touches the corner. When tree\+\_\+boundary is true, its value is P4\+EST\+\_\+\+CONNECT\+\_\+\+FACE/\+CORNER depending on the location of the corner relative to the tree. \mbox{\Hypertarget{p4est__iterate_8h_ac6595da933541a97db6a5fef63fde441}\label{p4est__iterate_8h_ac6595da933541a97db6a5fef63fde441}} 
+\index{p4est\_iterate.h@{p4est\_iterate.h}!p4est\_iter\_corner\_side\_t@{p4est\_iter\_corner\_side\_t}}
+\index{p4est\_iter\_corner\_side\_t@{p4est\_iter\_corner\_side\_t}!p4est\_iterate.h@{p4est\_iterate.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_iter\_corner\_side\_t}{p4est\_iter\_corner\_side\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structp4est__iter__corner__side}{p4est\+\_\+iter\+\_\+corner\+\_\+side}} \mbox{\hyperlink{p4est__iterate_8h_ac6595da933541a97db6a5fef63fde441}{p4est\+\_\+iter\+\_\+corner\+\_\+side\+\_\+t}}}
+
+
+
+Information about one side of a corner in the forest. 
+
+If a {\itshape quad} is local ({\itshape is\+\_\+ghost} is false), then its {\itshape quadid} indexes the tree\textquotesingle{}s quadrant array; otherwise, it indexes the ghosts array. If a quadrant should be present, but it is not included in the ghost layer, then quad = NULL, is\+\_\+ghost is true, and quadid = -\/1.
+
+the {\itshape faces} field provides some additional information about the local topology\+: if side\mbox{[}i\mbox{]}-\/$>$faces\mbox{[}j\mbox{]} == side\mbox{[}k\mbox{]}-\/$>$faces\mbox{[}l\mbox{]}, this indicates that there is a common face between these two sides of the corner. \mbox{\Hypertarget{p4est__iterate_8h_a24b4919c3c2b7b6854a43db8b1174016}\label{p4est__iterate_8h_a24b4919c3c2b7b6854a43db8b1174016}} 
+\index{p4est\_iterate.h@{p4est\_iterate.h}!p4est\_iter\_corner\_t@{p4est\_iter\_corner\_t}}
+\index{p4est\_iter\_corner\_t@{p4est\_iter\_corner\_t}!p4est\_iterate.h@{p4est\_iterate.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_iter\_corner\_t}{p4est\_iter\_corner\_t}}
+{\footnotesize\ttfamily typedef void($\ast$ p4est\+\_\+iter\+\_\+corner\+\_\+t) (\mbox{\hyperlink{p4est__iterate_8h_ac633d521f838e9b8e731555e501f50fb}{p4est\+\_\+iter\+\_\+corner\+\_\+info\+\_\+t}} $\ast$info, void $\ast$user\+\_\+data)}
+
+
+
+The prototype for a function that p4est\+\_\+iterate will execute wherever quadrants meet at a conformal corner. 
+
+i.\+e. the callback will not execute on a hanging corner.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em info} & information about a quadrant provided to the user \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em user\+\_\+data} & the user context passed to \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\+\_\+iterate()}}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+the forest does not need to be corner balanced for \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\+\_\+iterate()}} to correctly execute a callback function at corners, only face balanced (see \mbox{\hyperlink{p4est_8h_a6b603736cf5007b14755197a9c179a85}{p4est\+\_\+balance()}}). 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__iterate_8h_a41a789a379e63967b54c5af80ceb2b0e}\label{p4est__iterate_8h_a41a789a379e63967b54c5af80ceb2b0e}} 
+\index{p4est\_iterate.h@{p4est\_iterate.h}!p4est\_iter\_face\_info\_t@{p4est\_iter\_face\_info\_t}}
+\index{p4est\_iter\_face\_info\_t@{p4est\_iter\_face\_info\_t}!p4est\_iterate.h@{p4est\_iterate.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_iter\_face\_info\_t}{p4est\_iter\_face\_info\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structp4est__iter__face__info}{p4est\+\_\+iter\+\_\+face\+\_\+info}} \mbox{\hyperlink{p4est__iterate_8h_a41a789a379e63967b54c5af80ceb2b0e}{p4est\+\_\+iter\+\_\+face\+\_\+info\+\_\+t}}}
+
+
+
+The information that is available to the user-\/defined p4est\+\_\+iter\+\_\+face\+\_\+t callback. 
+
+The orientation is 0 if the face is within one tree; otherwise, it is the same as the orientation value between the two trees given in the connectivity. If the face is on the outside boundary of the forest, then there is only one side. If tree\+\_\+boundary is false, the face is on the interior of a tree. When tree\+\_\+boundary is false, sides\mbox{[}0\mbox{]} contains the lowest z-\/order quadrant that touches the face. When tree\+\_\+boundary is true, its value is P4\+EST\+\_\+\+CONNECT\+\_\+\+FACE. \mbox{\Hypertarget{p4est__iterate_8h_ae99ecd3270ff75868955f19133b63b25}\label{p4est__iterate_8h_ae99ecd3270ff75868955f19133b63b25}} 
+\index{p4est\_iterate.h@{p4est\_iterate.h}!p4est\_iter\_face\_side\_t@{p4est\_iter\_face\_side\_t}}
+\index{p4est\_iter\_face\_side\_t@{p4est\_iter\_face\_side\_t}!p4est\_iterate.h@{p4est\_iterate.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_iter\_face\_side\_t}{p4est\_iter\_face\_side\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structp4est__iter__face__side}{p4est\+\_\+iter\+\_\+face\+\_\+side}} \mbox{\hyperlink{p4est__iterate_8h_ae99ecd3270ff75868955f19133b63b25}{p4est\+\_\+iter\+\_\+face\+\_\+side\+\_\+t}}}
+
+
+
+Information about one side of a face in the forest. 
+
+If a {\itshape quad} is local ({\itshape is\+\_\+ghost} is false), then its {\itshape quadid} indexes the tree\textquotesingle{}s quadrant array; otherwise, it indexes the ghosts array. If the face is hanging, then the quadrants are listed in z-\/order. If a quadrant should be present, but it is not included in the ghost layer, then quad = NULL, is\+\_\+ghost is true, and quadid = -\/1. \mbox{\Hypertarget{p4est__iterate_8h_adf0ec67c0903d955e578d6eeac842273}\label{p4est__iterate_8h_adf0ec67c0903d955e578d6eeac842273}} 
+\index{p4est\_iterate.h@{p4est\_iterate.h}!p4est\_iter\_face\_t@{p4est\_iter\_face\_t}}
+\index{p4est\_iter\_face\_t@{p4est\_iter\_face\_t}!p4est\_iterate.h@{p4est\_iterate.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_iter\_face\_t}{p4est\_iter\_face\_t}}
+{\footnotesize\ttfamily typedef void($\ast$ p4est\+\_\+iter\+\_\+face\+\_\+t) (\mbox{\hyperlink{p4est__iterate_8h_a41a789a379e63967b54c5af80ceb2b0e}{p4est\+\_\+iter\+\_\+face\+\_\+info\+\_\+t}} $\ast$info, void $\ast$user\+\_\+data)}
+
+
+
+The prototype for a function that p4est\+\_\+iterate will execute wherever two quadrants share a face\+: the face can be a 2\+:1 hanging face, it does not have to be conformal. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em info} & information about a quadrant provided to the user \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em user\+\_\+data} & the user context passed to \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\+\_\+iterate()}}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+the forest must be face balanced for \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\+\_\+iterate()}} to execute a callback function on faces (see \mbox{\hyperlink{p4est_8h_a6b603736cf5007b14755197a9c179a85}{p4est\+\_\+balance()}}). 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__iterate_8h_a88b48ea881f61002c65331a5047f89af}\label{p4est__iterate_8h_a88b48ea881f61002c65331a5047f89af}} 
+\index{p4est\_iterate.h@{p4est\_iterate.h}!p4est\_iter\_volume\_info\_t@{p4est\_iter\_volume\_info\_t}}
+\index{p4est\_iter\_volume\_info\_t@{p4est\_iter\_volume\_info\_t}!p4est\_iterate.h@{p4est\_iterate.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_iter\_volume\_info\_t}{p4est\_iter\_volume\_info\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structp4est__iter__volume__info}{p4est\+\_\+iter\+\_\+volume\+\_\+info}} \mbox{\hyperlink{p4est__iterate_8h_a88b48ea881f61002c65331a5047f89af}{p4est\+\_\+iter\+\_\+volume\+\_\+info\+\_\+t}}}
+
+
+
+The information that is available to the user-\/defined p4est\+\_\+iter\+\_\+volume\+\_\+t callback function. 
+
+{\itshape treeid} gives the index in {\itshape p4est-\/$>$trees} of the tree to which {\itshape quad} belongs. {\itshape quadid} gives the index of {\itshape quad} within {\itshape tree\textquotesingle{}s} quadrants array. \mbox{\Hypertarget{p4est__iterate_8h_adb709fe6510c4f0b3a918d2f976dbfbc}\label{p4est__iterate_8h_adb709fe6510c4f0b3a918d2f976dbfbc}} 
+\index{p4est\_iterate.h@{p4est\_iterate.h}!p4est\_iter\_volume\_t@{p4est\_iter\_volume\_t}}
+\index{p4est\_iter\_volume\_t@{p4est\_iter\_volume\_t}!p4est\_iterate.h@{p4est\_iterate.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_iter\_volume\_t}{p4est\_iter\_volume\_t}}
+{\footnotesize\ttfamily typedef void($\ast$ p4est\+\_\+iter\+\_\+volume\+\_\+t) (\mbox{\hyperlink{p4est__iterate_8h_a88b48ea881f61002c65331a5047f89af}{p4est\+\_\+iter\+\_\+volume\+\_\+info\+\_\+t}} $\ast$info, void $\ast$user\+\_\+data)}
+
+
+
+The prototype for a function that p4est\+\_\+iterate will execute at every quadrant local to the current process. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em info} & information about a quadrant provided to the user \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em user\+\_\+data} & the user context passed to \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\+\_\+iterate()}} \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{userdata_2userdata_run2_8c-example}{userdata/userdata\+\_\+run2.\+c}}.\end{Desc}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}\label{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}} 
+\index{p4est\_iterate.h@{p4est\_iterate.h}!p4est\_iterate@{p4est\_iterate}}
+\index{p4est\_iterate@{p4est\_iterate}!p4est\_iterate.h@{p4est\_iterate.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_iterate()}{p4est\_iterate()}}
+{\footnotesize\ttfamily void p4est\+\_\+iterate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$}]{ghost\+\_\+layer,  }\item[{void $\ast$}]{user\+\_\+data,  }\item[{\mbox{\hyperlink{p4est__iterate_8h_adb709fe6510c4f0b3a918d2f976dbfbc}{p4est\+\_\+iter\+\_\+volume\+\_\+t}}}]{iter\+\_\+volume,  }\item[{\mbox{\hyperlink{p4est__iterate_8h_adf0ec67c0903d955e578d6eeac842273}{p4est\+\_\+iter\+\_\+face\+\_\+t}}}]{iter\+\_\+face,  }\item[{\mbox{\hyperlink{p4est__iterate_8h_a24b4919c3c2b7b6854a43db8b1174016}{p4est\+\_\+iter\+\_\+corner\+\_\+t}}}]{iter\+\_\+corner }\end{DoxyParamCaption})}
+
+
+
+Execute user supplied callbacks at every volume, face, and corner in the local forest. 
+
+p4est\+\_\+iterate executes the user-\/supplied callback functions at every volume, face, and corner in the local forest. The ghost\+\_\+layer may be NULL. The {\itshape user\+\_\+data} pointer is not touched by p4est\+\_\+iterate, but is passed to each of the callbacks. Any of the callbacks may be NULL. The callback functions are interspersed with each other, i.\+e. some face callbacks will occur between volume callbacks, and some corner callbacks will occur between face callbacks\+:
+
+1) volume callbacks occur in the sorted Morton-\/index order. 2) a face callback is not executed until after the volume callbacks have been executed for the quadrants that share it. 3) a corner callback is not executed until the face callbacks have been executed for all faces that touch the corner. 4) it is not always the case that every face callback for a given quadrant is executed before any of the corner callbacks. 5) callbacks are not executed at faces or corners that only involve ghost quadrants, i.\+e. that are not adjacent in the local section of the forest.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & the forest \\
+\hline
+\mbox{\texttt{ in}}  & {\em ghost\+\_\+layer} & optional\+: when not given, callbacks at the boundaries of the local partition cannot provide quadrant data about ghost quadrants\+: missing (p4est\+\_\+quadrant\+\_\+t $\ast$) pointers are set to NULL, missing indices are set to -\/1. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em user\+\_\+data} & optional context to supply to each callback \\
+\hline
+\mbox{\texttt{ in}}  & {\em iter\+\_\+volume} & callback function for every quadrant\textquotesingle{}s interior \\
+\hline
+\mbox{\texttt{ in}}  & {\em iter\+\_\+face} & callback function for every face between quadrants \\
+\hline
+\mbox{\texttt{ in}}  & {\em iter\+\_\+corner} & callback function for every corner between quadrants \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{steps_2p4est_step3_8c-example}{steps/p4est\+\_\+step3.\+c}}, and \mbox{\hyperlink{userdata_2userdata_run2_8c-example}{userdata/userdata\+\_\+run2.\+c}}.\end{Desc}

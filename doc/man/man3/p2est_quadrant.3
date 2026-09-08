@@ -1,0 +1,49 @@
+.TH "p2est_quadrant" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p2est_quadrant \- A 1D quadrant datatype: this is used to encode a 'layer' of a column in the 2D+1D AMR scheme\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p6est\&.h>\fP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "union \fBp6est_quadrant_data\fP"
+.br
+.in -1c
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBp4est_qcoord_t\fP \fBz\fP"
+.br
+.RI "vertical coordinate "
+.ti -1c
+.RI "int8_t \fBlevel\fP"
+.br
+.RI "level of refinement "
+.ti -1c
+.RI "int8_t \fBpad8\fP"
+.br
+.RI "padding "
+.ti -1c
+.RI "int16_t \fBpad16\fP"
+.br
+.RI "padding "
+.ti -1c
+.RI "union \fBp2est_quadrant::p6est_quadrant_data\fP \fBp\fP"
+.br
+.RI "a union of additional data attached to a layer "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A 1D quadrant datatype: this is used to encode a 'layer' of a column in the 2D+1D AMR scheme\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

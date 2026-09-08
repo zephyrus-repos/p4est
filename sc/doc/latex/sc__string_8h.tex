@@ -1,0 +1,184 @@
+\hypertarget{sc__string_8h}{}\doxysection{src/sc\+\_\+string.h File Reference}
+\label{sc__string_8h}\index{src/sc\_string.h@{src/sc\_string.h}}
+
+
+This file declares a simple string object that can be appended to.  
+
+
+{\ttfamily \#include $<$sc.\+h$>$}\newline
+Include dependency graph for sc\+\_\+string.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sc__string_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structsc__string}{sc\+\_\+string}}
+\begin{DoxyCompactList}\small\item\em This is a simple type for growing a string by printf-\/like commands. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc__string_8h_ab7176b57256b52794d45e29ed89d0a24}\label{sc__string_8h_ab7176b57256b52794d45e29ed89d0a24}} 
+\#define \mbox{\hyperlink{sc__string_8h_ab7176b57256b52794d45e29ed89d0a24}{SC\+\_\+\+STRING\+\_\+\+SIZE}}~4088
+\begin{DoxyCompactList}\small\item\em This defines the maximum string storage including the trailing \textquotesingle{}\textbackslash{}0\textquotesingle{}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structsc__string}{sc\+\_\+string}} \mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em This is a simple type for growing a string by printf-\/like commands. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{sc__string_8h_aed336ec54faf4b6247e13ab42e761b87}{sc\+\_\+string\+\_\+init}} (\mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}} $\ast$scs)
+\begin{DoxyCompactList}\small\item\em Initialize to an empty string. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__string_8h_a72be1be818f392298e53337f9108c6e5}{sc\+\_\+string\+\_\+putc}} (\mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}} $\ast$scs, int c)
+\begin{DoxyCompactList}\small\item\em Append a single character to the string buffer object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__string_8h_aaae8403882cd7b1fbda8811103350b6d}{sc\+\_\+string\+\_\+puts}} (\mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}} $\ast$scs, const char $\ast$s)
+\begin{DoxyCompactList}\small\item\em Append a string to the string buffer object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__string_8h_a881488228494cce202cc09b17c3f70bc}{sc\+\_\+string\+\_\+putf}} (\mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}} $\ast$scs, const char $\ast$fmt,...)
+\begin{DoxyCompactList}\small\item\em Append to the string object using a format string and arguments. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__string_8h_a1f3ce1d577738e262b5b12f0de8abf6e}{sc\+\_\+string\+\_\+putv}} (\mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}} $\ast$scs, const char $\ast$fmt, va\+\_\+list ap)
+\begin{DoxyCompactList}\small\item\em Append to the string object using a format string and a vararg pointer. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{sc__string_8h_a5358b5e854c5111c250e6b90f10ea9b2}{sc\+\_\+string\+\_\+get\+\_\+content}} (\mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}} $\ast$scs, int $\ast$length)
+\begin{DoxyCompactList}\small\item\em Access content of the string buffer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file declares a simple string object that can be appended to. 
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}\label{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}} 
+\index{sc\_string.h@{sc\_string.h}!sc\_string\_t@{sc\_string\_t}}
+\index{sc\_string\_t@{sc\_string\_t}!sc\_string.h@{sc\_string.h}}
+\doxysubsubsection{\texorpdfstring{sc\_string\_t}{sc\_string\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structsc__string}{sc\+\_\+string}} \mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}}}
+
+
+
+This is a simple type for growing a string by printf-\/like commands. 
+
+It is public so it can be declared on the stack to avoid malloc and free. This means that the length of the string is limited to \mbox{\hyperlink{sc__string_8h_ab7176b57256b52794d45e29ed89d0a24}{SC\+\_\+\+STRING\+\_\+\+SIZE}} -\/ 1. The current string can be accessed by \mbox{\hyperlink{sc__string_8h_a5358b5e854c5111c250e6b90f10ea9b2}{sc\+\_\+string\+\_\+get\+\_\+content}}. This is really an opaque object\+: its members shall not be accessed directly. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sc__string_8h_a5358b5e854c5111c250e6b90f10ea9b2}\label{sc__string_8h_a5358b5e854c5111c250e6b90f10ea9b2}} 
+\index{sc\_string.h@{sc\_string.h}!sc\_string\_get\_content@{sc\_string\_get\_content}}
+\index{sc\_string\_get\_content@{sc\_string\_get\_content}!sc\_string.h@{sc\_string.h}}
+\doxysubsubsection{\texorpdfstring{sc\_string\_get\_content()}{sc\_string\_get\_content()}}
+{\footnotesize\ttfamily const char$\ast$ sc\+\_\+string\+\_\+get\+\_\+content (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}} $\ast$}]{scs,  }\item[{int $\ast$}]{length }\end{DoxyParamCaption})}
+
+
+
+Access content of the string buffer. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em scs} & Valid \mbox{\hyperlink{structsc__string}{sc\+\_\+string}} object. \\
+\hline
+\mbox{\texttt{ in}}  & {\em length} & If not NULL, assign length without trailing \textquotesingle{}\textbackslash{}0\textquotesingle{}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to an internally allocated string, may not be used after {\bfseries{scs}} goes out of scope. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__string_8h_aed336ec54faf4b6247e13ab42e761b87}\label{sc__string_8h_aed336ec54faf4b6247e13ab42e761b87}} 
+\index{sc\_string.h@{sc\_string.h}!sc\_string\_init@{sc\_string\_init}}
+\index{sc\_string\_init@{sc\_string\_init}!sc\_string.h@{sc\_string.h}}
+\doxysubsubsection{\texorpdfstring{sc\_string\_init()}{sc\_string\_init()}}
+{\footnotesize\ttfamily void sc\+\_\+string\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}} $\ast$}]{scs }\end{DoxyParamCaption})}
+
+
+
+Initialize to an empty string. 
+
+This function can be used to reset a non-\/empty string to be empty again. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em scs} & After returning, a valid object containing the empty string. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__string_8h_a72be1be818f392298e53337f9108c6e5}\label{sc__string_8h_a72be1be818f392298e53337f9108c6e5}} 
+\index{sc\_string.h@{sc\_string.h}!sc\_string\_putc@{sc\_string\_putc}}
+\index{sc\_string\_putc@{sc\_string\_putc}!sc\_string.h@{sc\_string.h}}
+\doxysubsubsection{\texorpdfstring{sc\_string\_putc()}{sc\_string\_putc()}}
+{\footnotesize\ttfamily int sc\+\_\+string\+\_\+putc (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}} $\ast$}]{scs,  }\item[{int}]{c }\end{DoxyParamCaption})}
+
+
+
+Append a single character to the string buffer object. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em scs} & A valid string buffer object. \\
+\hline
+\mbox{\texttt{ in}}  & {\em c} & Converted to an unsigned char and appended. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Zero if the character has been appended and a negative value when the input was truncated. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__string_8h_a881488228494cce202cc09b17c3f70bc}\label{sc__string_8h_a881488228494cce202cc09b17c3f70bc}} 
+\index{sc\_string.h@{sc\_string.h}!sc\_string\_putf@{sc\_string\_putf}}
+\index{sc\_string\_putf@{sc\_string\_putf}!sc\_string.h@{sc\_string.h}}
+\doxysubsubsection{\texorpdfstring{sc\_string\_putf()}{sc\_string\_putf()}}
+{\footnotesize\ttfamily int sc\+\_\+string\+\_\+putf (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}} $\ast$}]{scs,  }\item[{const char $\ast$}]{fmt,  }\item[{}]{... }\end{DoxyParamCaption})}
+
+
+
+Append to the string object using a format string and arguments. 
+
+The maximum length will not be exceeded. The string object will remain valid even on truncated input. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em scs} & Valid string object that is appended to. \\
+\hline
+\mbox{\texttt{ in}}  & {\em fmt} & Format string as used with printf and friends. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Zero if everything has been appended and a negative value when the input was truncated. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__string_8h_aaae8403882cd7b1fbda8811103350b6d}\label{sc__string_8h_aaae8403882cd7b1fbda8811103350b6d}} 
+\index{sc\_string.h@{sc\_string.h}!sc\_string\_puts@{sc\_string\_puts}}
+\index{sc\_string\_puts@{sc\_string\_puts}!sc\_string.h@{sc\_string.h}}
+\doxysubsubsection{\texorpdfstring{sc\_string\_puts()}{sc\_string\_puts()}}
+{\footnotesize\ttfamily int sc\+\_\+string\+\_\+puts (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}} $\ast$}]{scs,  }\item[{const char $\ast$}]{s }\end{DoxyParamCaption})}
+
+
+
+Append a string to the string buffer object. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em scs} & A valid string buffer object. \\
+\hline
+\mbox{\texttt{ in}}  & {\em s} & This string is appended to the string buffer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Zero if the string has been appended and a negative value when the input was truncated. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__string_8h_a1f3ce1d577738e262b5b12f0de8abf6e}\label{sc__string_8h_a1f3ce1d577738e262b5b12f0de8abf6e}} 
+\index{sc\_string.h@{sc\_string.h}!sc\_string\_putv@{sc\_string\_putv}}
+\index{sc\_string\_putv@{sc\_string\_putv}!sc\_string.h@{sc\_string.h}}
+\doxysubsubsection{\texorpdfstring{sc\_string\_putv()}{sc\_string\_putv()}}
+{\footnotesize\ttfamily int sc\+\_\+string\+\_\+putv (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__string_8h_a0ccb4278bfe64699e3ca9096451bb3f4}{sc\+\_\+string\+\_\+t}} $\ast$}]{scs,  }\item[{const char $\ast$}]{fmt,  }\item[{va\+\_\+list}]{ap }\end{DoxyParamCaption})}
+
+
+
+Append to the string object using a format string and a vararg pointer. 
+
+The maximum length will not be exceeded. The string object will remain valid even on truncated input. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em scs} & Valid string object that is appended to. \\
+\hline
+\mbox{\texttt{ in}}  & {\em fmt} & Format string as used with printf and friends. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em ap} & Argument list pointer as defined in stdarg.\+h. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Zero if everything has been appended and a negative value when the input was truncated. 
+\end{DoxyReturn}

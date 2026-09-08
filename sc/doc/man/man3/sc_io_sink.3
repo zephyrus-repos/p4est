@@ -1,0 +1,58 @@
+.TH "sc_io_sink" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sc_io_sink \- A generic data sink\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <sc_io\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBsc_io_type_t\fP \fBiotype\fP"
+.br
+.RI "type of the I/O operation "
+.ti -1c
+.RI "\fBsc_io_mode_t\fP \fBmode\fP"
+.br
+.RI "write semantics "
+.ti -1c
+.RI "\fBsc_io_encode_t\fP \fBencode\fP"
+.br
+.RI "encoding of data "
+.ti -1c
+.RI "\fBsc_array_t\fP * \fBbuffer\fP"
+.br
+.RI "buffer for the iotype \fBSC_IO_TYPE_BUFFER\fP "
+.ti -1c
+.RI "size_t \fBbuffer_bytes\fP"
+.br
+.RI "distinguish from array elements "
+.ti -1c
+.RI "FILE * \fBfile\fP"
+.br
+.RI "file pointer for iotype unequal to \fBSC_IO_TYPE_BUFFER\fP "
+.ti -1c
+.RI "size_t \fBbytes_in\fP"
+.br
+.RI "input bytes count "
+.ti -1c
+.RI "size_t \fBbytes_out\fP"
+.br
+.RI "written bytes count "
+.ti -1c
+.RI "int \fBis_eof\fP"
+.br
+.RI "Have we reached the end of file? "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A generic data sink\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

@@ -1,0 +1,56 @@
+.TH "sc_scda_params" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sc_scda_params \- A parameter struct for the functions \fBsc_scda_fopen_write\fP and \fBsc_scda_fopen_read\fP\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <sc_scda\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBsc_MPI_Info\fP \fBinfo\fP"
+.br
+.RI "info that is passed to MPI_File_open "
+.ti -1c
+.RI "unsigned \fBfuzzy_everyn\fP"
+.br
+.RI "In average every n-th possible error origin returns a fuzzy error\&. "
+.ti -1c
+.RI "\fBsc_rand_state_t\fP \fBfuzzy_seed\fP"
+.br
+.RI "The seed for the fuzzy error return\&. "
+.ti -1c
+.RI "int \fBlog_level\fP"
+.br
+.RI "The log level for the scda functions\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A parameter struct for the functions \fBsc_scda_fopen_write\fP and \fBsc_scda_fopen_read\fP\&. 
+
+The struct may be extended in the future\&.
+.PP
+The option struct is a collective structure\&. If the options structure that is passed to a function is not the same on all processes, the whole following scda workflow has undefined behavior\&. 
+.SH "Field Documentation"
+.PP 
+.SS "unsigned sc_scda_params::fuzzy_everyn"
+
+.PP
+In average every n-th possible error origin returns a fuzzy error\&. There may be multiple possible error origins in one top-level scda function\&. We return for each possible error origin a random error with the empirical probability of 1 / fuzzy_everyn but only if the respective possible error origin did not already cause an error without the fuzzy error return\&. In such a case, the actual error is returned\&. 0 means that there are no fuzzy error returns\&. 
+.SS "\fBsc_rand_state_t\fP sc_scda_params::fuzzy_seed"
+
+.PP
+The seed for the fuzzy error return\&. This value is ignored if fuzzy_everyn == 0\&. When in doubt use fuzzy_seed = 0\&. 
+.SS "int sc_scda_params::log_level"
+
+.PP
+The log level for the scda functions\&. The possible values are documented in \fBsc\&.h\fP; cf\&. SC_LP_* macros\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

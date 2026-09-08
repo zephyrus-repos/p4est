@@ -1,0 +1,1174 @@
+\hypertarget{sc_8h}{}\doxysection{src/sc.h File Reference}
+\label{sc_8h}\index{src/sc.h@{src/sc.h}}
+
+
+Support for process management (memory allocation, logging, etc.)  
+
+
+{\ttfamily \#include $<$sc\+\_\+config.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include $<$float.\+h$>$}\newline
+{\ttfamily \#include $<$limits.\+h$>$}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$sc\+\_\+mpi.\+h$>$}\newline
+Include dependency graph for sc.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sc_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sc_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc_8h_a369266c24eacffb87046522897a570d5}\label{sc_8h_a369266c24eacffb87046522897a570d5}} 
+\#define {\bfseries \+\_\+\+GNU\+\_\+\+SOURCE}
+\item 
+\mbox{\Hypertarget{sc_8h_a3e8bf9d420fe69ae80dd4d068b7831eb}\label{sc_8h_a3e8bf9d420fe69ae80dd4d068b7831eb}} 
+\#define \mbox{\hyperlink{sc_8h_a3e8bf9d420fe69ae80dd4d068b7831eb}{\+\_\+sc\+\_\+const}}~const
+\begin{DoxyCompactList}\small\item\em Portable way to work with really old compilers without const. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a5c67598e67559f1d264b11b148bb1e73}\label{sc_8h_a5c67598e67559f1d264b11b148bb1e73}} 
+\#define \mbox{\hyperlink{sc_8h_a5c67598e67559f1d264b11b148bb1e73}{\+\_\+sc\+\_\+restrict}}~restrict
+\begin{DoxyCompactList}\small\item\em Portable way to work with really old compilers without restrict. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_ace7c0db284353fc9fdb1e0b2fe026d23}\label{sc_8h_ace7c0db284353fc9fdb1e0b2fe026d23}} 
+\#define \mbox{\hyperlink{sc_8h_ace7c0db284353fc9fdb1e0b2fe026d23}{SC\+\_\+\+CALC\+\_\+\+VERSION}}(major,  minor,  patchlevel)~                       (((major) $\ast$ 1000 + (minor)) $\ast$ 1000 + (patchlevel))
+\begin{DoxyCompactList}\small\item\em Test for gcc version without features.\+h. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a128da644dc0028cde8d21c5bae3c8012}\label{sc_8h_a128da644dc0028cde8d21c5bae3c8012}} 
+\#define \mbox{\hyperlink{sc_8h_a128da644dc0028cde8d21c5bae3c8012}{SC\+\_\+\+GCC\+\_\+\+VERSION}}~        \mbox{\hyperlink{sc_8h_ace7c0db284353fc9fdb1e0b2fe026d23}{SC\+\_\+\+CALC\+\_\+\+VERSION}} (0, 0, 0)
+\begin{DoxyCompactList}\small\item\em Assemble GCC version using a 1000-\/per-\/digit scheme. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a646379d740ae17ed30491e7760512d02}\label{sc_8h_a646379d740ae17ed30491e7760512d02}} 
+\#define {\bfseries SC\+\_\+\+NOCOUNT\+\_\+\+MALLOC}
+\item 
+\mbox{\Hypertarget{sc_8h_a0d3c708470fef8376aca9480cd62ed89}\label{sc_8h_a0d3c708470fef8376aca9480cd62ed89}} 
+\#define {\bfseries SC\+\_\+\+NOCOUNT\+\_\+\+REFCOUNT}
+\item 
+\mbox{\Hypertarget{sc_8h_a7e2988e33f41c5861e5eca02c78c084e}\label{sc_8h_a7e2988e33f41c5861e5eca02c78c084e}} 
+\#define {\bfseries SC\+\_\+\+NOCOUNT\+\_\+\+LOGINDENT}
+\item 
+\mbox{\Hypertarget{sc_8h_aeb7e7a856ab7a794b05b6b63ef36ea3e}\label{sc_8h_aeb7e7a856ab7a794b05b6b63ef36ea3e}} 
+\#define \mbox{\hyperlink{sc_8h_aeb7e7a856ab7a794b05b6b63ef36ea3e}{\+\_\+\+\_\+\+STDC\+\_\+\+LIMIT\+\_\+\+MACROS}}
+\begin{DoxyCompactList}\small\item\em Activate C99 limit macros for older C++ compilers. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a786132414c30f947907be33a4c28125a}\label{sc_8h_a786132414c30f947907be33a4c28125a}} 
+\#define \mbox{\hyperlink{sc_8h_a786132414c30f947907be33a4c28125a}{\+\_\+\+\_\+\+STDC\+\_\+\+CONSTANT\+\_\+\+MACROS}}
+\begin{DoxyCompactList}\small\item\em Activate C99 constant macros for older C++ compilers. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a525335710b53cb064ca56b936120431e}\label{sc_8h_a525335710b53cb064ca56b936120431e}} 
+\#define {\bfseries \+\_\+\+USE\+\_\+\+MATH\+\_\+\+DEFINES}
+\item 
+\mbox{\Hypertarget{sc_8h_a9bf5d952c5c93c70f9e66c9794d406c9}\label{sc_8h_a9bf5d952c5c93c70f9e66c9794d406c9}} 
+\#define {\bfseries M\+\_\+E}~2.\+71828182845904523536
+\item 
+\mbox{\Hypertarget{sc_8h_ac5c747ee5bcbe892875672a0b9d8171c}\label{sc_8h_ac5c747ee5bcbe892875672a0b9d8171c}} 
+\#define {\bfseries M\+\_\+\+LOG2E}~1.\+44269504088896340736
+\item 
+\mbox{\Hypertarget{sc_8h_a9ed2b5582226f3896424ff6d2a3ebb14}\label{sc_8h_a9ed2b5582226f3896424ff6d2a3ebb14}} 
+\#define {\bfseries M\+\_\+\+LOG10E}~0.\+434294481903251827651
+\item 
+\mbox{\Hypertarget{sc_8h_a92428112a5d24721208748774a4f23e6}\label{sc_8h_a92428112a5d24721208748774a4f23e6}} 
+\#define {\bfseries M\+\_\+\+LN2}~0.\+693147180559945309417
+\item 
+\mbox{\Hypertarget{sc_8h_a0a53871497a155afe91424c28a8ec3c4}\label{sc_8h_a0a53871497a155afe91424c28a8ec3c4}} 
+\#define {\bfseries M\+\_\+\+LN10}~2.\+30258509299404568402
+\item 
+\mbox{\Hypertarget{sc_8h_ae71449b1cc6e6250b91f539153a7a0d3}\label{sc_8h_ae71449b1cc6e6250b91f539153a7a0d3}} 
+\#define {\bfseries M\+\_\+\+PI}~3.\+14159265358979323846
+\item 
+\mbox{\Hypertarget{sc_8h_a958e4508ed28ee5cc04249144312c15f}\label{sc_8h_a958e4508ed28ee5cc04249144312c15f}} 
+\#define {\bfseries M\+\_\+\+PI\+\_\+2}~1.\+57079632679489661923
+\item 
+\mbox{\Hypertarget{sc_8h_aeb24420b096a677f3a2dc5a72b36bf22}\label{sc_8h_aeb24420b096a677f3a2dc5a72b36bf22}} 
+\#define {\bfseries M\+\_\+\+PI\+\_\+4}~0.\+785398163397448309616
+\item 
+\mbox{\Hypertarget{sc_8h_a08dfac3cca9601a02fc88356cc078e1d}\label{sc_8h_a08dfac3cca9601a02fc88356cc078e1d}} 
+\#define {\bfseries M\+\_\+1\+\_\+\+PI}~0.\+318309886183790671538
+\item 
+\mbox{\Hypertarget{sc_8h_a97f6d6514d3d3dd50c3a2a6d622673db}\label{sc_8h_a97f6d6514d3d3dd50c3a2a6d622673db}} 
+\#define {\bfseries M\+\_\+2\+\_\+\+PI}~0.\+636619772367581343076
+\item 
+\mbox{\Hypertarget{sc_8h_a631ff334c4a1a6db2e8a7ff4acbe48a5}\label{sc_8h_a631ff334c4a1a6db2e8a7ff4acbe48a5}} 
+\#define {\bfseries M\+\_\+2\+\_\+\+SQRTPI}~1.\+12837916709551257390
+\item 
+\mbox{\Hypertarget{sc_8h_a66b3ab30f1332874326ed93969e496e0}\label{sc_8h_a66b3ab30f1332874326ed93969e496e0}} 
+\#define {\bfseries M\+\_\+\+SQRT2}~1.\+41421356237309504880
+\item 
+\mbox{\Hypertarget{sc_8h_acdbb2c2f9429f08916f03c8786d2d2d7}\label{sc_8h_acdbb2c2f9429f08916f03c8786d2d2d7}} 
+\#define {\bfseries M\+\_\+\+SQRT1\+\_\+2}~0.\+707106781186547524401
+\item 
+\mbox{\Hypertarget{sc_8h_aaff1c6bc88b01e7ee9d894d5b707be76}\label{sc_8h_aaff1c6bc88b01e7ee9d894d5b707be76}} 
+\#define \mbox{\hyperlink{sc_8h_aaff1c6bc88b01e7ee9d894d5b707be76}{SC\+\_\+\+INIT\+\_\+\+COMM\+\_\+\+CLEAN}}
+\begin{DoxyCompactList}\small\item\em Indicate that we do not modify the communicator in sc\+\_\+init. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_af995161fbb69d91022e482907589268a}\label{sc_8h_af995161fbb69d91022e482907589268a}} 
+\#define \mbox{\hyperlink{sc_8h_af995161fbb69d91022e482907589268a}{SC\+\_\+\+NOARGS}}
+\begin{DoxyCompactList}\small\item\em For compatibility of varargs with C++. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_afdf2eb00ce079d4e790ebfc0505209c3}\label{sc_8h_afdf2eb00ce079d4e790ebfc0505209c3}} 
+\#define \mbox{\hyperlink{sc_8h_afdf2eb00ce079d4e790ebfc0505209c3}{SC\+\_\+\+EPS}}~2.\+220446049250313e-\/16
+\begin{DoxyCompactList}\small\item\em Define machine epsilon for the double type. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a96606ef2c0e7887e18919ecdafc34e31}\label{sc_8h_a96606ef2c0e7887e18919ecdafc34e31}} 
+\#define \mbox{\hyperlink{sc_8h_a96606ef2c0e7887e18919ecdafc34e31}{SC\+\_\+1000\+\_\+\+EPS}}~(1000. $\ast$ 2.\+220446049250313e-\/16)
+\begin{DoxyCompactList}\small\item\em Define 1000 times the machine epsilon for the double type. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a0365d8aa362280e2e6415c9a97e43252}\label{sc_8h_a0365d8aa362280e2e6415c9a97e43252}} 
+\#define \mbox{\hyperlink{sc_8h_a0365d8aa362280e2e6415c9a97e43252}{SC\+\_\+\+NOOP}}()~((void) (0))
+\begin{DoxyCompactList}\small\item\em A macro to do and return nothing as an expression. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_adaa4a434716df9d41057463c43a70562}\label{sc_8h_adaa4a434716df9d41057463c43a70562}} 
+\#define {\bfseries SC\+\_\+\+ABORT}(s)~  \mbox{\hyperlink{sc_8h_aee1b50d26fd5a255a2d258b157c0fbba}{sc\+\_\+abort\+\_\+verbose}} (\+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_abf2ad06ef016d3313f2cbd0b2cc17dba}\label{sc_8h_abf2ad06ef016d3313f2cbd0b2cc17dba}} 
+\#define {\bfseries SC\+\_\+\+ABORT\+\_\+\+NOT\+\_\+\+REACHED}()~SC\+\_\+\+ABORT (\char`\"{}Unreachable code\char`\"{})
+\item 
+\mbox{\Hypertarget{sc_8h_ad7837d30ed9aee69ae2b4c6b0310cb32}\label{sc_8h_ad7837d30ed9aee69ae2b4c6b0310cb32}} 
+\#define {\bfseries SC\+\_\+\+CHECK\+\_\+\+ABORT}(q,  s)~  ((q) ? (void) 0 \+: SC\+\_\+\+ABORT (s))
+\item 
+\mbox{\Hypertarget{sc_8h_a6f0f463f292b4c02944fbc16e210cb5e}\label{sc_8h_a6f0f463f292b4c02944fbc16e210cb5e}} 
+\#define {\bfseries SC\+\_\+\+CHECK\+\_\+\+MPI}(r)~SC\+\_\+\+CHECK\+\_\+\+ABORT ((r) == \mbox{\hyperlink{sc__mpi_8h_af85726c815d1f0ac16948b3c205a1cf8}{sc\+\_\+\+MPI\+\_\+\+SUCCESS}}, \char`\"{}MPI error\char`\"{})
+\item 
+\mbox{\Hypertarget{sc_8h_a8f125b43aa7ebd4092920927349d9a43}\label{sc_8h_a8f125b43aa7ebd4092920927349d9a43}} 
+\#define {\bfseries SC\+\_\+\+ABORTF}(fmt, ...)~  \mbox{\hyperlink{sc_8h_a6be49ee77f1b80fb40802196952c073d}{sc\+\_\+abort\+\_\+verbosef}} (\+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_ab8bae7bd92d9376001b78f96ebaa54ea}\label{sc_8h_ab8bae7bd92d9376001b78f96ebaa54ea}} 
+\#define {\bfseries SC\+\_\+\+CHECK\+\_\+\+ABORTF}(q,  fmt, ...)~  ((q) ? (void) 0 \+: SC\+\_\+\+ABORTF (fmt, \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+))
+\item 
+\mbox{\Hypertarget{sc_8h_a069172e5658f2f61900c2d3892a20332}\label{sc_8h_a069172e5658f2f61900c2d3892a20332}} 
+\#define {\bfseries SC\+\_\+\+ABORT1}(fmt,  a)~  \mbox{\hyperlink{sc_8h_a6be49ee77f1b80fb40802196952c073d}{sc\+\_\+abort\+\_\+verbosef}} (\+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+, (fmt), (a))
+\item 
+\mbox{\Hypertarget{sc_8h_a8e2784eda7fe7aa86a90cba731726799}\label{sc_8h_a8e2784eda7fe7aa86a90cba731726799}} 
+\#define {\bfseries SC\+\_\+\+ABORT2}(fmt,  a,  b)~  \mbox{\hyperlink{sc_8h_a6be49ee77f1b80fb40802196952c073d}{sc\+\_\+abort\+\_\+verbosef}} (\+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+, (fmt), (a), (b))
+\item 
+\mbox{\Hypertarget{sc_8h_ae22f207ca4d8c07b0e8c3b22c5644071}\label{sc_8h_ae22f207ca4d8c07b0e8c3b22c5644071}} 
+\#define {\bfseries SC\+\_\+\+ABORT3}(fmt,  a,  b,  c)~  \mbox{\hyperlink{sc_8h_a6be49ee77f1b80fb40802196952c073d}{sc\+\_\+abort\+\_\+verbosef}} (\+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+, (fmt), (a), (b), (c))
+\item 
+\mbox{\Hypertarget{sc_8h_a33cc7e89f14aac365879dd9b1818ff26}\label{sc_8h_a33cc7e89f14aac365879dd9b1818ff26}} 
+\#define {\bfseries SC\+\_\+\+ABORT4}(fmt,  a,  b,  c,  d)~  \mbox{\hyperlink{sc_8h_a6be49ee77f1b80fb40802196952c073d}{sc\+\_\+abort\+\_\+verbosef}} (\+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+, (fmt), (a), (b), (c), (d))
+\item 
+\mbox{\Hypertarget{sc_8h_ae371572ced2388c3a56151ac04d72f32}\label{sc_8h_ae371572ced2388c3a56151ac04d72f32}} 
+\#define {\bfseries SC\+\_\+\+ABORT5}(fmt,  a,  b,  c,  d,  e)~  \mbox{\hyperlink{sc_8h_a6be49ee77f1b80fb40802196952c073d}{sc\+\_\+abort\+\_\+verbosef}} (\+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+, (fmt), (a), (b), (c), (d), (e))
+\item 
+\mbox{\Hypertarget{sc_8h_ad3219e82eb374154b8eb9ecb6a62df07}\label{sc_8h_ad3219e82eb374154b8eb9ecb6a62df07}} 
+\#define {\bfseries SC\+\_\+\+ABORT6}(fmt,  a,  b,  c,  d,  e,  f)~  \mbox{\hyperlink{sc_8h_a6be49ee77f1b80fb40802196952c073d}{sc\+\_\+abort\+\_\+verbosef}} (\+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+, (fmt), (a), (b), (c), (d), (e), (f))
+\item 
+\mbox{\Hypertarget{sc_8h_a5e0acb4f84f2fd95fd17daca2a5d1a14}\label{sc_8h_a5e0acb4f84f2fd95fd17daca2a5d1a14}} 
+\#define {\bfseries SC\+\_\+\+CHECK\+\_\+\+ABORT1}(q,  fmt,  a)~  ((q) ? (void) 0 \+: SC\+\_\+\+ABORT1 ((fmt), (a)))
+\item 
+\mbox{\Hypertarget{sc_8h_a89f06ef21256f317091d2905e8edf998}\label{sc_8h_a89f06ef21256f317091d2905e8edf998}} 
+\#define {\bfseries SC\+\_\+\+CHECK\+\_\+\+ABORT2}(q,  fmt,  a,  b)~  ((q) ? (void) 0 \+: SC\+\_\+\+ABORT2 ((fmt), (a), (b)))
+\item 
+\mbox{\Hypertarget{sc_8h_af404f85208fe9db8a0fd6f082d7ebf34}\label{sc_8h_af404f85208fe9db8a0fd6f082d7ebf34}} 
+\#define {\bfseries SC\+\_\+\+CHECK\+\_\+\+ABORT3}(q,  fmt,  a,  b,  c)~  ((q) ? (void) 0 \+: SC\+\_\+\+ABORT3 ((fmt), (a), (b), (c)))
+\item 
+\mbox{\Hypertarget{sc_8h_af32a18e442af0b25ce638ae6e75560da}\label{sc_8h_af32a18e442af0b25ce638ae6e75560da}} 
+\#define {\bfseries SC\+\_\+\+CHECK\+\_\+\+ABORT4}(q,  fmt,  a,  b,  c,  d)~  ((q) ? (void) 0 \+: SC\+\_\+\+ABORT4 ((fmt), (a), (b), (c), (d)))
+\item 
+\mbox{\Hypertarget{sc_8h_a2c98c1675cb30ded53664b711989a0a7}\label{sc_8h_a2c98c1675cb30ded53664b711989a0a7}} 
+\#define {\bfseries SC\+\_\+\+CHECK\+\_\+\+ABORT5}(q,  fmt,  a,  b,  c,  d,  e)~  ((q) ? (void) 0 \+: SC\+\_\+\+ABORT5 ((fmt), (a), (b), (c), (d), (e)))
+\item 
+\mbox{\Hypertarget{sc_8h_a75f9cd91e4bf46430fa3c3bc689667f6}\label{sc_8h_a75f9cd91e4bf46430fa3c3bc689667f6}} 
+\#define {\bfseries SC\+\_\+\+CHECK\+\_\+\+ABORT6}(q,  fmt,  a,  b,  c,  d,  e,  f)~  ((q) ? (void) 0 \+: SC\+\_\+\+ABORT6 ((fmt), (a), (b), (c), (d), (e), (f)))
+\item 
+\mbox{\Hypertarget{sc_8h_a47b7b66bf3aac69c4a46d4972f624763}\label{sc_8h_a47b7b66bf3aac69c4a46d4972f624763}} 
+\#define {\bfseries SC\+\_\+\+ASSERT}(c)~\mbox{\hyperlink{sc_8h_a0365d8aa362280e2e6415c9a97e43252}{SC\+\_\+\+NOOP}} ()
+\item 
+\mbox{\Hypertarget{sc_8h_ae19d4658ff525f779b64db4ada85b3c0}\label{sc_8h_ae19d4658ff525f779b64db4ada85b3c0}} 
+\#define {\bfseries SC\+\_\+\+EXECUTE\+\_\+\+ASSERT\+\_\+\+FALSE}(expression)~  do \{ (void) (expression); \} while (0)
+\item 
+\mbox{\Hypertarget{sc_8h_a0f87dd94666b4236a885bc101b84894a}\label{sc_8h_a0f87dd94666b4236a885bc101b84894a}} 
+\#define {\bfseries SC\+\_\+\+EXECUTE\+\_\+\+ASSERT\+\_\+\+TRUE}(expression)~  do \{ (void) (expression); \} while (0)
+\item 
+\mbox{\Hypertarget{sc_8h_ae454c82cf966fc678f923c537bf5f023}\label{sc_8h_ae454c82cf966fc678f923c537bf5f023}} 
+\#define {\bfseries SC\+\_\+\+ALLOC}(t,  n)~(t $\ast$) sc\+\_\+malloc (\mbox{\hyperlink{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}{sc\+\_\+package\+\_\+id}}, (n) $\ast$ sizeof(t))
+\item 
+\#define {\bfseries SC\+\_\+\+ALLOC\+\_\+\+ZERO}(t,  n)
+\item 
+\#define {\bfseries SC\+\_\+\+REALLOC}(p,  t,  n)
+\item 
+\mbox{\Hypertarget{sc_8h_a15a9488b66eed3b2393f71697f31e346}\label{sc_8h_a15a9488b66eed3b2393f71697f31e346}} 
+\#define {\bfseries SC\+\_\+\+STRDUP}(s)~sc\+\_\+strdup (\mbox{\hyperlink{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}{sc\+\_\+package\+\_\+id}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_a8e65c0c08a70445b4bae7d9a622d761a}\label{sc_8h_a8e65c0c08a70445b4bae7d9a622d761a}} 
+\#define {\bfseries SC\+\_\+\+FREE}(p)~sc\+\_\+free (\mbox{\hyperlink{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}{sc\+\_\+package\+\_\+id}}, (p))
+\item 
+\mbox{\Hypertarget{sc_8h_a753b6fde293af0257cca9eaee19d44d5}\label{sc_8h_a753b6fde293af0257cca9eaee19d44d5}} 
+\#define {\bfseries SC\+\_\+\+ALIGN\+\_\+\+UP}(x,  n)~( ((n) $<$= 0) ? (x) \+: ((x) + (n) -\/ 1) / (n) $\ast$ (n) )
+\item 
+\mbox{\Hypertarget{sc_8h_a5c783575182d0cde12a46ee7910aaf69}\label{sc_8h_a5c783575182d0cde12a46ee7910aaf69}} 
+\#define {\bfseries SC\+\_\+\+ARG\+\_\+\+ALIGN}(p,  t,  n)~\mbox{\hyperlink{sc_8h_a0365d8aa362280e2e6415c9a97e43252}{SC\+\_\+\+NOOP}} ()
+\item 
+\mbox{\Hypertarget{sc_8h_ab152063e4cc21dd98189e95c041131b7}\label{sc_8h_ab152063e4cc21dd98189e95c041131b7}} 
+\#define {\bfseries SC\+\_\+\+ATTR\+\_\+\+ALIGN}(n)
+\item 
+\#define \mbox{\hyperlink{sc_8h_afa1c70368ebf2e1f9a9c9fd699977ee6}{SC\+\_\+\+BZERO}}(p,  n)~((void) memset ((p), 0, (n) $\ast$ sizeof ($\ast$(p))))
+\begin{DoxyCompactList}\small\item\em Sets n elements of a memory range to zero. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a164f191c6a152a3e97970e5a94a9cdd1}\label{sc_8h_a164f191c6a152a3e97970e5a94a9cdd1}} 
+\#define {\bfseries SC\+\_\+\+MIN}(a,  b)~(((a) $<$ (b)) ? (a) \+: (b))
+\item 
+\mbox{\Hypertarget{sc_8h_ad7318e3a9ee7b8bd13a01c9490e47dd2}\label{sc_8h_ad7318e3a9ee7b8bd13a01c9490e47dd2}} 
+\#define {\bfseries SC\+\_\+\+MAX}(a,  b)~(((a) $>$ (b)) ? (a) \+: (b))
+\item 
+\mbox{\Hypertarget{sc_8h_a2c1bcb9235549045f71a687b830d426e}\label{sc_8h_a2c1bcb9235549045f71a687b830d426e}} 
+\#define {\bfseries SC\+\_\+\+SQR}(a)~((a) $\ast$ (a))
+\item 
+\mbox{\Hypertarget{sc_8h_a0ba389d99d16dfb1b2414b5ce540b1d7}\label{sc_8h_a0ba389d99d16dfb1b2414b5ce540b1d7}} 
+\#define {\bfseries SC\+\_\+\+LOG2\+\_\+8}(x)~(\mbox{\hyperlink{sc_8h_a9f5b6677ab150a7bb811e8265b491410}{sc\+\_\+log2\+\_\+lookup\+\_\+table}}\mbox{[}(x)\mbox{]})
+\item 
+\#define {\bfseries SC\+\_\+\+LOG2\+\_\+16}(x)
+\item 
+\#define {\bfseries SC\+\_\+\+LOG2\+\_\+32}(x)
+\item 
+\#define {\bfseries SC\+\_\+\+LOG2\+\_\+64}(x)
+\item 
+\mbox{\Hypertarget{sc_8h_aefbdf7039aaa333bc1ad9adaad3920a6}\label{sc_8h_aefbdf7039aaa333bc1ad9adaad3920a6}} 
+\#define {\bfseries SC\+\_\+\+ROUNDUP2\+\_\+32}(x)~  (((x) $<$= 0) ? 0 \+: (1 $<$$<$ (SC\+\_\+\+LOG2\+\_\+32 ((x) -\/ 1) + 1)))
+\item 
+\mbox{\Hypertarget{sc_8h_a725aeb317c71be87e6ccbea68bd6e070}\label{sc_8h_a725aeb317c71be87e6ccbea68bd6e070}} 
+\#define {\bfseries SC\+\_\+\+ROUNDUP2\+\_\+64}(x)~  (((x) $<$= 0) ? 0 \+: (1LL $<$$<$ (SC\+\_\+\+LOG2\+\_\+64 ((x) -\/ 1LL) + 1)))
+\item 
+\mbox{\Hypertarget{sc_8h_a23608b8fe779beb5e0e6fa0e69a380d6}\label{sc_8h_a23608b8fe779beb5e0e6fa0e69a380d6}} 
+\#define \mbox{\hyperlink{sc_8h_a23608b8fe779beb5e0e6fa0e69a380d6}{SC\+\_\+\+LC\+\_\+\+GLOBAL}}~1
+\begin{DoxyCompactList}\small\item\em log only for master process \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a6422864d541bd5eff662c9839ef6cebc}\label{sc_8h_a6422864d541bd5eff662c9839ef6cebc}} 
+\#define \mbox{\hyperlink{sc_8h_a6422864d541bd5eff662c9839ef6cebc}{SC\+\_\+\+LC\+\_\+\+NORMAL}}~2
+\begin{DoxyCompactList}\small\item\em log for every process \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__sc__logprios_ga273029b2e1fcc0474bfb3565b1697bbc}{SC\+\_\+\+LP\+\_\+\+DEFAULT}}~(-\/1)
+\begin{DoxyCompactList}\small\item\em Selects the SC default threshold. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__sc__logprios_gaf1e36512534600994138f133b5f7d24c}{SC\+\_\+\+LP\+\_\+\+ALWAYS}}~0
+\begin{DoxyCompactList}\small\item\em Log absolutely everything. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__sc__logprios_ga430c0bc54b14a41db7c65a0005891295}{SC\+\_\+\+LP\+\_\+\+TRACE}}~1
+\begin{DoxyCompactList}\small\item\em Prefix file and line number. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__sc__logprios_ga6bf02abbbf3136b9e266c398764f0486}{SC\+\_\+\+LP\+\_\+\+DEBUG}}~2
+\begin{DoxyCompactList}\small\item\em Any information on the internal state. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__sc__logprios_gad086ba973c03342b2ac02390d5e0c1f1}{SC\+\_\+\+LP\+\_\+\+VERBOSE}}~3
+\begin{DoxyCompactList}\small\item\em Information on conditions, decisions. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__sc__logprios_ga46e69bd79ab3e27b9a7df896c0459cbb}{SC\+\_\+\+LP\+\_\+\+INFO}}~4
+\begin{DoxyCompactList}\small\item\em Most relevant things a function is doing. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__sc__logprios_ga3e5e906eb2a18a1149ff90d817ed08b1}{SC\+\_\+\+LP\+\_\+\+STATISTICS}}~5
+\begin{DoxyCompactList}\small\item\em Important for consistency/performance. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__sc__logprios_gaa6ad8d10240f12d56bb3569639edce12}{SC\+\_\+\+LP\+\_\+\+PRODUCTION}}~6
+\begin{DoxyCompactList}\small\item\em A few lines at most for a major api function. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__sc__logprios_gab987f887ad374d3c61c328918e4f861c}{SC\+\_\+\+LP\+\_\+\+ESSENTIAL}}~7
+\begin{DoxyCompactList}\small\item\em Log a few lines max (version info) per program. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__sc__logprios_ga4f982c3e4f449c6fefdc14458335ec19}{SC\+\_\+\+LP\+\_\+\+ERROR}}~8
+\begin{DoxyCompactList}\small\item\em Log errors only. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__sc__logprios_ga5296732c57bbfb31f9cf7f4a1ed1595f}{SC\+\_\+\+LP\+\_\+\+SILENT}}~9
+\begin{DoxyCompactList}\small\item\em Never log anything. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a32aca24fa5102d53b8a5bff5888038dc}\label{sc_8h_a32aca24fa5102d53b8a5bff5888038dc}} 
+\#define \mbox{\hyperlink{sc_8h_a32aca24fa5102d53b8a5bff5888038dc}{SC\+\_\+\+LP\+\_\+\+THRESHOLD}}~\mbox{\hyperlink{group__sc__logprios_ga46e69bd79ab3e27b9a7df896c0459cbb}{SC\+\_\+\+LP\+\_\+\+INFO}}
+\begin{DoxyCompactList}\small\item\em The log threshold chosen by \mbox{\hyperlink{group__sc__logprios_ga273029b2e1fcc0474bfb3565b1697bbc}{SC\+\_\+\+LP\+\_\+\+DEFAULT}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_ae6bb63771595be9d1d8500e11a6cbb7c}\label{sc_8h_ae6bb63771595be9d1d8500e11a6cbb7c}} 
+\#define \mbox{\hyperlink{sc_8h_ae6bb63771595be9d1d8500e11a6cbb7c}{SC\+\_\+\+LP\+\_\+\+APPLICATION}}~\mbox{\hyperlink{group__sc__logprios_ga3e5e906eb2a18a1149ff90d817ed08b1}{SC\+\_\+\+LP\+\_\+\+STATISTICS}}
+\begin{DoxyCompactList}\small\item\em This threshold is intended for applications with conservative logging. \end{DoxyCompactList}\item 
+\#define {\bfseries SC\+\_\+\+GEN\+\_\+\+LOG}(package,  category,  priority,  s)
+\item 
+\mbox{\Hypertarget{sc_8h_a98ee7a5dc38c23e451acb7e47e437340}\label{sc_8h_a98ee7a5dc38c23e451acb7e47e437340}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+LOG}(p,  s)~SC\+\_\+\+GEN\+\_\+\+LOG (\mbox{\hyperlink{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}{sc\+\_\+package\+\_\+id}}, \mbox{\hyperlink{sc_8h_a23608b8fe779beb5e0e6fa0e69a380d6}{SC\+\_\+\+LC\+\_\+\+GLOBAL}}, (p), (s))
+\item 
+\mbox{\Hypertarget{sc_8h_aed6bbd09d510f51fad48876f78b6f58b}\label{sc_8h_aed6bbd09d510f51fad48876f78b6f58b}} 
+\#define {\bfseries SC\+\_\+\+LOG}(p,  s)~SC\+\_\+\+GEN\+\_\+\+LOG (\mbox{\hyperlink{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}{sc\+\_\+package\+\_\+id}}, \mbox{\hyperlink{sc_8h_a6422864d541bd5eff662c9839ef6cebc}{SC\+\_\+\+LC\+\_\+\+NORMAL}}, (p), (s))
+\item 
+\#define {\bfseries SC\+\_\+\+GEN\+\_\+\+LOGF}(package,  category,  priority,  fmt, ...)
+\item 
+\mbox{\Hypertarget{sc_8h_a57d53a484e68fbaa2d2e61319452e7c9}\label{sc_8h_a57d53a484e68fbaa2d2e61319452e7c9}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+LOGF}(p,  fmt, ...)~  SC\+\_\+\+GEN\+\_\+\+LOGF (\mbox{\hyperlink{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}{sc\+\_\+package\+\_\+id}}, \mbox{\hyperlink{sc_8h_a23608b8fe779beb5e0e6fa0e69a380d6}{SC\+\_\+\+LC\+\_\+\+GLOBAL}}, (p), (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_aa65c835e18154ba15280b4b3e0cccb12}\label{sc_8h_aa65c835e18154ba15280b4b3e0cccb12}} 
+\#define {\bfseries SC\+\_\+\+LOGF}(p,  fmt, ...)~  SC\+\_\+\+GEN\+\_\+\+LOGF (\mbox{\hyperlink{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}{sc\+\_\+package\+\_\+id}}, \mbox{\hyperlink{sc_8h_a6422864d541bd5eff662c9839ef6cebc}{SC\+\_\+\+LC\+\_\+\+NORMAL}}, (p), (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_ab13e2ce70aa708cbf595f50806da4620}\label{sc_8h_ab13e2ce70aa708cbf595f50806da4620}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+TRACE}(s)~SC\+\_\+\+GLOBAL\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_ga430c0bc54b14a41db7c65a0005891295}{SC\+\_\+\+LP\+\_\+\+TRACE}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_ad2d88209d7d7dd64554f737116ff9e63}\label{sc_8h_ad2d88209d7d7dd64554f737116ff9e63}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+LDEBUG}(s)~SC\+\_\+\+GLOBAL\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_ga6bf02abbbf3136b9e266c398764f0486}{SC\+\_\+\+LP\+\_\+\+DEBUG}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_adaa394acbb701780e1049837199656ad}\label{sc_8h_adaa394acbb701780e1049837199656ad}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+VERBOSE}(s)~SC\+\_\+\+GLOBAL\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_gad086ba973c03342b2ac02390d5e0c1f1}{SC\+\_\+\+LP\+\_\+\+VERBOSE}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_ab745cd4f183bffd1ed684d92bd8ee3db}\label{sc_8h_ab745cd4f183bffd1ed684d92bd8ee3db}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+INFO}(s)~SC\+\_\+\+GLOBAL\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_ga46e69bd79ab3e27b9a7df896c0459cbb}{SC\+\_\+\+LP\+\_\+\+INFO}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_ae5a6178c923c2e41a46f91a6296f6bbf}\label{sc_8h_ae5a6178c923c2e41a46f91a6296f6bbf}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+STATISTICS}(s)~SC\+\_\+\+GLOBAL\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_ga3e5e906eb2a18a1149ff90d817ed08b1}{SC\+\_\+\+LP\+\_\+\+STATISTICS}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_a7e984bdee24eb963a6356f8313c63fc1}\label{sc_8h_a7e984bdee24eb963a6356f8313c63fc1}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+PRODUCTION}(s)~SC\+\_\+\+GLOBAL\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_gaa6ad8d10240f12d56bb3569639edce12}{SC\+\_\+\+LP\+\_\+\+PRODUCTION}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_aa551900ccd6be11283dd80ba4ab4cfe2}\label{sc_8h_aa551900ccd6be11283dd80ba4ab4cfe2}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+ESSENTIAL}(s)~SC\+\_\+\+GLOBAL\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_gab987f887ad374d3c61c328918e4f861c}{SC\+\_\+\+LP\+\_\+\+ESSENTIAL}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_a890cb6216d85cb917ba9d88c5742755f}\label{sc_8h_a890cb6216d85cb917ba9d88c5742755f}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+LERROR}(s)~SC\+\_\+\+GLOBAL\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_ga4f982c3e4f449c6fefdc14458335ec19}{SC\+\_\+\+LP\+\_\+\+ERROR}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_a4bc60e8801679fe4af0ca72a6d8c5863}\label{sc_8h_a4bc60e8801679fe4af0ca72a6d8c5863}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+TRACEF}(fmt, ...)~  SC\+\_\+\+GLOBAL\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_ga430c0bc54b14a41db7c65a0005891295}{SC\+\_\+\+LP\+\_\+\+TRACE}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_accebea58e2b46a2dbe4798ae171efc73}\label{sc_8h_accebea58e2b46a2dbe4798ae171efc73}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+LDEBUGF}(fmt, ...)~  SC\+\_\+\+GLOBAL\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_ga6bf02abbbf3136b9e266c398764f0486}{SC\+\_\+\+LP\+\_\+\+DEBUG}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_ac6994391de3608bdba69d5d903b0f662}\label{sc_8h_ac6994391de3608bdba69d5d903b0f662}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+VERBOSEF}(fmt, ...)~  SC\+\_\+\+GLOBAL\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_gad086ba973c03342b2ac02390d5e0c1f1}{SC\+\_\+\+LP\+\_\+\+VERBOSE}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_ac1fd3699552f88222738953d1d5ff50e}\label{sc_8h_ac1fd3699552f88222738953d1d5ff50e}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+INFOF}(fmt, ...)~  SC\+\_\+\+GLOBAL\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_ga46e69bd79ab3e27b9a7df896c0459cbb}{SC\+\_\+\+LP\+\_\+\+INFO}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_ae892350cae79ce122ee08a34bc8739fd}\label{sc_8h_ae892350cae79ce122ee08a34bc8739fd}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+STATISTICSF}(fmt, ...)~  SC\+\_\+\+GLOBAL\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_ga3e5e906eb2a18a1149ff90d817ed08b1}{SC\+\_\+\+LP\+\_\+\+STATISTICS}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_a0729e46a7bf54230cecbfc245112cd27}\label{sc_8h_a0729e46a7bf54230cecbfc245112cd27}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+PRODUCTIONF}(fmt, ...)~  SC\+\_\+\+GLOBAL\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_gaa6ad8d10240f12d56bb3569639edce12}{SC\+\_\+\+LP\+\_\+\+PRODUCTION}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_a507c50f5e490fc382384bfa636cb0414}\label{sc_8h_a507c50f5e490fc382384bfa636cb0414}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+ESSENTIALF}(fmt, ...)~  SC\+\_\+\+GLOBAL\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_gab987f887ad374d3c61c328918e4f861c}{SC\+\_\+\+LP\+\_\+\+ESSENTIAL}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_acaa9abb3278a69920280c8b9479d5c0e}\label{sc_8h_acaa9abb3278a69920280c8b9479d5c0e}} 
+\#define {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+LERRORF}(fmt, ...)~  SC\+\_\+\+GLOBAL\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_ga4f982c3e4f449c6fefdc14458335ec19}{SC\+\_\+\+LP\+\_\+\+ERROR}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_aec8c683f28a5a37aa43336c3b22790a1}\label{sc_8h_aec8c683f28a5a37aa43336c3b22790a1}} 
+\#define {\bfseries SC\+\_\+\+TRACE}(s)~SC\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_ga430c0bc54b14a41db7c65a0005891295}{SC\+\_\+\+LP\+\_\+\+TRACE}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_a78db5b6176549f45c11da579a545b512}\label{sc_8h_a78db5b6176549f45c11da579a545b512}} 
+\#define {\bfseries SC\+\_\+\+LDEBUG}(s)~SC\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_ga6bf02abbbf3136b9e266c398764f0486}{SC\+\_\+\+LP\+\_\+\+DEBUG}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_a5bb1c255e7e8ee382a296c40169ec307}\label{sc_8h_a5bb1c255e7e8ee382a296c40169ec307}} 
+\#define {\bfseries SC\+\_\+\+VERBOSE}(s)~SC\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_gad086ba973c03342b2ac02390d5e0c1f1}{SC\+\_\+\+LP\+\_\+\+VERBOSE}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_a2b534499aba4477728a0e4e0b037da3f}\label{sc_8h_a2b534499aba4477728a0e4e0b037da3f}} 
+\#define {\bfseries SC\+\_\+\+INFO}(s)~SC\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_ga46e69bd79ab3e27b9a7df896c0459cbb}{SC\+\_\+\+LP\+\_\+\+INFO}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_ac65fcbd49567c29c15fac4db6600b51e}\label{sc_8h_ac65fcbd49567c29c15fac4db6600b51e}} 
+\#define {\bfseries SC\+\_\+\+STATISTICS}(s)~SC\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_ga3e5e906eb2a18a1149ff90d817ed08b1}{SC\+\_\+\+LP\+\_\+\+STATISTICS}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_a4bbbed8ce7b36c7a91f49ca475d7affa}\label{sc_8h_a4bbbed8ce7b36c7a91f49ca475d7affa}} 
+\#define {\bfseries SC\+\_\+\+PRODUCTION}(s)~SC\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_gaa6ad8d10240f12d56bb3569639edce12}{SC\+\_\+\+LP\+\_\+\+PRODUCTION}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_a011beea56d4a0c6126a254fc4b41299a}\label{sc_8h_a011beea56d4a0c6126a254fc4b41299a}} 
+\#define {\bfseries SC\+\_\+\+ESSENTIAL}(s)~SC\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_gab987f887ad374d3c61c328918e4f861c}{SC\+\_\+\+LP\+\_\+\+ESSENTIAL}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_a97bf40c27a6d419f7465009803cb4179}\label{sc_8h_a97bf40c27a6d419f7465009803cb4179}} 
+\#define {\bfseries SC\+\_\+\+LERROR}(s)~SC\+\_\+\+LOG (\mbox{\hyperlink{group__sc__logprios_ga4f982c3e4f449c6fefdc14458335ec19}{SC\+\_\+\+LP\+\_\+\+ERROR}}, (s))
+\item 
+\mbox{\Hypertarget{sc_8h_ad845444fead39e61bd2e691d07eb84ef}\label{sc_8h_ad845444fead39e61bd2e691d07eb84ef}} 
+\#define {\bfseries SC\+\_\+\+TRACEF}(fmt, ...)~  SC\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_ga430c0bc54b14a41db7c65a0005891295}{SC\+\_\+\+LP\+\_\+\+TRACE}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_aa99e4e507304679e07f1432f4d7c7842}\label{sc_8h_aa99e4e507304679e07f1432f4d7c7842}} 
+\#define {\bfseries SC\+\_\+\+LDEBUGF}(fmt, ...)~  SC\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_ga6bf02abbbf3136b9e266c398764f0486}{SC\+\_\+\+LP\+\_\+\+DEBUG}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_a77a17fbd805ff726f62960819170198d}\label{sc_8h_a77a17fbd805ff726f62960819170198d}} 
+\#define {\bfseries SC\+\_\+\+VERBOSEF}(fmt, ...)~  SC\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_gad086ba973c03342b2ac02390d5e0c1f1}{SC\+\_\+\+LP\+\_\+\+VERBOSE}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_a7c2fa66e50d354c0e7cf6046286c757a}\label{sc_8h_a7c2fa66e50d354c0e7cf6046286c757a}} 
+\#define {\bfseries SC\+\_\+\+INFOF}(fmt, ...)~  SC\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_ga46e69bd79ab3e27b9a7df896c0459cbb}{SC\+\_\+\+LP\+\_\+\+INFO}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_ab9fc758e019bd3f842d1b68141e27e67}\label{sc_8h_ab9fc758e019bd3f842d1b68141e27e67}} 
+\#define {\bfseries SC\+\_\+\+STATISTICSF}(fmt, ...)~  SC\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_ga3e5e906eb2a18a1149ff90d817ed08b1}{SC\+\_\+\+LP\+\_\+\+STATISTICS}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_a205447b6c02571185379a0554769f0e2}\label{sc_8h_a205447b6c02571185379a0554769f0e2}} 
+\#define {\bfseries SC\+\_\+\+PRODUCTIONF}(fmt, ...)~  SC\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_gaa6ad8d10240f12d56bb3569639edce12}{SC\+\_\+\+LP\+\_\+\+PRODUCTION}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_a9b6629930ce2a32c6ec3f4c0889c9983}\label{sc_8h_a9b6629930ce2a32c6ec3f4c0889c9983}} 
+\#define {\bfseries SC\+\_\+\+ESSENTIALF}(fmt, ...)~  SC\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_gab987f887ad374d3c61c328918e4f861c}{SC\+\_\+\+LP\+\_\+\+ESSENTIAL}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_a21560c237285b4cc9cd763eb59db30d9}\label{sc_8h_a21560c237285b4cc9cd763eb59db30d9}} 
+\#define {\bfseries SC\+\_\+\+LERRORF}(fmt, ...)~  SC\+\_\+\+LOGF (\mbox{\hyperlink{group__sc__logprios_ga4f982c3e4f449c6fefdc14458335ec19}{SC\+\_\+\+LP\+\_\+\+ERROR}}, (fmt), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{sc_8h_a1da3ee2c08018e36a504b485a9261736}\label{sc_8h_a1da3ee2c08018e36a504b485a9261736}} 
+\#define \mbox{\hyperlink{sc_8h_a1da3ee2c08018e36a504b485a9261736}{\+\_\+\+SC\+\_\+\+TOSTRING}}(x)~\#x
+\begin{DoxyCompactList}\small\item\em Macros used to convert a macro definition such as the point version or some other numerical literal to a string. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a4529f504e7e39251c81da99940f732f2}\label{sc_8h_a4529f504e7e39251c81da99940f732f2}} 
+\#define \mbox{\hyperlink{sc_8h_a4529f504e7e39251c81da99940f732f2}{SC\+\_\+\+TOSTRING}}(x)~\mbox{\hyperlink{sc_8h_a1da3ee2c08018e36a504b485a9261736}{\+\_\+\+SC\+\_\+\+TOSTRING}}(x)
+\begin{DoxyCompactList}\small\item\em Macros used to convert a macro definition such as the point version or some other numerical literal to a string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc_8h_a630fde220deb11a64693441f400d9183}\label{sc_8h_a630fde220deb11a64693441f400d9183}} 
+typedef void($\ast$ {\bfseries sc\+\_\+handler\+\_\+t}) (void $\ast$data)
+\item 
+\mbox{\Hypertarget{sc_8h_adc8b0ad4719ac8918603bee7cc87c51b}\label{sc_8h_adc8b0ad4719ac8918603bee7cc87c51b}} 
+typedef void($\ast$ {\bfseries sc\+\_\+log\+\_\+handler\+\_\+t}) (FILE $\ast$log\+\_\+stream, const char $\ast$filename, int lineno, int package, int category, int priority, const char $\ast$msg)
+\item 
+\mbox{\Hypertarget{sc_8h_a3614b3ec31bd70e871d98ed683735ba4}\label{sc_8h_a3614b3ec31bd70e871d98ed683735ba4}} 
+typedef void($\ast$ \mbox{\hyperlink{sc_8h_a3614b3ec31bd70e871d98ed683735ba4}{sc\+\_\+abort\+\_\+handler\+\_\+t}}) (void)
+\begin{DoxyCompactList}\small\item\em Type of the abort handler function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc_8h_aeb5f27d68e46c09290c6cb8a53db8ce0}\label{sc_8h_aeb5f27d68e46c09290c6cb8a53db8ce0}} 
+void {\bfseries SC\+\_\+\+ABORTF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a0f57836b0487844400c4d0b5d60efeb8}\label{sc_8h_a0f57836b0487844400c4d0b5d60efeb8}} 
+void {\bfseries SC\+\_\+\+CHECK\+\_\+\+ABORTF} (int success, const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a4142c4ed929853765a65eec630297ab8}\label{sc_8h_a4142c4ed929853765a65eec630297ab8}} 
+void {\bfseries SC\+\_\+\+GEN\+\_\+\+LOGF} (int package, int category, int priority, const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a2499392ba1eb6786fe4745fcf6303838}\label{sc_8h_a2499392ba1eb6786fe4745fcf6303838}} 
+void {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+LOGF} (int priority, const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a71461efff133354da215b258583d46ca}\label{sc_8h_a71461efff133354da215b258583d46ca}} 
+void {\bfseries SC\+\_\+\+LOGF} (int priority, const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a2e8211e5a352ec7a3775c6cf08e83d70}\label{sc_8h_a2e8211e5a352ec7a3775c6cf08e83d70}} 
+void {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+TRACEF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_ac2bf82e3d00a7a55a9dfa427eb6fdc8e}\label{sc_8h_ac2bf82e3d00a7a55a9dfa427eb6fdc8e}} 
+void {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+LDEBUGF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a60a35cb99350f8d3b0f74390f4acaf39}\label{sc_8h_a60a35cb99350f8d3b0f74390f4acaf39}} 
+void {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+VERBOSEF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a85f5b79b16f1108f12b9d6f19ce3dda0}\label{sc_8h_a85f5b79b16f1108f12b9d6f19ce3dda0}} 
+void {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+INFOF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_ad7151ce31e45a1141a6ceef46736bef5}\label{sc_8h_ad7151ce31e45a1141a6ceef46736bef5}} 
+void {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+STATISTICSF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_ad5ce633a43f300d2f6b510b09b7eb59f}\label{sc_8h_ad5ce633a43f300d2f6b510b09b7eb59f}} 
+void {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+PRODUCTIONF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a4642f154e2897557474652bb5ace16ec}\label{sc_8h_a4642f154e2897557474652bb5ace16ec}} 
+void {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+ESSENTIALF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a8cb160f542536bb2dd368f5b0bda765b}\label{sc_8h_a8cb160f542536bb2dd368f5b0bda765b}} 
+void {\bfseries SC\+\_\+\+GLOBAL\+\_\+\+LERRORF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a184680327b53fae896af90c737373141}\label{sc_8h_a184680327b53fae896af90c737373141}} 
+void {\bfseries SC\+\_\+\+TRACEF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_adcabfa52347dce7550169e19064fd5c9}\label{sc_8h_adcabfa52347dce7550169e19064fd5c9}} 
+void {\bfseries SC\+\_\+\+LDEBUGF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a239c70f551a8d1053a3cd9d33faa84e4}\label{sc_8h_a239c70f551a8d1053a3cd9d33faa84e4}} 
+void {\bfseries SC\+\_\+\+VERBOSEF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_af0cb1f5e9a711ed7ef953254c2f4c018}\label{sc_8h_af0cb1f5e9a711ed7ef953254c2f4c018}} 
+void {\bfseries SC\+\_\+\+INFOF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a11173dda2d791670655b5c8aa399c198}\label{sc_8h_a11173dda2d791670655b5c8aa399c198}} 
+void {\bfseries SC\+\_\+\+STATISTICSF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a6bfec22b2ef5d9c6220152874fc1fc39}\label{sc_8h_a6bfec22b2ef5d9c6220152874fc1fc39}} 
+void {\bfseries SC\+\_\+\+PRODUCTIONF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a5ad836c51dc0083211dc38fff2c40089}\label{sc_8h_a5ad836c51dc0083211dc38fff2c40089}} 
+void {\bfseries SC\+\_\+\+ESSENTIALF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_ae05a515045b08f98ea23360438fab9be}\label{sc_8h_ae05a515045b08f98ea23360438fab9be}} 
+void {\bfseries SC\+\_\+\+LERRORF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a8a2b3b7b082c40c872b3ccda87a85e41}\label{sc_8h_a8a2b3b7b082c40c872b3ccda87a85e41}} 
+void $\ast$ {\bfseries sc\+\_\+malloc} (int package, size\+\_\+t size)
+\item 
+\mbox{\Hypertarget{sc_8h_a8b88185c4683d4d81d76d7f75a6dcbe4}\label{sc_8h_a8b88185c4683d4d81d76d7f75a6dcbe4}} 
+void $\ast$ {\bfseries sc\+\_\+calloc} (int package, size\+\_\+t nmemb, size\+\_\+t size)
+\item 
+\mbox{\Hypertarget{sc_8h_a7d108b0c147ce829bc512f0eb754e877}\label{sc_8h_a7d108b0c147ce829bc512f0eb754e877}} 
+void $\ast$ {\bfseries sc\+\_\+realloc} (int package, void $\ast$ptr, size\+\_\+t size)
+\item 
+\mbox{\Hypertarget{sc_8h_aaf24639ea41526a892cb0b54cae8e593}\label{sc_8h_aaf24639ea41526a892cb0b54cae8e593}} 
+char $\ast$ {\bfseries sc\+\_\+strdup} (int package, const char $\ast$s)
+\item 
+\mbox{\Hypertarget{sc_8h_a258e325784b5c155974fcd4b3b814204}\label{sc_8h_a258e325784b5c155974fcd4b3b814204}} 
+void {\bfseries sc\+\_\+free} (int package, void $\ast$ptr)
+\item 
+\mbox{\Hypertarget{sc_8h_a68b6b1764b7770263dd2a53370928f9c}\label{sc_8h_a68b6b1764b7770263dd2a53370928f9c}} 
+int {\bfseries sc\+\_\+memory\+\_\+status} (int package)
+\item 
+\mbox{\Hypertarget{sc_8h_a75714d2b68a563bfe89cadb3d2383ceb}\label{sc_8h_a75714d2b68a563bfe89cadb3d2383ceb}} 
+void {\bfseries sc\+\_\+memory\+\_\+check} (int package)
+\item 
+\mbox{\Hypertarget{sc_8h_a2e0dfc4ff164a5d077d4b43810a2186d}\label{sc_8h_a2e0dfc4ff164a5d077d4b43810a2186d}} 
+int \mbox{\hyperlink{sc_8h_a2e0dfc4ff164a5d077d4b43810a2186d}{sc\+\_\+memory\+\_\+check\+\_\+noerr}} (int package)
+\begin{DoxyCompactList}\small\item\em Return error count or zero if all is ok. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a65da753a380c2f2885ea8dcdc10faf5c}\label{sc_8h_a65da753a380c2f2885ea8dcdc10faf5c}} 
+int {\bfseries sc\+\_\+int\+\_\+compare} (const void $\ast$v1, const void $\ast$v2)
+\item 
+\mbox{\Hypertarget{sc_8h_a1f883dee5f3ecc327a44d1fe98c20560}\label{sc_8h_a1f883dee5f3ecc327a44d1fe98c20560}} 
+int {\bfseries sc\+\_\+int8\+\_\+compare} (const void $\ast$v1, const void $\ast$v2)
+\item 
+\mbox{\Hypertarget{sc_8h_aeb32a4b139de50aba32fe47d992916b9}\label{sc_8h_aeb32a4b139de50aba32fe47d992916b9}} 
+int {\bfseries sc\+\_\+int16\+\_\+compare} (const void $\ast$v1, const void $\ast$v2)
+\item 
+\mbox{\Hypertarget{sc_8h_a4be6d64f918b438f6e53b0ca270aef60}\label{sc_8h_a4be6d64f918b438f6e53b0ca270aef60}} 
+int {\bfseries sc\+\_\+int32\+\_\+compare} (const void $\ast$v1, const void $\ast$v2)
+\item 
+\mbox{\Hypertarget{sc_8h_a69d6af9a00f833c4bec447f51c0bfadb}\label{sc_8h_a69d6af9a00f833c4bec447f51c0bfadb}} 
+int {\bfseries sc\+\_\+int64\+\_\+compare} (const void $\ast$v1, const void $\ast$v2)
+\item 
+\mbox{\Hypertarget{sc_8h_aa3f1cafe0a9a320d25813bd46bed199d}\label{sc_8h_aa3f1cafe0a9a320d25813bd46bed199d}} 
+int {\bfseries sc\+\_\+double\+\_\+compare} (const void $\ast$v1, const void $\ast$v2)
+\item 
+int \mbox{\hyperlink{sc_8h_a06efbb17756c0ee7001583f84513b5c5}{sc\+\_\+atoi}} (const char $\ast$nptr)
+\begin{DoxyCompactList}\small\item\em Safe version of the standard library atoi (3) function. \end{DoxyCompactList}\item 
+long \mbox{\hyperlink{sc_8h_af75d28e9c4993927e311e4e5c089b3dc}{sc\+\_\+atol}} (const char $\ast$nptr)
+\begin{DoxyCompactList}\small\item\em Safe version of the standard library atol (3) function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_a0618f7e842137000cd9974edfa646ddf}{sc\+\_\+set\+\_\+log\+\_\+defaults}} (FILE $\ast$log\+\_\+stream, sc\+\_\+log\+\_\+handler\+\_\+t log\+\_\+handler, int log\+\_\+threshold)
+\begin{DoxyCompactList}\small\item\em Controls the default SC log behavior. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_a5e18f7a54cb5abbd1b690ca2cc3c591b}{sc\+\_\+set\+\_\+abort\+\_\+handler}} (\mbox{\hyperlink{sc_8h_a3614b3ec31bd70e871d98ed683735ba4}{sc\+\_\+abort\+\_\+handler\+\_\+t}} abort\+\_\+handler)
+\begin{DoxyCompactList}\small\item\em Set the default SC abort behavior. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_a4fae12646e51b0ec8755db8c1e6c323e}{sc\+\_\+log}} (const char $\ast$filename, int lineno, int package, int category, int priority, const char $\ast$msg)
+\begin{DoxyCompactList}\small\item\em The central log function to be called by all packages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_af92eade2dde165ee864785e022a7065c}\label{sc_8h_af92eade2dde165ee864785e022a7065c}} 
+void {\bfseries sc\+\_\+logf} (const char $\ast$filename, int lineno, int package, int category, int priority, const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{sc_8h_a1e0661f91bb8445bc934c123b0708168}\label{sc_8h_a1e0661f91bb8445bc934c123b0708168}} 
+void {\bfseries sc\+\_\+logv} (const char $\ast$filename, int lineno, int package, int category, int priority, const char $\ast$fmt, va\+\_\+list ap)
+\item 
+\mbox{\Hypertarget{sc_8h_a7ad1ea1ace6bc2891ed28fd8c13fa71b}\label{sc_8h_a7ad1ea1ace6bc2891ed28fd8c13fa71b}} 
+void \mbox{\hyperlink{sc_8h_a7ad1ea1ace6bc2891ed28fd8c13fa71b}{sc\+\_\+log\+\_\+indent\+\_\+push\+\_\+count}} (int package, int count)
+\begin{DoxyCompactList}\small\item\em Add spaces to the start of a package\textquotesingle{}s default log format. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a49e9723016f093f5183869d15015689b}\label{sc_8h_a49e9723016f093f5183869d15015689b}} 
+void \mbox{\hyperlink{sc_8h_a49e9723016f093f5183869d15015689b}{sc\+\_\+log\+\_\+indent\+\_\+pop\+\_\+count}} (int package, int count)
+\begin{DoxyCompactList}\small\item\em Remove spaces from the start of a package\textquotesingle{}s default log format. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_ac4a961272cf1b844b30d4508ddda012e}\label{sc_8h_ac4a961272cf1b844b30d4508ddda012e}} 
+void \mbox{\hyperlink{sc_8h_ac4a961272cf1b844b30d4508ddda012e}{sc\+\_\+log\+\_\+indent\+\_\+push}} (void)
+\begin{DoxyCompactList}\small\item\em Add one space to the start of sc\textquotesingle{}s default log format. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a0926219594ce8cf4b69553693a171a40}\label{sc_8h_a0926219594ce8cf4b69553693a171a40}} 
+void \mbox{\hyperlink{sc_8h_a0926219594ce8cf4b69553693a171a40}{sc\+\_\+log\+\_\+indent\+\_\+pop}} (void)
+\begin{DoxyCompactList}\small\item\em Remove one space from the start of a sc\textquotesingle{}s default log format. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_af2881beac9b710e3a3003d0f1b012ddd}\label{sc_8h_af2881beac9b710e3a3003d0f1b012ddd}} 
+void \mbox{\hyperlink{sc_8h_af2881beac9b710e3a3003d0f1b012ddd}{sc\+\_\+abort}} (void)
+\begin{DoxyCompactList}\small\item\em Print a stack trace, call the abort handler and then call abort (). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_aee1b50d26fd5a255a2d258b157c0fbba}\label{sc_8h_aee1b50d26fd5a255a2d258b157c0fbba}} 
+void \mbox{\hyperlink{sc_8h_aee1b50d26fd5a255a2d258b157c0fbba}{sc\+\_\+abort\+\_\+verbose}} (const char $\ast$filename, int lineno, const char $\ast$msg)
+\begin{DoxyCompactList}\small\item\em Print a message to stderr and then call sc\+\_\+abort (). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_a6be49ee77f1b80fb40802196952c073d}\label{sc_8h_a6be49ee77f1b80fb40802196952c073d}} 
+void \mbox{\hyperlink{sc_8h_a6be49ee77f1b80fb40802196952c073d}{sc\+\_\+abort\+\_\+verbosef}} (const char $\ast$filename, int lineno, const char $\ast$fmt,...)
+\begin{DoxyCompactList}\small\item\em Print a message to stderr and then call sc\+\_\+abort (). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_afc2e56c52cebbe3fe1d837fd03317c42}\label{sc_8h_afc2e56c52cebbe3fe1d837fd03317c42}} 
+void \mbox{\hyperlink{sc_8h_afc2e56c52cebbe3fe1d837fd03317c42}{sc\+\_\+abort\+\_\+verbosev}} (const char $\ast$filename, int lineno, const char $\ast$fmt, va\+\_\+list ap)
+\begin{DoxyCompactList}\small\item\em Print a message to stderr and then call sc\+\_\+abort (). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_afe418f25a96d59723a2cc310e9fcacb1}\label{sc_8h_afe418f25a96d59723a2cc310e9fcacb1}} 
+void \mbox{\hyperlink{sc_8h_afe418f25a96d59723a2cc310e9fcacb1}{sc\+\_\+abort\+\_\+collective}} (const char $\ast$msg)
+\begin{DoxyCompactList}\small\item\em Collective abort where only root prints a message. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc_8h_ab0f249eef7bbd888c75390f8c223c517}{sc\+\_\+package\+\_\+register}} (sc\+\_\+log\+\_\+handler\+\_\+t log\+\_\+handler, int log\+\_\+threshold, const char $\ast$name, const char $\ast$full)
+\begin{DoxyCompactList}\small\item\em Register a software package with SC. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc_8h_a291e52137ad40aef5412272c2965e2a3}{sc\+\_\+package\+\_\+is\+\_\+registered}} (int package\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Query whether an identifier matches a registered package. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_a67078002fcfa2adbf754ab90d6bd7116}{sc\+\_\+package\+\_\+lock}} (int package\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Acquire a pthread mutex lock. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_a3f974e7b0b854f9fdcfb3af14e44caf2}{sc\+\_\+package\+\_\+unlock}} (int package\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Release a pthread mutex lock. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_a2e9b8cb18a4fe31808e4deaeed28cea4}{sc\+\_\+package\+\_\+set\+\_\+verbosity}} (int package\+\_\+id, int log\+\_\+priority)
+\begin{DoxyCompactList}\small\item\em Set the logging verbosity of a registered package. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_abea979e46bb6ba3e0ca7435f7ff59904}{sc\+\_\+package\+\_\+set\+\_\+abort\+\_\+alloc\+\_\+mismatch}} (int package\+\_\+id, int set\+\_\+abort)
+\begin{DoxyCompactList}\small\item\em Set the unregister behavior of \mbox{\hyperlink{sc_8h_a0d5a722b3335d38c9be772e421eb41e6}{sc\+\_\+package\+\_\+unregister()}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_a0d5a722b3335d38c9be772e421eb41e6}{sc\+\_\+package\+\_\+unregister}} (int package\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Unregister a software package with SC. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_afcdb186adfb8db347f368649f2031198}{sc\+\_\+package\+\_\+print\+\_\+summary}} (int log\+\_\+priority)
+\begin{DoxyCompactList}\small\item\em Print a summary of all packages registered with SC. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_a4fd17bb067d4e1c6021253395ddd25dc}{sc\+\_\+init}} (\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} mpicomm, int catch\+\_\+signals, int print\+\_\+backtrace, sc\+\_\+log\+\_\+handler\+\_\+t log\+\_\+handler, int log\+\_\+threshold)
+\begin{DoxyCompactList}\small\item\em Sets the global program identifier (e.\+g. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc_8h_a6997df7dd7e6f7add0ce439b7df49b36}{sc\+\_\+is\+\_\+initialized}} (void)
+\begin{DoxyCompactList}\small\item\em Return whether SC has been initialized or not. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc_8h_a66c848d4ebd9ef1517150ef29560b00c}{sc\+\_\+get\+\_\+package\+\_\+id}} (void)
+\begin{DoxyCompactList}\small\item\em Query SC\textquotesingle{}s own package identity. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_a223d3a58c163bde86a68c43140acf8f7}{sc\+\_\+finalize}} (void)
+\begin{DoxyCompactList}\small\item\em Unregisters all packages, runs the memory check, removes the signal handlers and resets sc\+\_\+identifier and sc\+\_\+root\+\_\+$\ast$. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc_8h_a37a9155f642590065be5bc0ee3e2b7f3}{sc\+\_\+finalize\+\_\+noabort}} (void)
+\begin{DoxyCompactList}\small\item\em Unregisters all packages, runs the memory check, removes the signal handlers and resets sc\+\_\+identifier and sc\+\_\+root\+\_\+$\ast$. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc_8h_ae71d52f1bcb6df3129f8e0fce285cda3}{sc\+\_\+is\+\_\+root}} (void)
+\begin{DoxyCompactList}\small\item\em Identify the root process. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_ab6421b0f1a746c55a3ac1a015b95fc10}{sc\+\_\+strcopy}} (char $\ast$dest, size\+\_\+t size, const char $\ast$src)
+\begin{DoxyCompactList}\small\item\em Provide a string copy function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_affc8bd4f7e6d26dc4e0d2c4fb247117f}{sc\+\_\+snprintf}} (char $\ast$str, size\+\_\+t size, const char $\ast$format,...)
+\begin{DoxyCompactList}\small\item\em Wrap the system snprintf function, allowing for truncation. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{sc_8h_a7536779c1dee2c8c276945b679814e73}{sc\+\_\+version}} (void)
+\begin{DoxyCompactList}\small\item\em Return the full version of libsc. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc_8h_a7b7b39de4e11b22976488e0cccef0335}{sc\+\_\+version\+\_\+major}} (void)
+\begin{DoxyCompactList}\small\item\em Return the major version of libsc. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc_8h_ade33dfed5240cd6ed52a6e3667c21ae0}{sc\+\_\+version\+\_\+minor}} (void)
+\begin{DoxyCompactList}\small\item\em Return the minor version of libsc. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc_8h_a2ac486cc19f0ae66b4abca4bfc39dab6}{sc\+\_\+is\+\_\+littleendian}} (void)
+\begin{DoxyCompactList}\small\item\em Perform a runtime check for the integer endian convention. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc_8h_a13762c105b94355ab4bd34641bb5c5b5}{sc\+\_\+have\+\_\+zlib}} (void)
+\begin{DoxyCompactList}\small\item\em Return a boolean indicating whether zlib has been configured. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc_8h_a00ebb7181c911b6af1fb454edffff98e}{sc\+\_\+have\+\_\+json}} (void)
+\begin{DoxyCompactList}\small\item\em Return whether we have found a JSON library at configure time. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc_8h_ab954a7d3d0829f93211bfc72b5ae4699}{sc\+\_\+sleep}} (unsigned milliseconds)
+\begin{DoxyCompactList}\small\item\em Portable function to sleep a prescribed amount of milliseconds. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc_8h_a9f5b6677ab150a7bb811e8265b491410}\label{sc_8h_a9f5b6677ab150a7bb811e8265b491410}} 
+const int \mbox{\hyperlink{sc_8h_a9f5b6677ab150a7bb811e8265b491410}{sc\+\_\+log2\+\_\+lookup\+\_\+table}} \mbox{[}256\mbox{]}
+\begin{DoxyCompactList}\small\item\em Lookup table to provide fast base-\/2 logarithm of integers. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}{sc\+\_\+package\+\_\+id}}
+\begin{DoxyCompactList}\small\item\em libsc allows for multiple packages to use their own log priorities etc. \end{DoxyCompactList}\item 
+FILE $\ast$ \mbox{\hyperlink{sc_8h_a79dfaca506a3ae2120c9f27961fc0a89}{sc\+\_\+trace\+\_\+file}}
+\begin{DoxyCompactList}\small\item\em Optional trace file for logging (see \mbox{\hyperlink{sc_8h_a4fd17bb067d4e1c6021253395ddd25dc}{sc\+\_\+init}}). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc_8h_ace2c538b78fe867fd49a03b151f58798}\label{sc_8h_ace2c538b78fe867fd49a03b151f58798}} 
+int \mbox{\hyperlink{sc_8h_ace2c538b78fe867fd49a03b151f58798}{sc\+\_\+trace\+\_\+prio}}
+\begin{DoxyCompactList}\small\item\em Optional minimum log priority for messages that go into the trace file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Support for process management (memory allocation, logging, etc.) 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{sc_8h_acc35911675d528ba53552ad6204ab05b}\label{sc_8h_acc35911675d528ba53552ad6204ab05b}} 
+\index{sc.h@{sc.h}!SC\_ALLOC\_ZERO@{SC\_ALLOC\_ZERO}}
+\index{SC\_ALLOC\_ZERO@{SC\_ALLOC\_ZERO}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{SC\_ALLOC\_ZERO}{SC\_ALLOC\_ZERO}}
+{\footnotesize\ttfamily \#define SC\+\_\+\+ALLOC\+\_\+\+ZERO(\begin{DoxyParamCaption}\item[{}]{t,  }\item[{}]{n }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                               (t *) sc\_calloc (\mbox{\hyperlink{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}{sc\_package\_id}}, \(\backslash\)}
+\DoxyCodeLine{                                               (\textcolor{keywordtype}{size\_t}) (n), \textcolor{keyword}{sizeof}(t))}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{sc_8h_afa1c70368ebf2e1f9a9c9fd699977ee6}\label{sc_8h_afa1c70368ebf2e1f9a9c9fd699977ee6}} 
+\index{sc.h@{sc.h}!SC\_BZERO@{SC\_BZERO}}
+\index{SC\_BZERO@{SC\_BZERO}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{SC\_BZERO}{SC\_BZERO}}
+{\footnotesize\ttfamily \#define SC\+\_\+\+BZERO(\begin{DoxyParamCaption}\item[{}]{p,  }\item[{}]{n }\end{DoxyParamCaption})~((void) memset ((p), 0, (n) $\ast$ sizeof ($\ast$(p))))}
+
+
+
+Sets n elements of a memory range to zero. 
+
+Assumes the pointer p is of the correct type. \mbox{\Hypertarget{sc_8h_a25cf1063a9421b81d463c561c7eec61a}\label{sc_8h_a25cf1063a9421b81d463c561c7eec61a}} 
+\index{sc.h@{sc.h}!SC\_GEN\_LOG@{SC\_GEN\_LOG}}
+\index{SC\_GEN\_LOG@{SC\_GEN\_LOG}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{SC\_GEN\_LOG}{SC\_GEN\_LOG}}
+{\footnotesize\ttfamily \#define SC\+\_\+\+GEN\+\_\+\+LOG(\begin{DoxyParamCaption}\item[{}]{package,  }\item[{}]{category,  }\item[{}]{priority,  }\item[{}]{s }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{  ((priority) < \mbox{\hyperlink{sc_8h_a32aca24fa5102d53b8a5bff5888038dc}{SC\_LP\_THRESHOLD}} ? (\textcolor{keywordtype}{void}) 0 :                            \(\backslash\)}
+\DoxyCodeLine{   sc\_log (\_\_FILE\_\_, \_\_LINE\_\_, (package), (category), (priority), (s)))}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{sc_8h_ab2129a5511fa065ff053f7a2b9ea6903}\label{sc_8h_ab2129a5511fa065ff053f7a2b9ea6903}} 
+\index{sc.h@{sc.h}!SC\_GEN\_LOGF@{SC\_GEN\_LOGF}}
+\index{SC\_GEN\_LOGF@{SC\_GEN\_LOGF}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{SC\_GEN\_LOGF}{SC\_GEN\_LOGF}}
+{\footnotesize\ttfamily \#define SC\+\_\+\+GEN\+\_\+\+LOGF(\begin{DoxyParamCaption}\item[{}]{package,  }\item[{}]{category,  }\item[{}]{priority,  }\item[{}]{fmt,  }\item[{}]{... }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{  ((priority) < \mbox{\hyperlink{sc_8h_a32aca24fa5102d53b8a5bff5888038dc}{SC\_LP\_THRESHOLD}} ? (\textcolor{keywordtype}{void}) 0 :                            \(\backslash\)}
+\DoxyCodeLine{   sc\_logf (\_\_FILE\_\_, \_\_LINE\_\_, (package), (category), (priority),      \(\backslash\)}
+\DoxyCodeLine{            (fmt), \_\_VA\_ARGS\_\_))}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{sc_8h_a5ead33860b496d61db69f9b71d2186a1}\label{sc_8h_a5ead33860b496d61db69f9b71d2186a1}} 
+\index{sc.h@{sc.h}!SC\_LOG2\_16@{SC\_LOG2\_16}}
+\index{SC\_LOG2\_16@{SC\_LOG2\_16}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{SC\_LOG2\_16}{SC\_LOG2\_16}}
+{\footnotesize\ttfamily \#define SC\+\_\+\+LOG2\+\_\+16(\begin{DoxyParamCaption}\item[{}]{x }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                       (((x) > 0xff) ?                                   \(\backslash\)}
+\DoxyCodeLine{                       (SC\_LOG2\_8 ((x) >> 8) + 8) : SC\_LOG2\_8 (x))}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{sc_8h_a37420aa0162b97f01a0f9b3d3e6da7e0}\label{sc_8h_a37420aa0162b97f01a0f9b3d3e6da7e0}} 
+\index{sc.h@{sc.h}!SC\_LOG2\_32@{SC\_LOG2\_32}}
+\index{SC\_LOG2\_32@{SC\_LOG2\_32}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{SC\_LOG2\_32}{SC\_LOG2\_32}}
+{\footnotesize\ttfamily \#define SC\+\_\+\+LOG2\+\_\+32(\begin{DoxyParamCaption}\item[{}]{x }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                       (((x) > 0xffff) ?                                 \(\backslash\)}
+\DoxyCodeLine{                       (SC\_LOG2\_16 ((x) >> 16)) + 16 : SC\_LOG2\_16 (x))}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{sc_8h_a537e02709b5f8e605541c4ad085e85ca}\label{sc_8h_a537e02709b5f8e605541c4ad085e85ca}} 
+\index{sc.h@{sc.h}!SC\_LOG2\_64@{SC\_LOG2\_64}}
+\index{SC\_LOG2\_64@{SC\_LOG2\_64}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{SC\_LOG2\_64}{SC\_LOG2\_64}}
+{\footnotesize\ttfamily \#define SC\+\_\+\+LOG2\+\_\+64(\begin{DoxyParamCaption}\item[{}]{x }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                       (((x) > 0xffffffffLL) ?                           \(\backslash\)}
+\DoxyCodeLine{                       (SC\_LOG2\_32 ((x) >> 32)) + 32 : SC\_LOG2\_32 (x))}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{sc_8h_a20d69a9274a45236fa1b7ed1c9d5eaea}\label{sc_8h_a20d69a9274a45236fa1b7ed1c9d5eaea}} 
+\index{sc.h@{sc.h}!SC\_REALLOC@{SC\_REALLOC}}
+\index{SC\_REALLOC@{SC\_REALLOC}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{SC\_REALLOC}{SC\_REALLOC}}
+{\footnotesize\ttfamily \#define SC\+\_\+\+REALLOC(\begin{DoxyParamCaption}\item[{}]{p,  }\item[{}]{t,  }\item[{}]{n }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                             (t *) sc\_realloc (\mbox{\hyperlink{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}{sc\_package\_id}},          \(\backslash\)}
+\DoxyCodeLine{                                             (p), (n) * \textcolor{keyword}{sizeof}(t))}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sc_8h_a06efbb17756c0ee7001583f84513b5c5}\label{sc_8h_a06efbb17756c0ee7001583f84513b5c5}} 
+\index{sc.h@{sc.h}!sc\_atoi@{sc\_atoi}}
+\index{sc\_atoi@{sc\_atoi}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_atoi()}{sc\_atoi()}}
+{\footnotesize\ttfamily int sc\+\_\+atoi (\begin{DoxyParamCaption}\item[{const char $\ast$}]{nptr }\end{DoxyParamCaption})}
+
+
+
+Safe version of the standard library atoi (3) function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em nptr} & NUL-\/terminated string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Converted integer value. 0 if no valid number. INT\+\_\+\+MAX on overflow, INT\+\_\+\+MIN on underflow. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc_8h_af75d28e9c4993927e311e4e5c089b3dc}\label{sc_8h_af75d28e9c4993927e311e4e5c089b3dc}} 
+\index{sc.h@{sc.h}!sc\_atol@{sc\_atol}}
+\index{sc\_atol@{sc\_atol}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_atol()}{sc\_atol()}}
+{\footnotesize\ttfamily long sc\+\_\+atol (\begin{DoxyParamCaption}\item[{const char $\ast$}]{nptr }\end{DoxyParamCaption})}
+
+
+
+Safe version of the standard library atol (3) function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em nptr} & NUL-\/terminated string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Converted long value. 0 if no valid number. LONG\+\_\+\+MAX on overflow, LONG\+\_\+\+MIN on underflow. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc_8h_a223d3a58c163bde86a68c43140acf8f7}\label{sc_8h_a223d3a58c163bde86a68c43140acf8f7}} 
+\index{sc.h@{sc.h}!sc\_finalize@{sc\_finalize}}
+\index{sc\_finalize@{sc\_finalize}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_finalize()}{sc\_finalize()}}
+{\footnotesize\ttfamily void sc\+\_\+finalize (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Unregisters all packages, runs the memory check, removes the signal handlers and resets sc\+\_\+identifier and sc\+\_\+root\+\_\+$\ast$. 
+
+This function aborts on any inconsistency found unless the global variable default\+\_\+abort\+\_\+mismatch is false. Function is optional if memory cleanliness is no concern. This function does not require sc\+\_\+init to be called first. In any case it makes \mbox{\hyperlink{sc_8h_a6997df7dd7e6f7add0ce439b7df49b36}{sc\+\_\+is\+\_\+initialized}} return false. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{options_8c-example}{options.\+c}}.\end{Desc}
+\mbox{\Hypertarget{sc_8h_a37a9155f642590065be5bc0ee3e2b7f3}\label{sc_8h_a37a9155f642590065be5bc0ee3e2b7f3}} 
+\index{sc.h@{sc.h}!sc\_finalize\_noabort@{sc\_finalize\_noabort}}
+\index{sc\_finalize\_noabort@{sc\_finalize\_noabort}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_finalize\_noabort()}{sc\_finalize\_noabort()}}
+{\footnotesize\ttfamily int sc\+\_\+finalize\+\_\+noabort (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Unregisters all packages, runs the memory check, removes the signal handlers and resets sc\+\_\+identifier and sc\+\_\+root\+\_\+$\ast$. 
+
+This function never aborts but returns the number of errors encountered. Function is optional if memory cleanliness is no concern. This function does not require sc\+\_\+init to be called first. In any case it makes \mbox{\hyperlink{sc_8h_a6997df7dd7e6f7add0ce439b7df49b36}{sc\+\_\+is\+\_\+initialized}} return false. \begin{DoxyReturn}{Returns}
+0 when everything is consistent, nonzero otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc_8h_a66c848d4ebd9ef1517150ef29560b00c}\label{sc_8h_a66c848d4ebd9ef1517150ef29560b00c}} 
+\index{sc.h@{sc.h}!sc\_get\_package\_id@{sc\_get\_package\_id}}
+\index{sc\_get\_package\_id@{sc\_get\_package\_id}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_get\_package\_id()}{sc\_get\_package\_id()}}
+{\footnotesize\ttfamily int sc\+\_\+get\+\_\+package\+\_\+id (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Query SC\textquotesingle{}s own package identity. 
+
+\begin{DoxyReturn}{Returns}
+This is -\/1 before \mbox{\hyperlink{sc_8h_a4fd17bb067d4e1c6021253395ddd25dc}{sc\+\_\+init}} has been called and a proper package identifier ($>$= 0) afterwards. After \mbox{\hyperlink{sc_8h_a223d3a58c163bde86a68c43140acf8f7}{sc\+\_\+finalize}} the identifier resets to -\/1. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This routine is not thread-\/safe. 
+\end{DoxyNote}
+\mbox{\Hypertarget{sc_8h_a00ebb7181c911b6af1fb454edffff98e}\label{sc_8h_a00ebb7181c911b6af1fb454edffff98e}} 
+\index{sc.h@{sc.h}!sc\_have\_json@{sc\_have\_json}}
+\index{sc\_have\_json@{sc\_have\_json}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_have\_json()}{sc\_have\_json()}}
+{\footnotesize\ttfamily int sc\+\_\+have\+\_\+json (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Return whether we have found a JSON library at configure time. 
+
+\begin{DoxyReturn}{Returns}
+True if and only if SC\+\_\+\+HAVE\+\_\+\+JSON is defined. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc_8h_a13762c105b94355ab4bd34641bb5c5b5}\label{sc_8h_a13762c105b94355ab4bd34641bb5c5b5}} 
+\index{sc.h@{sc.h}!sc\_have\_zlib@{sc\_have\_zlib}}
+\index{sc\_have\_zlib@{sc\_have\_zlib}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_have\_zlib()}{sc\_have\_zlib()}}
+{\footnotesize\ttfamily int sc\+\_\+have\+\_\+zlib (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Return a boolean indicating whether zlib has been configured. 
+
+\begin{DoxyReturn}{Returns}
+True if zlib including adler32\+\_\+combine (3) has been found on running configure or respectively on calling cmake. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc_8h_a4fd17bb067d4e1c6021253395ddd25dc}\label{sc_8h_a4fd17bb067d4e1c6021253395ddd25dc}} 
+\index{sc.h@{sc.h}!sc\_init@{sc\_init}}
+\index{sc\_init@{sc\_init}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_init()}{sc\_init()}}
+{\footnotesize\ttfamily void sc\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{mpicomm,  }\item[{int}]{catch\+\_\+signals,  }\item[{int}]{print\+\_\+backtrace,  }\item[{sc\+\_\+log\+\_\+handler\+\_\+t}]{log\+\_\+handler,  }\item[{int}]{log\+\_\+threshold }\end{DoxyParamCaption})}
+
+
+
+Sets the global program identifier (e.\+g. 
+
+the MPI rank) and some flags. This function is optional. This function must only be called before additional threads are created. If this function is not called or called with log\+\_\+handler == NULL, the default SC log handler will be used. If this function is not called or called with log\+\_\+threshold == SC\+\_\+\+LP\+\_\+\+DEFAULT, the default SC log threshold will be used. The default SC log settings can be changed with sc\+\_\+set\+\_\+log\+\_\+defaults (). 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & MPI communicator, can be sc\+\_\+\+MPI\+\_\+\+COMM\+\_\+\+NULL. If sc\+\_\+\+MPI\+\_\+\+COMM\+\_\+\+NULL, the identifier is set to -\/1. Otherwise, sc\+\_\+\+MPI\+\_\+\+Init must have been called. Effectively, we just query size and rank. \\
+\hline
+\mbox{\texttt{ in}}  & {\em catch\+\_\+signals} & If true, signals INT and SEGV are caught. \\
+\hline
+\mbox{\texttt{ in}}  & {\em print\+\_\+backtrace} & If true, sc\+\_\+abort prints a backtrace. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{options_8c-example}{options.\+c}}.\end{Desc}
+\mbox{\Hypertarget{sc_8h_a6997df7dd7e6f7add0ce439b7df49b36}\label{sc_8h_a6997df7dd7e6f7add0ce439b7df49b36}} 
+\index{sc.h@{sc.h}!sc\_is\_initialized@{sc\_is\_initialized}}
+\index{sc\_is\_initialized@{sc\_is\_initialized}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_is\_initialized()}{sc\_is\_initialized()}}
+{\footnotesize\ttfamily int sc\+\_\+is\+\_\+initialized (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Return whether SC has been initialized or not. 
+
+\begin{DoxyReturn}{Returns}
+True if libsc has been initialized with a call to \mbox{\hyperlink{sc_8h_a4fd17bb067d4e1c6021253395ddd25dc}{sc\+\_\+init}} and false otherwise. After \mbox{\hyperlink{sc_8h_a223d3a58c163bde86a68c43140acf8f7}{sc\+\_\+finalize}} the result resets to false. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This routine is not thread-\/safe. 
+\end{DoxyNote}
+\mbox{\Hypertarget{sc_8h_a2ac486cc19f0ae66b4abca4bfc39dab6}\label{sc_8h_a2ac486cc19f0ae66b4abca4bfc39dab6}} 
+\index{sc.h@{sc.h}!sc\_is\_littleendian@{sc\_is\_littleendian}}
+\index{sc\_is\_littleendian@{sc\_is\_littleendian}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_is\_littleendian()}{sc\_is\_littleendian()}}
+{\footnotesize\ttfamily int sc\+\_\+is\+\_\+littleendian (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Perform a runtime check for the integer endian convention. 
+
+\begin{DoxyReturn}{Returns}
+True if byte order is little endian, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc_8h_ae71d52f1bcb6df3129f8e0fce285cda3}\label{sc_8h_ae71d52f1bcb6df3129f8e0fce285cda3}} 
+\index{sc.h@{sc.h}!sc\_is\_root@{sc\_is\_root}}
+\index{sc\_is\_root@{sc\_is\_root}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_is\_root()}{sc\_is\_root()}}
+{\footnotesize\ttfamily int sc\+\_\+is\+\_\+root (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Identify the root process. 
+
+Only meaningful between sc\+\_\+init and sc\+\_\+finalize and with a communicator that is not sc\+\_\+\+MPI\+\_\+\+COMM\+\_\+\+NULL (otherwise always true).
+
+\begin{DoxyReturn}{Returns}
+Return true for the root process and false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc_8h_a4fae12646e51b0ec8755db8c1e6c323e}\label{sc_8h_a4fae12646e51b0ec8755db8c1e6c323e}} 
+\index{sc.h@{sc.h}!sc\_log@{sc\_log}}
+\index{sc\_log@{sc\_log}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_log()}{sc\_log()}}
+{\footnotesize\ttfamily void sc\+\_\+log (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename,  }\item[{int}]{lineno,  }\item[{int}]{package,  }\item[{int}]{category,  }\item[{int}]{priority,  }\item[{const char $\ast$}]{msg }\end{DoxyParamCaption})}
+
+
+
+The central log function to be called by all packages. 
+
+Dispatches the log calls by package and filters by category and priority. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em package} & Must be a registered package id or -\/1. \\
+\hline
+\mbox{\texttt{ in}}  & {\em category} & Must be SC\+\_\+\+LC\+\_\+\+NORMAL or SC\+\_\+\+LC\+\_\+\+GLOBAL. \\
+\hline
+\mbox{\texttt{ in}}  & {\em priority} & Must be $>$ SC\+\_\+\+LP\+\_\+\+ALWAYS and $<$ SC\+\_\+\+LP\+\_\+\+SILENT. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc_8h_a291e52137ad40aef5412272c2965e2a3}\label{sc_8h_a291e52137ad40aef5412272c2965e2a3}} 
+\index{sc.h@{sc.h}!sc\_package\_is\_registered@{sc\_package\_is\_registered}}
+\index{sc\_package\_is\_registered@{sc\_package\_is\_registered}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_package\_is\_registered()}{sc\_package\_is\_registered()}}
+{\footnotesize\ttfamily int sc\+\_\+package\+\_\+is\+\_\+registered (\begin{DoxyParamCaption}\item[{int}]{package\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Query whether an identifier matches a registered package. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em package\+\_\+id} & Only a non-\/negative id can be registered. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if and only if the package id is non-\/negative and package is registered. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc_8h_a67078002fcfa2adbf754ab90d6bd7116}\label{sc_8h_a67078002fcfa2adbf754ab90d6bd7116}} 
+\index{sc.h@{sc.h}!sc\_package\_lock@{sc\_package\_lock}}
+\index{sc\_package\_lock@{sc\_package\_lock}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_package\_lock()}{sc\_package\_lock()}}
+{\footnotesize\ttfamily void sc\+\_\+package\+\_\+lock (\begin{DoxyParamCaption}\item[{int}]{package\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Acquire a pthread mutex lock. 
+
+If configured without --enable-\/pthread, this function does nothing. This function must be followed with a matching \mbox{\hyperlink{sc_8h_a3f974e7b0b854f9fdcfb3af14e44caf2}{sc\+\_\+package\+\_\+unlock}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em package\+\_\+id} & Either -\/1 for an undefined package or an id returned from \mbox{\hyperlink{sc_8h_ab0f249eef7bbd888c75390f8c223c517}{sc\+\_\+package\+\_\+register}}. Depending on the value, the appropriate mutex is chosen. Thus, we may overlap locking calls with distinct package\+\_\+id. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc_8h_afcdb186adfb8db347f368649f2031198}\label{sc_8h_afcdb186adfb8db347f368649f2031198}} 
+\index{sc.h@{sc.h}!sc\_package\_print\_summary@{sc\_package\_print\_summary}}
+\index{sc\_package\_print\_summary@{sc\_package\_print\_summary}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_package\_print\_summary()}{sc\_package\_print\_summary()}}
+{\footnotesize\ttfamily void sc\+\_\+package\+\_\+print\+\_\+summary (\begin{DoxyParamCaption}\item[{int}]{log\+\_\+priority }\end{DoxyParamCaption})}
+
+
+
+Print a summary of all packages registered with SC. 
+
+Uses the SC\+\_\+\+LC\+\_\+\+GLOBAL log category which by default only prints on rank 0. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em log\+\_\+priority} & Priority passed to sc log functions. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc_8h_ab0f249eef7bbd888c75390f8c223c517}\label{sc_8h_ab0f249eef7bbd888c75390f8c223c517}} 
+\index{sc.h@{sc.h}!sc\_package\_register@{sc\_package\_register}}
+\index{sc\_package\_register@{sc\_package\_register}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_package\_register()}{sc\_package\_register()}}
+{\footnotesize\ttfamily int sc\+\_\+package\+\_\+register (\begin{DoxyParamCaption}\item[{sc\+\_\+log\+\_\+handler\+\_\+t}]{log\+\_\+handler,  }\item[{int}]{log\+\_\+threshold,  }\item[{const char $\ast$}]{name,  }\item[{const char $\ast$}]{full }\end{DoxyParamCaption})}
+
+
+
+Register a software package with SC. 
+
+This function must only be called before additional threads are created. The logging parameters are as in sc\+\_\+set\+\_\+log\+\_\+defaults. \begin{DoxyReturn}{Returns}
+Returns a unique package id. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc_8h_abea979e46bb6ba3e0ca7435f7ff59904}\label{sc_8h_abea979e46bb6ba3e0ca7435f7ff59904}} 
+\index{sc.h@{sc.h}!sc\_package\_set\_abort\_alloc\_mismatch@{sc\_package\_set\_abort\_alloc\_mismatch}}
+\index{sc\_package\_set\_abort\_alloc\_mismatch@{sc\_package\_set\_abort\_alloc\_mismatch}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_package\_set\_abort\_alloc\_mismatch()}{sc\_package\_set\_abort\_alloc\_mismatch()}}
+{\footnotesize\ttfamily void sc\+\_\+package\+\_\+set\+\_\+abort\+\_\+alloc\+\_\+mismatch (\begin{DoxyParamCaption}\item[{int}]{package\+\_\+id,  }\item[{int}]{set\+\_\+abort }\end{DoxyParamCaption})}
+
+
+
+Set the unregister behavior of \mbox{\hyperlink{sc_8h_a0d5a722b3335d38c9be772e421eb41e6}{sc\+\_\+package\+\_\+unregister()}}. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em package\+\_\+id} & Must be -\/1 for the default package or the identifier of a registered package. \\
+\hline
+\mbox{\texttt{ in}}  & {\em set\+\_\+abort} & True if \mbox{\hyperlink{sc_8h_a0d5a722b3335d38c9be772e421eb41e6}{sc\+\_\+package\+\_\+unregister()}} should abort if the number of allocs does not match the number of frees; false otherwise. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc_8h_a2e9b8cb18a4fe31808e4deaeed28cea4}\label{sc_8h_a2e9b8cb18a4fe31808e4deaeed28cea4}} 
+\index{sc.h@{sc.h}!sc\_package\_set\_verbosity@{sc\_package\_set\_verbosity}}
+\index{sc\_package\_set\_verbosity@{sc\_package\_set\_verbosity}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_package\_set\_verbosity()}{sc\_package\_set\_verbosity()}}
+{\footnotesize\ttfamily void sc\+\_\+package\+\_\+set\+\_\+verbosity (\begin{DoxyParamCaption}\item[{int}]{package\+\_\+id,  }\item[{int}]{log\+\_\+priority }\end{DoxyParamCaption})}
+
+
+
+Set the logging verbosity of a registered package. 
+
+This can be called at any point in the program, any number of times. It can only lower the verbosity at and below the value of SC\+\_\+\+LP\+\_\+\+THRESHOLD. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em package\+\_\+id} & Must be a registered package identifier. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc_8h_a3f974e7b0b854f9fdcfb3af14e44caf2}\label{sc_8h_a3f974e7b0b854f9fdcfb3af14e44caf2}} 
+\index{sc.h@{sc.h}!sc\_package\_unlock@{sc\_package\_unlock}}
+\index{sc\_package\_unlock@{sc\_package\_unlock}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_package\_unlock()}{sc\_package\_unlock()}}
+{\footnotesize\ttfamily void sc\+\_\+package\+\_\+unlock (\begin{DoxyParamCaption}\item[{int}]{package\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Release a pthread mutex lock. 
+
+If configured without --enable-\/pthread, this function does nothing. This function must be follow a matching \mbox{\hyperlink{sc_8h_a67078002fcfa2adbf754ab90d6bd7116}{sc\+\_\+package\+\_\+lock}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em package\+\_\+id} & Either -\/1 for an undefined package or an id returned from \mbox{\hyperlink{sc_8h_ab0f249eef7bbd888c75390f8c223c517}{sc\+\_\+package\+\_\+register}}. Depending on the value, the appropriate mutex is chosen. Thus, we may overlap locking calls with distinct package\+\_\+id. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc_8h_a0d5a722b3335d38c9be772e421eb41e6}\label{sc_8h_a0d5a722b3335d38c9be772e421eb41e6}} 
+\index{sc.h@{sc.h}!sc\_package\_unregister@{sc\_package\_unregister}}
+\index{sc\_package\_unregister@{sc\_package\_unregister}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_package\_unregister()}{sc\_package\_unregister()}}
+{\footnotesize\ttfamily void sc\+\_\+package\+\_\+unregister (\begin{DoxyParamCaption}\item[{int}]{package\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Unregister a software package with SC. 
+
+This function must only be called after additional threads are finished. \mbox{\Hypertarget{sc_8h_a5e18f7a54cb5abbd1b690ca2cc3c591b}\label{sc_8h_a5e18f7a54cb5abbd1b690ca2cc3c591b}} 
+\index{sc.h@{sc.h}!sc\_set\_abort\_handler@{sc\_set\_abort\_handler}}
+\index{sc\_set\_abort\_handler@{sc\_set\_abort\_handler}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_set\_abort\_handler()}{sc\_set\_abort\_handler()}}
+{\footnotesize\ttfamily void sc\+\_\+set\+\_\+abort\+\_\+handler (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc_8h_a3614b3ec31bd70e871d98ed683735ba4}{sc\+\_\+abort\+\_\+handler\+\_\+t}}}]{abort\+\_\+handler }\end{DoxyParamCaption})}
+
+
+
+Set the default SC abort behavior. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em abort\+\_\+handler} & Set default SC above handler (NULL selects builtin). If it returns, we abort (2) then. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc_8h_a0618f7e842137000cd9974edfa646ddf}\label{sc_8h_a0618f7e842137000cd9974edfa646ddf}} 
+\index{sc.h@{sc.h}!sc\_set\_log\_defaults@{sc\_set\_log\_defaults}}
+\index{sc\_set\_log\_defaults@{sc\_set\_log\_defaults}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_set\_log\_defaults()}{sc\_set\_log\_defaults()}}
+{\footnotesize\ttfamily void sc\+\_\+set\+\_\+log\+\_\+defaults (\begin{DoxyParamCaption}\item[{FILE $\ast$}]{log\+\_\+stream,  }\item[{sc\+\_\+log\+\_\+handler\+\_\+t}]{log\+\_\+handler,  }\item[{int}]{log\+\_\+threshold }\end{DoxyParamCaption})}
+
+
+
+Controls the default SC log behavior. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em log\+\_\+stream} & Set stream to use by sc\+\_\+logf (or NULL for stdout). \\
+\hline
+\mbox{\texttt{ in}}  & {\em log\+\_\+handler} & Set default SC log handler (NULL selects builtin). \\
+\hline
+\mbox{\texttt{ in}}  & {\em log\+\_\+threshold} & Set default SC log threshold (or SC\+\_\+\+LP\+\_\+\+DEFAULT). May be SC\+\_\+\+LP\+\_\+\+ALWAYS or SC\+\_\+\+LP\+\_\+\+SILENT. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc_8h_ab954a7d3d0829f93211bfc72b5ae4699}\label{sc_8h_ab954a7d3d0829f93211bfc72b5ae4699}} 
+\index{sc.h@{sc.h}!sc\_sleep@{sc\_sleep}}
+\index{sc\_sleep@{sc\_sleep}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_sleep()}{sc\_sleep()}}
+{\footnotesize\ttfamily void sc\+\_\+sleep (\begin{DoxyParamCaption}\item[{unsigned}]{milliseconds }\end{DoxyParamCaption})}
+
+
+
+Portable function to sleep a prescribed amount of milliseconds. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em milliseconds} & The number of milliseconds to sleep. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc_8h_affc8bd4f7e6d26dc4e0d2c4fb247117f}\label{sc_8h_affc8bd4f7e6d26dc4e0d2c4fb247117f}} 
+\index{sc.h@{sc.h}!sc\_snprintf@{sc\_snprintf}}
+\index{sc\_snprintf@{sc\_snprintf}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_snprintf()}{sc\_snprintf()}}
+{\footnotesize\ttfamily void sc\+\_\+snprintf (\begin{DoxyParamCaption}\item[{char $\ast$}]{str,  }\item[{size\+\_\+t}]{size,  }\item[{const char $\ast$}]{format,  }\item[{}]{... }\end{DoxyParamCaption})}
+
+
+
+Wrap the system snprintf function, allowing for truncation. 
+
+The snprintf function may truncate the string written to the specified length. In some cases, compilers warn when this may occur. Here this is permitted behavior and we avoid the warning. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em str} & Buffer of length at least {\itshape size}. On output, not touched if NULL or {\itshape size} == 0. Otherwise, \char`\"{}\char`\"{} on snprintf error or the proper result. The proper result is padded on the right with \textquotesingle{}\textbackslash{}0\textquotesingle{} if the allocation length of the string that is defined by {\itshape format} is shorter than {\itshape size}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em size} & Allocation length of {\itshape str}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em format} & Format string as in man (3) snprintf. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc_8h_ab6421b0f1a746c55a3ac1a015b95fc10}\label{sc_8h_ab6421b0f1a746c55a3ac1a015b95fc10}} 
+\index{sc.h@{sc.h}!sc\_strcopy@{sc\_strcopy}}
+\index{sc\_strcopy@{sc\_strcopy}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_strcopy()}{sc\_strcopy()}}
+{\footnotesize\ttfamily void sc\+\_\+strcopy (\begin{DoxyParamCaption}\item[{char $\ast$}]{dest,  }\item[{size\+\_\+t}]{size,  }\item[{const char $\ast$}]{src }\end{DoxyParamCaption})}
+
+
+
+Provide a string copy function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em dest} & Buffer of length at least {\itshape size}. On output, not touched if NULL or {\itshape size} == 0. Otherwise, {\itshape src} is copied to {\itshape dest} and {\itshape dest} is padded with \textquotesingle{}\textbackslash{}0\textquotesingle{} from the right if strlen (src) $<$ size -\/ 1. \\
+\hline
+\mbox{\texttt{ in}}  & {\em size} & Allocation length of {\itshape dest}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em src} & Null-\/terminated string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Equivalent to \mbox{\hyperlink{sc_8h_affc8bd4f7e6d26dc4e0d2c4fb247117f}{sc\+\_\+snprintf}} (dest, size, \char`\"{}\%s\char`\"{}, src). 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc_8h_a7536779c1dee2c8c276945b679814e73}\label{sc_8h_a7536779c1dee2c8c276945b679814e73}} 
+\index{sc.h@{sc.h}!sc\_version@{sc\_version}}
+\index{sc\_version@{sc\_version}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_version()}{sc\_version()}}
+{\footnotesize\ttfamily const char$\ast$ sc\+\_\+version (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Return the full version of libsc. 
+
+\begin{DoxyReturn}{Returns}
+Return the version of libsc using the format {\ttfamily VERSION\+\_\+\+MAJOR.\+VERSION\+\_\+\+MINOR.\+VERSION\+\_\+\+POINT}, where {\ttfamily VERSION\+\_\+\+POINT} can contain dots and characters, e.\+g. to indicate the additional number of commits and a git commit hash. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc_8h_a7b7b39de4e11b22976488e0cccef0335}\label{sc_8h_a7b7b39de4e11b22976488e0cccef0335}} 
+\index{sc.h@{sc.h}!sc\_version\_major@{sc\_version\_major}}
+\index{sc\_version\_major@{sc\_version\_major}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_version\_major()}{sc\_version\_major()}}
+{\footnotesize\ttfamily int sc\+\_\+version\+\_\+major (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Return the major version of libsc. 
+
+\begin{DoxyReturn}{Returns}
+Return the major version of libsc. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc_8h_ade33dfed5240cd6ed52a6e3667c21ae0}\label{sc_8h_ade33dfed5240cd6ed52a6e3667c21ae0}} 
+\index{sc.h@{sc.h}!sc\_version\_minor@{sc\_version\_minor}}
+\index{sc\_version\_minor@{sc\_version\_minor}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_version\_minor()}{sc\_version\_minor()}}
+{\footnotesize\ttfamily int sc\+\_\+version\+\_\+minor (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Return the minor version of libsc. 
+
+\begin{DoxyReturn}{Returns}
+Return the minor version of libsc. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}\label{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}} 
+\index{sc.h@{sc.h}!sc\_package\_id@{sc\_package\_id}}
+\index{sc\_package\_id@{sc\_package\_id}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_package\_id}{sc\_package\_id}}
+{\footnotesize\ttfamily int sc\+\_\+package\+\_\+id\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+libsc allows for multiple packages to use their own log priorities etc. 
+
+This is the package id for core sc functions, which is meant to be read only. It starts out with a value of -\/1, which is fine by itself. It is set to a non-\/negative value by the (optional) \mbox{\hyperlink{sc_8h_a4fd17bb067d4e1c6021253395ddd25dc}{sc\+\_\+init}}. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{options_8c-example}{options.\+c}}.\end{Desc}
+\mbox{\Hypertarget{sc_8h_a79dfaca506a3ae2120c9f27961fc0a89}\label{sc_8h_a79dfaca506a3ae2120c9f27961fc0a89}} 
+\index{sc.h@{sc.h}!sc\_trace\_file@{sc\_trace\_file}}
+\index{sc\_trace\_file@{sc\_trace\_file}!sc.h@{sc.h}}
+\doxysubsubsection{\texorpdfstring{sc\_trace\_file}{sc\_trace\_file}}
+{\footnotesize\ttfamily FILE$\ast$ sc\+\_\+trace\+\_\+file\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Optional trace file for logging (see \mbox{\hyperlink{sc_8h_a4fd17bb067d4e1c6021253395ddd25dc}{sc\+\_\+init}}). 
+
+Initialized to NULL. 

@@ -1,0 +1,36 @@
+.TH "sc_recycle_array" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sc_recycle_array \- The \fBsc_recycle_array\fP object provides an array of slots that can be reused\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <sc_containers\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "size_t \fBelem_count\fP"
+.br
+.RI "Number of valid entries\&. "
+.ti -1c
+.RI "\fBsc_array_t\fP \fBa\fP"
+.br
+.RI "Array of objects contained\&. "
+.ti -1c
+.RI "\fBsc_array_t\fP \fBf\fP"
+.br
+.RI "Cache of freed objects\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+The \fBsc_recycle_array\fP object provides an array of slots that can be reused\&. 
+
+It keeps a list of free slots in the array which will be used for insertion while available\&. Otherwise, the array is grown\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

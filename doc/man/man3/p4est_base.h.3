@@ -1,0 +1,573 @@
+.TH "src/p4est_base.h" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/p4est_base.h \- General support types and functions\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <p4est_config\&.h>\fP
+.br
+\fC#include <sc_config\&.h>\fP
+.br
+\fC#include <sc_containers\&.h>\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fB_p4est_const\fP   _sc_const"
+.br
+.ti -1c
+.RI "#define \fBP4EST_COMM_TRANSFER_NULL\fP"
+.br
+.RI "We do no longer dereference unneeded pointers in p4est_transfer_\&. "
+.ti -1c
+.RI "#define \fBP4EST_CONN_DISK_PERIODIC\fP"
+.br
+.RI "The \fBp4est_connectivity_new_disk\fP function now accepts a bool arg\&. "
+.ti -1c
+.RI "#define \fBP4EST_CONN_REORDER_NEWID\fP"
+.br
+.RI "The \fBp4est_connectivity_reorder_newid\fP function exists\&. "
+.ti -1c
+.RI "#define \fBP4EST_SEARCH_LOCAL\fP"
+.br
+.RI "The \fBp4est_search_local\fP function replaces \fBp4est_search\fP\&. "
+.ti -1c
+.RI "#define \fBP4EST_VTK_CELL_DATAV\fP"
+.br
+.RI "We expose the \fBp4est_vtk_write_cell_datav\fP function\&. "
+.ti -1c
+.RI "#define \fBp4est_qcoord_compare\fP   sc_int32_compare"
+.br
+.ti -1c
+.RI "#define \fBP4EST_QCOORD_BITS\fP   32"
+.br
+.ti -1c
+.RI "#define \fBP4EST_MPI_QCOORD\fP   sc_MPI_INT"
+.br
+.ti -1c
+.RI "#define \fBP4EST_VTK_QCOORD\fP   'Int32'"
+.br
+.ti -1c
+.RI "#define \fBP4EST_F90_QCOORD\fP   INTEGER(KIND=C_INT32_T)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_QCOORD_MIN\fP   INT32_MIN"
+.br
+.ti -1c
+.RI "#define \fBP4EST_QCOORD_MAX\fP   INT32_MAX"
+.br
+.ti -1c
+.RI "#define \fBP4EST_QCOORD_1\fP   ((\fBp4est_qcoord_t\fP) 1)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_QCOORD_ABS\fP(x)   ((\fBp4est_qcoord_t\fP) labs ((long) (x)))"
+.br
+.ti -1c
+.RI "#define \fBp4est_topidx_compare\fP   sc_int32_compare"
+.br
+.ti -1c
+.RI "#define \fBP4EST_TOPIDX_BITS\fP   32"
+.br
+.ti -1c
+.RI "#define \fBP4EST_MPI_TOPIDX\fP   sc_MPI_INT"
+.br
+.ti -1c
+.RI "#define \fBP4EST_VTK_TOPIDX\fP   'Int32'"
+.br
+.ti -1c
+.RI "#define \fBP4EST_F90_TOPIDX\fP   INTEGER(KIND=C_INT32_T)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_TOPIDX_MIN\fP   INT32_MIN"
+.br
+.ti -1c
+.RI "#define \fBP4EST_TOPIDX_MAX\fP   INT32_MAX"
+.br
+.ti -1c
+.RI "#define \fBP4EST_TOPIDX_FITS_32\fP   1"
+.br
+.ti -1c
+.RI "#define \fBP4EST_TOPIDX_1\fP   ((\fBp4est_topidx_t\fP) 1)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_TOPIDX_ABS\fP(x)   ((\fBp4est_topidx_t\fP) labs ((long) (x)))"
+.br
+.ti -1c
+.RI "#define \fBp4est_locidx_compare\fP   sc_int32_compare"
+.br
+.ti -1c
+.RI "#define \fBP4EST_LOCIDX_BITS\fP   32"
+.br
+.ti -1c
+.RI "#define \fBP4EST_MPI_LOCIDX\fP   sc_MPI_INT"
+.br
+.ti -1c
+.RI "#define \fBP4EST_VTK_LOCIDX\fP   'Int32'"
+.br
+.ti -1c
+.RI "#define \fBP4EST_F90_LOCIDX\fP   INTEGER(KIND=C_INT32_T)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_LOCIDX_MIN\fP   INT32_MIN"
+.br
+.ti -1c
+.RI "#define \fBP4EST_LOCIDX_MAX\fP   INT32_MAX"
+.br
+.ti -1c
+.RI "#define \fBP4EST_LOCIDX_1\fP   ((\fBp4est_locidx_t\fP) 1)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_LOCIDX_ABS\fP(x)   ((\fBp4est_locidx_t\fP) labs ((long) (x)))"
+.br
+.ti -1c
+.RI "#define \fBp4est_gloidx_compare\fP   sc_int64_compare"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOIDX_BITS\fP   64"
+.br
+.ti -1c
+.RI "#define \fBP4EST_MPI_GLOIDX\fP   sc_MPI_LONG_LONG_INT"
+.br
+.ti -1c
+.RI "#define \fBP4EST_VTK_GLOIDX\fP   'Int64'"
+.br
+.ti -1c
+.RI "#define \fBP4EST_F90_GLOIDX\fP   INTEGER(KIND=C_INT64_T)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOIDX_MIN\fP   INT64_MIN"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOIDX_MAX\fP   INT64_MAX"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOIDX_1\fP   ((\fBp4est_gloidx_t\fP) 1)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOIDX_ABS\fP(x)   ((\fBp4est_gloidx_t\fP) llabs ((long long) (x)))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_ASSERT\fP(c)   SC_NOOP ()"
+.br
+.ti -1c
+.RI "#define \fBP4EST_EXECUTE_ASSERT_FALSE\fP(expression)     do { (void) (expression); } while (0)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_EXECUTE_ASSERT_TRUE\fP(expression)     do { (void) (expression); } while (0)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_EXECUTE_ASSERT_INT\fP(expression,  ival)     do { (void) (expression); } while (0)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_EXECUTE_ASSERT_TOPIDX\fP(expression,  tval)     do { (void) (expression); } while (0)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_DEBUG_EXECUTE\fP(expression)   SC_NOOP ()"
+.br
+.ti -1c
+.RI "#define \fBP4EST_ALLOC\fP(t,  n)"
+.br
+.RI "allocate a \fIt-array\fP with \fIn\fP elements "
+.ti -1c
+.RI "#define \fBP4EST_ALLOC_ZERO\fP(t,  n)"
+.br
+.RI "allocate a \fIt-array\fP with \fIn\fP elements and zero "
+.ti -1c
+.RI "#define \fBP4EST_REALLOC\fP(p,  t,  n)"
+.br
+.RI "reallocate the \fIt-array\fP \fIp\fP with \fIn\fP elements "
+.ti -1c
+.RI "#define \fBP4EST_STRDUP\fP(s)   sc_strdup (\fBp4est_package_id\fP, (s))"
+.br
+.RI "duplicate a string "
+.ti -1c
+.RI "#define \fBP4EST_FREE\fP(p)   sc_free (\fBp4est_package_id\fP, (p))"
+.br
+.RI "free an allocated array "
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_LOG\fP(p,  s)     SC_GEN_LOG (\fBp4est_package_id\fP, SC_LC_GLOBAL, (p), (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_LOG\fP(p,  s)     SC_GEN_LOG (\fBp4est_package_id\fP, SC_LC_NORMAL, (p), (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_LOGF\fP(p,  f, \&.\&.\&.)     SC_GEN_LOGF (\fBp4est_package_id\fP, SC_LC_GLOBAL, (p), (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_LOGF\fP(p,  f, \&.\&.\&.)     SC_GEN_LOGF (\fBp4est_package_id\fP, SC_LC_NORMAL, (p), (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_TRACE\fP(s)   P4EST_GLOBAL_LOG (SC_LP_TRACE, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_LDEBUG\fP(s)   P4EST_GLOBAL_LOG (SC_LP_DEBUG, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_VERBOSE\fP(s)   P4EST_GLOBAL_LOG (SC_LP_VERBOSE, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_INFO\fP(s)   P4EST_GLOBAL_LOG (SC_LP_INFO, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_STATISTICS\fP(s)   P4EST_GLOBAL_LOG (SC_LP_STATISTICS, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_PRODUCTION\fP(s)   P4EST_GLOBAL_LOG (SC_LP_PRODUCTION, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_ESSENTIAL\fP(s)   P4EST_GLOBAL_LOG (SC_LP_ESSENTIAL, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_LERROR\fP(s)   P4EST_GLOBAL_LOG (SC_LP_ERROR, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_TRACEF\fP(f, \&.\&.\&.)     P4EST_GLOBAL_LOGF (SC_LP_TRACE, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_LDEBUGF\fP(f, \&.\&.\&.)     P4EST_GLOBAL_LOGF (SC_LP_DEBUG, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_VERBOSEF\fP(f, \&.\&.\&.)     P4EST_GLOBAL_LOGF (SC_LP_VERBOSE, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_INFOF\fP(f, \&.\&.\&.)     P4EST_GLOBAL_LOGF (SC_LP_INFO, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_STATISTICSF\fP(f, \&.\&.\&.)     P4EST_GLOBAL_LOGF (SC_LP_STATISTICS, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_PRODUCTIONF\fP(f, \&.\&.\&.)     P4EST_GLOBAL_LOGF (SC_LP_PRODUCTION, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_ESSENTIALF\fP(f, \&.\&.\&.)     P4EST_GLOBAL_LOGF (SC_LP_ESSENTIAL, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_LERRORF\fP(f, \&.\&.\&.)     P4EST_GLOBAL_LOGF (SC_LP_ERROR, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_NOTICE\fP   P4EST_GLOBAL_STATISTICS"
+.br
+.ti -1c
+.RI "#define \fBP4EST_GLOBAL_NOTICEF\fP   P4EST_GLOBAL_STATISTICSF"
+.br
+.ti -1c
+.RI "#define \fBP4EST_TRACE\fP(s)   P4EST_LOG (SC_LP_TRACE, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_LDEBUG\fP(s)   P4EST_LOG (SC_LP_DEBUG, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_VERBOSE\fP(s)   P4EST_LOG (SC_LP_VERBOSE, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_INFO\fP(s)   P4EST_LOG (SC_LP_INFO, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_STATISTICS\fP(s)   P4EST_LOG (SC_LP_STATISTICS, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_PRODUCTION\fP(s)   P4EST_LOG (SC_LP_PRODUCTION, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_ESSENTIAL\fP(s)   P4EST_LOG (SC_LP_ESSENTIAL, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_LERROR\fP(s)   P4EST_LOG (SC_LP_ERROR, (s))"
+.br
+.ti -1c
+.RI "#define \fBP4EST_TRACEF\fP(f, \&.\&.\&.)     P4EST_LOGF (SC_LP_TRACE, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_LDEBUGF\fP(f, \&.\&.\&.)     P4EST_LOGF (SC_LP_DEBUG, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_VERBOSEF\fP(f, \&.\&.\&.)     P4EST_LOGF (SC_LP_VERBOSE, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_INFOF\fP(f, \&.\&.\&.)     P4EST_LOGF (SC_LP_INFO, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_STATISTICSF\fP(f, \&.\&.\&.)     P4EST_LOGF (SC_LP_STATISTICS, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_PRODUCTIONF\fP(f, \&.\&.\&.)     P4EST_LOGF (SC_LP_PRODUCTION, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_ESSENTIALF\fP(f, \&.\&.\&.)     P4EST_LOGF (SC_LP_ESSENTIAL, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_LERRORF\fP(f, \&.\&.\&.)     P4EST_LOGF (SC_LP_ERROR, (f), __VA_ARGS__)"
+.br
+.ti -1c
+.RI "#define \fBP4EST_NOTICE\fP   P4EST_STATISTICS"
+.br
+.ti -1c
+.RI "#define \fBP4EST_NOTICEF\fP   P4EST_STATISTICSF"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef int32_t \fBp4est_qcoord_t\fP"
+.br
+.RI "Typedef for quadrant coordinates\&. "
+.ti -1c
+.RI "typedef int32_t \fBp4est_topidx_t\fP"
+.br
+.RI "Typedef for counting topological entities (trees, tree vertices)\&. "
+.ti -1c
+.RI "typedef int32_t \fBp4est_locidx_t\fP"
+.br
+.RI "Typedef for processor-local indexing of quadrants and nodes\&. "
+.ti -1c
+.RI "typedef int64_t \fBp4est_gloidx_t\fP"
+.br
+.RI "Typedef for globally unique indexing of quadrants\&. "
+.ti -1c
+.RI "typedef enum \fBp4est_comm_tag\fP \fBp4est_comm_tag_t\fP"
+.br
+.RI "Tags for MPI messages\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBp4est_comm_tag\fP { \fBP4EST_COMM_TAG_FIRST\fP = SC_TAG_FIRST, \fBP4EST_COMM_COUNT_PERTREE\fP = SC_TAG_LAST, \fBP4EST_COMM_BALANCE_FIRST_COUNT\fP, \fBP4EST_COMM_BALANCE_FIRST_LOAD\fP, \fBP4EST_COMM_BALANCE_SECOND_COUNT\fP, \fBP4EST_COMM_BALANCE_SECOND_LOAD\fP, \fBP4EST_COMM_PARTITION_GIVEN\fP, \fBP4EST_COMM_PARTITION_WEIGHTED_LOW\fP, \fBP4EST_COMM_PARTITION_WEIGHTED_HIGH\fP, \fBP4EST_COMM_PARTITION_CORRECTION\fP, \fBP4EST_COMM_GHOST_COUNT\fP, \fBP4EST_COMM_GHOST_LOAD\fP, \fBP4EST_COMM_GHOST_EXCHANGE\fP, \fBP4EST_COMM_GHOST_EXPAND_COUNT\fP, \fBP4EST_COMM_GHOST_EXPAND_LOAD\fP, \fBP4EST_COMM_GHOST_SUPPORT_COUNT\fP, \fBP4EST_COMM_GHOST_SUPPORT_LOAD\fP, \fBP4EST_COMM_GHOST_CHECKSUM\fP, \fBP4EST_COMM_NODES_QUERY\fP, \fBP4EST_COMM_NODES_REPLY\fP, \fBP4EST_COMM_SAVE\fP, \fBP4EST_COMM_LNODES_TEST\fP, \fBP4EST_COMM_LNODES_PASS\fP, \fBP4EST_COMM_LNODES_OWNED\fP, \fBP4EST_COMM_LNODES_ALL\fP, \fBP4EST_COMM_TAG_LAST\fP }"
+.br
+.RI "Tags for MPI messages\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBP4EST_GLOBAL_LOGF\fP (int priority, const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_LOGF\fP (int priority, const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_GLOBAL_TRACEF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_GLOBAL_LDEBUGF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_GLOBAL_VERBOSEF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_GLOBAL_INFOF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_GLOBAL_STATISTICSF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_GLOBAL_PRODUCTIONF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_GLOBAL_ESSENTIALF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_GLOBAL_LERRORF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_TRACEF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_LDEBUGF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_VERBOSEF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_INFOF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_STATISTICSF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_PRODUCTIONF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_ESSENTIALF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBP4EST_LERRORF\fP (const char *fmt,\&.\&.\&.)"
+.br
+.ti -1c
+.RI "void \fBp4est_init\fP (sc_log_handler_t log_handler, int log_threshold)"
+.br
+.RI "Registers \fBp4est\fP with the SC Library and sets the logging behavior\&. "
+.ti -1c
+.RI "int \fBp4est_is_initialized\fP (void)"
+.br
+.RI "Return whether \fBp4est\fP has been initialized or not\&. "
+.ti -1c
+.RI "int \fBp4est_have_zlib\fP (void)"
+.br
+.RI "Check for a sufficiently recent zlib installation\&. "
+.ti -1c
+.RI "int \fBp4est_get_package_id\fP (void)"
+.br
+.RI "Query the package identity as registered in libsc\&. "
+.ti -1c
+.RI "const char * \fBp4est_version\fP (void)"
+.br
+.RI "Return the full version of \fBp4est\fP\&. "
+.ti -1c
+.RI "int \fBp4est_version_major\fP (void)"
+.br
+.RI "Return the major version of \fBp4est\fP\&. "
+.ti -1c
+.RI "int \fBp4est_version_minor\fP (void)"
+.br
+.RI "Return the minor version of \fBp4est\fP\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBp4est_package_id\fP"
+.br
+.RI "the libsc package id for \fBp4est\fP (set in \fBp4est_init()\fP) "
+.in -1c
+.SH "Detailed Description"
+.PP 
+General support types and functions\&. 
+
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define P4EST_ALLOC(t, n)"
+\fBValue:\fP
+.PP
+.nf
+                                                   (t *) sc_malloc (p4est_package_id,    \
+                                                   (n) * sizeof(t))
+.fi
+.PP
+allocate a \fIt-array\fP with \fIn\fP elements 
+.PP
+\fBExamples\fP
+.in +1c
+\fBparticles/particles2\&.c\fP, \fBpoints/generate_points2\&.c\fP, \fBsteps/p4est_step3\&.c\fP, and \fBtimings/timings2\&.c\fP\&.
+.SS "#define P4EST_ALLOC_ZERO(t, n)"
+\fBValue:\fP
+.PP
+.nf
+                                                   (t *) sc_calloc (p4est_package_id,    \
+                                                   (size_t) (n), sizeof(t))
+.fi
+.PP
+allocate a \fIt-array\fP with \fIn\fP elements and zero 
+.PP
+\fBExamples\fP
+.in +1c
+\fBtimings/timings2\&.c\fP\&.
+.SS "#define P4EST_CONN_DISK_PERIODIC"
+
+.PP
+The \fBp4est_connectivity_new_disk\fP function now accepts a bool arg\&. The same holds for \fBp4est_wrap_new_disk\fP\&. 
+.SS "#define P4EST_REALLOC(p, t, n)"
+\fBValue:\fP
+.PP
+.nf
+                                                    (t *) sc_realloc (p4est_package_id,   \
+                                                    (p), (n) * sizeof(t))
+.fi
+.PP
+reallocate the \fIt-array\fP \fIp\fP with \fIn\fP elements 
+.SS "#define P4EST_SEARCH_LOCAL"
+
+.PP
+The \fBp4est_search_local\fP function replaces \fBp4est_search\fP\&. The latter function is still available with updated internal semantics\&. Furthermore, we have added \fBp4est_search_partition\fP to search the parallel partition without accessing any local elements, and \fBp4est_search_all\fP that combines the two\&. 
+.SH "Function Documentation"
+.PP 
+.SS "int p4est_get_package_id (void)"
+
+.PP
+Query the package identity as registered in libsc\&. 
+.PP
+\fBReturns\fP
+.RS 4
+This is -1 before \fBp4est_init\fP has been called and a proper package identifier (>= 0) afterwards\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBuserdata/userdata2\&.c\fP\&.
+.SS "int p4est_have_zlib (void)"
+
+.PP
+Check for a sufficiently recent zlib installation\&. 
+.PP
+\fBReturns\fP
+.RS 4
+True if zlib is detected in both sc and \fBp4est\fP\&. 
+.RE
+.PP
+
+.SS "void p4est_init (sc_log_handler_t log_handler, int log_threshold)"
+
+.PP
+Registers \fBp4est\fP with the SC Library and sets the logging behavior\&. This function is optional\&. This function must only be called before additional threads are created\&. If this function is not called or called with log_handler == NULL, the default SC log handler will be used\&. If this function is not called or called with log_threshold == SC_LP_DEFAULT, the default SC log threshold will be used\&. The default SC log settings can be changed with sc_set_log_defaults ()\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBparticles/particles2\&.c\fP, \fBpoints/generate_points2\&.c\fP, \fBsimple/simple2\&.c\fP, \fBsimple/simple3\&.c\fP, \fBspheres/spheres2\&.c\fP, \fBsteps/p4est_step1\&.c\fP, \fBsteps/p4est_step3\&.c\fP, \fBtest_coordinates2\&.c\fP, \fBtimings/timings2\&.c\fP, and \fBuserdata/userdata2\&.c\fP\&.
+.SS "int p4est_is_initialized (void)"
+
+.PP
+Return whether \fBp4est\fP has been initialized or not\&. Keep in mind that \fBp4est_init\fP is an optional function but it helps with proper parallel logging\&.
+.PP
+Currently there is no inverse to \fBp4est_init\fP, and no way to deinit it\&. This is ok since initialization generally does no harm\&. Just do not call libsc's finalize function while \fBp4est\fP is still in use\&.
+.PP
+\fBReturns\fP
+.RS 4
+True if \fBp4est\fP has been initialized with a call to \fBp4est_init\fP and false otherwise\&. 
+.RE
+.PP
+
+.SS "const char* p4est_version (void)"
+
+.PP
+Return the full version of \fBp4est\fP\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Return the version of \fBp4est\fP using the format \fCVERSION_MAJOR\&.VERSION_MINOR\&.VERSION_POINT\fP, where \fCVERSION_POINT\fP can contain dots and characters, e\&.g\&. to indicate the additional number of commits and a git commit hash\&. 
+.RE
+.PP
+
+.SS "int p4est_version_major (void)"
+
+.PP
+Return the major version of \fBp4est\fP\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Return the major version of \fBp4est\fP\&. 
+.RE
+.PP
+
+.SS "int p4est_version_minor (void)"
+
+.PP
+Return the minor version of \fBp4est\fP\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Return the minor version of \fBp4est\fP\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

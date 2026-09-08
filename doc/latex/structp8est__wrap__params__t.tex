@@ -1,0 +1,87 @@
+\hypertarget{structp8est__wrap__params__t}{}\doxysection{p8est\+\_\+wrap\+\_\+params\+\_\+t Struct Reference}
+\label{structp8est__wrap__params__t}\index{p8est\_wrap\_params\_t@{p8est\_wrap\_params\_t}}
+
+
+This structure contains the different parameters of wrap creation.  
+
+
+
+
+{\ttfamily \#include $<$p8est\+\_\+wrap.\+h$>$}
+
+
+
+Collaboration diagram for p8est\+\_\+wrap\+\_\+params\+\_\+t\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structp8est__wrap__params__t__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp8est__wrap__params__t_a51376d851ba75228c478009312de1dee}\label{structp8est__wrap__params__t_a51376d851ba75228c478009312de1dee}} 
+int \mbox{\hyperlink{structp8est__wrap__params__t_a51376d851ba75228c478009312de1dee}{hollow}}
+\begin{DoxyCompactList}\small\item\em Do not allocate flags, ghost, and mesh members. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structp8est__mesh__params__t}{p8est\+\_\+mesh\+\_\+params\+\_\+t}} \mbox{\hyperlink{structp8est__wrap__params__t_a511ec358cee0baca49aba613faa04b16}{mesh\+\_\+params}}
+\begin{DoxyCompactList}\small\item\em Parameters for mesh creation. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__extended_8h_aba389735f21cee010df09655d967958f}{p8est\+\_\+replace\+\_\+t}} \mbox{\hyperlink{structp8est__wrap__params__t_a5e6c661e3f9c78e5d26fb83558666cd5}{replace\+\_\+fn}}
+\begin{DoxyCompactList}\small\item\em This member may be removed soon. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__wrap__params__t_ae7bbfd039b8d4c7af46e884b72977a26}\label{structp8est__wrap__params__t_ae7bbfd039b8d4c7af46e884b72977a26}} 
+int \mbox{\hyperlink{structp8est__wrap__params__t_ae7bbfd039b8d4c7af46e884b72977a26}{coarsen\+\_\+delay}}
+\begin{DoxyCompactList}\small\item\em Non-\/negative integer telling how many adaptations to wait before any given quadrant may be coarsened again. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__wrap__params__t_a2bad58b412a3e2bfbf25d3eee7864b4f}\label{structp8est__wrap__params__t_a2bad58b412a3e2bfbf25d3eee7864b4f}} 
+int \mbox{\hyperlink{structp8est__wrap__params__t_a2bad58b412a3e2bfbf25d3eee7864b4f}{coarsen\+\_\+affect}}
+\begin{DoxyCompactList}\small\item\em Boolean\+: If true, we delay coarsening not only after refinement, but also between subsequent coarsenings of the same quadrant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__wrap__params__t_a1eb30d5011e40f2fec43f0e21e94dde1}\label{structp8est__wrap__params__t_a1eb30d5011e40f2fec43f0e21e94dde1}} 
+int \mbox{\hyperlink{structp8est__wrap__params__t_a1eb30d5011e40f2fec43f0e21e94dde1}{partition\+\_\+for\+\_\+coarsening}}
+\begin{DoxyCompactList}\small\item\em If true, the partition is modified to allow one level of coarsening when calling \mbox{\hyperlink{p8est__wrap_8h_a97f2b63d58895787d7114db18c2a3381}{p8est\+\_\+wrap\+\_\+partition}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__wrap__params__t_a4f1dbb5305514785d5780f51ea79eefa}\label{structp8est__wrap__params__t_a4f1dbb5305514785d5780f51ea79eefa}} 
+int \mbox{\hyperlink{structp8est__wrap__params__t_a4f1dbb5305514785d5780f51ea79eefa}{store\+\_\+adapted}}
+\begin{DoxyCompactList}\small\item\em Boolean\+: If true, the indices of most recently adapted quadrants are stored in the {\ttfamily newly\+\_\+refined} and {\ttfamily newly\+\_\+coarsened} array of the wrap. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{structp8est__wrap__params__t_aad97a39b34cfbe9ff6ebc8fe2ec59d06}{user\+\_\+pointer}}
+\begin{DoxyCompactList}\small\item\em Set the user pointer in the \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This structure contains the different parameters of wrap creation. 
+
+A default instance can be initialized by calling \mbox{\hyperlink{p8est__wrap_8h_ac13d7a983c3e60391630dbd69cff9d23}{p8est\+\_\+wrap\+\_\+params\+\_\+init}} and used for wrap creation by calling \mbox{\hyperlink{p8est__wrap_8h_af205c54b0e045f94ae6768a7481e5aec}{p8est\+\_\+wrap\+\_\+new\+\_\+params}}. 
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structp8est__wrap__params__t_a511ec358cee0baca49aba613faa04b16}\label{structp8est__wrap__params__t_a511ec358cee0baca49aba613faa04b16}} 
+\index{p8est\_wrap\_params\_t@{p8est\_wrap\_params\_t}!mesh\_params@{mesh\_params}}
+\index{mesh\_params@{mesh\_params}!p8est\_wrap\_params\_t@{p8est\_wrap\_params\_t}}
+\doxysubsubsection{\texorpdfstring{mesh\_params}{mesh\_params}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structp8est__mesh__params__t}{p8est\+\_\+mesh\+\_\+params\+\_\+t}} p8est\+\_\+wrap\+\_\+params\+\_\+t\+::mesh\+\_\+params}
+
+
+
+Parameters for mesh creation. 
+
+The btype member is used for ghost creation as well. \mbox{\Hypertarget{structp8est__wrap__params__t_a5e6c661e3f9c78e5d26fb83558666cd5}\label{structp8est__wrap__params__t_a5e6c661e3f9c78e5d26fb83558666cd5}} 
+\index{p8est\_wrap\_params\_t@{p8est\_wrap\_params\_t}!replace\_fn@{replace\_fn}}
+\index{replace\_fn@{replace\_fn}!p8est\_wrap\_params\_t@{p8est\_wrap\_params\_t}}
+\doxysubsubsection{\texorpdfstring{replace\_fn}{replace\_fn}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__extended_8h_aba389735f21cee010df09655d967958f}{p8est\+\_\+replace\+\_\+t}} p8est\+\_\+wrap\+\_\+params\+\_\+t\+::replace\+\_\+fn}
+
+
+
+This member may be removed soon. 
+
+Callback to replace quadrants during refinement, coarsening or balancing in \mbox{\hyperlink{p8est__wrap_8h_a352e162ccaa7261d81056e8f20583bcb}{p8est\+\_\+wrap\+\_\+adapt}}. May be NULL. The callback should not change the \mbox{\hyperlink{structp8est}{p8est}}\textquotesingle{}s user data. \mbox{\Hypertarget{structp8est__wrap__params__t_aad97a39b34cfbe9ff6ebc8fe2ec59d06}\label{structp8est__wrap__params__t_aad97a39b34cfbe9ff6ebc8fe2ec59d06}} 
+\index{p8est\_wrap\_params\_t@{p8est\_wrap\_params\_t}!user\_pointer@{user\_pointer}}
+\index{user\_pointer@{user\_pointer}!p8est\_wrap\_params\_t@{p8est\_wrap\_params\_t}}
+\doxysubsubsection{\texorpdfstring{user\_pointer}{user\_pointer}}
+{\footnotesize\ttfamily void$\ast$ p8est\+\_\+wrap\+\_\+params\+\_\+t\+::user\+\_\+pointer}
+
+
+
+Set the user pointer in the \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}}. 
+
+Subsequently, we will never access it. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p8est__wrap_8h}{p8est\+\_\+wrap.\+h}}\end{DoxyCompactItemize}

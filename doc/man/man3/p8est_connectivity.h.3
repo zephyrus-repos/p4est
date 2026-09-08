@@ -1,0 +1,1630 @@
+.TH "src/p8est_connectivity.h" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/p8est_connectivity.h \- The connectivity defines the coarse topology of the forest\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <sc_io\&.h>\fP
+.br
+\fC#include <p4est_base\&.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBp8est_connectivity\fP"
+.br
+.RI "This structure holds the 3D inter-tree connectivity information\&. "
+.ti -1c
+.RI "struct \fBp8est_connectivity_shared\fP"
+.br
+.RI "Management information for a connectivity shared by MPI3\&. "
+.ti -1c
+.RI "struct \fBp8est_edge_transform_t\fP"
+.br
+.RI "Generic interface for transformations between a tree and any of its edge\&. "
+.ti -1c
+.RI "struct \fBp8est_edge_info_t\fP"
+.br
+.RI "Information about the neighbors of an edge\&. "
+.ti -1c
+.RI "struct \fBp8est_corner_transform_t\fP"
+.br
+.RI "Generic interface for transformations between a tree and any of its corner\&. "
+.ti -1c
+.RI "struct \fBp8est_corner_info_t\fP"
+.br
+.RI "Information about the neighbors of a corner\&. "
+.ti -1c
+.RI "struct \fBp8est_neighbor_transform_t\fP"
+.br
+.RI "Generic interface for transformations between a tree and any of its neighbors\&. "
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBP8EST_DIM\fP   3"
+.br
+.RI "The spatial dimension\&. "
+.ti -1c
+.RI "#define \fBP8EST_FACES\fP   (2 * \fBP8EST_DIM\fP)"
+.br
+.RI "The number of faces of an octant\&. "
+.ti -1c
+.RI "#define \fBP8EST_CHILDREN\fP   8"
+.br
+.RI "The number of children of an octant\&. "
+.ti -1c
+.RI "#define \fBP8EST_HALF\fP   (\fBP8EST_CHILDREN\fP / 2)"
+.br
+.RI "The number of children/corners touching one face\&. "
+.ti -1c
+.RI "#define \fBP8EST_EDGES\fP   12"
+.br
+.RI "The number of edges around an octant\&. "
+.ti -1c
+.RI "#define \fBP8EST_INSUL\fP   27"
+.br
+.RI "The size of insulation layer\&. "
+.ti -1c
+.RI "#define \fBP8EST_ONLY_P8_LAND\fP(x)   && (x)"
+.br
+.RI "Only use logical AND term in 3D\&. "
+.ti -1c
+.RI "#define \fBP8EST_ONLY_P8_COMMA\fP(x)   , (x)"
+.br
+.RI "Only use comma and expression in 3D\&. "
+.ti -1c
+.RI "#define \fBP8EST_DIM_POW\fP(a)   ((a) * (a) * (a))"
+.br
+.RI "Exponentiate with dimension\&. "
+.ti -1c
+.RI "#define \fBP8EST_FTRANSFORM\fP   9"
+.br
+.RI "size of face transformation encoding "
+.ti -1c
+.RI "#define \fBP8EST_STRING\fP   'p8est'"
+.br
+.RI "\fBp8est\fP identification string "
+.ti -1c
+.RI "#define \fBP8EST_ONDISK_FORMAT\fP   0x3000009"
+.br
+.RI "The revision number of the \fBp8est\fP ondisk file format\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBp8est_connectivity\fP \fBp8est_connectivity_t\fP"
+.br
+.RI "This structure holds the 3D inter-tree connectivity information\&. "
+.ti -1c
+.RI "typedef struct \fBp8est_connectivity_shared\fP \fBp8est_connectivity_shared_t\fP"
+.br
+.RI "Management information for a connectivity shared by MPI3\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBp8est_connect_type_t\fP { \fBP8EST_CONNECT_SELF\fP = 30, \fBP8EST_CONNECT_FACE\fP = 31, \fBP8EST_CONNECT_EDGE\fP = 32, \fBP8EST_CONNECT_ALMOST\fP = P8EST_CONNECT_EDGE, \fBP8EST_CONNECT_CORNER\fP = 33, \fBP8EST_CONNECT_FULL\fP = P8EST_CONNECT_CORNER }"
+.br
+.RI "Characterize a type of adjacency\&. "
+.ti -1c
+.RI "enum \fBp8est_connectivity_encode_t\fP { \fBP8EST_CONN_ENCODE_NONE\fP = SC_IO_ENCODE_NONE, \fBP8EST_CONN_ENCODE_LAST\fP }"
+.br
+.RI "Typedef for serialization method\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBp8est_connect_type_int\fP (\fBp8est_connect_type_t\fP btype)"
+.br
+.RI "Convert the p8est_connect_type_t into a number\&. "
+.ti -1c
+.RI "const char * \fBp8est_connect_type_string\fP (\fBp8est_connect_type_t\fP btype)"
+.br
+.RI "Convert the p8est_connect_type_t into a const string\&. "
+.ti -1c
+.RI "size_t \fBp8est_connectivity_memory_used\fP (\fBp8est_connectivity_t\fP *conn)"
+.br
+.RI "Calculate memory usage of a connectivity structure\&. "
+.ti -1c
+.RI "void \fBp8est_neighbor_transform_coordinates\fP (const \fBp8est_neighbor_transform_t\fP *nt, const \fBp4est_qcoord_t\fP self_coords[\fBP8EST_DIM\fP], \fBp4est_qcoord_t\fP neigh_coords[\fBP8EST_DIM\fP])"
+.br
+.RI "Transform from self's coordinate system to neighbor's coordinate system\&. "
+.ti -1c
+.RI "void \fBp8est_neighbor_transform_coordinates_reverse\fP (const \fBp8est_neighbor_transform_t\fP *nt, const \fBp4est_qcoord_t\fP neigh_coords[\fBP8EST_DIM\fP], \fBp4est_qcoord_t\fP self_coords[\fBP8EST_DIM\fP])"
+.br
+.RI "Transform from neighbor's coordinate system to self's coordinate system\&. "
+.ti -1c
+.RI "void \fBp8est_connectivity_get_neighbor_transforms\fP (\fBp8est_connectivity_t\fP *conn, \fBp4est_topidx_t\fP tree_id, \fBp8est_connect_type_t\fP boundary_type, int boundary_index, sc_array_t *neighbor_transform_array)"
+.br
+.RI "Fill an array with the neighbor transforms based on a specific boundary type\&. "
+.ti -1c
+.RI "void \fBp8est_connectivity_coordinates_canonicalize\fP (\fBp8est_connectivity_t\fP *conn, \fBp4est_topidx_t\fP treeid, const \fBp4est_qcoord_t\fP coords[], \fBp4est_topidx_t\fP *treeid_out, \fBp4est_qcoord_t\fP coords_out[])"
+.br
+.RI "Determine the owning tree for a coordinate and transform it there\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_face_neighbor_corner_set\fP (int c, int f, int nf, int set)"
+.br
+.RI "Transform a corner across one of the adjacent faces into a neighbor tree\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_face_neighbor_face_corner\fP (int fc, int f, int nf, int o)"
+.br
+.RI "Transform a face corner across one of the adjacent faces into a neighbor tree\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_face_neighbor_corner\fP (int c, int f, int nf, int o)"
+.br
+.RI "Transform a corner across one of the adjacent faces into a neighbor tree\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_face_neighbor_face_edge\fP (int fe, int f, int nf, int o)"
+.br
+.RI "Transform a face-edge across one of the adjacent faces into a neighbor tree\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_face_neighbor_edge\fP (int e, int f, int nf, int o)"
+.br
+.RI "Transform an edge across one of the adjacent faces into a neighbor tree\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_edge_neighbor_edge_corner\fP (int ec, int o)"
+.br
+.RI "Transform an edge corner across one of the adjacent edges into a neighbor tree\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_edge_neighbor_corner\fP (int c, int e, int ne, int o)"
+.br
+.RI "Transform a corner across one of the adjacent edges into a neighbor tree\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new\fP (\fBp4est_topidx_t\fP num_vertices, \fBp4est_topidx_t\fP num_trees, \fBp4est_topidx_t\fP num_edges, \fBp4est_topidx_t\fP num_ett, \fBp4est_topidx_t\fP num_corners, \fBp4est_topidx_t\fP num_ctt)"
+.br
+.RI "Allocate a connectivity structure\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_copy\fP (\fBp4est_topidx_t\fP num_vertices, \fBp4est_topidx_t\fP num_trees, \fBp4est_topidx_t\fP num_edges, \fBp4est_topidx_t\fP num_corners, const double *vertices, const \fBp4est_topidx_t\fP *ttv, const \fBp4est_topidx_t\fP *ttt, const int8_t *ttf, const \fBp4est_topidx_t\fP *tte, const \fBp4est_topidx_t\fP *eoff, const \fBp4est_topidx_t\fP *ett, const int8_t *ete, const \fBp4est_topidx_t\fP *ttc, const \fBp4est_topidx_t\fP *coff, const \fBp4est_topidx_t\fP *ctt, const int8_t *ctc)"
+.br
+.RI "Allocate a connectivity structure and populate from constants\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_copy\fP (\fBp8est_connectivity_t\fP *input, int copy_attr)"
+.br
+.RI "Deep copy a connectivity structure\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_bcast\fP (\fBp8est_connectivity_t\fP *conn_in, int root, sc_MPI_Comm comm)"
+.br
+.RI "Broadcast a connectivity structure that exists only on one process to all\&. "
+.ti -1c
+.RI "void \fBp8est_connectivity_destroy\fP (\fBp8est_connectivity_t\fP *connectivity)"
+.br
+.RI "Destroy a connectivity structure\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_shared_t\fP * \fBp8est_connectivity_share\fP (\fBp8est_connectivity_t\fP *conn_in, int root, sc_MPI_Comm comm)"
+.br
+.RI "Take a connectivity on a single rank and share it with MPI3\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_shared_t\fP * \fBp8est_connectivity_mission\fP (\fBp8est_connectivity_t\fP *conn_in, int split_type, sc_MPI_Comm world_comm)"
+.br
+.RI "Take a connectivity on the world rank zero and share it globally\&. "
+.ti -1c
+.RI "void \fBp8est_connectivity_shared_destroy\fP (\fBp8est_connectivity_shared_t\fP *cshare)"
+.br
+.RI "Destroy a shared connectivity structure\&. "
+.ti -1c
+.RI "void \fBp8est_connectivity_set_attr\fP (\fBp8est_connectivity_t\fP *conn, size_t bytes_per_tree)"
+.br
+.RI "Allocate or free the attribute fields in a connectivity\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_is_valid\fP (\fBp8est_connectivity_t\fP *connectivity)"
+.br
+.RI "Examine a connectivity structure\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_is_equal\fP (\fBp8est_connectivity_t\fP *conn1, \fBp8est_connectivity_t\fP *conn2)"
+.br
+.RI "Check two connectivity structures for equality\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_sink\fP (\fBp8est_connectivity_t\fP *conn, sc_io_sink_t *sink)"
+.br
+.RI "Write connectivity to a sink object\&. "
+.ti -1c
+.RI "sc_array_t * \fBp8est_connectivity_deflate\fP (\fBp8est_connectivity_t\fP *conn, \fBp8est_connectivity_encode_t\fP code)"
+.br
+.RI "Allocate memory and store the connectivity information there\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_save\fP (const char *filename, \fBp8est_connectivity_t\fP *connectivity)"
+.br
+.RI "Save a connectivity structure to disk\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_source\fP (sc_io_source_t *source)"
+.br
+.RI "Read connectivity from a source object\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_inflate\fP (sc_array_t *buffer)"
+.br
+.RI "Create new connectivity from a memory buffer\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_load\fP (const char *filename, size_t *bytes)"
+.br
+.RI "Load a connectivity structure from disk\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_unitcube\fP (void)"
+.br
+.RI "Create a connectivity structure for the unit cube\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_periodic\fP (void)"
+.br
+.RI "Create a connectivity structure for an all-periodic unit cube\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_rotwrap\fP (void)"
+.br
+.RI "Create a connectivity structure for a mostly periodic unit cube\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_drop\fP (void)"
+.br
+.RI "Create a connectivity structure for a five-trees geometry with a hole\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_twocubes\fP (void)"
+.br
+.RI "Create a connectivity structure that contains two cubes\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_twotrees\fP (int l_face, int r_face, int orientation)"
+.br
+.RI "Create a connectivity structure for two trees being rotated w\&.r\&.t\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_twowrap\fP (void)"
+.br
+.RI "Create a connectivity structure that contains two cubes where the two far ends are identified periodically\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_rotcubes\fP (void)"
+.br
+.RI "Create a connectivity structure that contains a few cubes\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_pillow\fP (void)"
+.br
+.RI "Create a connectivity structure for two trees on top of each other\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_brick\fP (int m, int n, int p, int periodic_a, int periodic_b, int periodic_c)"
+.br
+.RI "An m by n by p array with periodicity in x, y, and z if periodic_a, periodic_b, and periodic_c are true, respectively\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_shell\fP (void)"
+.br
+.RI "Create a connectivity structure that builds a spherical shell\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_sphere\fP (void)"
+.br
+.RI "Create a connectivity structure that builds a solid sphere\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_torus\fP (int nSegments)"
+.br
+.RI "Create a connectivity structure that builds a revolution torus\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_new_byname\fP (const char *name)"
+.br
+.RI "Create connectivity structure from predefined catalogue\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_refine\fP (\fBp8est_connectivity_t\fP *conn, int num_per_dim)"
+.br
+.RI "Uniformly refine a connectivity\&. "
+.ti -1c
+.RI "void \fBp8est_expand_face_transform\fP (int iface, int nface, int ftransform[])"
+.br
+.RI "Fill an array with the axis combination of a face neighbor transform\&. "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP \fBp8est_find_face_transform\fP (\fBp8est_connectivity_t\fP *connectivity, \fBp4est_topidx_t\fP itree, int iface, int ftransform[])"
+.br
+.RI "Fill an array with the axis combination of a face neighbor transform\&. "
+.ti -1c
+.RI "void \fBp8est_find_edge_transform\fP (\fBp8est_connectivity_t\fP *connectivity, \fBp4est_topidx_t\fP itree, int iedge, \fBp8est_edge_info_t\fP *ei)"
+.br
+.RI "Fills an array with information about edge neighbors\&. "
+.ti -1c
+.RI "void \fBp8est_find_corner_transform\fP (\fBp8est_connectivity_t\fP *connectivity, \fBp4est_topidx_t\fP itree, int icorner, \fBp8est_corner_info_t\fP *ci)"
+.br
+.RI "Fills an array with information about corner neighbors\&. "
+.ti -1c
+.RI "void \fBp8est_connectivity_complete\fP (\fBp8est_connectivity_t\fP *conn)"
+.br
+.RI "Internally connect a connectivity based on tree_to_vertex information\&. "
+.ti -1c
+.RI "void \fBp8est_connectivity_reduce\fP (\fBp8est_connectivity_t\fP *conn)"
+.br
+.RI "Removes corner and edge information of a connectivity such that enough information is left to run p8est_connectivity_complete successfully\&. "
+.ti -1c
+.RI "void \fBp8est_connectivity_permute\fP (\fBp8est_connectivity_t\fP *conn, sc_array_t *perm, int is_current_to_new)"
+.br
+.RI "p8est_connectivity_permute Given a permutation \fIperm\fP of the trees in a connectivity \fIconn\fP, permute the trees of \fIconn\fP in place and update \fIconn\fP to match\&. "
+.ti -1c
+.RI "void \fBp8est_connectivity_reorder\fP (sc_MPI_Comm comm, int k, \fBp8est_connectivity_t\fP *conn, \fBp8est_connect_type_t\fP ctype)"
+.br
+.RI "Reorder a connectivity using METIS\&. "
+.ti -1c
+.RI "sc_array_t * \fBp8est_connectivity_reorder_newid\fP (sc_MPI_Comm comm, int k, \fBp8est_connectivity_t\fP *conn, \fBp8est_connect_type_t\fP ctype, sc_array_t *newid)"
+.br
+.RI "Reorder a connectivity using METIS\&. "
+.ti -1c
+.RI "void \fBp8est_connectivity_join_faces\fP (\fBp8est_connectivity_t\fP *conn, \fBp4est_topidx_t\fP tree_left, \fBp4est_topidx_t\fP tree_right, int face_left, int face_right, int orientation)"
+.br
+.RI "p8est_connectivity_join_faces This function takes an existing valid connectivity \fIconn\fP and modifies it by joining two tree faces that are currently boundary faces\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_is_equivalent\fP (\fBp8est_connectivity_t\fP *conn1, \fBp8est_connectivity_t\fP *conn2)"
+.br
+.RI "p8est_connectivity_is_equivalent This function compares two connectivities for equivalence: it returns \fItrue\fP if they are the same connectivity, or if they have the same topology\&. "
+.ti -1c
+.RI "int \fBp8est_connectivity_read_inp_stream\fP (FILE *stream, \fBp4est_topidx_t\fP *num_vertices, \fBp4est_topidx_t\fP *num_trees, double *vertices, \fBp4est_topidx_t\fP *tree_to_vertex)"
+.br
+.RI "Read an ABAQUS input file from a file stream\&. "
+.ti -1c
+.RI "\fBp8est_connectivity_t\fP * \fBp8est_connectivity_read_inp\fP (const char *filename)"
+.br
+.RI "Create a \fBp4est\fP connectivity from an ABAQUS input file\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "const int \fBp8est_volume_point\fP"
+.br
+.RI "Store the boundary point of the volume in [0, P8EST_INSUL)\&. "
+.ti -1c
+.RI "const int \fBp8est_face_corners\fP [6][4]"
+.br
+.RI "Store the corner numbers 0\&.\&.7 for each tree face\&. "
+.ti -1c
+.RI "const int \fBp8est_face_edges\fP [6][4]"
+.br
+.RI "Store the edge numbers 0\&.\&.12 for each tree face\&. "
+.ti -1c
+.RI "const int \fBp8est_face_points\fP [6]"
+.br
+.RI "For each face number, its boundary point in [0, P8EST_INSUL)\&. "
+.ti -1c
+.RI "const int \fBp8est_face_dual\fP [6]"
+.br
+.RI "Store the face numbers in the face neighbor's system\&. "
+.ti -1c
+.RI "const int \fBp8est_face_permutations\fP [8][4]"
+.br
+.RI "Store only the 8 out of 24 possible permutations that occur\&. "
+.ti -1c
+.RI "const int \fBp8est_face_permutation_sets\fP [3][4]"
+.br
+.RI "Store the 3 occurring sets of 4 permutations per face\&. "
+.ti -1c
+.RI "const int \fBp8est_face_permutation_refs\fP [6][6]"
+.br
+.RI "For each face combination store the permutation set\&. "
+.ti -1c
+.RI "const int \fBp8est_face_edge_permutations\fP [8][4]"
+.br
+.RI "Store only the 8 out of 24 possible permutations that occur\&. "
+.ti -1c
+.RI "const int \fBp8est_face_edge_permutation_sets\fP [3][4]"
+.br
+.RI "Store the 3 occurring sets of 4 permutations per face\&. "
+.ti -1c
+.RI "const int \fBp8est_edge_faces\fP [12][2]"
+.br
+.RI "Store the face numbers 0\&.\&.5 adjacent to each tree edge\&. "
+.ti -1c
+.RI "const int \fBp8est_edge_corners\fP [12][2]"
+.br
+.RI "Store the corner numbers 0\&.\&.8 for each tree edge\&. "
+.ti -1c
+.RI "const int \fBp8est_edge_points\fP [12]"
+.br
+.RI "For each edge number, its boundary point in [0, P8EST_INSUL)\&. "
+.ti -1c
+.RI "const int \fBp8est_edge_edge_corners\fP [12][8]"
+.br
+.RI "Store the edge corner numbers 0\&.\&.1 for the corners touching a tree edge or -1 if combination is invalid\&. "
+.ti -1c
+.RI "const int \fBp8est_edge_face_corners\fP [12][6][2]"
+.br
+.RI "Store the face corner numbers 0\&.\&.3 for the faces touching a tree edge\&. "
+.ti -1c
+.RI "const int \fBp8est_edge_face_edges\fP [12][6]"
+.br
+.RI "Store the face edge numbers 0\&.\&.3 for the faces touching a tree edge\&. "
+.ti -1c
+.RI "const int \fBp8est_corner_faces\fP [8][3]"
+.br
+.RI "Store the face numbers 0\&.\&.5 for each tree corner\&. "
+.ti -1c
+.RI "const int \fBp8est_corner_edges\fP [8][3]"
+.br
+.RI "Store the edge numbers 0\&.\&.11 for each tree corner\&. "
+.ti -1c
+.RI "const int \fBp8est_corner_points\fP [8]"
+.br
+.RI "For each corner number, its boundary point in [0, P8EST_INSUL)\&. "
+.ti -1c
+.RI "const int \fBp8est_corner_face_corners\fP [8][6]"
+.br
+.RI "Store the face corner numbers for the faces touching a tree corner\&. "
+.ti -1c
+.RI "const int \fBp8est_corner_edge_corners\fP [8][12]"
+.br
+.RI "Store the edge corner numbers for the edges touching a tree corner\&. "
+.ti -1c
+.RI "const int \fBp8est_child_edge_faces\fP [8][12]"
+.br
+.RI "Store the faces for each child and edge, can be -1\&. "
+.ti -1c
+.RI "const int \fBp8est_child_corner_faces\fP [8][8]"
+.br
+.RI "Store the faces for each child and corner, can be -1\&. "
+.ti -1c
+.RI "const int \fBp8est_child_corner_edges\fP [8][8]"
+.br
+.RI "Store the edges for each child and corner, can be -1\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+The connectivity defines the coarse topology of the forest\&. 
+
+A 3D forest consists of one or more octrees, each of which a logical cube\&. Each tree has a local coordinate system, which defines the origin and the direction of its x-, y-, and z-axes as well as the numbering of its faces, edges, and corners\&. Each tree may connect to any other tree (including itself) across any of its faces, edges and/or corners, where the neighbor may be arbitrarily rotated and/or flipped\&. The \fBp8est_connectivity\fP data structure stores these connections\&.
+.PP
+We impose the following requirement for consistency of \fBp8est_balance\fP :
+.PP
+\fBNote\fP
+.RS 4
+If a connectivity implies natural connections between trees that are edge neighbors without being face neighbors, these edges shall be encoded explicitly in the connectivity\&. If a connectivity implies natural connections between trees that are corner neighbors without being edge or face neighbors, these corners shall be encoded explicitly in the connectivity\&. Please see the documentation of \fBp8est_connectivity_t\fP for the exact encoding convention\&.
+.RE
+.PP
+We provide various predefined connectivities by dedicated constructors, such as
+.PP
+.IP "\(bu" 2
+\fBp8est_connectivity_new_unitcube\fP for the unit square,
+.IP "\(bu" 2
+\fBp8est_connectivity_new_periodic\fP for the periodic unit square,
+.IP "\(bu" 2
+\fBp8est_connectivity_new_brick\fP for a rectangular grid of trees,
+.IP "\(bu" 2
+\fBp8est_connectivity_new_drop\fP for a sparsely loop of trees\&. 
+.PP
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define P8EST_CHILDREN   8"
+
+.PP
+The number of children of an octant\&. also the nmber of corners 
+.SS "#define P8EST_FACES   (2 * \fBP8EST_DIM\fP)"
+
+.PP
+The number of faces of an octant\&. 
+.PP
+\fBNote\fP
+.RS 4
+for uniform naming reasons, an octant is represented by the datatype p8est_quadrant_t 
+.RE
+.PP
+
+.SS "#define P8EST_ONDISK_FORMAT   0x3000009"
+
+.PP
+The revision number of the \fBp8est\fP ondisk file format\&. Increase this number whenever the on-disk format for \fBp8est_connectivity\fP, \fBp8est\fP, or any other 3D data structure changes\&. The format for reading and writing must be the same\&. 
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBp8est_connectivity\fP \fBp8est_connectivity_t\fP"
+
+.PP
+This structure holds the 3D inter-tree connectivity information\&. Identification of arbitrary faces, edges and corners is possible\&.
+.PP
+The arrays tree_to_* are stored in z ordering\&. For corners the order wrt\&. zyx is 000 001 010 011 100 101 110 111\&. For faces the order is -x +x -y +y -z +z\&. They are allocated [0][0]\&.\&.[0][N-1]\&.\&.[num_trees-1][0]\&.\&.[num_trees-1][N-1]\&. where N is 6 for tree and face, 8 for corner, 12 for edge\&. If a face is on the physical boundary it must connect to itself\&.
+.PP
+The values for tree_to_face are in 0\&.\&.23 where ttf % 6 gives the face number and ttf / 6 the face orientation code\&. The orientation is determined as follows\&. Let my_face and other_face be the two face numbers of the connecting trees in 0\&.\&.5\&. Then the first face corner of the lower of my_face and other_face connects to a face corner numbered 0\&.\&.3 in the higher of my_face and other_face\&. The face orientation is defined as this number\&. If my_face == other_face, treating either of both faces as the lower one leads to the same result\&.
+.PP
+It is valid to specify num_vertices as 0\&. In this case vertices and tree_to_vertex are set to NULL\&. Otherwise the vertex coordinates are stored in the array vertices as [0][0]\&.\&.[0][2]\&.\&.[num_vertices-1][0]\&.\&.[num_vertices-1][2]\&. Vertex coordinates are optional and not used for inferring topology\&.
+.PP
+The edges are stored when they connect trees that are not already face neighbors at that specific edge\&. In this case tree_to_edge indexes into \fIett_offset\fP\&. Otherwise the tree_to_edge entry must be -1 and this edge is ignored\&. If num_edges == 0, tree_to_edge and edge_to_* arrays are set to NULL\&.
+.PP
+The arrays edge_to_* store a variable number of entries per edge\&. For edge e these are at position [ett_offset[e]]\&.\&.[ett_offset[e+1]-1]\&. Their number for edge e is ett_offset[e+1] - ett_offset[e]\&. The entries encode all trees adjacent to edge e\&. The size of the edge_to_* arrays is num_ett = ett_offset[num_edges]\&. The edge_to_edge array holds values in 0\&.\&.23, where the lower 12 indicate one edge orientation and the higher 12 the opposite edge orientation\&.
+.PP
+The corners are stored when they connect trees that are not already edge or face neighbors at that specific corner\&. In this case tree_to_corner indexes into \fIctt_offset\fP\&. Otherwise the tree_to_corner entry must be -1 and this corner is ignored\&. If num_corners == 0, tree_to_corner and corner_to_* arrays are set to NULL\&.
+.PP
+The arrays corner_to_* store a variable number of entries per corner\&. For corner c these are at position [ctt_offset[c]]\&.\&.[ctt_offset[c+1]-1]\&. Their number for corner c is ctt_offset[c+1] - ctt_offset[c]\&. The entries encode all trees adjacent to corner c\&. The size of the corner_to_* arrays is num_ctt = ctt_offset[num_corners]\&.
+.PP
+The *_to_attr arrays may have arbitrary contents defined by the user\&.
+.PP
+\fBNote\fP
+.RS 4
+If a connectivity implies natural connections between trees that are edge neighbors without being face neighbors, these edges shall be encoded explicitly in the connectivity\&. If a connectivity implies natural connections between trees that are corner neighbors without being edge or face neighbors, these corners shall be encoded explicitly in the connectivity\&. 
+.RE
+.PP
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBp8est_connect_type_t\fP"
+
+.PP
+Characterize a type of adjacency\&. Several functions involve relationships between neighboring trees and/or quadrants, and their behavior depends on how one defines adjacency: 1) entities are adjacent if they share a face, or 2) entities are adjacent if they share a face or corner, or 3) entities are adjacent if they share a face, corner or edge\&. p8est_connect_type_t is used to choose the desired behavior\&. This enum must fit into an int8_t\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIP8EST_CONNECT_SELF \fP\fP
+No balance whatsoever\&. 
+.TP
+\fB\fIP8EST_CONNECT_FACE \fP\fP
+Balance across faces only\&. 
+.TP
+\fB\fIP8EST_CONNECT_EDGE \fP\fP
+Balance across faces and edges\&. 
+.TP
+\fB\fIP8EST_CONNECT_ALMOST \fP\fP
+= CORNER - 1\&. 
+.TP
+\fB\fIP8EST_CONNECT_CORNER \fP\fP
+Balance faces, edges, corners\&. 
+.TP
+\fB\fIP8EST_CONNECT_FULL \fP\fP
+= CORNER\&. 
+.SS "enum \fBp8est_connectivity_encode_t\fP"
+
+.PP
+Typedef for serialization method\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIP8EST_CONN_ENCODE_LAST \fP\fP
+Invalid entry to close the list\&. 
+.SH "Function Documentation"
+.PP 
+.SS "int p8est_connect_type_int (\fBp8est_connect_type_t\fP btype)"
+
+.PP
+Convert the p8est_connect_type_t into a number\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIbtype\fP The balance type to convert\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns 1, 2 or 3\&. 
+.RE
+.PP
+
+.SS "const char* p8est_connect_type_string (\fBp8est_connect_type_t\fP btype)"
+
+.PP
+Convert the p8est_connect_type_t into a const string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIbtype\fP The balance type to convert\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a pointer to a constant string\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_bcast (\fBp8est_connectivity_t\fP * conn_in, int root, sc_MPI_Comm comm)"
+
+.PP
+Broadcast a connectivity structure that exists only on one process to all\&. On the other processors, it will be allocated using p8est_connectivity_new and received\&. This function is collective over the communicator passed\&.
+.PP
+This function may be called with a communicator that contains only one rank of every shared memory node in preparation to subsequently calling \fBp8est_connectivity_share\fP with an intranode communicator\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn_in\fP For the root process the connectivity to be broadcast, for the other processes it must be NULL\&. 
+.br
+\fIroot\fP The rank of the process that provides the connectivity\&. 
+.br
+\fIcomm\fP The MPI communicator\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+For the root process this is a pointer to \fIconn_in\fP\&. Else, a pointer to a newly allocated connectivity structure with the same values as \fIconn_in\fP on the root process\&. 
+.RE
+.PP
+
+.SS "void p8est_connectivity_complete (\fBp8est_connectivity_t\fP * conn)"
+
+.PP
+Internally connect a connectivity based on tree_to_vertex information\&. Periodicity that is not inherent in the list of vertices will be lost\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The connectivity needs to have proper vertices and tree_to_vertex fields\&. The tree_to_tree and tree_to_face fields must be allocated and satisfy p8est_connectivity_is_valid (conn) but will be overwritten\&. The edge and corner fields will be freed and allocated anew\&. 
+.RE
+.PP
+
+.SS "void p8est_connectivity_coordinates_canonicalize (\fBp8est_connectivity_t\fP * conn, \fBp4est_topidx_t\fP treeid, const \fBp4est_qcoord_t\fP coords[], \fBp4est_topidx_t\fP * treeid_out, \fBp4est_qcoord_t\fP coords_out[])"
+
+.PP
+Determine the owning tree for a coordinate and transform it there\&. On a boundary between trees, different coordinate systems meet\&. A coordinate on a tree boundary face, edge, or corner generated from the perspective of a specific tree may be transformed into any other touching tree's coordinate system and still refer to the same point in the mesh\&.
+.PP
+To uniquely identify a coordinate, this function identifies the lowest numbered tree touching this coordinate and transforms the coordinate into that system\&. The result can be used e\&. g\&. in topology hash tables\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP A valid connectivity\&. 
+.br
+\fItreeid\fP The original tree index for this coordinate tuple\&. 
+.br
+\fIcoords\fP A valid coordinate 2-tuple relative to \fItreeid\fP\&. 
+.br
+\fItreeid_out\fP The lowest tree index touching the coordinate\&. 
+.br
+\fIcoords_out\fP The input coordinates, if necessary after transformation into the system of the lowest numbered tree, returned in \fItreeid_out\fP\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_copy (\fBp8est_connectivity_t\fP * input, int copy_attr)"
+
+.PP
+Deep copy a connectivity structure\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIinput\fP Valid connectivity\&. 
+.br
+\fIcopy_attr\fP If true, we copy the tree attribute data\&. Otherwise, the result has empty attributes\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A connectivity equal to the first one except, depending on \fIcopy_attry\fP, for its attributes\&. 
+.RE
+.PP
+
+.SS "sc_array_t* p8est_connectivity_deflate (\fBp8est_connectivity_t\fP * conn, \fBp8est_connectivity_encode_t\fP code)"
+
+.PP
+Allocate memory and store the connectivity information there\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The connectivity structure to be exported to memory\&. 
+.br
+\fIcode\fP Encoding and compression method for serialization\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Newly created array that contains the information\&. 
+.RE
+.PP
+
+.SS "void p8est_connectivity_destroy (\fBp8est_connectivity_t\fP * connectivity)"
+
+.PP
+Destroy a connectivity structure\&. Also destroy all attributes\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP\&.
+.SS "int p8est_connectivity_edge_neighbor_corner (int c, int e, int ne, int o)"
+
+.PP
+Transform a corner across one of the adjacent edges into a neighbor tree\&. This version expects the neighbor edge and orientation separately\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIc\fP A corner number in 0\&.\&.7\&. 
+.br
+\fIe\fP An edge 0\&.\&.11 that touches the corner \fIc\fP\&. 
+.br
+\fIne\fP A neighbor edge that is on the other side of \fIe\fP\&. 
+.br
+\fIo\fP The orientation between tree boundary edges \fIe\fP and \fIne\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Corner number seen from the neighbor\&. 
+.RE
+.PP
+
+.SS "int p8est_connectivity_edge_neighbor_edge_corner (int ec, int o)"
+
+.PP
+Transform an edge corner across one of the adjacent edges into a neighbor tree\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIec\fP An edge corner number in 0\&.\&.1\&. 
+.br
+\fIo\fP The orientation of a tree boundary edge connection\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The edge corner number seen from the other tree\&. 
+.RE
+.PP
+
+.SS "int p8est_connectivity_face_neighbor_corner (int c, int f, int nf, int o)"
+
+.PP
+Transform a corner across one of the adjacent faces into a neighbor tree\&. This version expects the neighbor face and orientation separately\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIc\fP A corner number in 0\&.\&.7\&. 
+.br
+\fIf\fP A face number that touches the corner \fIc\fP\&. 
+.br
+\fInf\fP A neighbor face that is on the other side of \fIf\fP\&. 
+.br
+\fIo\fP The orientation between tree boundary faces \fIf\fP and \fInf\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The number of the corner seen from the neighbor tree\&. 
+.RE
+.PP
+
+.SS "int p8est_connectivity_face_neighbor_corner_set (int c, int f, int nf, int set)"
+
+.PP
+Transform a corner across one of the adjacent faces into a neighbor tree\&. It expects a face permutation index that has been precomputed\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIc\fP A corner number in 0\&.\&.7\&. 
+.br
+\fIf\fP A face number that touches the corner \fIc\fP\&. 
+.br
+\fInf\fP A neighbor face that is on the other side of \fIf\fP\&. 
+.br
+\fIset\fP A value from \fIp8est_face_permutation_sets\fP that is obtained using \fIf\fP, \fInf\fP, and a valid orientation: ref = p8est_face_permutation_refs[f][nf]; set = p8est_face_permutation_sets[ref][orientation]; 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The corner number in 0\&.\&.7 seen from the other face\&. 
+.RE
+.PP
+
+.SS "int p8est_connectivity_face_neighbor_edge (int e, int f, int nf, int o)"
+
+.PP
+Transform an edge across one of the adjacent faces into a neighbor tree\&. This version expects the neighbor face and orientation separately\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIe\fP A edge number in 0\&.\&.11\&. 
+.br
+\fIf\fP A face 0\&.\&.5 that touches the edge \fIe\fP\&. 
+.br
+\fInf\fP A neighbor face that is on the other side of \fIf\fP\&. 
+.br
+\fIo\fP The orientation between tree boundary faces \fIf\fP and \fInf\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The edge's number seen from the neighbor\&. 
+.RE
+.PP
+
+.SS "int p8est_connectivity_face_neighbor_face_corner (int fc, int f, int nf, int o)"
+
+.PP
+Transform a face corner across one of the adjacent faces into a neighbor tree\&. This version expects the neighbor face and orientation separately\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfc\fP A face corner number in 0\&.\&.3\&. 
+.br
+\fIf\fP A face that the face corner \fIfc\fP is relative to\&. 
+.br
+\fInf\fP A neighbor face that is on the other side of \fIf\fP\&. 
+.br
+\fIo\fP The orientation between tree boundary faces \fIf\fP and \fInf\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The face corner number relative to the neighbor's face\&. 
+.RE
+.PP
+
+.SS "int p8est_connectivity_face_neighbor_face_edge (int fe, int f, int nf, int o)"
+
+.PP
+Transform a face-edge across one of the adjacent faces into a neighbor tree\&. This version expects the neighbor face and orientation separately\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfe\fP A face edge number in 0\&.\&.3\&. 
+.br
+\fIf\fP A face number that touches the edge \fIe\fP\&. 
+.br
+\fInf\fP A neighbor face that is on the other side of \fIf\fP\&. 
+.br
+\fIo\fP The orientation between tree boundary faces \fIf\fP and \fInf\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The face edge number seen from the neighbor tree\&. 
+.RE
+.PP
+
+.SS "void p8est_connectivity_get_neighbor_transforms (\fBp8est_connectivity_t\fP * conn, \fBp4est_topidx_t\fP tree_id, \fBp8est_connect_type_t\fP boundary_type, int boundary_index, sc_array_t * neighbor_transform_array)"
+
+.PP
+Fill an array with the neighbor transforms based on a specific boundary type\&. This function generalizes all other inter-tree transformation objects
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP Connectivity structure\&. 
+.br
+\fItree_id\fP The number of the tree\&. 
+.br
+\fIboundary_type\fP Type of boundary connection (self, face, edge, corner)\&. 
+.br
+\fIboundary_index\fP The index of the boundary\&. 
+.br
+\fIneighbor_transform_array\fP Array of the neighbor transforms\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_inflate (sc_array_t * buffer)"
+
+.PP
+Create new connectivity from a memory buffer\&. This function aborts on malloc errors\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIbuffer\fP The connectivity is created from this memory buffer\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The newly created connectivity, or NULL on format error of the buffered connectivity data\&. 
+.RE
+.PP
+
+.SS "int p8est_connectivity_is_equal (\fBp8est_connectivity_t\fP * conn1, \fBp8est_connectivity_t\fP * conn2)"
+
+.PP
+Check two connectivity structures for equality\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if structures are equal, false otherwise\&. 
+.RE
+.PP
+
+.SS "int p8est_connectivity_is_equivalent (\fBp8est_connectivity_t\fP * conn1, \fBp8est_connectivity_t\fP * conn2)"
+
+.PP
+p8est_connectivity_is_equivalent This function compares two connectivities for equivalence: it returns \fItrue\fP if they are the same connectivity, or if they have the same topology\&. The definition of topological sameness is strict: there is no attempt made to determine whether permutation and/or rotation of the trees makes the connectivities equivalent\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn1\fP a valid connectivity 
+.br
+\fIconn2\fP a valid connectivity 
+.RE
+.PP
+
+.SS "int p8est_connectivity_is_valid (\fBp8est_connectivity_t\fP * connectivity)"
+
+.PP
+Examine a connectivity structure\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if structure is valid, false otherwise\&. 
+.RE
+.PP
+
+.SS "void p8est_connectivity_join_faces (\fBp8est_connectivity_t\fP * conn, \fBp4est_topidx_t\fP tree_left, \fBp4est_topidx_t\fP tree_right, int face_left, int face_right, int orientation)"
+
+.PP
+p8est_connectivity_join_faces This function takes an existing valid connectivity \fIconn\fP and modifies it by joining two tree faces that are currently boundary faces\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP connectivity that will be altered\&. 
+.br
+\fItree_left\fP tree that will be on the left side of the joined faces\&. 
+.br
+\fItree_right\fP tree that will be on the right side of the joined faces\&. 
+.br
+\fIface_left\fP face of \fItree_left\fP that will be joined\&. 
+.br
+\fIface_right\fP face of \fItree_right\fP that will be joined\&. 
+.br
+\fIorientation\fP the orientation of \fIface_left\fP and \fIface_right\fP once joined (see the description of p8est_connectivity_t to understand orientation)\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_load (const char * filename, size_t * bytes)"
+
+.PP
+Load a connectivity structure from disk\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilename\fP Name of the file to read\&. 
+.br
+\fIbytes\fP Size in bytes of connectivity on disk or NULL\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns valid connectivity, or NULL on file error\&. 
+.RE
+.PP
+
+.SS "size_t p8est_connectivity_memory_used (\fBp8est_connectivity_t\fP * conn)"
+
+.PP
+Calculate memory usage of a connectivity structure\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP Connectivity structure\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Memory used in bytes\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_shared_t\fP* p8est_connectivity_mission (\fBp8est_connectivity_t\fP * conn_in, int split_type, sc_MPI_Comm world_comm)"
+
+.PP
+Take a connectivity on the world rank zero and share it globally\&. To this end, split the input communicator by node and broadcast the input connectivity among the first ranks of every node\&. In a second step, share it on each node from the first to all ranks\&.
+.PP
+By the design of our wrappers for communicator splitting, this function also works with MPI but without type splitting available, and without MPI\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn_in\fP Valid connectivity\&. We take ownership of it\&. It must be accessed anymore after returning\&. 
+.br
+\fIsplit_type\fP Should be sc_MPI_COMM_TYPE_SHARED or an implementation option such as to use the socket as relevant shared memory domain\&. 
+.br
+\fIworld_comm\fP Communicator encompassing all ranks on one or more shared memory nodes\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Shared connectivity\&. Free with \fBp8est_connectivity_shared_destroy\fP\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_new (\fBp4est_topidx_t\fP num_vertices, \fBp4est_topidx_t\fP num_trees, \fBp4est_topidx_t\fP num_edges, \fBp4est_topidx_t\fP num_ett, \fBp4est_topidx_t\fP num_corners, \fBp4est_topidx_t\fP num_ctt)"
+
+.PP
+Allocate a connectivity structure\&. The attribute fields are initialized to NULL\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInum_vertices\fP Number of total vertices (i\&.e\&. geometric points)\&. 
+.br
+\fInum_trees\fP Number of trees in the forest\&. 
+.br
+\fInum_edges\fP Number of tree-connecting edges\&. 
+.br
+\fInum_ett\fP Number of total trees in edge_to_tree array\&. 
+.br
+\fInum_corners\fP Number of tree-connecting corners\&. 
+.br
+\fInum_ctt\fP Number of total trees in corner_to_tree array\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A connectivity structure with allocated arrays\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_new_byname (const char * name)"
+
+.PP
+Create connectivity structure from predefined catalogue\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Invokes connectivity_new_* function\&. brick235 brick (2, 3, 5, 0, 0, 0) periodic periodic rotcubes rotcubes rotwrap rotwrap shell shell sphere sphere twocubes twocubes twowrap twowrap unit unitcube 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+An initialized connectivity if name is defined, NULL else\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_new_copy (\fBp4est_topidx_t\fP num_vertices, \fBp4est_topidx_t\fP num_trees, \fBp4est_topidx_t\fP num_edges, \fBp4est_topidx_t\fP num_corners, const double * vertices, const \fBp4est_topidx_t\fP * ttv, const \fBp4est_topidx_t\fP * ttt, const int8_t * ttf, const \fBp4est_topidx_t\fP * tte, const \fBp4est_topidx_t\fP * eoff, const \fBp4est_topidx_t\fP * ett, const int8_t * ete, const \fBp4est_topidx_t\fP * ttc, const \fBp4est_topidx_t\fP * coff, const \fBp4est_topidx_t\fP * ctt, const int8_t * ctc)"
+
+.PP
+Allocate a connectivity structure and populate from constants\&. The attribute fields are initialized to NULL\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInum_vertices\fP Number of total vertices (i\&.e\&. geometric points)\&. 
+.br
+\fInum_trees\fP Number of trees in the forest\&. 
+.br
+\fInum_edges\fP Number of tree-connecting edges\&. 
+.br
+\fInum_corners\fP Number of tree-connecting corners\&. 
+.br
+\fIvertices\fP Coordinates of the vertices of the trees\&. 
+.br
+\fIttv\fP The tree-to-vertex array\&. 
+.br
+\fIttt\fP The tree-to-tree array\&. 
+.br
+\fIttf\fP The tree-to-face array (int8_t)\&. 
+.br
+\fItte\fP The tree-to-edge array\&. 
+.br
+\fIeoff\fP Edge-to-tree offsets (num_edges + 1 values)\&. This must always be non-NULL; in trivial cases it is just a pointer to a p4est_topix value of 0\&. 
+.br
+\fIett\fP The edge-to-tree array\&. 
+.br
+\fIete\fP The edge-to-edge array\&. 
+.br
+\fIttc\fP The tree-to-corner array\&. 
+.br
+\fIcoff\fP Corner-to-tree offsets (num_corners + 1 values)\&. This must always be non-NULL; in trivial cases it is just a pointer to a p4est_topix value of 0\&. 
+.br
+\fIctt\fP The corner-to-tree array\&. 
+.br
+\fIctc\fP The corner-to-corner array\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The connectivity is checked for validity\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_new_drop (void)"
+
+.PP
+Create a connectivity structure for a five-trees geometry with a hole\&. The geometry is a 3D extrusion of the two drop example, and covers [0, 3]*[0, 2]*[0, 3]\&. The additional dimension is Y\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP\&.
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_new_pillow (void)"
+
+.PP
+Create a connectivity structure for two trees on top of each other\&. This connectivity is meant to be used with \fBp8est_geometry_new_pillow\fP to map a spherical shell\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP\&.
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_new_rotcubes (void)"
+
+.PP
+Create a connectivity structure that contains a few cubes\&. These are rotated against each other to stress the topology routines\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBpoints/generate_points2\&.c\fP, \fBsimple/simple3\&.c\fP, \fBtest_coordinates2\&.c\fP, \fBtimings/timings2\&.c\fP, and \fBuserdata/userdata2\&.c\fP\&.
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_new_rotwrap (void)"
+
+.PP
+Create a connectivity structure for a mostly periodic unit cube\&. The left and right faces are identified, and bottom and top rotated\&. Front and back are not identified\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBpoints/generate_points2\&.c\fP, \fBsimple/simple3\&.c\fP, and \fBtimings/timings2\&.c\fP\&.
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_new_shell (void)"
+
+.PP
+Create a connectivity structure that builds a spherical shell\&. It is made up of six connected parts [-1,1]x[-1,1]x[1,2]\&. This connectivity reuses vertices and relies on a geometry transformation\&. It is thus not suitable for p8est_connectivity_complete\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP, \fBtimings/timings2\&.c\fP, and \fBuserdata/userdata2\&.c\fP\&.
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_new_sphere (void)"
+
+.PP
+Create a connectivity structure that builds a solid sphere\&. It is made up of two layers and a cube in the center\&. This connectivity reuses vertices and relies on a geometry transformation\&. It is thus not suitable for p8est_connectivity_complete\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP, and \fBuserdata/userdata2\&.c\fP\&.
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_new_torus (int nSegments)"
+
+.PP
+Create a connectivity structure that builds a revolution torus\&. This connectivity reuses vertices and relies on a geometry transformation\&. It is thus not suitable for p8est_connectivity_complete\&.
+.PP
+This connectivity reuses ideas from disk2d connectivity\&. More precisely the torus is divided into segments around the revolution axis, each segments is made of 5 trees (à la disk2d)\&. The total number of trees if 5 times the number of segments\&.
+.PP
+This connectivity is meant to be used with \fBp8est_geometry_new_torus\fP
+.PP
+\fBParameters\fP
+.RS 4
+\fInSegments\fP number of trees along the great circle 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP, and \fBuserdata/userdata2\&.c\fP\&.
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_new_twotrees (int l_face, int r_face, int orientation)"
+
+.PP
+Create a connectivity structure for two trees being rotated w\&.r\&.t\&. each other in a user-defined way\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIl_face\fP index of left face 
+.br
+\fIr_face\fP index of right face 
+.br
+\fIorientation\fP orientation of trees w\&.r\&.t\&. each other 
+.RE
+.PP
+
+.SS "void p8est_connectivity_permute (\fBp8est_connectivity_t\fP * conn, sc_array_t * perm, int is_current_to_new)"
+
+.PP
+p8est_connectivity_permute Given a permutation \fIperm\fP of the trees in a connectivity \fIconn\fP, permute the trees of \fIconn\fP in place and update \fIconn\fP to match\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The connectivity whose trees are permuted\&. 
+.br
+\fIperm\fP A permutation array, whose elements are size_t's\&. 
+.br
+\fIis_current_to_new\fP if true, the jth entry of perm is the new index for the entry whose current index is j, otherwise the jth entry of perm is the current index of the tree whose index will be j after the permutation\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_read_inp (const char * filename)"
+
+.PP
+Create a \fBp4est\fP connectivity from an ABAQUS input file\&. This utility function reads a basic ABAQUS file supporting element type with the prefix C2D4, CPS4, and S4 in 2D and of type C3D8 reading them as bilinear quadrilateral and trilinear hexahedral trees respectively\&.
+.PP
+A basic 2D mesh is given below\&. The \fC*Node\fP section gives the vertex number and x, y, and z components for each vertex\&. The \fC*Element\fP section gives the 4 vertices in 2D (8 vertices in 3D) of each element in counter clockwise order\&. So in 2D the nodes are given as:
+.PP
+4 3 +-------------------+ +-------------------+ 1 2
+.PP
+and in 3D they are given as:
+.PP
+8 7 +---------------------+ |\\ |\\ | \\ | \\ | \\ | \\ | \\ | \\ | 5+---------------------+6 | | | | +----|----------------+ | 4\\ | 3 \\ | \\ | \\ | \\ | \\ | | | +---------------------+ 1 2
+.PP
+.PP
+.nf
+*Heading
+ box\&.inp
+*Node
+    1,    5,   -5,    5
+    2,    5,    5,    5
+    3,    5,    0,    5
+    4,   -5,    5,    5
+    5,    0,    5,    5
+    6,   -5,   -5,    5
+    7,   -5,    0,    5
+    8,    0,   -5,    5
+    9,    0,    0,    5
+   10,    5,    5,   -5
+   11,    5,   -5,   -5
+   12,    5,    0,   -5
+   13,   -5,   -5,   -5
+   14,    0,   -5,   -5
+   15,   -5,    5,   -5
+   16,   -5,    0,   -5
+   17,    0,    5,   -5
+   18,    0,    0,   -5
+   19,   -5,   -5,    0
+   20,    5,   -5,    0
+   21,    0,   -5,    0
+   22,   -5,    5,    0
+   23,   -5,    0,    0
+   24,    5,    5,    0
+   25,    0,    5,    0
+   26,    5,    0,    0
+   27,    0,    0,    0
+*Element, type=C3D8, ELSET=EB1
+    1,       6,      19,      23,       7,       8,      21,      27,       9
+    2,      19,      13,      16,      23,      21,      14,      18,      27
+    3,       7,      23,      22,       4,       9,      27,      25,       5
+    4,      23,      16,      15,      22,      27,      18,      17,      25
+    5,       8,      21,      27,       9,       1,      20,      26,       3
+    6,      21,      14,      18,      27,      20,      11,      12,      26
+    7,       9,      27,      25,       5,       3,      26,      24,       2
+    8,      27,      18,      17,      25,      26,      12,      10,      24
+.fi
+.PP
+.PP
+This function reads a mesh from \fIfilename\fP and returns an associated \fBp4est\fP connectivity\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilename\fP file to read the connectivity from
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+an allocated connectivity associated with the mesh in \fIfilename\fP 
+.RE
+.PP
+
+.SS "int p8est_connectivity_read_inp_stream (FILE * stream, \fBp4est_topidx_t\fP * num_vertices, \fBp4est_topidx_t\fP * num_trees, double * vertices, \fBp4est_topidx_t\fP * tree_to_vertex)"
+
+.PP
+Read an ABAQUS input file from a file stream\&. This utility function reads a basic ABAQUS file supporting element type with the prefix C2D4, CPS4, and S4 in 2D and of type C3D8 reading them as bilinear quadrilateral and trilinear hexahedral trees respectively\&.
+.PP
+A basic 2D mesh is given below\&. The \fC*Node\fP section gives the vertex number and x, y, and z components for each vertex\&. The \fC*Element\fP section gives the 4 vertices in 2D (8 vertices in 3D) of each element in counter clockwise order\&. So in 2D the nodes are given as:
+.PP
+4 3 +-------------------+ +-------------------+ 1 2
+.PP
+and in 3D they are given as:
+.PP
+8 7 +---------------------+ |\\ |\\ | \\ | \\ | \\ | \\ | \\ | \\ | 5+---------------------+6 | | | | +----|----------------+ | 4\\ | 3 \\ | \\ | \\ | \\ | \\ | | | +---------------------+ 1 2
+.PP
+.PP
+.nf
+*Heading
+ box\&.inp
+*Node
+    1,    5,   -5,    5
+    2,    5,    5,    5
+    3,    5,    0,    5
+    4,   -5,    5,    5
+    5,    0,    5,    5
+    6,   -5,   -5,    5
+    7,   -5,    0,    5
+    8,    0,   -5,    5
+    9,    0,    0,    5
+   10,    5,    5,   -5
+   11,    5,   -5,   -5
+   12,    5,    0,   -5
+   13,   -5,   -5,   -5
+   14,    0,   -5,   -5
+   15,   -5,    5,   -5
+   16,   -5,    0,   -5
+   17,    0,    5,   -5
+   18,    0,    0,   -5
+   19,   -5,   -5,    0
+   20,    5,   -5,    0
+   21,    0,   -5,    0
+   22,   -5,    5,    0
+   23,   -5,    0,    0
+   24,    5,    5,    0
+   25,    0,    5,    0
+   26,    5,    0,    0
+   27,    0,    0,    0
+*Element, type=C3D8, ELSET=EB1
+    1,       6,      19,      23,       7,       8,      21,      27,       9
+    2,      19,      13,      16,      23,      21,      14,      18,      27
+    3,       7,      23,      22,       4,       9,      27,      25,       5
+    4,      23,      16,      15,      22,      27,      18,      17,      25
+    5,       8,      21,      27,       9,       1,      20,      26,       3
+    6,      21,      14,      18,      27,      20,      11,      12,      26
+    7,       9,      27,      25,       5,       3,      26,      24,       2
+    8,      27,      18,      17,      25,      26,      12,      10,      24
+.fi
+.PP
+.PP
+This code can be called two ways\&. The first, when \fCvertex==NULL\fP and \fCtree_to_vertex==NULL\fP, is used to count the number of trees and vertices in the connectivity to be generated by the \fC\fP\&.inp mesh in the \fIstream\fP\&. The second, when \fCvertices!=NULL\fP and \fCtree_to_vertex!=NULL\fP, fill \fCvertices\fP and \fCtree_to_vertex\fP\&. In this case \fCnum_vertices\fP and \fCnum_trees\fP need to be set to the maximum number of entries allocated in \fCvertices\fP and \fCtree_to_vertex\fP\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIstream\fP file stream to read the connectivity from 
+.br
+\fInum_vertices\fP the number of vertices in the connectivity 
+.br
+\fInum_trees\fP the number of trees in the connectivity 
+.br
+\fIvertices\fP the list of \fCvertices\fP of the connectivity 
+.br
+\fItree_to_vertex\fP the \fCtree_to_vertex\fP map of the connectivity
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful and nonzero if not 
+.RE
+.PP
+
+.SS "void p8est_connectivity_reduce (\fBp8est_connectivity_t\fP * conn)"
+
+.PP
+Removes corner and edge information of a connectivity such that enough information is left to run p8est_connectivity_complete successfully\&. The reduced connectivity still passes p8est_connectivity_is_valid\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The connectivity to be reduced\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_refine (\fBp8est_connectivity_t\fP * conn, int num_per_dim)"
+
+.PP
+Uniformly refine a connectivity\&. This is useful if you would like to uniformly refine by something other than a power of 2\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP A valid connectivity 
+.br
+\fInum_per_dim\fP The number of new trees in each direction\&. Must use no more than \fBP8EST_OLD_QMAXLEVEL\fP bits\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+a refined connectivity\&. 
+.RE
+.PP
+
+.SS "void p8est_connectivity_reorder (sc_MPI_Comm comm, int k, \fBp8est_connectivity_t\fP * conn, \fBp8est_connect_type_t\fP ctype)"
+
+.PP
+Reorder a connectivity using METIS\&. This function takes a connectivity \fIconn\fP and a parameter \fIk\fP, which will typically be the number of processes, and reorders the trees such that if every processes is assigned (num_trees / k) trees, the communication volume will be minimized\&. This is intended for use with connectivities that contain a large number of trees\&. This should be done BEFORE a \fBp8est\fP is created using the connectivity\&. This is done in place: any data structures that use indices to refer to trees before this procedure will be invalid\&. Note that this routine calls metis and not parmetis because the connectivity is copied on every process\&. A communicator is required because I'm not positive that metis is deterministic\&. \fIctype\fP determines when an edge exist between two trees in the dual graph used by metis in the reordering\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcomm\fP MPI communicator\&. 
+.br
+\fIk\fP if k > 0, the number of pieces metis will use to guide the reordering; if k = 0, the number of pieces will be determined from the MPI communicator\&. 
+.br
+\fIconn\fP connectivity that will be reordered\&. 
+.br
+\fIctype\fP determines when an edge exists in the dual graph of the connectivity structure\&. 
+.RE
+.PP
+
+.SS "sc_array_t* p8est_connectivity_reorder_newid (sc_MPI_Comm comm, int k, \fBp8est_connectivity_t\fP * conn, \fBp8est_connect_type_t\fP ctype, sc_array_t * newid)"
+
+.PP
+Reorder a connectivity using METIS\&. This is the same form of p8est_connectivity_reorder but it takes an initialized sc array \fInewid\fP as extra argument\&. In this way, the users can map old indices to new indices in the case it is necessary (for instance to retrieve high-order nodes previously stored in an array with old indices)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcomm\fP MPI communicator\&. 
+.br
+\fIk\fP if k > 0, the number of pieces metis will use to guide the reordering; if k = 0, the number of pieces will be determined from the MPI communicator\&. 
+.br
+\fIconn\fP connectivity that will be reordered\&. 
+.br
+\fIctype\fP determines when an edge exists in the dual graph of the connectivity structure\&. 
+.br
+\fInewid\fP array that maps old tree indices to new ones\&. newid has to be an sc_array and it has to be initialized (non-NULL) with element size of size_t (using sc_array_new (sizeof (size_t)))\&. Input length arbitrary, output length modified\&. 
+.RE
+.PP
+
+.SS "int p8est_connectivity_save (const char * filename, \fBp8est_connectivity_t\fP * connectivity)"
+
+.PP
+Save a connectivity structure to disk\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilename\fP Name of the file to write\&. 
+.br
+\fIconnectivity\fP Valid connectivity structure\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns 0 on success, nonzero on file error\&. 
+.RE
+.PP
+
+.SS "void p8est_connectivity_set_attr (\fBp8est_connectivity_t\fP * conn, size_t bytes_per_tree)"
+
+.PP
+Allocate or free the attribute fields in a connectivity\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The conn->*_to_attr fields must either be NULL or previously be allocated by this function\&. 
+.br
+\fIbytes_per_tree\fP If 0, tree_to_attr is freed (being NULL is ok)\&. If positive, requested space is allocated\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_shared_t\fP* p8est_connectivity_share (\fBp8est_connectivity_t\fP * conn_in, int root, sc_MPI_Comm comm)"
+
+.PP
+Take a connectivity on a single rank and share it with MPI3\&. If MPI shared windows are not found at configure time, this function calls \fBp8est_connectivity_bcast\fP instead and wraps its result in the result\&. The function is collective over the communicator passed\&.
+.PP
+This function is only well defined for an intranode communicator\&. Before calling it, the input connectivity may be made available on the \fIroot\fP rank using \fBp8est_connectivity_bcast\fP with a surrounding communicator that contains one root process of every node\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn_in\fP For the root process a valid connectivity to be shared by MPI3\&. This function takes ownership of this argument, so it must no longer be used\&. For all other processes it must be NULL\&. 
+.br
+\fIroot\fP The rank of the process that provides the input connectivity\&. Must be legal wrt\&. \fIcomm\fP\&. 
+.br
+\fIcomm\fP When configured with MPI3 enabled, this intranode communicator must permit MPI3 windows\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The new connectivity object stores all data of the input \fIconn\fP in MPI3 shared windows\&. Must be freed by \fBp8est_connectivity_shared_destroy\fP\&. 
+.RE
+.PP
+
+.SS "void p8est_connectivity_shared_destroy (\fBp8est_connectivity_shared_t\fP * cshare)"
+
+.PP
+Destroy a shared connectivity structure\&. Call this eventually on the result of \fBp8est_connectivity_share\fP or \fBp8est_connectivity_mission\fP (which calls the former internally)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcshare\fP Valid shared connectivity structure; cf\&. \fBp8est_connectivity_share\fP\&. 
+.RE
+.PP
+
+.SS "int p8est_connectivity_sink (\fBp8est_connectivity_t\fP * conn, sc_io_sink_t * sink)"
+
+.PP
+Write connectivity to a sink object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The connectivity to be written\&. 
+.br
+\fIsink\fP The connectivity is written into this sink\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, nonzero on error\&. 
+.RE
+.PP
+
+.SS "\fBp8est_connectivity_t\fP* p8est_connectivity_source (sc_io_source_t * source)"
+
+.PP
+Read connectivity from a source object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP The connectivity is read from this source\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The newly created connectivity, or NULL on error\&. 
+.RE
+.PP
+
+.SS "void p8est_expand_face_transform (int iface, int nface, int ftransform[])"
+
+.PP
+Fill an array with the axis combination of a face neighbor transform\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIiface\fP The number of the originating face\&. 
+.br
+\fInface\fP Encoded as nface = r * 6 + nf, where nf = 0\&.\&.5 is the neigbbor's connecting face number and r = 0\&.\&.3 is the relative orientation to the neighbor's face\&. This encoding matches p8est_connectivity_t\&. 
+.br
+\fIftransform\fP This array holds 9 integers\&. [0]\&.\&.[2] The coordinate axis sequence of the origin face, the first two referring to the tangentials and the third to the normal\&. A permutation of (0, 1, 2)\&. [3]\&.\&.[5] The coordinate axis sequence of the target face\&. [6]\&.\&.[8] Edge reversal flags for tangential axes (boolean); face code in [0, 3] for the normal coordinate q: 0: q' = -q 1: q' = q + 1 2: q' = q - 1 3: q' = 2 - q 
+.RE
+.PP
+
+.SS "void p8est_find_corner_transform (\fBp8est_connectivity_t\fP * connectivity, \fBp4est_topidx_t\fP itree, int icorner, \fBp8est_corner_info_t\fP * ci)"
+
+.PP
+Fills an array with information about corner neighbors\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconnectivity\fP Connectivity structure\&. 
+.br
+\fIitree\fP The number of the originating tree\&. 
+.br
+\fIicorner\fP The number of the originating corner\&. 
+.br
+\fIci\fP A \fBp8est_corner_info_t\fP structure with initialized array\&. 
+.RE
+.PP
+
+.SS "void p8est_find_edge_transform (\fBp8est_connectivity_t\fP * connectivity, \fBp4est_topidx_t\fP itree, int iedge, \fBp8est_edge_info_t\fP * ei)"
+
+.PP
+Fills an array with information about edge neighbors\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconnectivity\fP Connectivity structure\&. 
+.br
+\fIitree\fP The number of the originating tree\&. 
+.br
+\fIiedge\fP The number of the originating edge\&. 
+.br
+\fIei\fP A \fBp8est_edge_info_t\fP structure with initialized array\&. 
+.RE
+.PP
+
+.SS "\fBp4est_topidx_t\fP p8est_find_face_transform (\fBp8est_connectivity_t\fP * connectivity, \fBp4est_topidx_t\fP itree, int iface, int ftransform[])"
+
+.PP
+Fill an array with the axis combination of a face neighbor transform\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconnectivity\fP Connectivity structure\&. 
+.br
+\fIitree\fP The number of the originating tree\&. 
+.br
+\fIiface\fP The number of the originating tree's face\&. 
+.br
+\fIftransform\fP This array holds 9 integers\&. [0]\&.\&.[2] The coordinate axis sequence of the origin face\&. [3]\&.\&.[5] The coordinate axis sequence of the target face\&. [6]\&.\&.[8] Edge reversal flag for axes t1, t2; face code for n; 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBp8est_expand_face_transform\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The face neighbor tree if it exists, -1 otherwise\&. 
+.RE
+.PP
+
+.SS "void p8est_neighbor_transform_coordinates (const \fBp8est_neighbor_transform_t\fP * nt, const \fBp4est_qcoord_t\fP self_coords[P8EST_DIM], \fBp4est_qcoord_t\fP neigh_coords[P8EST_DIM])"
+
+.PP
+Transform from self's coordinate system to neighbor's coordinate system\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInt\fP A neighbor transform\&. 
+.br
+\fIself_coords\fP Input quadrant coordinates in self coordinates\&. 
+.br
+\fIneigh_coords\fP Coordinates transformed into neighbor coordinates\&. 
+.RE
+.PP
+
+.SS "void p8est_neighbor_transform_coordinates_reverse (const \fBp8est_neighbor_transform_t\fP * nt, const \fBp4est_qcoord_t\fP neigh_coords[P8EST_DIM], \fBp4est_qcoord_t\fP self_coords[P8EST_DIM])"
+
+.PP
+Transform from neighbor's coordinate system to self's coordinate system\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInt\fP A neighbor transform\&. 
+.br
+\fIneigh_coords\fP Input quadrant coordinates in self coordinates\&. 
+.br
+\fIself_coords\fP Coordinates transformed into neighbor coordinates\&. 
+.RE
+.PP
+
+.SH "Variable Documentation"
+.PP 
+.SS "const int p8est_corner_edge_corners[8][12]\fC [extern]\fP"
+
+.PP
+Store the edge corner numbers for the edges touching a tree corner\&. Is -1 for invalid combinations\&. 
+.SS "const int p8est_corner_face_corners[8][6]\fC [extern]\fP"
+
+.PP
+Store the face corner numbers for the faces touching a tree corner\&. Is -1 for invalid combinations\&. 
+.SS "const int p8est_edge_face_corners[12][6][2]\fC [extern]\fP"
+
+.PP
+Store the face corner numbers 0\&.\&.3 for the faces touching a tree edge\&. Is -1 for invalid combinations of indices 
+.SS "const int p8est_edge_face_edges[12][6]\fC [extern]\fP"
+
+.PP
+Store the face edge numbers 0\&.\&.3 for the faces touching a tree edge\&. Is -1 for invalid combinations of indices 
+.SS "const int p8est_face_permutation_refs[6][6]\fC [extern]\fP"
+
+.PP
+For each face combination store the permutation set\&. The order is [my_face][neighbor_face] 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

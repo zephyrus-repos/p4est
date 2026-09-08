@@ -1,0 +1,88 @@
+\hypertarget{structp4est}{}\doxysection{p4est Struct Reference}
+\label{structp4est}\index{p4est@{p4est}}
+
+
+The \mbox{\hyperlink{structp4est}{p4est}} forest datatype.  
+
+
+
+
+{\ttfamily \#include $<$p4est.\+h$>$}
+
+
+
+Collaboration diagram for p4est\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structp4est__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp4est_a88446986bafb8d46456976515b22c856}\label{structp4est_a88446986bafb8d46456976515b22c856}} 
+sc\+\_\+\+MPI\+\_\+\+Comm \mbox{\hyperlink{structp4est_a88446986bafb8d46456976515b22c856}{mpicomm}}
+\begin{DoxyCompactList}\small\item\em MPI communicator. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_a5858a68da810aa216a076578c49439fe}\label{structp4est_a5858a68da810aa216a076578c49439fe}} 
+int \mbox{\hyperlink{structp4est_a5858a68da810aa216a076578c49439fe}{mpisize}}
+\begin{DoxyCompactList}\small\item\em number of MPI processes \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_a5b7b11eb9050eede87019bdb831a20b3}\label{structp4est_a5b7b11eb9050eede87019bdb831a20b3}} 
+int \mbox{\hyperlink{structp4est_a5b7b11eb9050eede87019bdb831a20b3}{mpirank}}
+\begin{DoxyCompactList}\small\item\em this process\textquotesingle{}s MPI rank \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_aa095ae77659cfb65cb820a60f95f665d}\label{structp4est_aa095ae77659cfb65cb820a60f95f665d}} 
+int \mbox{\hyperlink{structp4est_aa095ae77659cfb65cb820a60f95f665d}{mpicomm\+\_\+owned}}
+\begin{DoxyCompactList}\small\item\em flag if communicator is owned \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_a6c85f14408bd81f7cbc01d4ea12aad9b}\label{structp4est_a6c85f14408bd81f7cbc01d4ea12aad9b}} 
+size\+\_\+t \mbox{\hyperlink{structp4est_a6c85f14408bd81f7cbc01d4ea12aad9b}{data\+\_\+size}}
+\begin{DoxyCompactList}\small\item\em size of per-\/quadrant p.\+user\+\_\+data (see \mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{p4est\+\_\+quadrant\+\_\+t\+::p4est\+\_\+quadrant\+\_\+data\+::user\+\_\+data}}) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_a486eacc9c8e6ce28ff34429d297e703f}\label{structp4est_a486eacc9c8e6ce28ff34429d297e703f}} 
+void $\ast$ \mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\+\_\+pointer}}
+\begin{DoxyCompactList}\small\item\em convenience pointer for users, never touched by \mbox{\hyperlink{structp4est}{p4est}} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_a7ba9cc9947a2e21f99978e435171e707}\label{structp4est_a7ba9cc9947a2e21f99978e435171e707}} 
+long \mbox{\hyperlink{structp4est_a7ba9cc9947a2e21f99978e435171e707}{revision}}
+\begin{DoxyCompactList}\small\item\em Gets bumped on mesh change. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_a124d4dc0b8cd3b07351de80f19351beb}\label{structp4est_a124d4dc0b8cd3b07351de80f19351beb}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{structp4est_a124d4dc0b8cd3b07351de80f19351beb}{first\+\_\+local\+\_\+tree}}
+\begin{DoxyCompactList}\small\item\em 0-\/based index of first local tree, must be -\/1 for an empty processor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_abd072c07f3197827fe22c16379de6ab8}\label{structp4est_abd072c07f3197827fe22c16379de6ab8}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{structp4est_abd072c07f3197827fe22c16379de6ab8}{last\+\_\+local\+\_\+tree}}
+\begin{DoxyCompactList}\small\item\em 0-\/based index of last local tree, must be -\/2 for an empty processor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_a40324cbcc175d48f887735afd5c4239f}\label{structp4est_a40324cbcc175d48f887735afd5c4239f}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} \mbox{\hyperlink{structp4est_a40324cbcc175d48f887735afd5c4239f}{local\+\_\+num\+\_\+quadrants}}
+\begin{DoxyCompactList}\small\item\em number of quadrants on all trees on this processor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_a92c7d2fddd5c84a5245f4873d4f2026a}\label{structp4est_a92c7d2fddd5c84a5245f4873d4f2026a}} 
+\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} \mbox{\hyperlink{structp4est_a92c7d2fddd5c84a5245f4873d4f2026a}{global\+\_\+num\+\_\+quadrants}}
+\begin{DoxyCompactList}\small\item\em number of quadrants on all trees on all processors \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_ae89a661282bcbca4e84175d137dbda12}\label{structp4est_ae89a661282bcbca4e84175d137dbda12}} 
+\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp4est_ae89a661282bcbca4e84175d137dbda12}{global\+\_\+first\+\_\+quadrant}}
+\begin{DoxyCompactList}\small\item\em first global quadrant index for each process and 1 beyond \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_a937f56c6960a25a1a586fabcb0711de0}\label{structp4est_a937f56c6960a25a1a586fabcb0711de0}} 
+\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$ \mbox{\hyperlink{structp4est_a937f56c6960a25a1a586fabcb0711de0}{global\+\_\+first\+\_\+position}}
+\begin{DoxyCompactList}\small\item\em first smallest possible quad for each process and 1 beyond \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_a2ca31d19479e82d49a7dd3a4f2d48011}\label{structp4est_a2ca31d19479e82d49a7dd3a4f2d48011}} 
+\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$ \mbox{\hyperlink{structp4est_a2ca31d19479e82d49a7dd3a4f2d48011}{connectivity}}
+\begin{DoxyCompactList}\small\item\em connectivity structure, not owned \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_a6158d35a403f1dbec23833746c5b4a8b}\label{structp4est_a6158d35a403f1dbec23833746c5b4a8b}} 
+sc\+\_\+array\+\_\+t $\ast$ \mbox{\hyperlink{structp4est_a6158d35a403f1dbec23833746c5b4a8b}{trees}}
+\begin{DoxyCompactList}\small\item\em array of all trees \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_ae4b04688caf93485a9223a8890824165}\label{structp4est_ae4b04688caf93485a9223a8890824165}} 
+sc\+\_\+mempool\+\_\+t $\ast$ \mbox{\hyperlink{structp4est_ae4b04688caf93485a9223a8890824165}{user\+\_\+data\+\_\+pool}}
+\begin{DoxyCompactList}\small\item\em memory allocator for user data \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_ab69e69866c4d6d643cde1b3a86facc9e}\label{structp4est_ab69e69866c4d6d643cde1b3a86facc9e}} 
+sc\+\_\+mempool\+\_\+t $\ast$ \mbox{\hyperlink{structp4est_ab69e69866c4d6d643cde1b3a86facc9e}{quadrant\+\_\+pool}}
+\begin{DoxyCompactList}\small\item\em memory allocator for temporary quadrants \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est_a8471d9aacc47e5f6db816aa9439554fe}\label{structp4est_a8471d9aacc47e5f6db816aa9439554fe}} 
+\mbox{\hyperlink{p4est_8h_ad6df67062f83f862084ec8046f88c9ec}{p4est\+\_\+inspect\+\_\+t}} $\ast$ \mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}
+\begin{DoxyCompactList}\small\item\em algorithmic switches \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The \mbox{\hyperlink{structp4est}{p4est}} forest datatype. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{particles_2particles2_8c-example}{particles/particles2.\+c}}, \mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}, \mbox{\hyperlink{spheres_2spheres2_8c-example}{spheres/spheres2.\+c}}, \mbox{\hyperlink{steps_2p4est_step1_8c-example}{steps/p4est\+\_\+step1.\+c}}, \mbox{\hyperlink{steps_2p4est_step3_8c-example}{steps/p4est\+\_\+step3.\+c}}, \mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}, and \mbox{\hyperlink{userdata_2userdata_run2_8c-example}{userdata/userdata\+\_\+run2.\+c}}.\end{Desc}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p4est_8h}{p4est.\+h}}\end{DoxyCompactItemize}

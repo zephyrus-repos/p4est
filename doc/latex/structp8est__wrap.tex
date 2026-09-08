@@ -1,0 +1,112 @@
+\hypertarget{structp8est__wrap}{}\doxysection{p8est\+\_\+wrap Struct Reference}
+\label{structp8est__wrap}\index{p8est\_wrap@{p8est\_wrap}}
+
+
+Wrapping a \mbox{\hyperlink{group__p8est}{p8est}} object for an alternative API.  
+
+
+
+
+{\ttfamily \#include $<$p8est\+\_\+wrap.\+h$>$}
+
+
+
+Collaboration diagram for p8est\+\_\+wrap\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structp8est__wrap__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_aadbeff416fd62f00f10ced49001d7316}\label{structp8est__wrap_aadbeff416fd62f00f10ced49001d7316}} 
+\mbox{\hyperlink{structp8est__wrap__params__t}{p8est\+\_\+wrap\+\_\+params\+\_\+t}} {\bfseries params}
+\item 
+sc\+\_\+refcount\+\_\+t \mbox{\hyperlink{structp8est__wrap_a4df1e5c95e060e252361d426dd87c1fa}{conn\+\_\+rc}}
+\begin{DoxyCompactList}\small\item\em This reference counter is a workaround for internal use only. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__wrap_ae1df150bddb043ed04aaabdefb7e425b}\label{structp8est__wrap_ae1df150bddb043ed04aaabdefb7e425b}} 
+\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$ {\bfseries conn}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_ae5684dba8fd2a11bfdb13447cf3071f6}\label{structp8est__wrap_ae5684dba8fd2a11bfdb13447cf3071f6}} 
+struct \mbox{\hyperlink{structp8est__wrap}{p8est\+\_\+wrap}} $\ast$ {\bfseries conn\+\_\+owner}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a6ef94dd23294a4d5668573b68429020b}\label{structp8est__wrap_a6ef94dd23294a4d5668573b68429020b}} 
+int {\bfseries p4est\+\_\+dim}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a3cfa41ed8d076131e894bd16e809349b}\label{structp8est__wrap_a3cfa41ed8d076131e894bd16e809349b}} 
+int {\bfseries p4est\+\_\+half}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a9764227ff2165f60795db9d974362fc6}\label{structp8est__wrap_a9764227ff2165f60795db9d974362fc6}} 
+int {\bfseries p4est\+\_\+faces}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a719e901208c8372a5c21f8a2539fe6b3}\label{structp8est__wrap_a719e901208c8372a5c21f8a2539fe6b3}} 
+int {\bfseries p4est\+\_\+children}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a35ff7dce491065c3a8b8e07fe73a5e65}\label{structp8est__wrap_a35ff7dce491065c3a8b8e07fe73a5e65}} 
+\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__wrap_a35ff7dce491065c3a8b8e07fe73a5e65}{p4est}}
+\begin{DoxyCompactList}\small\item\em p4est-\/$>$user\+\_\+pointer is used internally \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__wrap_a6c6ab7e05dbb137cd1bba2baf1104619}\label{structp8est__wrap_a6c6ab7e05dbb137cd1bba2baf1104619}} 
+sc\+\_\+array\+\_\+t $\ast$ \mbox{\hyperlink{structp8est__wrap_a6c6ab7e05dbb137cd1bba2baf1104619}{newly\+\_\+refined}}
+\begin{DoxyCompactList}\small\item\em Indices of quadrants refined during most recent \mbox{\hyperlink{p8est__wrap_8h_a352e162ccaa7261d81056e8f20583bcb}{p8est\+\_\+wrap\+\_\+adapt}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__wrap_a3e8257d6a5d49fe48d2fb197a68f3bc5}\label{structp8est__wrap_a3e8257d6a5d49fe48d2fb197a68f3bc5}} 
+sc\+\_\+array\+\_\+t $\ast$ \mbox{\hyperlink{structp8est__wrap_a3e8257d6a5d49fe48d2fb197a68f3bc5}{newly\+\_\+coarsened}}
+\begin{DoxyCompactList}\small\item\em Indices of quadrants coarsened during most recent \mbox{\hyperlink{p8est__wrap_8h_a352e162ccaa7261d81056e8f20583bcb}{p8est\+\_\+wrap\+\_\+adapt}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__wrap_af4cdb0004a76cfcf32ba9328bae4c3ab}\label{structp8est__wrap_af4cdb0004a76cfcf32ba9328bae4c3ab}} 
+int {\bfseries weight\+\_\+exponent}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_ad97a1b7f0f622fc5e7282f739ba7b11a}\label{structp8est__wrap_ad97a1b7f0f622fc5e7282f739ba7b11a}} 
+uint8\+\_\+t $\ast$ {\bfseries flags}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a836abd043cc47f62d06b2cba1223e421}\label{structp8est__wrap_a836abd043cc47f62d06b2cba1223e421}} 
+uint8\+\_\+t $\ast$ {\bfseries temp\+\_\+flags}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a311708ade53d4557a28fe08143c6b6df}\label{structp8est__wrap_a311708ade53d4557a28fe08143c6b6df}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} {\bfseries num\+\_\+refine\+\_\+flags}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a292e83444f6633b298904f554b76e68a}\label{structp8est__wrap_a292e83444f6633b298904f554b76e68a}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} {\bfseries inside\+\_\+counter}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a6c4b16eca6deb1cc60668f9498ad6e56}\label{structp8est__wrap_a6c4b16eca6deb1cc60668f9498ad6e56}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} {\bfseries num\+\_\+replaced}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a33384cabb02d39dd205edb75bcd0c509}\label{structp8est__wrap_a33384cabb02d39dd205edb75bcd0c509}} 
+\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$ {\bfseries old\+\_\+global\+\_\+first\+\_\+quadrant}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_aaa046cb125c0efcdf7104278814c13dd}\label{structp8est__wrap_aaa046cb125c0efcdf7104278814c13dd}} 
+\mbox{\hyperlink{p8est__ghost_8h_a01f7ba9154de22adb8e8f8c342d697ba}{p8est\+\_\+ghost\+\_\+t}} $\ast$ {\bfseries ghost}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a3ac39ae127c533e32fd54d19b463936a}\label{structp8est__wrap_a3ac39ae127c533e32fd54d19b463936a}} 
+\mbox{\hyperlink{structp8est__mesh__t}{p8est\+\_\+mesh\+\_\+t}} $\ast$ {\bfseries mesh}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_acfe2ec4b023f09892cf4adfd0290c09f}\label{structp8est__wrap_acfe2ec4b023f09892cf4adfd0290c09f}} 
+\mbox{\hyperlink{p8est__ghost_8h_a01f7ba9154de22adb8e8f8c342d697ba}{p8est\+\_\+ghost\+\_\+t}} $\ast$ {\bfseries ghost\+\_\+aux}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a447b53e52fd311db3d4ff21c8c016044}\label{structp8est__wrap_a447b53e52fd311db3d4ff21c8c016044}} 
+\mbox{\hyperlink{structp8est__mesh__t}{p8est\+\_\+mesh\+\_\+t}} $\ast$ {\bfseries mesh\+\_\+aux}
+\item 
+\mbox{\Hypertarget{structp8est__wrap_a736b3fa6af094392a68629020331d449}\label{structp8est__wrap_a736b3fa6af094392a68629020331d449}} 
+int {\bfseries match\+\_\+aux}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Wrapping a \mbox{\hyperlink{group__p8est}{p8est}} object for an alternative API. 
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structp8est__wrap_a4df1e5c95e060e252361d426dd87c1fa}\label{structp8est__wrap_a4df1e5c95e060e252361d426dd87c1fa}} 
+\index{p8est\_wrap@{p8est\_wrap}!conn\_rc@{conn\_rc}}
+\index{conn\_rc@{conn\_rc}!p8est\_wrap@{p8est\_wrap}}
+\doxysubsubsection{\texorpdfstring{conn\_rc}{conn\_rc}}
+{\footnotesize\ttfamily sc\+\_\+refcount\+\_\+t p8est\+\_\+wrap\+::conn\+\_\+rc}
+
+
+
+This reference counter is a workaround for internal use only. 
+
+Until we have refcounting/copy-\/on-\/write for the connectivity, we count the references to conn by copies of this wrap structure. There must be no external references left when this wrap is destroyed. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p8est__wrap_8h}{p8est\+\_\+wrap.\+h}}\end{DoxyCompactItemize}

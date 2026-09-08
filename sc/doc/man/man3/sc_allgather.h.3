@@ -1,0 +1,116 @@
+.TH "src/sc_allgather.h" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/sc_allgather.h \- Self-contained implementation of MPI_Allgather\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <sc\&.h>\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSC_ALLGATHER_ALLTOALL_MAX\fP   5"
+.br
+.RI "The largest group size that uses direct all-to-all\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBsc_allgather_alltoall\fP (\fBsc_MPI_Comm\fP mpicomm, char *data, int datasize, int groupsize, int myoffset, int myrank)"
+.br
+.RI "Allgather by direct point-to-point communication\&. "
+.ti -1c
+.RI "void \fBsc_allgather_recursive\fP (\fBsc_MPI_Comm\fP mpicomm, char *data, int datasize, int groupsize, int myoffset, int myrank)"
+.br
+.RI "Perform recursive bisection allgather\&. "
+.ti -1c
+.RI "int \fBsc_allgather\fP (void *sendbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype, void *recvbuf, int recvcount, \fBsc_MPI_Datatype\fP recvtype, \fBsc_MPI_Comm\fP mpicomm)"
+.br
+.RI "Drop-in allgather replacement\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Self-contained implementation of MPI_Allgather\&. 
+
+The algorithm uses a binary communication tree\&. The recursion terminates at a specified depth by an all-to-all step\&. 
+.SH "Function Documentation"
+.PP 
+.SS "int sc_allgather (void * sendbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype, void * recvbuf, int recvcount, \fBsc_MPI_Datatype\fP recvtype, \fBsc_MPI_Comm\fP mpicomm)"
+
+.PP
+Drop-in allgather replacement\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsendbuf\fP Send buffer conforming to MPI specification\&. 
+.br
+\fIsendcount\fP Number of data items to send\&. 
+.br
+\fIsendtype\fP Valid MPI Datatype\&. 
+.br
+\fIrecvbuf\fP Receive buffer conforming to MPI specification\&. 
+.br
+\fIrecvcount\fP Number of data items to receive\&. 
+.br
+\fIrecvtype\fP Valid MPI Datatype\&. 
+.br
+\fImpicomm\fP Valid MPI communicator\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+int sc_MPI_SUCCESS if not aborting on MPI error\&. 
+.RE
+.PP
+
+.SS "void sc_allgather_alltoall (\fBsc_MPI_Comm\fP mpicomm, char * data, int datasize, int groupsize, int myoffset, int myrank)"
+
+.PP
+Allgather by direct point-to-point communication\&. This function is only efficient for small group sizes\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpicomm\fP Valid MPI communicator\&. 
+.br
+\fIdata\fP Send and receive buffer for a subgroup of the communicator\&. 
+.br
+\fIdatasize\fP Number of bytes to send\&. 
+.br
+\fIgroupsize\fP Number of processes in the subgroup\&. 
+.br
+\fImyoffset\fP Offset of the subgroup in the communicator\&. 
+.br
+\fImyrank\fP MPI rank in the communicator\&. 
+.RE
+.PP
+
+.SS "void sc_allgather_recursive (\fBsc_MPI_Comm\fP mpicomm, char * data, int datasize, int groupsize, int myoffset, int myrank)"
+
+.PP
+Perform recursive bisection allgather\&. When size becomes less equal \fBSC_ALLGATHER_ALLTOALL_MAX\fP, call \fBsc_allgather_alltoall\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpicomm\fP Valid MPI communicator\&. 
+.br
+\fIdata\fP Send and receive buffer for a subgroup of the communicator\&. 
+.br
+\fIdatasize\fP Number of bytes to send\&. 
+.br
+\fIgroupsize\fP Number of processes in the subgroup\&. 
+.br
+\fImyoffset\fP Offset of the subgroup in the communicator\&. 
+.br
+\fImyrank\fP MPI rank in the communicator\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

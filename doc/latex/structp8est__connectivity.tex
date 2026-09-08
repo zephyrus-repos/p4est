@@ -1,0 +1,114 @@
+\hypertarget{structp8est__connectivity}{}\doxysection{p8est\+\_\+connectivity Struct Reference}
+\label{structp8est__connectivity}\index{p8est\_connectivity@{p8est\_connectivity}}
+
+
+This structure holds the 3D inter-\/tree connectivity information.  
+
+
+
+
+{\ttfamily \#include $<$p8est\+\_\+connectivity.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp8est__connectivity_a80760b401a8f25da8569b7451d4eda31}\label{structp8est__connectivity_a80760b401a8f25da8569b7451d4eda31}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{structp8est__connectivity_a80760b401a8f25da8569b7451d4eda31}{num\+\_\+vertices}}
+\begin{DoxyCompactList}\small\item\em the number of vertices that define the {\itshape embedding} of the forest (not the topology) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_afc31415cb8fb9d02e516cc092a79b7dd}\label{structp8est__connectivity_afc31415cb8fb9d02e516cc092a79b7dd}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{structp8est__connectivity_afc31415cb8fb9d02e516cc092a79b7dd}{num\+\_\+trees}}
+\begin{DoxyCompactList}\small\item\em the number of trees \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_ab237b9a727bb52663ab58a5eeed8a439}\label{structp8est__connectivity_ab237b9a727bb52663ab58a5eeed8a439}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{structp8est__connectivity_ab237b9a727bb52663ab58a5eeed8a439}{num\+\_\+edges}}
+\begin{DoxyCompactList}\small\item\em the number of edges that help define the topology \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a1c21655509afcffa03267f489f731609}\label{structp8est__connectivity_a1c21655509afcffa03267f489f731609}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{structp8est__connectivity_a1c21655509afcffa03267f489f731609}{num\+\_\+corners}}
+\begin{DoxyCompactList}\small\item\em the number of corners that help define the topology \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a1340b2ebbb1cb617176ad5605cdaaf24}\label{structp8est__connectivity_a1340b2ebbb1cb617176ad5605cdaaf24}} 
+double $\ast$ \mbox{\hyperlink{structp8est__connectivity_a1340b2ebbb1cb617176ad5605cdaaf24}{vertices}}
+\begin{DoxyCompactList}\small\item\em an array of size (3 $\ast$ {\itshape num\+\_\+vertices}) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__connectivity_a1c28ad35548ee7742486d2fa0356bb99}{tree\+\_\+to\+\_\+vertex}}
+\begin{DoxyCompactList}\small\item\em embed each tree into $R^3$ for e.\+g. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a8340be0024b53826139a4e9b0c753b20}\label{structp8est__connectivity_a8340be0024b53826139a4e9b0c753b20}} 
+size\+\_\+t \mbox{\hyperlink{structp8est__connectivity_a8340be0024b53826139a4e9b0c753b20}{tree\+\_\+attr\+\_\+bytes}}
+\begin{DoxyCompactList}\small\item\em bytes per tree in tree\+\_\+to\+\_\+attr \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a572d3abfe36b3e13a99d314a40a233fc}\label{structp8est__connectivity_a572d3abfe36b3e13a99d314a40a233fc}} 
+char $\ast$ \mbox{\hyperlink{structp8est__connectivity_a572d3abfe36b3e13a99d314a40a233fc}{tree\+\_\+to\+\_\+attr}}
+\begin{DoxyCompactList}\small\item\em not touched by \mbox{\hyperlink{structp4est}{p4est}} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_aed99898cc5f528829c5cb41a17836d4e}\label{structp8est__connectivity_aed99898cc5f528829c5cb41a17836d4e}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__connectivity_aed99898cc5f528829c5cb41a17836d4e}{tree\+\_\+to\+\_\+tree}}
+\begin{DoxyCompactList}\small\item\em (6 $\ast$ {\itshape num\+\_\+trees}) neighbors across faces \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a9120546c2bd3e2962c3bef7aee56c613}\label{structp8est__connectivity_a9120546c2bd3e2962c3bef7aee56c613}} 
+int8\+\_\+t $\ast$ \mbox{\hyperlink{structp8est__connectivity_a9120546c2bd3e2962c3bef7aee56c613}{tree\+\_\+to\+\_\+face}}
+\begin{DoxyCompactList}\small\item\em (6 $\ast$ {\itshape num\+\_\+trees}) face to face+orientation (see description) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a44498321dfda6273bf825053d403d44b}\label{structp8est__connectivity_a44498321dfda6273bf825053d403d44b}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__connectivity_a44498321dfda6273bf825053d403d44b}{tree\+\_\+to\+\_\+edge}}
+\begin{DoxyCompactList}\small\item\em (12 $\ast$ {\itshape num\+\_\+trees}) or NULL (see description) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a78acb4e8fa59296432f06b11d482dcde}\label{structp8est__connectivity_a78acb4e8fa59296432f06b11d482dcde}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__connectivity_a78acb4e8fa59296432f06b11d482dcde}{ett\+\_\+offset}}
+\begin{DoxyCompactList}\small\item\em edge to offset in {\itshape edge\+\_\+to\+\_\+tree} and {\itshape edge\+\_\+to\+\_\+edge} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a5e23cd2884f1a692e72a1fa31d62a189}\label{structp8est__connectivity_a5e23cd2884f1a692e72a1fa31d62a189}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__connectivity_a5e23cd2884f1a692e72a1fa31d62a189}{edge\+\_\+to\+\_\+tree}}
+\begin{DoxyCompactList}\small\item\em list of trees that meet at an edge \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a38b75647b17c9d61ba4681382de313b6}\label{structp8est__connectivity_a38b75647b17c9d61ba4681382de313b6}} 
+int8\+\_\+t $\ast$ \mbox{\hyperlink{structp8est__connectivity_a38b75647b17c9d61ba4681382de313b6}{edge\+\_\+to\+\_\+edge}}
+\begin{DoxyCompactList}\small\item\em list of tree-\/edges+orientations that meet at an edge (see description) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a3bafe2c142a9c184ab3bccc8be8c0d1f}\label{structp8est__connectivity_a3bafe2c142a9c184ab3bccc8be8c0d1f}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__connectivity_a3bafe2c142a9c184ab3bccc8be8c0d1f}{tree\+\_\+to\+\_\+corner}}
+\begin{DoxyCompactList}\small\item\em (8 $\ast$ {\itshape num\+\_\+trees}) or NULL (see description) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a8d4b6f7971bd527080f2e2df5ca5451c}\label{structp8est__connectivity_a8d4b6f7971bd527080f2e2df5ca5451c}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__connectivity_a8d4b6f7971bd527080f2e2df5ca5451c}{ctt\+\_\+offset}}
+\begin{DoxyCompactList}\small\item\em corner to offset in {\itshape corner\+\_\+to\+\_\+tree} and {\itshape corner\+\_\+to\+\_\+corner} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a8ad2d2c8ddf6ca928c16542b8b6e3309}\label{structp8est__connectivity_a8ad2d2c8ddf6ca928c16542b8b6e3309}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__connectivity_a8ad2d2c8ddf6ca928c16542b8b6e3309}{corner\+\_\+to\+\_\+tree}}
+\begin{DoxyCompactList}\small\item\em list of trees that meet at a corner \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__connectivity_a2cb98042d5798a6d56af72f06adac27c}\label{structp8est__connectivity_a2cb98042d5798a6d56af72f06adac27c}} 
+int8\+\_\+t $\ast$ \mbox{\hyperlink{structp8est__connectivity_a2cb98042d5798a6d56af72f06adac27c}{corner\+\_\+to\+\_\+corner}}
+\begin{DoxyCompactList}\small\item\em list of tree-\/corners that meet at a corner \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This structure holds the 3D inter-\/tree connectivity information. 
+
+Identification of arbitrary faces, edges and corners is possible.
+
+The arrays tree\+\_\+to\+\_\+$\ast$ are stored in z ordering. For corners the order wrt. zyx is 000 001 010 011 100 101 110 111. For faces the order is -\/x +x -\/y +y -\/z +z. They are allocated \mbox{[}0\mbox{]}\mbox{[}0\mbox{]}..\mbox{[}0\mbox{]}\mbox{[}N-\/1\mbox{]}..\mbox{[}num\+\_\+trees-\/1\mbox{]}\mbox{[}0\mbox{]}..\mbox{[}num\+\_\+trees-\/1\mbox{]}\mbox{[}N-\/1\mbox{]}. where N is 6 for tree and face, 8 for corner, 12 for edge. If a face is on the physical boundary it must connect to itself.
+
+The values for tree\+\_\+to\+\_\+face are in 0..23 where ttf \% 6 gives the face number and ttf / 6 the face orientation code. The orientation is determined as follows. Let my\+\_\+face and other\+\_\+face be the two face numbers of the connecting trees in 0..5. Then the first face corner of the lower of my\+\_\+face and other\+\_\+face connects to a face corner numbered 0..3 in the higher of my\+\_\+face and other\+\_\+face. The face orientation is defined as this number. If my\+\_\+face == other\+\_\+face, treating either of both faces as the lower one leads to the same result.
+
+It is valid to specify num\+\_\+vertices as 0. In this case vertices and tree\+\_\+to\+\_\+vertex are set to NULL. Otherwise the vertex coordinates are stored in the array vertices as \mbox{[}0\mbox{]}\mbox{[}0\mbox{]}..\mbox{[}0\mbox{]}\mbox{[}2\mbox{]}..\mbox{[}num\+\_\+vertices-\/1\mbox{]}\mbox{[}0\mbox{]}..\mbox{[}num\+\_\+vertices-\/1\mbox{]}\mbox{[}2\mbox{]}. Vertex coordinates are optional and not used for inferring topology.
+
+The edges are stored when they connect trees that are not already face neighbors at that specific edge. In this case tree\+\_\+to\+\_\+edge indexes into {\itshape ett\+\_\+offset}. Otherwise the tree\+\_\+to\+\_\+edge entry must be -\/1 and this edge is ignored. If num\+\_\+edges == 0, tree\+\_\+to\+\_\+edge and edge\+\_\+to\+\_\+$\ast$ arrays are set to NULL.
+
+The arrays edge\+\_\+to\+\_\+$\ast$ store a variable number of entries per edge. For edge e these are at position \mbox{[}ett\+\_\+offset\mbox{[}e\mbox{]}\mbox{]}..\mbox{[}ett\+\_\+offset\mbox{[}e+1\mbox{]}-\/1\mbox{]}. Their number for edge e is ett\+\_\+offset\mbox{[}e+1\mbox{]} -\/ ett\+\_\+offset\mbox{[}e\mbox{]}. The entries encode all trees adjacent to edge e. The size of the edge\+\_\+to\+\_\+$\ast$ arrays is num\+\_\+ett = ett\+\_\+offset\mbox{[}num\+\_\+edges\mbox{]}. The edge\+\_\+to\+\_\+edge array holds values in 0..23, where the lower 12 indicate one edge orientation and the higher 12 the opposite edge orientation.
+
+The corners are stored when they connect trees that are not already edge or face neighbors at that specific corner. In this case tree\+\_\+to\+\_\+corner indexes into {\itshape ctt\+\_\+offset}. Otherwise the tree\+\_\+to\+\_\+corner entry must be -\/1 and this corner is ignored. If num\+\_\+corners == 0, tree\+\_\+to\+\_\+corner and corner\+\_\+to\+\_\+$\ast$ arrays are set to NULL.
+
+The arrays corner\+\_\+to\+\_\+$\ast$ store a variable number of entries per corner. For corner c these are at position \mbox{[}ctt\+\_\+offset\mbox{[}c\mbox{]}\mbox{]}..\mbox{[}ctt\+\_\+offset\mbox{[}c+1\mbox{]}-\/1\mbox{]}. Their number for corner c is ctt\+\_\+offset\mbox{[}c+1\mbox{]} -\/ ctt\+\_\+offset\mbox{[}c\mbox{]}. The entries encode all trees adjacent to corner c. The size of the corner\+\_\+to\+\_\+$\ast$ arrays is num\+\_\+ctt = ctt\+\_\+offset\mbox{[}num\+\_\+corners\mbox{]}.
+
+The $\ast$\+\_\+to\+\_\+attr arrays may have arbitrary contents defined by the user.
+
+\begin{DoxyNote}{Note}
+If a connectivity implies natural connections between trees that are edge neighbors without being face neighbors, these edges shall be encoded explicitly in the connectivity. If a connectivity implies natural connections between trees that are corner neighbors without being edge or face neighbors, these corners shall be encoded explicitly in the connectivity. 
+\end{DoxyNote}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structp8est__connectivity_a1c28ad35548ee7742486d2fa0356bb99}\label{structp8est__connectivity_a1c28ad35548ee7742486d2fa0356bb99}} 
+\index{p8est\_connectivity@{p8est\_connectivity}!tree\_to\_vertex@{tree\_to\_vertex}}
+\index{tree\_to\_vertex@{tree\_to\_vertex}!p8est\_connectivity@{p8est\_connectivity}}
+\doxysubsubsection{\texorpdfstring{tree\_to\_vertex}{tree\_to\_vertex}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}$\ast$ p8est\+\_\+connectivity\+::tree\+\_\+to\+\_\+vertex}
+
+
+
+embed each tree into $R^3$ for e.\+g. 
+
+visualization (see \mbox{\hyperlink{p8est__vtk_8h}{p8est\+\_\+vtk.\+h}}) 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p8est__connectivity_8h}{p8est\+\_\+connectivity.\+h}}\end{DoxyCompactItemize}

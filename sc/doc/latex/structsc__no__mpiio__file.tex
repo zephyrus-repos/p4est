@@ -1,0 +1,39 @@
+\hypertarget{structsc__no__mpiio__file}{}\doxysection{sc\+\_\+no\+\_\+mpiio\+\_\+file Struct Reference}
+\label{structsc__no__mpiio__file}\index{sc\_no\_mpiio\_file@{sc\_no\_mpiio\_file}}
+
+
+Replacement structure for {\ttfamily MPI\+\_\+\+File}.  
+
+
+
+
+{\ttfamily \#include $<$sc\+\_\+mpi.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structsc__no__mpiio__file_aee886a49f5c8590802a4b4c2e1ec98dc}\label{structsc__no__mpiio__file_aee886a49f5c8590802a4b4c2e1ec98dc}} 
+\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} \mbox{\hyperlink{structsc__no__mpiio__file_aee886a49f5c8590802a4b4c2e1ec98dc}{mpicomm}}
+\begin{DoxyCompactList}\small\item\em The MPI communicator. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__no__mpiio__file_a483a8870855a0638e65b8ce832c39112}\label{structsc__no__mpiio__file_a483a8870855a0638e65b8ce832c39112}} 
+const char $\ast$ \mbox{\hyperlink{structsc__no__mpiio__file_a483a8870855a0638e65b8ce832c39112}{filename}}
+\begin{DoxyCompactList}\small\item\em Name of the file. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__no__mpiio__file_a3f2bd48fd84c56c29b4242aaaea43c28}\label{structsc__no__mpiio__file_a3f2bd48fd84c56c29b4242aaaea43c28}} 
+FILE $\ast$ \mbox{\hyperlink{structsc__no__mpiio__file_a3f2bd48fd84c56c29b4242aaaea43c28}{file}}
+\begin{DoxyCompactList}\small\item\em Underlying file object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__no__mpiio__file_ade0429df1b41add899c549c2a4b8b8cf}\label{structsc__no__mpiio__file_ade0429df1b41add899c549c2a4b8b8cf}} 
+int \mbox{\hyperlink{structsc__no__mpiio__file_ade0429df1b41add899c549c2a4b8b8cf}{mpisize}}
+\begin{DoxyCompactList}\small\item\em Ranks in communicator. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__no__mpiio__file_a9355d1251180af3eb6fc0c6029b69e0f}\label{structsc__no__mpiio__file_a9355d1251180af3eb6fc0c6029b69e0f}} 
+int \mbox{\hyperlink{structsc__no__mpiio__file_a9355d1251180af3eb6fc0c6029b69e0f}{mpirank}}
+\begin{DoxyCompactList}\small\item\em Rank of this process. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Replacement structure for {\ttfamily MPI\+\_\+\+File}. 
+
+When MPI I/O is not enabled, this is used as file object. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{sc__mpi_8h}{sc\+\_\+mpi.\+h}}\end{DoxyCompactItemize}

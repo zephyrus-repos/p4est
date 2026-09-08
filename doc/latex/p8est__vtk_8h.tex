@@ -1,0 +1,394 @@
+\hypertarget{p8est__vtk_8h}{}\doxysection{src/p8est\+\_\+vtk.h File Reference}
+\label{p8est__vtk_8h}\index{src/p8est\_vtk.h@{src/p8est\_vtk.h}}
+
+
+Routines for printing a forest and associated fields to VTK format.  
+
+
+{\ttfamily \#include $<$p8est\+\_\+geometry.\+h$>$}\newline
+{\ttfamily \#include $<$p8est.\+h$>$}\newline
+Include dependency graph for p8est\+\_\+vtk.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p8est__vtk_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}\label{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}} 
+typedef struct p8est\+\_\+vtk\+\_\+context \mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Opaque context type for writing VTK output with multiple function calls. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{p8est__vtk_8h_a9a42002957a7ab84276854dfe2eecd7e}{p8est\+\_\+vtk\+\_\+write\+\_\+file}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$geom, const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em Write the \mbox{\hyperlink{structp8est}{p8est}} in VTK format. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__vtk_8h_a7e15f79720c601d171d654f9870e189f}{p8est\+\_\+vtk\+\_\+context\+\_\+new}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em The first call to write a VTK file using individual functions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__vtk_8h_a6f0034810384df22a943e59ed6ae2618}{p8est\+\_\+vtk\+\_\+context\+\_\+set\+\_\+geom}} (\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$cont, \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$geom)
+\begin{DoxyCompactList}\small\item\em Modify the geometry transformation registered in the context. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__vtk_8h_ad6974172a78f6924b703649c06321900}{p8est\+\_\+vtk\+\_\+context\+\_\+set\+\_\+scale}} (\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$cont, double scale)
+\begin{DoxyCompactList}\small\item\em Modify the context parameter for scaling the quadrants. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__vtk_8h_aa2172f3fb312e0f3d9f7b8ca7e681882}{p8est\+\_\+vtk\+\_\+context\+\_\+set\+\_\+continuous}} (\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$cont, int continuous)
+\begin{DoxyCompactList}\small\item\em Modify the context parameter for expecting continuous point data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__vtk_8h_aa534d09628ff52dfbd76c91ed4a6e3b8}{p8est\+\_\+vtk\+\_\+context\+\_\+destroy}} (\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$context)
+\begin{DoxyCompactList}\small\item\em Cleanly destroy a \mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} structure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__vtk_8h_ab27e5ef3b7ae45bfb50f2ccaaf800ce9}{p8est\+\_\+vtk\+\_\+write\+\_\+header}} (\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$cont)
+\begin{DoxyCompactList}\small\item\em Write the VTK header. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__vtk_8h_a7a131e165473c7b139ceebd49321404f}{p8est\+\_\+vtk\+\_\+write\+\_\+header\+\_\+ho}} (\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$cont, sc\+\_\+array\+\_\+t $\ast$positions, int Nnodes1D)
+\begin{DoxyCompactList}\small\item\em Write the VTK header for higher order visualization. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__vtk_8h_a1a17603a1938037b04886aa0364f4228}{p8est\+\_\+vtk\+\_\+write\+\_\+cell\+\_\+data}} (\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$cont, int write\+\_\+tree, int write\+\_\+level, int write\+\_\+rank, int wrap\+\_\+rank, int num\+\_\+cell\+\_\+scalars, int num\+\_\+cell\+\_\+vectors, const char $\ast$fieldnames\mbox{[}$\,$\mbox{]}, sc\+\_\+array\+\_\+t $\ast$values\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Write VTK cell data. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__vtk_8h_a5a6c3dc1d7657ff4f6ba35f8d20dcadc}{p8est\+\_\+vtk\+\_\+write\+\_\+cell\+\_\+dataf}} (\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$cont, int write\+\_\+tree, int write\+\_\+level, int write\+\_\+rank, int wrap\+\_\+rank, int num\+\_\+cell\+\_\+scalars, int num\+\_\+cell\+\_\+vectors,...)
+\begin{DoxyCompactList}\small\item\em Write VTK cell data. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__vtk_8h_a5a8cec900ebfc1804fff7688c07e88b0}{p8est\+\_\+vtk\+\_\+write\+\_\+cell\+\_\+datav}} (\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$cont, int write\+\_\+tree, int write\+\_\+level, int write\+\_\+rank, int wrap\+\_\+rank, int num\+\_\+cell\+\_\+scalars, int num\+\_\+cell\+\_\+vectors, va\+\_\+list ap)
+\begin{DoxyCompactList}\small\item\em Write VTK cell data. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__vtk_8h_a4cadb1a2a38a6b74b6a692edbbf0488a}{p8est\+\_\+vtk\+\_\+write\+\_\+point\+\_\+dataf}} (\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$cont, int num\+\_\+point\+\_\+scalars, int num\+\_\+point\+\_\+vectors,...)
+\begin{DoxyCompactList}\small\item\em Write VTK point data. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__vtk_8h_afac35e77dc18868394a7678e477800c5}{p8est\+\_\+vtk\+\_\+write\+\_\+footer}} (\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$cont)
+\begin{DoxyCompactList}\small\item\em Write the VTU footer and clean up. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Routines for printing a forest and associated fields to VTK format. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p8est__vtk_8h_aa534d09628ff52dfbd76c91ed4a6e3b8}\label{p8est__vtk_8h_aa534d09628ff52dfbd76c91ed4a6e3b8}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_context\_destroy@{p8est\_vtk\_context\_destroy}}
+\index{p8est\_vtk\_context\_destroy@{p8est\_vtk\_context\_destroy}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_context\_destroy()}{p8est\_vtk\_context\_destroy()}}
+{\footnotesize\ttfamily void p8est\+\_\+vtk\+\_\+context\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$}]{context }\end{DoxyParamCaption})}
+
+
+
+Cleanly destroy a \mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} structure. 
+
+This function closes all the file pointers and frees the context. Tt can be called even if the VTK output has only been partially written, the files\textquotesingle{} content will be incomplete.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em context} & The VTK file context to be destroyed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__vtk_8h_a7e15f79720c601d171d654f9870e189f}\label{p8est__vtk_8h_a7e15f79720c601d171d654f9870e189f}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_context\_new@{p8est\_vtk\_context\_new}}
+\index{p8est\_vtk\_context\_new@{p8est\_vtk\_context\_new}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_context\_new()}{p8est\_vtk\_context\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}}$\ast$ p8est\+\_\+vtk\+\_\+context\+\_\+new (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p4est,  }\item[{const char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+
+
+The first call to write a VTK file using individual functions. 
+
+Writing a VTK file is split into multiple functions that keep a context. This is the first function that allocates the opaque context structure. After allocation, further parameters can be set for the context. Then, the header, possible data fields, and the footer must be written. The process can be aborted any time by destroying the context. In this case, open files are closed cleanly with only partially written content.
+
+
+\begin{DoxyParams}{Parameters}
+{\em \mbox{\hyperlink{structp4est}{p4est}}} & The \mbox{\hyperlink{structp8est}{p8est}} to be written. If no geometry is specified in \mbox{\hyperlink{p8est__vtk_8h_a6f0034810384df22a943e59ed6ae2618}{p8est\+\_\+vtk\+\_\+context\+\_\+set\+\_\+geom}}, we require {\bfseries{p8est-\/$>$connectivity}} to have valid vertex arrays. \\
+\hline
+{\em filename} & The first part of the name which will have the processor number appended to it (i.\+e., the output file will be filename\+\_\+rank.\+vtu). The parallel meta-\/files for Paraview and Visit use this basename too. We copy this filename to internal storage, so it is not needed to remain alive after calling this function. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A VTK context fur further use. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__vtk_8h_aa2172f3fb312e0f3d9f7b8ca7e681882}\label{p8est__vtk_8h_aa2172f3fb312e0f3d9f7b8ca7e681882}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_context\_set\_continuous@{p8est\_vtk\_context\_set\_continuous}}
+\index{p8est\_vtk\_context\_set\_continuous@{p8est\_vtk\_context\_set\_continuous}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_context\_set\_continuous()}{p8est\_vtk\_context\_set\_continuous()}}
+{\footnotesize\ttfamily void p8est\+\_\+vtk\+\_\+context\+\_\+set\+\_\+continuous (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$}]{cont,  }\item[{int}]{continuous }\end{DoxyParamCaption})}
+
+
+
+Modify the context parameter for expecting continuous point data. 
+
+If set to true, the point data is understood as a continuous field. In this case, we can significantly reduce the file size when scale == 1. For discontinuous point data, it should be set to false. After \mbox{\hyperlink{p8est__vtk_8h_a7e15f79720c601d171d654f9870e189f}{p8est\+\_\+vtk\+\_\+context\+\_\+new}}, it is at the default false. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em cont} & The context is modified. It must not yet have been used to start writing in \mbox{\hyperlink{p8est__vtk_8h_ab27e5ef3b7ae45bfb50f2ccaaf800ce9}{p8est\+\_\+vtk\+\_\+write\+\_\+header}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em continuous} & Boolean parameter. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__vtk_8h_a6f0034810384df22a943e59ed6ae2618}\label{p8est__vtk_8h_a6f0034810384df22a943e59ed6ae2618}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_context\_set\_geom@{p8est\_vtk\_context\_set\_geom}}
+\index{p8est\_vtk\_context\_set\_geom@{p8est\_vtk\_context\_set\_geom}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_context\_set\_geom()}{p8est\_vtk\_context\_set\_geom()}}
+{\footnotesize\ttfamily void p8est\+\_\+vtk\+\_\+context\+\_\+set\+\_\+geom (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$}]{cont,  }\item[{\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$}]{geom }\end{DoxyParamCaption})}
+
+
+
+Modify the geometry transformation registered in the context. 
+
+After \mbox{\hyperlink{p8est__vtk_8h_a7e15f79720c601d171d654f9870e189f}{p8est\+\_\+vtk\+\_\+context\+\_\+new}}, it is at the default NULL. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em cont} & The context is modified. It must not yet have been used to start writing in \mbox{\hyperlink{p8est__vtk_8h_ab27e5ef3b7ae45bfb50f2ccaaf800ce9}{p8est\+\_\+vtk\+\_\+write\+\_\+header}}. \\
+\hline
+ & {\em geom} & A \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} structure, or NULL for vertex space. If NULL, {\bfseries{p8est-\/$>$connectivity-\/$>$vertices}} and {\bfseries{tree\+\_\+to\+\_\+vertex}} must be non-\/\+NULL. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__vtk_8h_ad6974172a78f6924b703649c06321900}\label{p8est__vtk_8h_ad6974172a78f6924b703649c06321900}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_context\_set\_scale@{p8est\_vtk\_context\_set\_scale}}
+\index{p8est\_vtk\_context\_set\_scale@{p8est\_vtk\_context\_set\_scale}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_context\_set\_scale()}{p8est\_vtk\_context\_set\_scale()}}
+{\footnotesize\ttfamily void p8est\+\_\+vtk\+\_\+context\+\_\+set\+\_\+scale (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$}]{cont,  }\item[{double}]{scale }\end{DoxyParamCaption})}
+
+
+
+Modify the context parameter for scaling the quadrants. 
+
+A scale $<$ 1 places a visual gap between adjacent quadrants. After \mbox{\hyperlink{p8est__vtk_8h_a7e15f79720c601d171d654f9870e189f}{p8est\+\_\+vtk\+\_\+context\+\_\+new}}, it is at the default 0.\+95. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em cont} & The context is modified. It must not yet have been used to start writing in \mbox{\hyperlink{p8est__vtk_8h_ab27e5ef3b7ae45bfb50f2ccaaf800ce9}{p8est\+\_\+vtk\+\_\+write\+\_\+header}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em scale} & Scale parameter must be in (0, 1\mbox{]}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__vtk_8h_a1a17603a1938037b04886aa0364f4228}\label{p8est__vtk_8h_a1a17603a1938037b04886aa0364f4228}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_write\_cell\_data@{p8est\_vtk\_write\_cell\_data}}
+\index{p8est\_vtk\_write\_cell\_data@{p8est\_vtk\_write\_cell\_data}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_write\_cell\_data()}{p8est\_vtk\_write\_cell\_data()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}}$\ast$ p8est\+\_\+vtk\+\_\+write\+\_\+cell\+\_\+data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$}]{cont,  }\item[{int}]{write\+\_\+tree,  }\item[{int}]{write\+\_\+level,  }\item[{int}]{write\+\_\+rank,  }\item[{int}]{wrap\+\_\+rank,  }\item[{int}]{num\+\_\+cell\+\_\+scalars,  }\item[{int}]{num\+\_\+cell\+\_\+vectors,  }\item[{const char $\ast$}]{fieldnames\mbox{[}$\,$\mbox{]},  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{values\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Write VTK cell data. 
+
+There are options to have this function write the tree id, quadrant level, or MPI rank without explicit input data.
+
+Writing a VTK file is split into a few routines. This allows there to be an arbitrary number of fields.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em cont} & A VTK context created by \mbox{\hyperlink{p8est__vtk_8h_a7e15f79720c601d171d654f9870e189f}{p8est\+\_\+vtk\+\_\+context\+\_\+new}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em write\+\_\+tree} & Boolean to determine if the tree id should be output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em write\+\_\+level} & Boolean to determine if the tree levels should be output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em write\+\_\+rank} & Boolean to determine if the MPI rank should be output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em wrap\+\_\+rank} & Number to wrap around the rank with a modulo operation. Can be 0 for no wrapping. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+cell\+\_\+scalars} & Number of cell scalar datasets to output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+cell\+\_\+vectors} & Number of cell vector datasets to output.\\
+\hline
+\mbox{\texttt{ in}}  & {\em fieldnames} & Array of char strings containing the name of each data field. \\
+\hline
+\mbox{\texttt{ in}}  & {\em values} & Array of pointers to sc\+\_\+array\+\_\+t holding variables of type double, one value (scalar data) or three values (vector data) for each local quadrant.\\
+\hline
+\end{DoxyParams}
+The number of doubles in each sc\+\_\+array must be exactly {\itshape p8est-\/$>$local\+\_\+num\+\_\+quadrants} for scalar data and {\itshape 3$\ast$p8est-\/$>$local\+\_\+num\+\_\+quadrants} for vector data. The cell scalar data come first, followed by the cell vector data.
+
+\begin{DoxyReturn}{Returns}
+On success, the context that has been passed in. On failure, returns NULL and deallocates the context. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__vtk_8h_a5a6c3dc1d7657ff4f6ba35f8d20dcadc}\label{p8est__vtk_8h_a5a6c3dc1d7657ff4f6ba35f8d20dcadc}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_write\_cell\_dataf@{p8est\_vtk\_write\_cell\_dataf}}
+\index{p8est\_vtk\_write\_cell\_dataf@{p8est\_vtk\_write\_cell\_dataf}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_write\_cell\_dataf()}{p8est\_vtk\_write\_cell\_dataf()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}}$\ast$ p8est\+\_\+vtk\+\_\+write\+\_\+cell\+\_\+dataf (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$}]{cont,  }\item[{int}]{write\+\_\+tree,  }\item[{int}]{write\+\_\+level,  }\item[{int}]{write\+\_\+rank,  }\item[{int}]{wrap\+\_\+rank,  }\item[{int}]{num\+\_\+cell\+\_\+scalars,  }\item[{int}]{num\+\_\+cell\+\_\+vectors,  }\item[{}]{... }\end{DoxyParamCaption})}
+
+
+
+Write VTK cell data. 
+
+There are options to have this function write the tree id, quadrant level, or MPI rank without explicit input data.
+
+Writing a VTK file is split into a few routines. This allows there to be an arbitrary number of fields.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em cont} & A VTK context created by \mbox{\hyperlink{p8est__vtk_8h_a7e15f79720c601d171d654f9870e189f}{p8est\+\_\+vtk\+\_\+context\+\_\+new}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em write\+\_\+tree} & Boolean to determine if the tree id should be output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em write\+\_\+level} & Boolean to determine if the tree levels should be output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em write\+\_\+rank} & Boolean to determine if the MPI rank should be output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em wrap\+\_\+rank} & Number to wrap around the rank with a modulo operation. Can be 0 for no wrapping. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+cell\+\_\+scalars} & Number of cell scalar datasets to output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+cell\+\_\+vectors} & Number of cell vector datasets to output.\\
+\hline
+\end{DoxyParams}
+The variable arguments need to be pairs of (fieldname, fieldvalues), followed by a final argument of the VTK context cont (same as the first argument). The cell scalar pairs come first, followed by the cell vector pairs, then cont. Each \textquotesingle{}fieldname\textquotesingle{} argument shall be a char string containing the name of the data contained in the following \textquotesingle{}fieldvalues\textquotesingle{}. Each of the \textquotesingle{}fieldvalues\textquotesingle{} arguments shall be an sc\+\_\+array\+\_\+t $\ast$ holding double variables. The number of doubles in each sc\+\_\+array must be exactly {\itshape p8est-\/$>$local\+\_\+num\+\_\+quadrants} for scalar data and {\itshape 3$\ast$p8est-\/$>$local\+\_\+num\+\_\+quadrants} for vector data.
+
+\begin{DoxyNote}{Note}
+The current p8est\+\_\+vtk\+\_\+context\+\_\+t structure, {\itshape cont}, must be the first and the last argument of any call to this function; this argument is used to verify that the correct number of variable arguments have been provided.
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+On success, the context that has been passed in. On failure, returns NULL and deallocates the context. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__vtk_8h_a5a8cec900ebfc1804fff7688c07e88b0}\label{p8est__vtk_8h_a5a8cec900ebfc1804fff7688c07e88b0}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_write\_cell\_datav@{p8est\_vtk\_write\_cell\_datav}}
+\index{p8est\_vtk\_write\_cell\_datav@{p8est\_vtk\_write\_cell\_datav}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_write\_cell\_datav()}{p8est\_vtk\_write\_cell\_datav()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}}$\ast$ p8est\+\_\+vtk\+\_\+write\+\_\+cell\+\_\+datav (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$}]{cont,  }\item[{int}]{write\+\_\+tree,  }\item[{int}]{write\+\_\+level,  }\item[{int}]{write\+\_\+rank,  }\item[{int}]{wrap\+\_\+rank,  }\item[{int}]{num\+\_\+cell\+\_\+scalars,  }\item[{int}]{num\+\_\+cell\+\_\+vectors,  }\item[{va\+\_\+list}]{ap }\end{DoxyParamCaption})}
+
+
+
+Write VTK cell data. 
+
+This function exports custom cell data to the vtk file; it is functionally the same as {\bfseries{p8est\+\_\+vtk\+\_\+write\+\_\+cell\+\_\+dataf}} with the only difference being that instead of a variable argument list, an initialized {\itshape va\+\_\+list} is passed as the last argument. That means {\itshape va\+\_\+start} has already been called. The {\itshape va\+\_\+list} is initialized from the variable argument list of the calling function. Elements of va\+\_\+list are processed as \char`\"{}pairs\char`\"{} of (fieldname, fieldvalues). That means $<$va\+\_\+list\mbox{[}0\mbox{]}, va\+\_\+list\mbox{[}1\mbox{]}$>$ represents one pair, $<$va\+\_\+list\mbox{[}2\mbox{]}, va\+\_\+list\mbox{[}3\mbox{]}$>$ next one and so on. Each \textquotesingle{}fieldname\textquotesingle{} shall be a char string containing the name of the data contained in the following \textquotesingle{}fieldvalues\textquotesingle{}. Each of the \textquotesingle{}fieldvalues\textquotesingle{} shall be an sc\+\_\+array\+\_\+t $\ast$ holding double variables. The cell scalar pairs come first, followed by the cell vector pairs, followed by VTK context {\itshape cont} (same as the first argument). The number of $\ast$ doubles in each sc\+\_\+array must be exactly {\itshape p8est-\/$>$local\+\_\+num\+\_\+quadrants} for scalar data and {\itshape 3$\ast$p8est-\/$>$local\+\_\+num\+\_\+quadrants} for vector data.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em cont} & A VTK context created by \mbox{\hyperlink{p8est__vtk_8h_a7e15f79720c601d171d654f9870e189f}{p8est\+\_\+vtk\+\_\+context\+\_\+new}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em write\+\_\+tree} & Boolean to determine if the tree id should be output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em write\+\_\+level} & Boolean to determine if the tree levels should be output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em write\+\_\+rank} & Boolean to determine if the MPI rank should be output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em wrap\+\_\+rank} & Number to wrap around the rank with a modulo operation. Can be 0 for no wrapping. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+cell\+\_\+scalars} & Number of cell scalar datasets to output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+cell\+\_\+vectors} & Number of cell vector datasets to output. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em ap} & An initialized va\+\_\+list used to access the scalar/vector data.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, the context that has been passed in. On failure, returns NULL and deallocates the context. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__vtk_8h_a9a42002957a7ab84276854dfe2eecd7e}\label{p8est__vtk_8h_a9a42002957a7ab84276854dfe2eecd7e}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_write\_file@{p8est\_vtk\_write\_file}}
+\index{p8est\_vtk\_write\_file@{p8est\_vtk\_write\_file}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_write\_file()}{p8est\_vtk\_write\_file()}}
+{\footnotesize\ttfamily void p8est\+\_\+vtk\+\_\+write\+\_\+file (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$}]{geom,  }\item[{const char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+
+
+Write the \mbox{\hyperlink{structp8est}{p8est}} in VTK format. 
+
+This is a convenience function for the special case of writing out the tree id, quadrant level, and MPI rank of each quadrant as cell data. One file is written per MPI rank, and one meta file on rank 0. The quadrants are scaled to length .95; see \mbox{\hyperlink{p8est__vtk_8h_ab27e5ef3b7ae45bfb50f2ccaaf800ce9}{p8est\+\_\+vtk\+\_\+write\+\_\+header}}. This function will abort if there is a file error.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & The \mbox{\hyperlink{structp8est}{p8est}} to be written. \\
+\hline
+\mbox{\texttt{ in}}  & {\em geom} & A \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} structure or NULL for vertex space as defined by the {\itshape \mbox{\hyperlink{structp8est}{p8est}}\textquotesingle{}s} \mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} member. \\
+\hline
+\mbox{\texttt{ in}}  & {\em filename} & The first part of the file name which will have the MPI rank appended to it\+: The output file will be filename\+\_\+rank.\+vtu, and the meta file filename.\+pvtu. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est__vtk_8h_afac35e77dc18868394a7678e477800c5}\label{p8est__vtk_8h_afac35e77dc18868394a7678e477800c5}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_write\_footer@{p8est\_vtk\_write\_footer}}
+\index{p8est\_vtk\_write\_footer@{p8est\_vtk\_write\_footer}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_write\_footer()}{p8est\_vtk\_write\_footer()}}
+{\footnotesize\ttfamily int p8est\+\_\+vtk\+\_\+write\+\_\+footer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$}]{cont }\end{DoxyParamCaption})}
+
+
+
+Write the VTU footer and clean up. 
+
+Writing a VTK file is split into a few routines. This function writes the footer information to the VTK file and cleanly destroys the VTK context.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cont} & Context is deallocated before the function returns.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This returns 0 if no error and -\/1 if there is an error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__vtk_8h_ab27e5ef3b7ae45bfb50f2ccaaf800ce9}\label{p8est__vtk_8h_ab27e5ef3b7ae45bfb50f2ccaaf800ce9}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_write\_header@{p8est\_vtk\_write\_header}}
+\index{p8est\_vtk\_write\_header@{p8est\_vtk\_write\_header}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_write\_header()}{p8est\_vtk\_write\_header()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}}$\ast$ p8est\+\_\+vtk\+\_\+write\+\_\+header (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$}]{cont }\end{DoxyParamCaption})}
+
+
+
+Write the VTK header. 
+
+Writing a VTK file is split into a few routines. This allows there to be an arbitrary number of fields. The calling sequence would be something like \begin{DoxyVerb}vtk_context = p8est_vtk_context_new (p8est, "output");
+p8est_vtk_context_set_* (vtk_context, parameter);
+vtk_context = p8est_vtk_write_header (vtk_context, ...);
+if (vtk_context == NULL) { error; }
+vtk_context = p8est_vtk_write_cell_data (vtk_context, ...);
+if (vtk_context == NULL) { error; }
+vtk_context = p8est_vtk_write_point_data (vtk_context, ...);
+if (vtk_context == NULL) { error; }
+retval = p8est_vtk_write_footer (vtk_context);
+if (retval) { error; }
+\end{DoxyVerb}
+ Each of these functions opens and closes files as necessary. Generally, each output file is written in subsequent chunks.
+
+This function writes point positions for the quadrants\textquotesingle{} vertices and the maps of elements to types and vertices as required by VTK.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em cont} & A VTK context created by \mbox{\hyperlink{p8est__vtk_8h_a7e15f79720c601d171d654f9870e189f}{p8est\+\_\+vtk\+\_\+context\+\_\+new}}. None of the vtk\+\_\+write functions must have been called. This context is the return value if no error occurs.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, an opaque context (p8est\+\_\+vtk\+\_\+context\+\_\+t) pointer that must be passed to subsequent p8est\+\_\+vtk calls. It is required to call \mbox{\hyperlink{p8est__vtk_8h_afac35e77dc18868394a7678e477800c5}{p8est\+\_\+vtk\+\_\+write\+\_\+footer}} eventually with this value. Returns NULL on error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__vtk_8h_a7a131e165473c7b139ceebd49321404f}\label{p8est__vtk_8h_a7a131e165473c7b139ceebd49321404f}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_write\_header\_ho@{p8est\_vtk\_write\_header\_ho}}
+\index{p8est\_vtk\_write\_header\_ho@{p8est\_vtk\_write\_header\_ho}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_write\_header\_ho()}{p8est\_vtk\_write\_header\_ho()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}}$\ast$ p8est\+\_\+vtk\+\_\+write\+\_\+header\+\_\+ho (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$}]{cont,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{positions,  }\item[{int}]{Nnodes1D }\end{DoxyParamCaption})}
+
+
+
+Write the VTK header for higher order visualization. 
+
+This function follows the same routines as p8est\+\_\+vtk\+\_\+write\+\_\+header. In addition, the caller must pass in an array containing coordinates for each point, as well as an integer representing the number of points in one direction each element has (for example, in an 8x8x8 cell, pass in 8).
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em cont} & A VTK context created by \mbox{\hyperlink{p8est__vtk_8h_a7e15f79720c601d171d654f9870e189f}{p8est\+\_\+vtk\+\_\+context\+\_\+new}}. None of the vtk\+\_\+write functions must have been called. This context is the return value if no error occurs. \\
+\hline
+\mbox{\texttt{ in}}  & {\em positions} & An sc\+\_\+array\+\_\+t of doubles containing the coordinates of all points to be written. Ordering of data is \mbox{[} x\+\_\+0, y\+\_\+0, (z\+\_\+0) ... x\+\_\+n, y\+\_\+n, (z\+\_\+n) \mbox{]} \\
+\hline
+\mbox{\texttt{ in}}  & {\em Nnodes1D} & Integer number of points in each element in 1D.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, an opaque context (p8est\+\_\+vtk\+\_\+context\+\_\+t) pointer that must be passed to subsequent p8est\+\_\+vtk calls. It is required to call \mbox{\hyperlink{p8est__vtk_8h_afac35e77dc18868394a7678e477800c5}{p8est\+\_\+vtk\+\_\+write\+\_\+footer}} eventually with this value. Returns NULL on error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__vtk_8h_a4cadb1a2a38a6b74b6a692edbbf0488a}\label{p8est__vtk_8h_a4cadb1a2a38a6b74b6a692edbbf0488a}} 
+\index{p8est\_vtk.h@{p8est\_vtk.h}!p8est\_vtk\_write\_point\_dataf@{p8est\_vtk\_write\_point\_dataf}}
+\index{p8est\_vtk\_write\_point\_dataf@{p8est\_vtk\_write\_point\_dataf}!p8est\_vtk.h@{p8est\_vtk.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_vtk\_write\_point\_dataf()}{p8est\_vtk\_write\_point\_dataf()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}}$\ast$ p8est\+\_\+vtk\+\_\+write\+\_\+point\+\_\+dataf (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__vtk_8h_a2c7ebb20ba69390470d512658abad2ef}{p8est\+\_\+vtk\+\_\+context\+\_\+t}} $\ast$}]{cont,  }\item[{int}]{num\+\_\+point\+\_\+scalars,  }\item[{int}]{num\+\_\+point\+\_\+vectors,  }\item[{}]{... }\end{DoxyParamCaption})}
+
+
+
+Write VTK point data. 
+
+Writing a VTK file is split into a few routines. This allows there to be an arbitrary number of fields.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em cont} & A VTK context created by \mbox{\hyperlink{p8est__vtk_8h_a7e15f79720c601d171d654f9870e189f}{p8est\+\_\+vtk\+\_\+context\+\_\+new}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+point\+\_\+scalars} & Number of point scalar datasets to output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+point\+\_\+vectors} & Number of point vector datasets to output.\\
+\hline
+\end{DoxyParams}
+The variable arguments need to be pairs of (fieldname, fieldvalues) where the point scalar pairs come first, followed by the point vector pairs. Each \textquotesingle{}fieldname\textquotesingle{} argument shall be a char string containing the name of the data contained in the following \textquotesingle{}fieldvalues\textquotesingle{}. Each of the \textquotesingle{}fieldvalues\textquotesingle{} arguments shall be an sc\+\_\+array\+\_\+t $\ast$ holding double variables. The number of doubles in each sc\+\_\+array must be exactly the number of components (1 for scalar and 3 for vector) times 8 times number of elements.
+
+\begin{DoxyNote}{Note}
+The current p8est\+\_\+vtk\+\_\+context\+\_\+t structure, cont, must be the last argument of any call to this function; this argument is used to verify that the correct number of variable arguments have been provided.
+
+The number of point scalar data in each sc\+\_\+array must be exactly {\itshape P8\+EST\+\_\+\+CHILDREN$\ast$local\+\_\+num\+\_\+quadrants}, and the number of point vector data must be exactly {\itshape 3$\ast$\+P8\+EST\+\_\+\+CHILDREN$\ast$local\+\_\+num\+\_\+quadrants}. I.\+e. there must be data for every corner of every quadrant in the {\itshape \mbox{\hyperlink{structp8est}{p8est}}}, even if the corner is shared by multiple quadrants.
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+On success, the context that has been passed in. On failure, returns NULL and deallocates the context. 
+\end{DoxyReturn}

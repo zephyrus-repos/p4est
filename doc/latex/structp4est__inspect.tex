@@ -1,0 +1,113 @@
+\hypertarget{structp4est__inspect}{}\doxysection{p4est\+\_\+inspect Struct Reference}
+\label{structp4est__inspect}\index{p4est\_inspect@{p4est\_inspect}}
+
+
+Data pertaining to selecting, inspecting, and profiling algorithms.  
+
+
+
+
+{\ttfamily \#include $<$p4est\+\_\+extended.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{structp4est__inspect_af11cd9f378e72005aedba0dd9228095b}{use\+\_\+balance\+\_\+ranges}}
+\begin{DoxyCompactList}\small\item\em Use sc\+\_\+ranges to determine the asymmetric communication pattern. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structp4est__inspect_ac34dec33477683aa433c272ffceb73b3}{use\+\_\+balance\+\_\+ranges\+\_\+notify}}
+\begin{DoxyCompactList}\small\item\em If true, call both sc\+\_\+ranges and sc\+\_\+notify and verify consistency. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__inspect_af5c77d866e9fd3f94f7cc4a3bde79520}\label{structp4est__inspect_af5c77d866e9fd3f94f7cc4a3bde79520}} 
+int \mbox{\hyperlink{structp4est__inspect_af5c77d866e9fd3f94f7cc4a3bde79520}{use\+\_\+balance\+\_\+verify}}
+\begin{DoxyCompactList}\small\item\em Verify sc\+\_\+ranges and/or sc\+\_\+notify as applicable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__inspect_a7155df6e23babf6109c92cda3f251c6e}\label{structp4est__inspect_a7155df6e23babf6109c92cda3f251c6e}} 
+int \mbox{\hyperlink{structp4est__inspect_a7155df6e23babf6109c92cda3f251c6e}{balance\+\_\+max\+\_\+ranges}}
+\begin{DoxyCompactList}\small\item\em If positive and smaller than p4est\+\_\+num ranges, overrides it. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__inspect_acfe9168e914ef3fff1097c496fa3b27a}\label{structp4est__inspect_acfe9168e914ef3fff1097c496fa3b27a}} 
+size\+\_\+t {\bfseries balance\+\_\+\+A\+\_\+count\+\_\+in}
+\item 
+\mbox{\Hypertarget{structp4est__inspect_aa04e8c376fc2ae111ce02306adcc7684}\label{structp4est__inspect_aa04e8c376fc2ae111ce02306adcc7684}} 
+size\+\_\+t {\bfseries balance\+\_\+\+A\+\_\+count\+\_\+out}
+\item 
+\mbox{\Hypertarget{structp4est__inspect_a45f1d400625f1a6d2703581bab6f0752}\label{structp4est__inspect_a45f1d400625f1a6d2703581bab6f0752}} 
+size\+\_\+t {\bfseries balance\+\_\+comm\+\_\+sent}
+\item 
+\mbox{\Hypertarget{structp4est__inspect_a57259fafea824b256b4e268f1e430445}\label{structp4est__inspect_a57259fafea824b256b4e268f1e430445}} 
+size\+\_\+t {\bfseries balance\+\_\+comm\+\_\+nzpeers}
+\item 
+\mbox{\Hypertarget{structp4est__inspect_aef971e4b3cc20ca0439737d8a3635d1c}\label{structp4est__inspect_aef971e4b3cc20ca0439737d8a3635d1c}} 
+size\+\_\+t {\bfseries balance\+\_\+\+B\+\_\+count\+\_\+in}
+\item 
+\mbox{\Hypertarget{structp4est__inspect_a94de3e135c8bb24a3fb2f54bc14f0e64}\label{structp4est__inspect_a94de3e135c8bb24a3fb2f54bc14f0e64}} 
+size\+\_\+t {\bfseries balance\+\_\+\+B\+\_\+count\+\_\+out}
+\item 
+\mbox{\Hypertarget{structp4est__inspect_acee613e04afa78d55211ab69c8b4ef59}\label{structp4est__inspect_acee613e04afa78d55211ab69c8b4ef59}} 
+size\+\_\+t {\bfseries balance\+\_\+zero\+\_\+sends} \mbox{[}2\mbox{]}
+\item 
+\mbox{\Hypertarget{structp4est__inspect_ab4311d3663204e5bbe94860d57225935}\label{structp4est__inspect_ab4311d3663204e5bbe94860d57225935}} 
+size\+\_\+t {\bfseries balance\+\_\+zero\+\_\+receives} \mbox{[}2\mbox{]}
+\item 
+\mbox{\Hypertarget{structp4est__inspect_a22139301670450bea06e81904ee7a80e}\label{structp4est__inspect_a22139301670450bea06e81904ee7a80e}} 
+double {\bfseries balance\+\_\+A}
+\item 
+\mbox{\Hypertarget{structp4est__inspect_ad81fcb21163fecdfb86ebb7b81e06214}\label{structp4est__inspect_ad81fcb21163fecdfb86ebb7b81e06214}} 
+double {\bfseries balance\+\_\+comm}
+\item 
+\mbox{\Hypertarget{structp4est__inspect_a2da6c21dc0e0b79e7bc9393b913286cd}\label{structp4est__inspect_a2da6c21dc0e0b79e7bc9393b913286cd}} 
+double {\bfseries balance\+\_\+B}
+\item 
+\mbox{\Hypertarget{structp4est__inspect_ade5bd2879949227c41d29fbf34269d77}\label{structp4est__inspect_ade5bd2879949227c41d29fbf34269d77}} 
+double \mbox{\hyperlink{structp4est__inspect_ade5bd2879949227c41d29fbf34269d77}{balance\+\_\+ranges}}
+\begin{DoxyCompactList}\small\item\em time spent in sc\+\_\+ranges \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__inspect_a1231de4ab5b4d8bd357834aa8b205af8}\label{structp4est__inspect_a1231de4ab5b4d8bd357834aa8b205af8}} 
+double \mbox{\hyperlink{structp4est__inspect_a1231de4ab5b4d8bd357834aa8b205af8}{balance\+\_\+notify}}
+\begin{DoxyCompactList}\small\item\em time spent in sc\+\_\+notify \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__inspect_a3e452c81745d7bd41d5c195813c7881d}\label{structp4est__inspect_a3e452c81745d7bd41d5c195813c7881d}} 
+double \mbox{\hyperlink{structp4est__inspect_a3e452c81745d7bd41d5c195813c7881d}{balance\+\_\+notify\+\_\+allgather}}
+\begin{DoxyCompactList}\small\item\em time spent in sc\+\_\+notify\+\_\+allgather \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__inspect_aa1114409ab97e61355929a2a45d281ae}\label{structp4est__inspect_aa1114409ab97e61355929a2a45d281ae}} 
+int {\bfseries use\+\_\+B}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Data pertaining to selecting, inspecting, and profiling algorithms. 
+
+A pointer to this structure is hooked into the \mbox{\hyperlink{structp4est}{p4est}} main structure.
+
+The balance\+\_\+ranges and balance\+\_\+notify$\ast$ times are collected whenever an inspect structure is present in \mbox{\hyperlink{structp4est}{p4est}}. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}.\end{Desc}
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structp4est__inspect_af11cd9f378e72005aedba0dd9228095b}\label{structp4est__inspect_af11cd9f378e72005aedba0dd9228095b}} 
+\index{p4est\_inspect@{p4est\_inspect}!use\_balance\_ranges@{use\_balance\_ranges}}
+\index{use\_balance\_ranges@{use\_balance\_ranges}!p4est\_inspect@{p4est\_inspect}}
+\doxysubsubsection{\texorpdfstring{use\_balance\_ranges}{use\_balance\_ranges}}
+{\footnotesize\ttfamily int p4est\+\_\+inspect\+::use\+\_\+balance\+\_\+ranges}
+
+
+
+Use sc\+\_\+ranges to determine the asymmetric communication pattern. 
+
+If {\itshape use\+\_\+balance\+\_\+ranges} is false (the default), sc\+\_\+notify is used. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{structp4est__inspect_ac34dec33477683aa433c272ffceb73b3}\label{structp4est__inspect_ac34dec33477683aa433c272ffceb73b3}} 
+\index{p4est\_inspect@{p4est\_inspect}!use\_balance\_ranges\_notify@{use\_balance\_ranges\_notify}}
+\index{use\_balance\_ranges\_notify@{use\_balance\_ranges\_notify}!p4est\_inspect@{p4est\_inspect}}
+\doxysubsubsection{\texorpdfstring{use\_balance\_ranges\_notify}{use\_balance\_ranges\_notify}}
+{\footnotesize\ttfamily int p4est\+\_\+inspect\+::use\+\_\+balance\+\_\+ranges\+\_\+notify}
+
+
+
+If true, call both sc\+\_\+ranges and sc\+\_\+notify and verify consistency. 
+
+Which is actually used is still determined by {\itshape use\+\_\+balance\+\_\+ranges}. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}.\end{Desc}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p4est__extended_8h}{p4est\+\_\+extended.\+h}}\end{DoxyCompactItemize}

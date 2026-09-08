@@ -1,0 +1,689 @@
+.TH "src/sc_options.h" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/sc_options.h \- Register and parse command line options and read/write configuration files\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <sc_keyvalue\&.h>\fP
+.br
+
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct sc_options \fBsc_options_t\fP"
+.br
+.RI "The options data structure is opaque\&. "
+.ti -1c
+.RI "typedef int(* \fBsc_options_callback_t\fP) (\fBsc_options_t\fP *opt, const char *opt_arg, void *data)"
+.br
+.RI "This callback can be invoked with \fBsc_options_parse\fP\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBsc_options_t\fP * \fBsc_options_new\fP (const char *program_path)"
+.br
+.RI "Create an empty options structure\&. "
+.ti -1c
+.RI "void \fBsc_options_destroy_deep\fP (\fBsc_options_t\fP *opt)"
+.br
+.RI "Destroy the options structure and all allocated structures contained\&. "
+.ti -1c
+.RI "void \fBsc_options_destroy\fP (\fBsc_options_t\fP *opt)"
+.br
+.RI "Destroy the options structure\&. "
+.ti -1c
+.RI "void \fBsc_options_set_spacing\fP (\fBsc_options_t\fP *opt, int space_type, int space_help)"
+.br
+.RI "Set the spacing for \fBsc_options_print_summary\fP\&. "
+.ti -1c
+.RI "void \fBsc_options_print_usage\fP (int package_id, int log_priority, \fBsc_options_t\fP *opt, const char *arg_usage)"
+.br
+.RI "Print a usage message\&. "
+.ti -1c
+.RI "void \fBsc_options_print_summary\fP (int package_id, int log_priority, \fBsc_options_t\fP *opt)"
+.br
+.RI "Print a summary of all option values\&. "
+.ti -1c
+.RI "int \fBsc_options_parse\fP (int package_id, int err_priority, \fBsc_options_t\fP *opt, int argc, char **argv)"
+.br
+.RI "Parse command line options\&. "
+.in -1c
+.PP
+.RI "\fBAdd option variables\fP"
+.br
+
+.in +1c
+.in +1c
+.ti -1c
+.RI "void \fBsc_options_add_switch\fP (\fBsc_options_t\fP *opt, int opt_char, const char *opt_name, int *variable, const char *help_string)"
+.br
+.RI "Add a switch option\&. "
+.ti -1c
+.RI "void \fBsc_options_add_bool\fP (\fBsc_options_t\fP *opt, int opt_char, const char *opt_name, int *variable, int init_value, const char *help_string)"
+.br
+.RI "Add a boolean option\&. "
+.ti -1c
+.RI "void \fBsc_options_add_int\fP (\fBsc_options_t\fP *opt, int opt_char, const char *opt_name, int *variable, int init_value, const char *help_string)"
+.br
+.RI "Add an option that takes an integer argument\&. "
+.ti -1c
+.RI "void \fBsc_options_add_size_t\fP (\fBsc_options_t\fP *opt, int opt_char, const char *opt_name, size_t *variable, size_t init_value, const char *help_string)"
+.br
+.RI "Add an option that takes a size_t argument\&. "
+.ti -1c
+.RI "void \fBsc_options_add_double\fP (\fBsc_options_t\fP *opt, int opt_char, const char *opt_name, double *variable, double init_value, const char *help_string)"
+.br
+.RI "Add an option that takes a double argument\&. "
+.ti -1c
+.RI "void \fBsc_options_add_string\fP (\fBsc_options_t\fP *opt, int opt_char, const char *opt_name, const char **variable, const char *init_value, const char *help_string)"
+.br
+.RI "Add a string option\&. "
+.ti -1c
+.RI "void \fBsc_options_add_inifile\fP (\fBsc_options_t\fP *opt, int opt_char, const char *opt_name, const char *help_string)"
+.br
+.RI "Add an option to read in a file in \fC\&.ini\fP format\&. "
+.ti -1c
+.RI "void \fBsc_options_add_jsonfile\fP (\fBsc_options_t\fP *opt, int opt_char, const char *opt_name, const char *help_string)"
+.br
+.RI "Add an option to read in a file in JSON format\&. "
+.ti -1c
+.RI "void \fBsc_options_add_callback\fP (\fBsc_options_t\fP *opt, int opt_char, const char *opt_name, int has_arg, \fBsc_options_callback_t\fP fn, void *data, const char *help_string)"
+.br
+.RI "Add an option that calls a user-defined function when parsed\&. "
+.ti -1c
+.RI "void \fBsc_options_add_keyvalue\fP (\fBsc_options_t\fP *opt, int opt_char, const char *opt_name, int *variable, const char *init_value, \fBsc_keyvalue_t\fP *keyvalue, const char *help_string)"
+.br
+.RI "Add an option that takes string keys into a lookup table of integers\&. "
+.ti -1c
+.RI "void \fBsc_options_add_suboptions\fP (\fBsc_options_t\fP *opt, \fBsc_options_t\fP *subopt, const char *prefix)"
+.br
+.RI "Copy one set of options to another as a subset, with a prefix\&. "
+.in -1c
+.in -1c
+.PP
+.RI "\fBLoad and save configuration files\fP"
+.br
+
+.in +1c
+.in +1c
+.ti -1c
+.RI "int \fBsc_options_load\fP (int package_id, int err_priority, \fBsc_options_t\fP *opt, const char *file)"
+.br
+.RI "Load a file in the default format and update option values\&. "
+.ti -1c
+.RI "int \fBsc_options_load_ini\fP (int package_id, int err_priority, \fBsc_options_t\fP *opt, const char *inifile, void *re)"
+.br
+.RI "Load a file in \fC\&.ini\fP format and update entries found under [Options]\&. "
+.ti -1c
+.RI "int \fBsc_options_load_json\fP (int package_id, int err_priority, \fBsc_options_t\fP *opt, const char *jsonfile, void *re)"
+.br
+.RI "Load a file in JSON format and update entries from object 'Options'\&. "
+.ti -1c
+.RI "int \fBsc_options_save\fP (int package_id, int err_priority, \fBsc_options_t\fP *opt, const char *inifile)"
+.br
+.RI "Save all options and arguments to a file in \fC\&.ini\fP format\&. "
+.ti -1c
+.RI "int \fBsc_options_load_args\fP (int package_id, int err_priority, \fBsc_options_t\fP *opt, const char *inifile)"
+.br
+.RI "Load a file in \fC\&.ini\fP format and update entries found under [Arguments]\&. "
+.in -1c
+.in -1c
+.SH "Detailed Description"
+.PP 
+Register and parse command line options and read/write configuration files\&. 
+
+A detailed description can be found under \fBOption Parser\fP\&. In addition, we provide the example \fBoptions\&.c\fP\&. 
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef int(* sc_options_callback_t) (\fBsc_options_t\fP *opt, const char *opt_arg, void *data)"
+
+.PP
+This callback can be invoked with \fBsc_options_parse\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP Valid options data structure\&. This is passed as a matter of principle\&. 
+.br
+\fIopt_arg\fP The option argument or NULL if there is none\&. This variable is internal\&. Do not store pointer\&. 
+.br
+\fIdata\fP User-defined data passed to sc_options_add_callback\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Return 0 if successful, -1 to indicate a parse error\&. 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "void sc_options_add_bool (\fBsc_options_t\fP * opt, int opt_char, const char * opt_name, int * variable, int init_value, const char * help_string)"
+
+.PP
+Add a boolean option\&. It can be initialized to true or false in the C sense\&. Specifying it on the command line without argument sets the option to true\&. The argument 0/f/F/n/N sets it to false (0)\&. The argument 1/t/T/y/Y sets it to true (nonzero)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP A valid options structure\&. 
+.br
+\fIopt_char\fP Short option character, may be '\\0'\&. 
+.br
+\fIopt_name\fP Long option name without initial dashes, may be NULL\&. 
+.br
+\fIvariable\fP Address of the variable to store the option value\&. 
+.br
+\fIinit_value\fP Initial value to set the option, read as true or false\&. 
+.br
+\fIhelp_string\fP Help string for usage message, may be NULL\&. 
+.RE
+.PP
+
+.SS "void sc_options_add_callback (\fBsc_options_t\fP * opt, int opt_char, const char * opt_name, int has_arg, \fBsc_options_callback_t\fP fn, void * data, const char * help_string)"
+
+.PP
+Add an option that calls a user-defined function when parsed\&. The callback function should be implemented to allow multiple calls\&. The callback may be used to set multiple option variables in bulk that would otherwise require an inconvenient number of individual options\&. This option is not loaded from or saved to files\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP A valid options structure\&. 
+.br
+\fIopt_char\fP Short option character, may be '\\0'\&. 
+.br
+\fIopt_name\fP Long option name without initial dashes, may be NULL\&. 
+.br
+\fIhas_arg\fP Specify whether the option needs an option argument\&. This can be 0 for none, 1 for a required argument, and 2 for an optional argument; see getopt_long (3)\&. 
+.br
+\fIfn\fP Function to call when this option is encountered\&. 
+.br
+\fIdata\fP User-defined data passed to the callback\&. 
+.br
+\fIhelp_string\fP Help string for usage message, may be NULL\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_add_double (\fBsc_options_t\fP * opt, int opt_char, const char * opt_name, double * variable, double init_value, const char * help_string)"
+
+.PP
+Add an option that takes a double argument\&. The double must be in the legal range\&. 'inf' and 'nan' are legal too\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP A valid options structure\&. 
+.br
+\fIopt_char\fP Short option character, may be '\\0'\&. 
+.br
+\fIopt_name\fP Long option name without initial dashes, may be NULL\&. 
+.br
+\fIvariable\fP Address of the variable to store the option value\&. 
+.br
+\fIinit_value\fP The initial value of the option variable\&. 
+.br
+\fIhelp_string\fP Help string for usage message, may be NULL\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_add_inifile (\fBsc_options_t\fP * opt, int opt_char, const char * opt_name, const char * help_string)"
+
+.PP
+Add an option to read in a file in \fC\&.ini\fP format\&. The argument to this option must be a filename\&. On parsing the specified file is read to set known option variables\&. It does not have an associated option variable itself\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP A valid options structure\&. 
+.br
+\fIopt_char\fP Short option character, may be '\\0'\&. 
+.br
+\fIopt_name\fP Long option name without initial dashes, may be NULL\&. 
+.br
+\fIhelp_string\fP Help string for usage message, may be NULL\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_add_int (\fBsc_options_t\fP * opt, int opt_char, const char * opt_name, int * variable, int init_value, const char * help_string)"
+
+.PP
+Add an option that takes an integer argument\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP A valid options structure\&. 
+.br
+\fIopt_char\fP Short option character, may be '\\0'\&. 
+.br
+\fIopt_name\fP Long option name without initial dashes, may be NULL\&. 
+.br
+\fIvariable\fP Address of the variable to store the option value\&. 
+.br
+\fIinit_value\fP The initial value of the option variable\&. 
+.br
+\fIhelp_string\fP Help string for usage message, may be NULL\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_add_jsonfile (\fBsc_options_t\fP * opt, int opt_char, const char * opt_name, const char * help_string)"
+
+.PP
+Add an option to read in a file in JSON format\&. The argument to this option must be a filename\&. On parsing the specified file is read to set known option variables\&. It does not have an associated option variable itself\&.
+.PP
+This functionality is only active when \fBsc_have_json\fP returns true, equivalent to the define SC_HAVE_JSON existing, and ignored otherwise\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP A valid options structure\&. 
+.br
+\fIopt_char\fP Short option character, may be '\\0'\&. 
+.br
+\fIopt_name\fP Long option name without initial dashes, may be NULL\&. 
+.br
+\fIhelp_string\fP Help string for usage message, may be NULL\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_add_keyvalue (\fBsc_options_t\fP * opt, int opt_char, const char * opt_name, int * variable, const char * init_value, \fBsc_keyvalue_t\fP * keyvalue, const char * help_string)"
+
+.PP
+Add an option that takes string keys into a lookup table of integers\&. On calling this function, it must be certain that the initial value exists\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP Initialized options structure\&. 
+.br
+\fIopt_char\fP Option character for command line, or 0\&. 
+.br
+\fIopt_name\fP Name of the long option, or NULL\&. 
+.br
+\fIvariable\fP Address of an existing integer that holds the value of this option parameter\&. 
+.br
+\fIinit_value\fP The key that is looked up for the initial value\&. It must be certain that the key exists and its value is of type integer\&. 
+.br
+\fIkeyvalue\fP A valid key-value structure where the values must be integers\&. If a key is asked for that does not exist, we will produce an option error\&. This structure must stay alive as long as opt\&. 
+.br
+\fIhelp_string\fP Instructive one-line string to explain the option\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_add_size_t (\fBsc_options_t\fP * opt, int opt_char, const char * opt_name, size_t * variable, size_t init_value, const char * help_string)"
+
+.PP
+Add an option that takes a size_t argument\&. The value of the size_t variable must not be greater than LLONG_MAX\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP A valid options structure\&. 
+.br
+\fIopt_char\fP Short option character, may be '\\0'\&. 
+.br
+\fIopt_name\fP Long option name without initial dashes, may be NULL\&. 
+.br
+\fIvariable\fP Address of the variable to store the option value\&. 
+.br
+\fIinit_value\fP The initial value of the option variable\&. 
+.br
+\fIhelp_string\fP Help string for usage message, may be NULL\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_add_string (\fBsc_options_t\fP * opt, int opt_char, const char * opt_name, const char ** variable, const char * init_value, const char * help_string)"
+
+.PP
+Add a string option\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP A valid options structure\&. 
+.br
+\fIopt_char\fP Short option character, may be '\\0'\&. 
+.br
+\fIopt_name\fP Long option name without initial dashes, may be NULL\&. 
+.br
+\fIvariable\fP Address of the variable to store the option value\&. 
+.br
+\fIinit_value\fP This default value of the option may be NULL\&. If not NULL, the value is copied to internal storage\&. 
+.br
+\fIhelp_string\fP Help string for usage message, may be NULL\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_add_suboptions (\fBsc_options_t\fP * opt, \fBsc_options_t\fP * subopt, const char * prefix)"
+
+.PP
+Copy one set of options to another as a subset, with a prefix\&. The variables referenced by the options and the suboptions are the same\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP A set of options\&. 
+.br
+\fIsubopt\fP Another set of options to be copied\&. 
+.br
+\fIprefix\fP The prefix to add to option names as they are copied\&. If an option has a long name 'name' in subopt, its name in opt is 'prefix:name'; if an option only has a character 'c' in subopt, its name in opt is 'prefix:-c'\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_add_switch (\fBsc_options_t\fP * opt, int opt_char, const char * opt_name, int * variable, const char * help_string)"
+
+.PP
+Add a switch option\&. This option is used without option arguments\&. Every use increments the variable by one\&. Its initial value is 0\&. Either opt_char or opt_name must be valid, that is, not '\\0'/NULL\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP A valid options structure\&. 
+.br
+\fIopt_char\fP Short option character, may be '\\0'\&. 
+.br
+\fIopt_name\fP Long option name without initial dashes, may be NULL\&. 
+.br
+\fIvariable\fP Address of the variable to store the option value\&. 
+.br
+\fIhelp_string\fP Help string for usage message, may be NULL\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_destroy (\fBsc_options_t\fP * opt)"
+
+.PP
+Destroy the options structure\&. Whatever has been passed into sc_keyvalue_add is left alone\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP This options structure is deallocated\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_destroy_deep (\fBsc_options_t\fP * opt)"
+
+.PP
+Destroy the options structure and all allocated structures contained\&. The keyvalue structure passed into sc_keyvalue_add is destroyed\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP This options structure is deallocated, including all key-value containers referenced\&. 
+.RE
+.PP
+\fBDeprecated\fP
+.RS 4
+This function is kept for backwards compatibility\&. It is best to destroy any key-value container outside of the lifetime of the options object\&. 
+.RE
+.PP
+
+.SS "int sc_options_load (int package_id, int err_priority, \fBsc_options_t\fP * opt, const char * file)"
+
+.PP
+Load a file in the default format and update option values\&. The default is a file in the \fC\&.ini\fP format; see \fBsc_options_load_ini\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpackage_id\fP Registered package id or -1\&. 
+.br
+\fIerr_priority\fP Error priority according to \fBLog Priorities\fP\&. 
+.br
+\fIopt\fP The option structure\&. 
+.br
+\fIfile\fP Filename of the file to load\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns 0 on success, -1 on failure\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "int sc_options_load_args (int package_id, int err_priority, \fBsc_options_t\fP * opt, const char * inifile)"
+
+.PP
+Load a file in \fC\&.ini\fP format and update entries found under [Arguments]\&. There needs to be a key Arguments\&.count specifying the number\&. Then as many integer keys starting with 0 need to be present\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpackage_id\fP Registered package id or -1\&. 
+.br
+\fIerr_priority\fP Error priority according to \fBLog Priorities\fP\&. 
+.br
+\fIopt\fP The args are stored in this option structure\&. 
+.br
+\fIinifile\fP Filename of the ini file to load\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns 0 on success, -1 on failure\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "int sc_options_load_ini (int package_id, int err_priority, \fBsc_options_t\fP * opt, const char * inifile, void * re)"
+
+.PP
+Load a file in \fC\&.ini\fP format and update entries found under [Options]\&. An option whose name contains a colon such as 'prefix:basename' will be updated by a 'basename =' entry in a [prefix] section\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpackage_id\fP Registered package id or -1\&. 
+.br
+\fIerr_priority\fP Error priority according to \fBLog Priorities\fP\&. 
+.br
+\fIopt\fP The option structure\&. 
+.br
+\fIinifile\fP Filename of the ini file to load\&. 
+.br
+\fIre\fP Provisioned for runtime error checking implementation; currently must be NULL\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns 0 on success, -1 on failure\&. 
+.RE
+.PP
+
+.SS "int sc_options_load_json (int package_id, int err_priority, \fBsc_options_t\fP * opt, const char * jsonfile, void * re)"
+
+.PP
+Load a file in JSON format and update entries from object 'Options'\&. An option whose name contains a colon such as 'Prefix:basename' will be updated by a 'basename :' entry in a 'Prefix' nested object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpackage_id\fP Registered package id or -1\&. 
+.br
+\fIerr_priority\fP Error priority according to \fBLog Priorities\fP\&. 
+.br
+\fIopt\fP The option structure\&. 
+.br
+\fIjsonfile\fP Filename of the JSON file to load\&. 
+.br
+\fIre\fP Provisioned for runtime error checking implementation; currently must be NULL\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns 0 on success, -1 on failure\&. 
+.RE
+.PP
+
+.SS "\fBsc_options_t\fP* sc_options_new (const char * program_path)"
+
+.PP
+Create an empty options structure\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIprogram_path\fP Name or path name of the program to display\&. Usually argv[0] is fine\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A valid and empty options structure\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "int sc_options_parse (int package_id, int err_priority, \fBsc_options_t\fP * opt, int argc, char ** argv)"
+
+.PP
+Parse command line options\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpackage_id\fP Registered package id or -1\&. 
+.br
+\fIerr_priority\fP Error priority according to \fBLog Priorities\fP\&. 
+.br
+\fIopt\fP The option structure\&. 
+.br
+\fIargc\fP Length of argument list\&. 
+.br
+\fIargv\fP Argument list may be permuted\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns -1 on an invalid option, otherwise the position of the first non-option argument\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_print_summary (int package_id, int log_priority, \fBsc_options_t\fP * opt)"
+
+.PP
+Print a summary of all option values\&. Prints the title 'Options:' and a line for every option, then the title 'Arguments:' and a line for every argument\&. This function uses the SC_LC_GLOBAL log category\&. That means the default action is to print only on rank 0\&. Applications can change that by providing a user-defined log handler\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpackage_id\fP Registered package id or -1\&. 
+.br
+\fIlog_priority\fP Priority for output according to \fBLog Priorities\fP\&. 
+.br
+\fIopt\fP The option structure\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_print_usage (int package_id, int log_priority, \fBsc_options_t\fP * opt, const char * arg_usage)"
+
+.PP
+Print a usage message\&. This function uses the SC_LC_GLOBAL log category\&. That means the default action is to print only on rank 0\&. Applications can change that by providing a user-defined log handler\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpackage_id\fP Registered package id or -1\&. 
+.br
+\fIlog_priority\fP Priority for output according to \fBLog Priorities\fP\&. 
+.br
+\fIopt\fP The option structure\&. 
+.br
+\fIarg_usage\fP If not NULL, an <ARGUMENTS> string is appended to the usage line\&. If the string is non-empty, it will be printed after the option summary and an 'ARGUMENTS:\\n' title line\&. Line breaks are identified by strtok(3) and honored\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "int sc_options_save (int package_id, int err_priority, \fBsc_options_t\fP * opt, const char * inifile)"
+
+.PP
+Save all options and arguments to a file in \fC\&.ini\fP format\&. This function must only be called after successful option parsing\&. This function should only be called on rank 0\&. This function will log errors with category SC_LC_GLOBAL\&. An options whose name contains a colon such as 'Prefix:basename' will be written in a section titled [Prefix] as 'basename ='\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpackage_id\fP Registered package id or -1\&. 
+.br
+\fIerr_priority\fP Error priority according to \fBLog Priorities\fP\&. 
+.br
+\fIopt\fP The option structure\&. 
+.br
+\fIinifile\fP Filename of the ini file to save\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns 0 on success, -1 on failure\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBoptions\&.c\fP\&.
+.SS "void sc_options_set_spacing (\fBsc_options_t\fP * opt, int space_type, int space_help)"
+
+.PP
+Set the spacing for \fBsc_options_print_summary\fP\&. There are two values to be set: the spacing from the beginning of the printed line to the type of the option variable, and from the beginning of the printed line to the help string\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIopt\fP Valid options structure\&. 
+.br
+\fIspace_type\fP Number of spaces to the type display, for example <INT>, <STRING>, etc\&. Setting this negative sets the default 20\&. 
+.br
+\fIspace_help\fP Number of space to the help string\&. Setting this negative sets the default 32\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

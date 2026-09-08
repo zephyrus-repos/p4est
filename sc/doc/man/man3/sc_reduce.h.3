@@ -1,0 +1,168 @@
+.TH "src/sc_reduce.h" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/sc_reduce.h \- Self-contained implementations of MPI_Reduce and MPI_Allreduce\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <sc\&.h>\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSC_REDUCE_ALLTOALL_LEVEL\fP   3"
+.br
+.RI "The highest recursion level that uses direct all-to-all\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef void(* \fBsc_reduce_t\fP) (void *sendbuf, void *recvbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype)"
+.br
+.RI "Prototype for a user-defined reduce operation\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBsc_allreduce_custom\fP (void *sendbuf, void *recvbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype, \fBsc_reduce_t\fP reduce_fn, \fBsc_MPI_Comm\fP mpicomm)"
+.br
+.RI "Custom allreduce operation with reproducible associativity\&. "
+.ti -1c
+.RI "int \fBsc_reduce_custom\fP (void *sendbuf, void *recvbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype, \fBsc_reduce_t\fP reduce_fn, int target, \fBsc_MPI_Comm\fP mpicomm)"
+.br
+.RI "Custom reduce operation with reproducible associativity\&. "
+.ti -1c
+.RI "int \fBsc_allreduce\fP (void *sendbuf, void *recvbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype, \fBsc_MPI_Op\fP operation, \fBsc_MPI_Comm\fP mpicomm)"
+.br
+.RI "Drop-in MPI_Allreduce replacement with reproducible associativity\&. "
+.ti -1c
+.RI "int \fBsc_reduce\fP (void *sendbuf, void *recvbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype, \fBsc_MPI_Op\fP operation, int target, \fBsc_MPI_Comm\fP mpicomm)"
+.br
+.RI "Drop-in MPI_Reduce replacement with reproducible associativity\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Self-contained implementations of MPI_Reduce and MPI_Allreduce\&. 
+
+Our motivation for writing these alternatives is reproducible associativity\&. With this implementation, the associativity of the reduction operation depends on the size of the communicator only and does not suffer from random or otherwise obscure influences\&.
+.PP
+Both algorithms use a binary communication tree\&. We provide implementations via a customizable reduction operator as well as drop-in replacements for minimum, maximum, and sum\&. We do not currently support user-defined MPI datatypes\&. 
+.SH "Function Documentation"
+.PP 
+.SS "int sc_allreduce (void * sendbuf, void * recvbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype, \fBsc_MPI_Op\fP operation, \fBsc_MPI_Comm\fP mpicomm)"
+
+.PP
+Drop-in MPI_Allreduce replacement with reproducible associativity\&. Currently we support the operations minimum, maximum, and sum\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsendbuf\fP Send buffer conforming to MPI specification\&. 
+.br
+\fIrecvbuf\fP Receive buffer conforming to MPI specification\&. 
+.br
+\fIsendcount\fP Number of data items to reduce\&. 
+.br
+\fIsendtype\fP Valid MPI datatype\&. 
+.br
+\fIoperation\fP \fBsc_MPI_MIN\fP, \fBsc_MPI_MAX\fP, or \fBsc_MPI_SUM\fP\&. We abort otherwise\&. 
+.br
+\fImpicomm\fP Valid MPI communicator\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+sc_MPI_SUCCESS if not aborting on MPI error\&. 
+.RE
+.PP
+
+.SS "int sc_allreduce_custom (void * sendbuf, void * recvbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype, \fBsc_reduce_t\fP reduce_fn, \fBsc_MPI_Comm\fP mpicomm)"
+
+.PP
+Custom allreduce operation with reproducible associativity\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsendbuf\fP Send buffer conforming to MPI specification\&. 
+.br
+\fIrecvbuf\fP Receive buffer conforming to MPI specification\&. 
+.br
+\fIsendcount\fP Number of data items to reduce\&. 
+.br
+\fIsendtype\fP Valid MPI datatype\&. 
+.br
+\fIreduce_fn\fP Custom, associative reduction operator\&. 
+.br
+\fImpicomm\fP Valid MPI communicator\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+sc_MPI_SUCCESS if not aborting on MPI error\&. 
+.RE
+.PP
+
+.SS "int sc_reduce (void * sendbuf, void * recvbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype, \fBsc_MPI_Op\fP operation, int target, \fBsc_MPI_Comm\fP mpicomm)"
+
+.PP
+Drop-in MPI_Reduce replacement with reproducible associativity\&. Currently we support the operations minimum, maximum, and sum\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsendbuf\fP Send buffer conforming to MPI specification\&. 
+.br
+\fIrecvbuf\fP Receive buffer conforming to MPI specification\&. 
+.br
+\fIsendcount\fP Number of data items to reduce\&. 
+.br
+\fIsendtype\fP Valid MPI datatype\&. 
+.br
+\fIoperation\fP \fBsc_MPI_MIN\fP, \fBsc_MPI_MAX\fP, or \fBsc_MPI_SUM\fP\&. We abort otherwise\&. 
+.br
+\fItarget\fP The MPI rank that obtains the result\&. 
+.br
+\fImpicomm\fP Valid MPI communicator\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+sc_MPI_SUCCESS if not aborting on MPI error\&. 
+.RE
+.PP
+
+.SS "int sc_reduce_custom (void * sendbuf, void * recvbuf, int sendcount, \fBsc_MPI_Datatype\fP sendtype, \fBsc_reduce_t\fP reduce_fn, int target, \fBsc_MPI_Comm\fP mpicomm)"
+
+.PP
+Custom reduce operation with reproducible associativity\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIsendbuf\fP Send buffer conforming to MPI specification\&. 
+.br
+\fIrecvbuf\fP Receive buffer conforming to MPI specification\&. 
+.br
+\fIsendcount\fP Number of data items to reduce\&. 
+.br
+\fIsendtype\fP Valid MPI datatype\&. 
+.br
+\fIreduce_fn\fP Custom, associative reduction operator\&. 
+.br
+\fItarget\fP The MPI rank that obtains the result\&. 
+.br
+\fImpicomm\fP Valid MPI communicator\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+sc_MPI_SUCCESS if not aborting on MPI error\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

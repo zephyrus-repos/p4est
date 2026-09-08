@@ -1,0 +1,368 @@
+\hypertarget{sc__statistics_8h}{}\doxysection{src/sc\+\_\+statistics.h File Reference}
+\label{sc__statistics_8h}\index{src/sc\_statistics.h@{src/sc\_statistics.h}}
+
+
+Computation of average and mean values etc.  
+
+
+{\ttfamily \#include $<$sc\+\_\+keyvalue.\+h$>$}\newline
+Include dependency graph for sc\+\_\+statistics.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sc__statistics_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=262pt]{sc__statistics_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structsc__statinfo}{sc\+\_\+statinfo}}
+\begin{DoxyCompactList}\small\item\em Store information of one random variable. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structsc__stats}{sc\+\_\+stats}}
+\begin{DoxyCompactList}\small\item\em The statistics container allows dynamically adding random variables. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}\label{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}} 
+typedef struct \mbox{\hyperlink{structsc__statinfo}{sc\+\_\+statinfo}} \mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Store information of one random variable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}\label{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}} 
+typedef struct \mbox{\hyperlink{structsc__stats}{sc\+\_\+stats}} \mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The statistics container allows dynamically adding random variables. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{sc__statistics_8h_a7417cd85eb012ab6c72886a23d0278dd}{sc\+\_\+stats\+\_\+set1}} (\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$stats, double value, const char $\ast$variable)
+\begin{DoxyCompactList}\small\item\em Populate a sc\+\_\+statinfo\+\_\+t structure assuming count=1 and mark it dirty. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_ac278bdcb0132bcda5fd7836d6d50a84a}{sc\+\_\+stats\+\_\+set1\+\_\+ext}} (\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$stats, double value, const char $\ast$variable, int copy\+\_\+variable, int stats\+\_\+group, int stats\+\_\+prio)
+\begin{DoxyCompactList}\small\item\em Populate a sc\+\_\+statinfo\+\_\+t structure assuming count=1 and mark it dirty. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_a4d1b86e29476d76ead591bdaf51dad82}{sc\+\_\+stats\+\_\+init}} (\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$stats, const char $\ast$variable)
+\begin{DoxyCompactList}\small\item\em Initialize a sc\+\_\+statinfo\+\_\+t structure assuming count=0 and mark it dirty. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_abd64acdc1d5c888844695082d7b79f31}{sc\+\_\+stats\+\_\+init\+\_\+ext}} (\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$stats, const char $\ast$variable, int copy\+\_\+variable, int stats\+\_\+group, int stats\+\_\+prio)
+\begin{DoxyCompactList}\small\item\em Initialize a sc\+\_\+statinfo\+\_\+t structure assuming count=0 and mark it dirty. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_a0510db628a71832df4e9fc99616deeac}{sc\+\_\+stats\+\_\+reset}} (\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$stats, int reset\+\_\+vgp)
+\begin{DoxyCompactList}\small\item\em Reset all values to zero, optionally unassign name, group, and priority. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_a7794492f806bf78a4cae1dc7bc69bb50}{sc\+\_\+stats\+\_\+set\+\_\+group\+\_\+prio}} (\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$stats, int stats\+\_\+group, int stats\+\_\+prio)
+\begin{DoxyCompactList}\small\item\em Set/update the group and priority information for a stats item. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_a38b9d0802279712c6967c032b05252f0}{sc\+\_\+stats\+\_\+accumulate}} (\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$stats, double value)
+\begin{DoxyCompactList}\small\item\em Add an instance of the random variable. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_a44650ef2fe3d5c04406697c255c937d8}{sc\+\_\+stats\+\_\+compute}} (\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} mpicomm, int nvars, \mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$stats)
+\begin{DoxyCompactList}\small\item\em Compute global average and standard deviation. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_a8f26b8f7757a9eefb9d42602edbda2d8}{sc\+\_\+stats\+\_\+compute1}} (\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} mpicomm, int nvars, \mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$stats)
+\begin{DoxyCompactList}\small\item\em Version of sc\+\_\+statistics\+\_\+statistics that assumes count=1. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_af9426773aed0a59f6a818bc9b77112ef}{sc\+\_\+stats\+\_\+print}} (int package\+\_\+id, int log\+\_\+priority, int nvars, \mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$stats, int full, int summary)
+\begin{DoxyCompactList}\small\item\em Print measured statistics. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_a0f63bffd3c49121b76b8d07280c633ce}{sc\+\_\+stats\+\_\+print\+\_\+ext}} (int package\+\_\+id, int log\+\_\+priority, int nvars, \mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$stats, int stats\+\_\+group, int stats\+\_\+prio, int full, int summary)
+\begin{DoxyCompactList}\small\item\em Print measured statistics, filter by group and/or priority. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__statistics_8h_a61a2d08dbdeb55950bea5dc159ca70c3}\label{sc__statistics_8h_a61a2d08dbdeb55950bea5dc159ca70c3}} 
+\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__statistics_8h_a61a2d08dbdeb55950bea5dc159ca70c3}{sc\+\_\+statistics\+\_\+new}} (\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} mpicomm)
+\begin{DoxyCompactList}\small\item\em Create a new statistics structure that can grow dynamically. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_a6b4f1619baa4c4a14cf7ad31399f3a43}{sc\+\_\+statistics\+\_\+destroy}} (\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$stats)
+\begin{DoxyCompactList}\small\item\em Destroy a statistics structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_a0312168031fae3b593fba179e929077e}{sc\+\_\+statistics\+\_\+add}} (\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$stats, const char $\ast$name)
+\begin{DoxyCompactList}\small\item\em Register a statistics variable by name and set its value to 0. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_a10b7c2eda48bb6a796c9c65d965ef410}{sc\+\_\+statistics\+\_\+add\+\_\+empty}} (\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$stats, const char $\ast$name)
+\begin{DoxyCompactList}\small\item\em Register a statistics variable by name and set its count to 0. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__statistics_8h_a5f679dd481cf59f9e7f25c11c3bc9a49}\label{sc__statistics_8h_a5f679dd481cf59f9e7f25c11c3bc9a49}} 
+int \mbox{\hyperlink{sc__statistics_8h_a5f679dd481cf59f9e7f25c11c3bc9a49}{sc\+\_\+statistics\+\_\+has}} (\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$stats, const char $\ast$name)
+\begin{DoxyCompactList}\small\item\em Returns true if the stats include a variable with the given name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__statistics_8h_a41e1698747a8f580a388452d4650b385}{sc\+\_\+statistics\+\_\+set}} (\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$stats, const char $\ast$name, double value)
+\begin{DoxyCompactList}\small\item\em Set the value of a statistics variable, see sc\+\_\+stats\+\_\+set1. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__statistics_8h_aafc696c8dff9da8b0e3f13fc594362ee}\label{sc__statistics_8h_aafc696c8dff9da8b0e3f13fc594362ee}} 
+void \mbox{\hyperlink{sc__statistics_8h_aafc696c8dff9da8b0e3f13fc594362ee}{sc\+\_\+statistics\+\_\+accumulate}} (\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$stats, const char $\ast$name, double value)
+\begin{DoxyCompactList}\small\item\em Add an instance of a statistics variable, see sc\+\_\+stats\+\_\+accumulate The variable must previously be added with sc\+\_\+statistics\+\_\+add\+\_\+empty. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__statistics_8h_af7a17b9d31792bfc46b7e1c0fd317604}\label{sc__statistics_8h_af7a17b9d31792bfc46b7e1c0fd317604}} 
+void \mbox{\hyperlink{sc__statistics_8h_af7a17b9d31792bfc46b7e1c0fd317604}{sc\+\_\+statistics\+\_\+compute}} (\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$stats)
+\begin{DoxyCompactList}\small\item\em Compute statistics for all variables, see sc\+\_\+stats\+\_\+compute. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__statistics_8h_acee859bbc46c003522684ddaca4a14d9}\label{sc__statistics_8h_acee859bbc46c003522684ddaca4a14d9}} 
+void \mbox{\hyperlink{sc__statistics_8h_acee859bbc46c003522684ddaca4a14d9}{sc\+\_\+statistics\+\_\+print}} (\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$stats, int package\+\_\+id, int log\+\_\+priority, int full, int summary)
+\begin{DoxyCompactList}\small\item\em Print all statistics variables, see sc\+\_\+stats\+\_\+print. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc__statistics_8h_ae71206dddaadbaab43004ea7d86b5ab4}\label{sc__statistics_8h_ae71206dddaadbaab43004ea7d86b5ab4}} 
+const int \mbox{\hyperlink{sc__statistics_8h_ae71206dddaadbaab43004ea7d86b5ab4}{sc\+\_\+stats\+\_\+group\+\_\+all}}
+\begin{DoxyCompactList}\small\item\em This special group number (negative) will refer to any group. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__statistics_8h_adec1e24f69c029fd7bdffd82ba526bc7}\label{sc__statistics_8h_adec1e24f69c029fd7bdffd82ba526bc7}} 
+const int \mbox{\hyperlink{sc__statistics_8h_adec1e24f69c029fd7bdffd82ba526bc7}{sc\+\_\+stats\+\_\+prio\+\_\+all}}
+\begin{DoxyCompactList}\small\item\em This special group number (negative) will refer to any priority. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Computation of average and mean values etc. 
+
+between parallel processes. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sc__statistics_8h_a0312168031fae3b593fba179e929077e}\label{sc__statistics_8h_a0312168031fae3b593fba179e929077e}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_statistics\_add@{sc\_statistics\_add}}
+\index{sc\_statistics\_add@{sc\_statistics\_add}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_statistics\_add()}{sc\_statistics\_add()}}
+{\footnotesize\ttfamily void sc\+\_\+statistics\+\_\+add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$}]{stats,  }\item[{const char $\ast$}]{name }\end{DoxyParamCaption})}
+
+
+
+Register a statistics variable by name and set its value to 0. 
+
+This variable must not exist already. \mbox{\Hypertarget{sc__statistics_8h_a10b7c2eda48bb6a796c9c65d965ef410}\label{sc__statistics_8h_a10b7c2eda48bb6a796c9c65d965ef410}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_statistics\_add\_empty@{sc\_statistics\_add\_empty}}
+\index{sc\_statistics\_add\_empty@{sc\_statistics\_add\_empty}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_statistics\_add\_empty()}{sc\_statistics\_add\_empty()}}
+{\footnotesize\ttfamily void sc\+\_\+statistics\+\_\+add\+\_\+empty (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$}]{stats,  }\item[{const char $\ast$}]{name }\end{DoxyParamCaption})}
+
+
+
+Register a statistics variable by name and set its count to 0. 
+
+This variable must not exist already. \mbox{\Hypertarget{sc__statistics_8h_a6b4f1619baa4c4a14cf7ad31399f3a43}\label{sc__statistics_8h_a6b4f1619baa4c4a14cf7ad31399f3a43}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_statistics\_destroy@{sc\_statistics\_destroy}}
+\index{sc\_statistics\_destroy@{sc\_statistics\_destroy}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_statistics\_destroy()}{sc\_statistics\_destroy()}}
+{\footnotesize\ttfamily void sc\+\_\+statistics\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$}]{stats }\end{DoxyParamCaption})}
+
+
+
+Destroy a statistics structure. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em stats} & Valid object is invalidated. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__statistics_8h_a41e1698747a8f580a388452d4650b385}\label{sc__statistics_8h_a41e1698747a8f580a388452d4650b385}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_statistics\_set@{sc\_statistics\_set}}
+\index{sc\_statistics\_set@{sc\_statistics\_set}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_statistics\_set()}{sc\_statistics\_set()}}
+{\footnotesize\ttfamily void sc\+\_\+statistics\+\_\+set (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$}]{stats,  }\item[{const char $\ast$}]{name,  }\item[{double}]{value }\end{DoxyParamCaption})}
+
+
+
+Set the value of a statistics variable, see sc\+\_\+stats\+\_\+set1. 
+
+The variable must previously be added with sc\+\_\+statistics\+\_\+add. This assumes count=1 as in the sc\+\_\+stats\+\_\+set1 function above. \mbox{\Hypertarget{sc__statistics_8h_a38b9d0802279712c6967c032b05252f0}\label{sc__statistics_8h_a38b9d0802279712c6967c032b05252f0}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_stats\_accumulate@{sc\_stats\_accumulate}}
+\index{sc\_stats\_accumulate@{sc\_stats\_accumulate}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_stats\_accumulate()}{sc\_stats\_accumulate()}}
+{\footnotesize\ttfamily void sc\+\_\+stats\+\_\+accumulate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$}]{stats,  }\item[{double}]{value }\end{DoxyParamCaption})}
+
+
+
+Add an instance of the random variable. 
+
+The counter of the variable is increased by one. The value is added into the present values of the variable. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em stats} & Must be dirty. We bump count and values. \\
+\hline
+\mbox{\texttt{ in}}  & {\em value} & Value used to update statistics information. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__statistics_8h_a44650ef2fe3d5c04406697c255c937d8}\label{sc__statistics_8h_a44650ef2fe3d5c04406697c255c937d8}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_stats\_compute@{sc\_stats\_compute}}
+\index{sc\_stats\_compute@{sc\_stats\_compute}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_stats\_compute()}{sc\_stats\_compute()}}
+{\footnotesize\ttfamily void sc\+\_\+stats\+\_\+compute (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{mpicomm,  }\item[{int}]{nvars,  }\item[{\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$}]{stats }\end{DoxyParamCaption})}
+
+
+
+Compute global average and standard deviation. 
+
+Only updates dirty variables. Then removes the dirty flag. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & MPI communicator to use. \\
+\hline
+\mbox{\texttt{ in}}  & {\em nvars} & Number of variables to be examined. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em stats} & Set of statisics items for each variable. On input, set the following fields for each variable separately. count Number of values for each process. sum\+\_\+values Sum of values for each process. sum\+\_\+squares Sum of squares for each process. min, max Minimum and maximum of values for each process. variable String describing the variable, or NULL. On output, the fields have the following meaning. count Global number of values. sum\+\_\+values Global sum of values. sum\+\_\+squares Global sum of squares. min, max Global minimum and maximum values. min\+\_\+at\+\_\+rank, max\+\_\+at\+\_\+rank The ranks that attain min and max. average, variance, standev Global statistical measures. variance\+\_\+mean, standev\+\_\+mean Statistical measures of the mean. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__statistics_8h_a8f26b8f7757a9eefb9d42602edbda2d8}\label{sc__statistics_8h_a8f26b8f7757a9eefb9d42602edbda2d8}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_stats\_compute1@{sc\_stats\_compute1}}
+\index{sc\_stats\_compute1@{sc\_stats\_compute1}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_stats\_compute1()}{sc\_stats\_compute1()}}
+{\footnotesize\ttfamily void sc\+\_\+stats\+\_\+compute1 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{mpicomm,  }\item[{int}]{nvars,  }\item[{\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$}]{stats }\end{DoxyParamCaption})}
+
+
+
+Version of sc\+\_\+statistics\+\_\+statistics that assumes count=1. 
+
+On input, the field sum\+\_\+values needs to be set to the value and the field variable must contain a valid string or NULL. Only updates dirty variables. Then removes the dirty flag. \mbox{\Hypertarget{sc__statistics_8h_a4d1b86e29476d76ead591bdaf51dad82}\label{sc__statistics_8h_a4d1b86e29476d76ead591bdaf51dad82}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_stats\_init@{sc\_stats\_init}}
+\index{sc\_stats\_init@{sc\_stats\_init}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_stats\_init()}{sc\_stats\_init()}}
+{\footnotesize\ttfamily void sc\+\_\+stats\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$}]{stats,  }\item[{const char $\ast$}]{variable }\end{DoxyParamCaption})}
+
+
+
+Initialize a sc\+\_\+statinfo\+\_\+t structure assuming count=0 and mark it dirty. 
+
+This is useful if {\itshape stats} will be used to \mbox{\hyperlink{sc__statistics_8h_a38b9d0802279712c6967c032b05252f0}{sc\+\_\+stats\+\_\+accumulate}} instances locally before global statistics are computed. We set \mbox{\hyperlink{sc__statistics_8h_ae71206dddaadbaab43004ea7d86b5ab4}{sc\+\_\+stats\+\_\+group\+\_\+all}} and \mbox{\hyperlink{sc__statistics_8h_adec1e24f69c029fd7bdffd82ba526bc7}{sc\+\_\+stats\+\_\+prio\+\_\+all}} internally. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em stats} & Will be filled with count 0 and values of 0. \\
+\hline
+\mbox{\texttt{ in}}  & {\em variable} & String to be reported by \mbox{\hyperlink{sc__statistics_8h_af9426773aed0a59f6a818bc9b77112ef}{sc\+\_\+stats\+\_\+print}}. This string is assigned by pointer, not copied. Thus, it must stay alive while stats is in use. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__statistics_8h_abd64acdc1d5c888844695082d7b79f31}\label{sc__statistics_8h_abd64acdc1d5c888844695082d7b79f31}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_stats\_init\_ext@{sc\_stats\_init\_ext}}
+\index{sc\_stats\_init\_ext@{sc\_stats\_init\_ext}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_stats\_init\_ext()}{sc\_stats\_init\_ext()}}
+{\footnotesize\ttfamily void sc\+\_\+stats\+\_\+init\+\_\+ext (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$}]{stats,  }\item[{const char $\ast$}]{variable,  }\item[{int}]{copy\+\_\+variable,  }\item[{int}]{stats\+\_\+group,  }\item[{int}]{stats\+\_\+prio }\end{DoxyParamCaption})}
+
+
+
+Initialize a sc\+\_\+statinfo\+\_\+t structure assuming count=0 and mark it dirty. 
+
+This is useful if {\itshape stats} will be used to \mbox{\hyperlink{sc__statistics_8h_a38b9d0802279712c6967c032b05252f0}{sc\+\_\+stats\+\_\+accumulate}} instances locally before global statistics are computed. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em stats} & Will be filled with count 0 and values of 0. \\
+\hline
+\mbox{\texttt{ in}}  & {\em variable} & String to be reported by \mbox{\hyperlink{sc__statistics_8h_af9426773aed0a59f6a818bc9b77112ef}{sc\+\_\+stats\+\_\+print}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em copy\+\_\+variable} & If true, make internal copy of variable. Otherwise just assign the pointer. \\
+\hline
+\mbox{\texttt{ in}}  & {\em stats\+\_\+group} & Non-\/negative number or \mbox{\hyperlink{sc__statistics_8h_ae71206dddaadbaab43004ea7d86b5ab4}{sc\+\_\+stats\+\_\+group\+\_\+all}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em stats\+\_\+prio} & Non-\/negative number or \mbox{\hyperlink{sc__statistics_8h_adec1e24f69c029fd7bdffd82ba526bc7}{sc\+\_\+stats\+\_\+prio\+\_\+all}}. Values increase by importance. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__statistics_8h_af9426773aed0a59f6a818bc9b77112ef}\label{sc__statistics_8h_af9426773aed0a59f6a818bc9b77112ef}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_stats\_print@{sc\_stats\_print}}
+\index{sc\_stats\_print@{sc\_stats\_print}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_stats\_print()}{sc\_stats\_print()}}
+{\footnotesize\ttfamily void sc\+\_\+stats\+\_\+print (\begin{DoxyParamCaption}\item[{int}]{package\+\_\+id,  }\item[{int}]{log\+\_\+priority,  }\item[{int}]{nvars,  }\item[{\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$}]{stats,  }\item[{int}]{full,  }\item[{int}]{summary }\end{DoxyParamCaption})}
+
+
+
+Print measured statistics. 
+
+This function uses the SC\+\_\+\+LC\+\_\+\+GLOBAL log category. That means the default action is to print only on rank 0. Applications can change that by providing a user-\/defined log handler. All groups and priorities are printed. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em package\+\_\+id} & Registered package id or -\/1. \\
+\hline
+\mbox{\texttt{ in}}  & {\em log\+\_\+priority} & Log priority for output according to \mbox{\hyperlink{sc_8h}{sc.\+h}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em nvars} & Number of stats items in input array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em stats} & Input array of stats variable items. \\
+\hline
+\mbox{\texttt{ in}}  & {\em full} & Print full information for every variable. \\
+\hline
+\mbox{\texttt{ in}}  & {\em summary} & Print summary information all on 1 line. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__statistics_8h_a0f63bffd3c49121b76b8d07280c633ce}\label{sc__statistics_8h_a0f63bffd3c49121b76b8d07280c633ce}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_stats\_print\_ext@{sc\_stats\_print\_ext}}
+\index{sc\_stats\_print\_ext@{sc\_stats\_print\_ext}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_stats\_print\_ext()}{sc\_stats\_print\_ext()}}
+{\footnotesize\ttfamily void sc\+\_\+stats\+\_\+print\+\_\+ext (\begin{DoxyParamCaption}\item[{int}]{package\+\_\+id,  }\item[{int}]{log\+\_\+priority,  }\item[{int}]{nvars,  }\item[{\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$}]{stats,  }\item[{int}]{stats\+\_\+group,  }\item[{int}]{stats\+\_\+prio,  }\item[{int}]{full,  }\item[{int}]{summary }\end{DoxyParamCaption})}
+
+
+
+Print measured statistics, filter by group and/or priority. 
+
+This function uses the SC\+\_\+\+LC\+\_\+\+GLOBAL log category. That means the default action is to print only on rank 0. Applications can change that by providing a user-\/defined log handler. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em package\+\_\+id} & Registered package id or -\/1. \\
+\hline
+\mbox{\texttt{ in}}  & {\em log\+\_\+priority} & Log priority for output according to \mbox{\hyperlink{sc_8h}{sc.\+h}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em nvars} & Number of stats items in input array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em stats} & Input array of stats variable items. \\
+\hline
+\mbox{\texttt{ in}}  & {\em stats\+\_\+group} & Print only this group. Non-\/negative or \mbox{\hyperlink{sc__statistics_8h_ae71206dddaadbaab43004ea7d86b5ab4}{sc\+\_\+stats\+\_\+group\+\_\+all}}. We skip printing a variable if neither this parameter nor the item\textquotesingle{}s group is all and if the item\textquotesingle{}s group does not match this. \\
+\hline
+\mbox{\texttt{ in}}  & {\em stats\+\_\+prio} & Print this and higher priorities. Non-\/negative or \mbox{\hyperlink{sc__statistics_8h_adec1e24f69c029fd7bdffd82ba526bc7}{sc\+\_\+stats\+\_\+prio\+\_\+all}}. We skip printing a variable if neither this parameter nor the item\textquotesingle{}s prio is all and if the item\textquotesingle{}s prio is less than this. \\
+\hline
+\mbox{\texttt{ in}}  & {\em full} & Print full information for every variable. This produces multiple lines including minimum, maximum, and standard deviation. If this is false, print one line per variable. \\
+\hline
+\mbox{\texttt{ in}}  & {\em summary} & Print summary information all on 1 line. This always contains all variables. Not affected by stats\+\_\+group and stats\+\_\+prio. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__statistics_8h_a0510db628a71832df4e9fc99616deeac}\label{sc__statistics_8h_a0510db628a71832df4e9fc99616deeac}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_stats\_reset@{sc\_stats\_reset}}
+\index{sc\_stats\_reset@{sc\_stats\_reset}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_stats\_reset()}{sc\_stats\_reset()}}
+{\footnotesize\ttfamily void sc\+\_\+stats\+\_\+reset (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$}]{stats,  }\item[{int}]{reset\+\_\+vgp }\end{DoxyParamCaption})}
+
+
+
+Reset all values to zero, optionally unassign name, group, and priority. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em stats} & Variables are zeroed. They can be set again by set1 or accumulate. \\
+\hline
+\mbox{\texttt{ in}}  & {\em reset\+\_\+vgp} & If true, the variable name string is zeroed and if we did a copy, the copy is freed. If true, group and priority are set to all. If false, we don\textquotesingle{}t touch any of the above. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__statistics_8h_a7417cd85eb012ab6c72886a23d0278dd}\label{sc__statistics_8h_a7417cd85eb012ab6c72886a23d0278dd}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_stats\_set1@{sc\_stats\_set1}}
+\index{sc\_stats\_set1@{sc\_stats\_set1}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_stats\_set1()}{sc\_stats\_set1()}}
+{\footnotesize\ttfamily void sc\+\_\+stats\+\_\+set1 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$}]{stats,  }\item[{double}]{value,  }\item[{const char $\ast$}]{variable }\end{DoxyParamCaption})}
+
+
+
+Populate a sc\+\_\+statinfo\+\_\+t structure assuming count=1 and mark it dirty. 
+
+We set \mbox{\hyperlink{sc__statistics_8h_ae71206dddaadbaab43004ea7d86b5ab4}{sc\+\_\+stats\+\_\+group\+\_\+all}} and \mbox{\hyperlink{sc__statistics_8h_adec1e24f69c029fd7bdffd82ba526bc7}{sc\+\_\+stats\+\_\+prio\+\_\+all}} internally. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em stats} & Will be filled with count=1 and the value. \\
+\hline
+\mbox{\texttt{ in}}  & {\em value} & Value used to fill statistics information. \\
+\hline
+\mbox{\texttt{ in}}  & {\em variable} & String to be reported by \mbox{\hyperlink{sc__statistics_8h_af9426773aed0a59f6a818bc9b77112ef}{sc\+\_\+stats\+\_\+print}}. This string is assigned by pointer, not copied. Thus, it must stay alive while stats is in use. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__statistics_8h_ac278bdcb0132bcda5fd7836d6d50a84a}\label{sc__statistics_8h_ac278bdcb0132bcda5fd7836d6d50a84a}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_stats\_set1\_ext@{sc\_stats\_set1\_ext}}
+\index{sc\_stats\_set1\_ext@{sc\_stats\_set1\_ext}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_stats\_set1\_ext()}{sc\_stats\_set1\_ext()}}
+{\footnotesize\ttfamily void sc\+\_\+stats\+\_\+set1\+\_\+ext (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$}]{stats,  }\item[{double}]{value,  }\item[{const char $\ast$}]{variable,  }\item[{int}]{copy\+\_\+variable,  }\item[{int}]{stats\+\_\+group,  }\item[{int}]{stats\+\_\+prio }\end{DoxyParamCaption})}
+
+
+
+Populate a sc\+\_\+statinfo\+\_\+t structure assuming count=1 and mark it dirty. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em stats} & Will be filled with count=1 and the value. \\
+\hline
+\mbox{\texttt{ in}}  & {\em value} & Value used to fill statistics information. \\
+\hline
+\mbox{\texttt{ in}}  & {\em variable} & String to be reported by \mbox{\hyperlink{sc__statistics_8h_af9426773aed0a59f6a818bc9b77112ef}{sc\+\_\+stats\+\_\+print}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em copy\+\_\+variable} & If true, make internal copy of variable. Otherwise just assign the pointer. \\
+\hline
+\mbox{\texttt{ in}}  & {\em stats\+\_\+group} & Non-\/negative number or \mbox{\hyperlink{sc__statistics_8h_ae71206dddaadbaab43004ea7d86b5ab4}{sc\+\_\+stats\+\_\+group\+\_\+all}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em stats\+\_\+prio} & Non-\/negative number or \mbox{\hyperlink{sc__statistics_8h_adec1e24f69c029fd7bdffd82ba526bc7}{sc\+\_\+stats\+\_\+prio\+\_\+all}}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__statistics_8h_a7794492f806bf78a4cae1dc7bc69bb50}\label{sc__statistics_8h_a7794492f806bf78a4cae1dc7bc69bb50}} 
+\index{sc\_statistics.h@{sc\_statistics.h}!sc\_stats\_set\_group\_prio@{sc\_stats\_set\_group\_prio}}
+\index{sc\_stats\_set\_group\_prio@{sc\_stats\_set\_group\_prio}!sc\_statistics.h@{sc\_statistics.h}}
+\doxysubsubsection{\texorpdfstring{sc\_stats\_set\_group\_prio()}{sc\_stats\_set\_group\_prio()}}
+{\footnotesize\ttfamily void sc\+\_\+stats\+\_\+set\+\_\+group\+\_\+prio (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__statistics_8h_aeef86f2cfa500c64480dac4d2e03ac7f}{sc\+\_\+statinfo\+\_\+t}} $\ast$}]{stats,  }\item[{int}]{stats\+\_\+group,  }\item[{int}]{stats\+\_\+prio }\end{DoxyParamCaption})}
+
+
+
+Set/update the group and priority information for a stats item. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em stats} & Only group and stats entries are updated. \\
+\hline
+\mbox{\texttt{ in}}  & {\em stats\+\_\+group} & Non-\/negative number or \mbox{\hyperlink{sc__statistics_8h_ae71206dddaadbaab43004ea7d86b5ab4}{sc\+\_\+stats\+\_\+group\+\_\+all}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em stats\+\_\+prio} & Non-\/negative number or \mbox{\hyperlink{sc__statistics_8h_adec1e24f69c029fd7bdffd82ba526bc7}{sc\+\_\+stats\+\_\+prio\+\_\+all}}. Values increase by importance. \\
+\hline
+\end{DoxyParams}

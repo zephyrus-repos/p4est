@@ -1,0 +1,68 @@
+\hypertarget{structsc__scda__params}{}\doxysection{sc\+\_\+scda\+\_\+params Struct Reference}
+\label{structsc__scda__params}\index{sc\_scda\_params@{sc\_scda\_params}}
+
+
+A parameter struct for the functions \mbox{\hyperlink{sc__scda_8h_a14638ad9e17b15a3e449e4e10fee507c}{sc\+\_\+scda\+\_\+fopen\+\_\+write}} and \mbox{\hyperlink{sc__scda_8h_ac336fd36bcbff9f64fd23f63028b4f89}{sc\+\_\+scda\+\_\+fopen\+\_\+read}}.  
+
+
+
+
+{\ttfamily \#include $<$sc\+\_\+scda.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structsc__scda__params_acf35ad441ab4bf84a5ae81c8d07136fa}\label{structsc__scda__params_acf35ad441ab4bf84a5ae81c8d07136fa}} 
+\mbox{\hyperlink{sc__mpi_8h_ab12996c8d5e0684fe6859c81992224ca}{sc\+\_\+\+MPI\+\_\+\+Info}} \mbox{\hyperlink{structsc__scda__params_acf35ad441ab4bf84a5ae81c8d07136fa}{info}}
+\begin{DoxyCompactList}\small\item\em info that is passed to MPI\+\_\+\+File\+\_\+open \end{DoxyCompactList}\item 
+unsigned \mbox{\hyperlink{structsc__scda__params_a206c795512792273467edf4060cafcf2}{fuzzy\+\_\+everyn}}
+\begin{DoxyCompactList}\small\item\em In average every n-\/th possible error origin returns a fuzzy error. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__random_8h_aa6d0f184b0668270b2e2d5d252c81824}{sc\+\_\+rand\+\_\+state\+\_\+t}} \mbox{\hyperlink{structsc__scda__params_a9eb6be00dde3e5ba5e2efcffa8140b97}{fuzzy\+\_\+seed}}
+\begin{DoxyCompactList}\small\item\em The seed for the fuzzy error return. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structsc__scda__params_a43d6a79ace80c41c13f78bbbc96ab8d6}{log\+\_\+level}}
+\begin{DoxyCompactList}\small\item\em The log level for the scda functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A parameter struct for the functions \mbox{\hyperlink{sc__scda_8h_a14638ad9e17b15a3e449e4e10fee507c}{sc\+\_\+scda\+\_\+fopen\+\_\+write}} and \mbox{\hyperlink{sc__scda_8h_ac336fd36bcbff9f64fd23f63028b4f89}{sc\+\_\+scda\+\_\+fopen\+\_\+read}}. 
+
+The struct may be extended in the future.
+
+The option struct is a collective structure. If the options structure that is passed to a function is not the same on all processes, the whole following scda workflow has undefined behavior. 
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structsc__scda__params_a206c795512792273467edf4060cafcf2}\label{structsc__scda__params_a206c795512792273467edf4060cafcf2}} 
+\index{sc\_scda\_params@{sc\_scda\_params}!fuzzy\_everyn@{fuzzy\_everyn}}
+\index{fuzzy\_everyn@{fuzzy\_everyn}!sc\_scda\_params@{sc\_scda\_params}}
+\doxysubsubsection{\texorpdfstring{fuzzy\_everyn}{fuzzy\_everyn}}
+{\footnotesize\ttfamily unsigned sc\+\_\+scda\+\_\+params\+::fuzzy\+\_\+everyn}
+
+
+
+In average every n-\/th possible error origin returns a fuzzy error. 
+
+There may be multiple possible error origins in one top-\/level scda function. We return for each possible error origin a random error with the empirical probability of 1 / fuzzy\+\_\+everyn but only if the respective possible error origin did not already cause an error without the fuzzy error return. In such a case, the actual error is returned. 0 means that there are no fuzzy error returns. \mbox{\Hypertarget{structsc__scda__params_a9eb6be00dde3e5ba5e2efcffa8140b97}\label{structsc__scda__params_a9eb6be00dde3e5ba5e2efcffa8140b97}} 
+\index{sc\_scda\_params@{sc\_scda\_params}!fuzzy\_seed@{fuzzy\_seed}}
+\index{fuzzy\_seed@{fuzzy\_seed}!sc\_scda\_params@{sc\_scda\_params}}
+\doxysubsubsection{\texorpdfstring{fuzzy\_seed}{fuzzy\_seed}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__random_8h_aa6d0f184b0668270b2e2d5d252c81824}{sc\+\_\+rand\+\_\+state\+\_\+t}} sc\+\_\+scda\+\_\+params\+::fuzzy\+\_\+seed}
+
+
+
+The seed for the fuzzy error return. 
+
+This value is ignored if fuzzy\+\_\+everyn == 0. When in doubt use fuzzy\+\_\+seed = 0. \mbox{\Hypertarget{structsc__scda__params_a43d6a79ace80c41c13f78bbbc96ab8d6}\label{structsc__scda__params_a43d6a79ace80c41c13f78bbbc96ab8d6}} 
+\index{sc\_scda\_params@{sc\_scda\_params}!log\_level@{log\_level}}
+\index{log\_level@{log\_level}!sc\_scda\_params@{sc\_scda\_params}}
+\doxysubsubsection{\texorpdfstring{log\_level}{log\_level}}
+{\footnotesize\ttfamily int sc\+\_\+scda\+\_\+params\+::log\+\_\+level}
+
+
+
+The log level for the scda functions. 
+
+The possible values are documented in \mbox{\hyperlink{sc_8h}{sc.\+h}}; cf. SC\+\_\+\+LP\+\_\+$\ast$ macros. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{sc__scda_8h}{sc\+\_\+scda.\+h}}\end{DoxyCompactItemize}

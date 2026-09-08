@@ -1,0 +1,48 @@
+.TH "sc_mstamp" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sc_mstamp \- A data container to create memory items of the same size\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <sc_containers\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "size_t \fBelem_size\fP"
+.br
+.RI "Input parameter: size per item\&. "
+.ti -1c
+.RI "size_t \fBper_stamp\fP"
+.br
+.RI "Number of items per stamp\&. "
+.ti -1c
+.RI "size_t \fBstamp_size\fP"
+.br
+.RI "Bytes allocated in a stamp\&. "
+.ti -1c
+.RI "size_t \fBcur_snext\fP"
+.br
+.RI "Next number within a stamp\&. "
+.ti -1c
+.RI "char * \fBcurrent\fP"
+.br
+.RI "Memory of current stamp\&. "
+.ti -1c
+.RI "\fBsc_array_t\fP \fBremember\fP"
+.br
+.RI "Collects all stamps\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A data container to create memory items of the same size\&. 
+
+Allocations are bundled so it's fast for small memory sizes\&. The items created will remain valid until the container is destroyed\&. There is no option to return an item to the container\&. See \fBsc_mempool_t\fP for that purpose\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

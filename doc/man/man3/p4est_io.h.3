@@ -1,0 +1,114 @@
+.TH "src/p4est_io.h" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/p4est_io.h \- Provide functions to serialize/deserialize a forest\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <p4est\&.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "sc_array_t * \fBp4est_deflate_quadrants\fP (\fBp4est_t\fP *\fBp4est\fP, sc_array_t **data)"
+.br
+.RI "This parallel data file format is deprecated since we plan to release an updated version of it soon\&. "
+.ti -1c
+.RI "\fBp4est_t\fP * \fBp4est_inflate\fP (sc_MPI_Comm mpicomm, \fBp4est_connectivity_t\fP *connectivity, const \fBp4est_gloidx_t\fP *global_first_quadrant, const \fBp4est_gloidx_t\fP *pertree, sc_array_t *quadrants, sc_array_t *data, void *user_pointer)"
+.br
+.RI "Create a new \fBp4est\fP based on serialized data\&. "
+.ti -1c
+.RI "\fBp4est_t\fP * \fBp4est_inflate_null\fP (sc_MPI_Comm mpicomm, \fBp4est_connectivity_t\fP *connectivity, const \fBp4est_gloidx_t\fP *global_first_quadrant, const \fBp4est_gloidx_t\fP *pertree, sc_array_t *quadrants, sc_array_t *data, void *user_pointer)"
+.br
+.RI "Create a new \fBp4est\fP based on serialized data\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Provide functions to serialize/deserialize a forest\&. 
+
+Some are used as building blocks for \fBp4est_load\fP and \fBp4est_save\fP\&. Others allow for saving and loading user-defined data to a parallel file\&.
+.PP
+Furthermore, this module provides functions to write and read general data files associated with a \fBp4est\fP\&. 
+.SH "Function Documentation"
+.PP 
+.SS "sc_array_t* p4est_deflate_quadrants (\fBp4est_t\fP * p4est, sc_array_t ** data)"
+
+.PP
+This parallel data file format is deprecated since we plan to release an updated version of it soon\&. You can still use \fBp4est_load\fP and \fBp4est_save\fP to read and write a \fBp4est\fP including the connectivity and quadrant data\&. However, you can not read and write external mesh associated data using a \fBp4est\fP function if you do not use the p4est_file functions\&. If you still want to use the p4est_file functions you can configure with --enable-file-deprecated or use the variable enable-file-deprecated in CMake\&. Extract processor local quadrants' x y level data\&. Optionally extracts the quadrant data as well into a separate array\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP The forest is not modified\&. 
+.br
+\fIdata\fP If not NULL, pointer to a pointer that will be set to a newly allocated array with per-quadrant data\&. Must be NULL if p4est->data_size == 0\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+An array of type p4est_qcoord_t that contains x y level for each quadrant on this processor\&. The tree information is not extracted\&. 
+.RE
+.PP
+
+.SS "\fBp4est_t\fP* p4est_inflate (sc_MPI_Comm mpicomm, \fBp4est_connectivity_t\fP * connectivity, const \fBp4est_gloidx_t\fP * global_first_quadrant, const \fBp4est_gloidx_t\fP * pertree, sc_array_t * quadrants, sc_array_t * data, void * user_pointer)"
+
+.PP
+Create a new \fBp4est\fP based on serialized data\&. Its revision counter is set to zero\&. See \fBp4est\&.h\fP and \fBp4est_communication\&.h\fP for more information on parameters\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpicomm\fP A valid MPI communicator\&. 
+.br
+\fIconnectivity\fP This is the connectivity information that the forest is built with\&. Note that \fBp4est\fP does not take ownership of the memory\&. 
+.br
+\fIglobal_first_quadrant\fP First global quadrant on each proc and one beyond\&. Copied into global_first_quadrant\&. Local count on rank is gfq[rank + 1] - gfq[rank]\&. 
+.br
+\fIpertree\fP The cumulative quadrant counts per tree\&. 
+.br
+\fIquadrants\fP Array as returned by p4est_deflate_quadrants\&. 
+.br
+\fIdata\fP Array as from p4est_deflate_quadrants or NULL\&. The elem_size of this array informs data_size\&. Its elem_count equals the number of local quads\&. 
+.br
+\fIuser_pointer\fP Assign to the user_pointer member of the \fBp4est\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The newly created \fBp4est\fP with a zero revision counter\&. 
+.RE
+.PP
+
+.SS "\fBp4est_t\fP* p4est_inflate_null (sc_MPI_Comm mpicomm, \fBp4est_connectivity_t\fP * connectivity, const \fBp4est_gloidx_t\fP * global_first_quadrant, const \fBp4est_gloidx_t\fP * pertree, sc_array_t * quadrants, sc_array_t * data, void * user_pointer)"
+
+.PP
+Create a new \fBp4est\fP based on serialized data\&. Its revision counter is set to zero\&. See \fBp4est\&.h\fP and \fBp4est_communication\&.h\fP for more information on parameters\&. In contrast to \fBp4est_inflate\fP this function indicates soft errors by returning NULL\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpicomm\fP A valid MPI communicator\&. 
+.br
+\fIconnectivity\fP This is the connectivity information that the forest is built with\&. Note that \fBp4est\fP does not take ownership of the memory\&. 
+.br
+\fIglobal_first_quadrant\fP First global quadrant on each proc and one beyond\&. Copied into global_first_quadrant\&. Local count on rank is gfq[rank + 1] - gfq[rank]\&. 
+.br
+\fIpertree\fP The cumulative quadrant counts per tree\&. 
+.br
+\fIquadrants\fP Array as returned by p4est_deflate_quadrants\&. 
+.br
+\fIdata\fP Array as from p4est_deflate_quadrants or NULL\&. The elem_size of this array informs data_size\&. Its elem_count equals the number of local quads\&. 
+.br
+\fIuser_pointer\fP Assign to the user_pointer member of the \fBp4est\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The newly created \fBp4est\fP with a zero revision counter\&. If the created \fBp4est\fP would not be valid, no \fBp4est\fP is created and the function returns NULL\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

@@ -1,0 +1,126 @@
+We collect helpful hints to build the \mbox{\hyperlink{structp4est}{p4est}} software library and examples.\hypertarget{installing_p4est_debian}{}\doxysection{Using a Debian package}\label{installing_p4est_debian}
+Installing {\ttfamily \mbox{\hyperlink{structp4est}{p4est}}} on Debian-\/based systems via a package manager is the most straightforward method to get started. This method is beneficial for users who prefer a managed installation and do not require the latest version or customization of the build process. This provides a frozen and stable version of the code with minimal hassle. However, contributions back to the software aren\textquotesingle{}t possible in this manner.
+
+Before proceeding, ensure your package lists are up to date. Open a terminal and update your system\textquotesingle{}s package list with the following command\+:
+
+\begin{quote}
+{\ttfamily sudo apt-\/get update} \end{quote}
+Once the package lists are updated, you can install {\ttfamily \mbox{\hyperlink{structp4est}{p4est}}} using {\ttfamily apt-\/get}.
+
+\begin{quote}
+{\ttfamily sudo apt-\/get install libp4est-\/$<$VERSION$>$} \end{quote}
+The available version can be found in the \href{https://packages.qa.debian.org/p/p4est.html}{\texttt{ debian package tracker}}, or by running
+
+\begin{quote}
+{\ttfamily apt-\/cache search \mbox{\hyperlink{structp4est}{p4est}}} \end{quote}
+\hypertarget{installing_p4est_tarbuild}{}\doxysection{Installing p4est from a .\+tar.\+gz archive}\label{installing_p4est_tarbuild}
+No special tools are needed to build from a tarball obtained for example from \href{https://github.com/p4est/p4est.github.io/tree/master/release/}{\texttt{ the release directory}}.
+
+After unpacking the tar file, we recommend to change into an empty build directory. The {\ttfamily configure} script from the toplevel directory of the unpacked tar file can be executed as is. We recommend to create an empty build directory.\hypertarget{installing_p4est_steps1}{}\doxysubsection{Step-\/by-\/step guide}\label{installing_p4est_steps1}
+\hypertarget{installing_p4est_unpack_tarball}{}\doxysubsubsection{1. Unpack the tarball}\label{installing_p4est_unpack_tarball}
+\begin{quote}
+{\ttfamily tar -\/xzf p4est-\/$<$VERSION$>$.tar.\+gz} \end{quote}
+\hypertarget{installing_p4est_create_dir}{}\doxysubsubsection{2. Create and change into a build directory}\label{installing_p4est_create_dir}
+\begin{quote}
+{\ttfamily mkdir p4est\+\_\+build} \end{quote}
+\begin{quote}
+{\ttfamily cd p4est\+\_\+build} \end{quote}
+\hypertarget{installing_p4est_run_script}{}\doxysubsubsection{3. Run the configure script}\label{installing_p4est_run_script}
+\begin{quote}
+{\ttfamily ../p4est-\/$<$VERSION$>$/configure -\/-\/help} \end{quote}
+\begin{quote}
+{\ttfamily ../p4est-\/$<$VERSION$>$/configure -\/-\/enable-\/mpi -\/-\/etc...} \end{quote}
+You may also set environment variables like {\ttfamily CFLAGS=\char`\"{}-\/\+Wall -\/g\char`\"{}}.\hypertarget{installing_p4est_complile_software}{}\doxysubsubsection{4. Compile the software}\label{installing_p4est_complile_software}
+\begin{quote}
+{\ttfamily make -\/j} \end{quote}
+Adding the environment variable {\ttfamily V=1} would re-\/enable much {\ttfamily make} output.\hypertarget{installing_p4est_install_software}{}\doxysubsubsection{5. Install the software (optional)}\label{installing_p4est_install_software}
+\begin{quote}
+{\ttfamily make install} \end{quote}
+The software is installed by default into the prefix {\ttfamily ./local}. This can be changed by setting {\ttfamily configure -\/-\/prefix=$<$PATH$>$}.\hypertarget{installing_p4est_install}{}\doxysection{Building from source on Unix-\/like systems}\label{installing_p4est_install}
+For a more hands-\/on approach, consider cloning the \mbox{\hyperlink{structp4est}{p4est}} Git\+Hub repository. You\textquotesingle{}ll need familiarity with the revision control tool {\ttfamily git} or its GUI frontends. The branch {\ttfamily develop} is recommended as it has minimized dependencies and houses the latest algorithms. To generate the configure script, call the {\ttfamily ./bootstrap} script in the \mbox{\hyperlink{structp4est}{p4est}} top-\/level source directory. This requires a working installation of GNU autoconf, automake, and libtool.\hypertarget{installing_p4est_prerequisites}{}\doxysubsection{Prerequisites}\label{installing_p4est_prerequisites}
+
+\begin{DoxyItemize}
+\item For the installation from source, we still prefer the autotools over the CMake system (which has recently been added). Ensure you have\+:
+\begin{DoxyItemize}
+\item {\ttfamily automake} 
+\item {\ttfamily autoconf} 
+\item {\ttfamily libtool} 
+\item {\ttfamily make} 
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{installing_p4est_optional}{}\doxysubsection{Optional components}\label{installing_p4est_optional}
+
+\begin{DoxyItemize}
+\item For enhancing parallel processing, having {\ttfamily MPI} is advisable and configuring {\ttfamily -\/-\/enable-\/mpi}.
+\end{DoxyItemize}\hypertarget{installing_p4est_steps2}{}\doxysubsection{Step-\/by-\/step guide}\label{installing_p4est_steps2}
+\hypertarget{installing_p4est_source_retrieval}{}\doxysubsubsection{1. Source retrieval}\label{installing_p4est_source_retrieval}
+\begin{quote}
+{\ttfamily git clone \href{https://github.com/cburstedde/p4est.git}{\texttt{ https\+://github.\+com/cburstedde/p4est.\+git}}} \end{quote}
+\hypertarget{installing_p4est_bootstrap}{}\doxysubsubsection{2. Bootstrap execution}\label{installing_p4est_bootstrap}
+Navigate to the {\ttfamily \mbox{\hyperlink{structp4est}{p4est}}} directory and initiate the bootstrap script, especially if you\textquotesingle{}ve cloned it from Git\+Hub\+:
+
+\begin{quote}
+{\ttfamily cd \mbox{\hyperlink{structp4est}{p4est}}} \end{quote}
+\begin{quote}
+{\ttfamily ./bootstrap} \end{quote}
+\hypertarget{installing_p4est_setup}{}\doxysubsubsection{3. Setting up p4est}\label{installing_p4est_setup}
+Decide on a compilation directory. For this guide, {\ttfamily $\sim$/p4est\+\_\+build} is used, presuming the source is in {\ttfamily $\sim$/p4est}\+:
+
+\begin{quote}
+{\ttfamily mkdir $\sim$/p4est\+\_\+build} \end{quote}
+\begin{quote}
+{\ttfamily cd $\sim$/p4est\+\_\+build} \end{quote}
+\begin{quote}
+{\ttfamily ../p4est/configure \mbox{[}OPTIONS\mbox{]}} \end{quote}
+The {\ttfamily configure} script is quite versatile and has multiple options, among them\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily -\/-\/enable-\/debug}\+: Activates debugging mode, increasing verbosity and turns on {\ttfamily P4\+EST\+\_\+\+ASSERT} for checks.
+\item {\ttfamily -\/-\/enable-\/mpi}\+: This integrates the {\ttfamily mpi.\+h} header and triggers MPI compiler wrappers. Without this option, MPI routine wrappers are employed for serial compilation.
+\item {\ttfamily -\/-\/prefix=$<$PATH$>$}\+: Define an absolute path to a directory (need not yet exist) that will be populated by {\ttfamily make install} with the header and library files built.
+\end{DoxyItemize}
+
+Additionally, the command\+:
+
+\begin{quote}
+{\ttfamily ../p4est/configure -\/-\/help} \end{quote}
+prints a list of currently available options to configure.
+
+A common developer-\/oriented configuration might resemble\+:
+
+\begin{quote}
+{\ttfamily relative/path/to/configure CFLAGS=\char`\"{}-\/\+Wall -\/\+Wuninitialized -\/\+O0 -\/g\char`\"{} -\/-\/enable-\/mpi -\/-\/enable-\/debug} \end{quote}
+While a production-\/oriented configuration could be\+:
+
+\begin{quote}
+{\ttfamily relative/path/to/configure CFLAGS=\char`\"{}-\/\+Wall -\/\+Wno-\/unused-\/but-\/set-\/variable -\/\+O2\char`\"{} -\/-\/enable-\/mpi} \end{quote}
+\hypertarget{installing_p4est_compile}{}\doxysubsubsection{4. Compiling p4est}\label{installing_p4est_compile}
+After configuration, the next step is the compilation of {\ttfamily \mbox{\hyperlink{structp4est}{p4est}}\+:} 
+
+\begin{quote}
+{\ttfamily make -\/j} \end{quote}
+\begin{quote}
+{\ttfamily make install -\/j} \end{quote}
+\hypertarget{installing_p4est_verification}{}\doxysubsubsection{5. Verification Step}\label{installing_p4est_verification}
+It\textquotesingle{}s recommended to execute the {\ttfamily \mbox{\hyperlink{structp4est}{p4est}}} test programs post-\/installation to ensure everything is in order\+:
+
+\begin{quote}
+{\ttfamily make -\/j4 check} \end{quote}
+Where the {\ttfamily -\/j} option limits parallel make to at most four targets at the same time.\hypertarget{installing_p4est_api_docs}{}\doxysubsubsection{6. Autogenerated API documentation}\label{installing_p4est_api_docs}
+The Doxygen output for \mbox{\hyperlink{structp4est}{p4est}} and libsc can be recreated with the following command after the configuration process\+:
+
+\begin{quote}
+{\ttfamily make doxygen} \end{quote}
+This requires the doxygen program and produces html, latex and man format documentation under {\ttfamily doc}.\hypertarget{installing_p4est_integration}{}\doxysubsubsection{7. Integrating with p4est}\label{installing_p4est_integration}
+For projects aiming to incorporate {\ttfamily \mbox{\hyperlink{structp4est}{p4est}}} as an external library, where we assume for this example that it has been configured with {\ttfamily -\/-\/prefix=\$\+HOME/p4est\+\_\+install} and built with {\ttfamily make install}, use
+
+\begin{quote}
+{\ttfamily export LD\+\_\+\+LIBRARY\+\_\+\+PATH=\$\+LD\+\_\+\+LIBRARY\+\_\+\+PATH\+:\$\+HOME/p4est\+\_\+install/lib} \end{quote}
+to be able to run built executables that dynamically link to \mbox{\hyperlink{structp4est}{p4est}}. Append to the compile command\+:
+
+\begin{quote}
+{\ttfamily -\/I\$\+HOME/p4est\+\_\+install/include -\/L\$\+HOME/p4est\+\_\+install/lib -\/lp4est -\/lsc -\/lz -\/lm} \end{quote}
+For full functionality, we expect a zlib that provides the function {\ttfamily adler32\+\_\+combine}.\hypertarget{installing_p4est_further}{}\doxysection{Further information and links}\label{installing_p4est_further}
+You may find further documentation for installation on both \href{https://github.com/cburstedde/p4est/blob/develop/INSTALL}{\texttt{ Linux}} and \href{https://github.com/cburstedde/p4est/blob/develop/INSTALL_WINDOWS}{\texttt{ Windows}} in the source folder.
+
+For users with Windows 10 version 2004 and higher, you may also try \href{https://learn.microsoft.com/en-us/windows/wsl/install}{\texttt{ WSL}} as \mbox{\hyperlink{structp4est}{p4est}} works well in the subsystem. 

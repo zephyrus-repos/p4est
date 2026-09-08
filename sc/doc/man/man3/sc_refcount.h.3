@@ -1,0 +1,197 @@
+.TH "src/sc_refcount.h" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/sc_refcount.h \- Provide reference counting facilities\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <sc\&.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBsc_refcount\fP"
+.br
+.RI "The refcount structure is declared in public so its size is known\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBsc_refcount\fP \fBsc_refcount_t\fP"
+.br
+.RI "The refcount structure is declared in public so its size is known\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBsc_refcount_init_invalid\fP (\fBsc_refcount_t\fP *rc)"
+.br
+.RI "Initialize a well-defined but unusable reference counter\&. "
+.ti -1c
+.RI "void \fBsc_refcount_init\fP (\fBsc_refcount_t\fP *rc, int package_id)"
+.br
+.RI "Initialize a reference counter to 1\&. "
+.ti -1c
+.RI "\fBsc_refcount_t\fP * \fBsc_refcount_new\fP (int package_id)"
+.br
+.RI "Create a new reference counter with count initialized to 1\&. "
+.ti -1c
+.RI "void \fBsc_refcount_destroy\fP (\fBsc_refcount_t\fP *rc)"
+.br
+.RI "Destroy a reference counter\&. "
+.ti -1c
+.RI "void \fBsc_refcount_ref\fP (\fBsc_refcount_t\fP *rc)"
+.br
+.RI "Increase a reference counter\&. "
+.ti -1c
+.RI "int \fBsc_refcount_unref\fP (\fBsc_refcount_t\fP *rc)"
+.br
+.RI "Decrease the reference counter and notify when it reaches zero\&. "
+.ti -1c
+.RI "int \fBsc_refcount_is_active\fP (const \fBsc_refcount_t\fP *rc)"
+.br
+.RI "Check whether a reference counter has a positive value\&. "
+.ti -1c
+.RI "int \fBsc_refcount_is_last\fP (const \fBsc_refcount_t\fP *rc)"
+.br
+.RI "Check whether a reference counter has value one\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Provide reference counting facilities\&. 
+
+The functions in this file can be used for multiple purposes\&. The current setup is not so much targeted at garbage collection but rather intended for debugging and verification\&. 
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBsc_refcount\fP \fBsc_refcount_t\fP"
+
+.PP
+The refcount structure is declared in public so its size is known\&. Its members should really never be accessed directly\&. 
+.SH "Function Documentation"
+.PP 
+.SS "void sc_refcount_destroy (\fBsc_refcount_t\fP * rc)"
+
+.PP
+Destroy a reference counter\&. It must have been counted down to zero before, thus reached an inactive state\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIrc\fP This reference counter must have reached count zero\&. 
+.RE
+.PP
+
+.SS "void sc_refcount_init (\fBsc_refcount_t\fP * rc, int package_id)"
+
+.PP
+Initialize a reference counter to 1\&. It is legal if its status prior to this call is undefined\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIrc\fP This reference counter is initialized to one\&. The object's contents may be undefined on input\&. 
+.br
+\fIpackage_id\fP Either -1 or a package registered to libsc\&. 
+.RE
+.PP
+
+.SS "void sc_refcount_init_invalid (\fBsc_refcount_t\fP * rc)"
+
+.PP
+Initialize a well-defined but unusable reference counter\&. Specifically, we set its package identifier and reference count to -1\&. To make this reference counter usable, call \fBsc_refcount_init\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIrc\fP This reference counter is defined as invalid\&. It will return false on both \fBsc_refcount_is_active\fP and \fBsc_refcount_is_last\fP\&. It can be made valid by calling \fBsc_refcount_init\fP\&. No other functions must be called on it\&. 
+.RE
+.PP
+
+.SS "int sc_refcount_is_active (const \fBsc_refcount_t\fP * rc)"
+
+.PP
+Check whether a reference counter has a positive value\&. This means that the reference counter is in use and corresponds to a live object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIrc\fP A reference counter\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if the count is greater zero, false otherwise\&. 
+.RE
+.PP
+
+.SS "int sc_refcount_is_last (const \fBsc_refcount_t\fP * rc)"
+
+.PP
+Check whether a reference counter has value one\&. This means that this counter is the last of its kind, which we may optimize for\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIrc\fP A reference counter\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if the count is exactly one\&. 
+.RE
+.PP
+
+.SS "\fBsc_refcount_t\fP* sc_refcount_new (int package_id)"
+
+.PP
+Create a new reference counter with count initialized to 1\&. Equivalent to calling \fBsc_refcount_init\fP on a newly allocated rc object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpackage_id\fP Either -1 or a package registered to libsc\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A reference counter with count one\&. 
+.RE
+.PP
+
+.SS "void sc_refcount_ref (\fBsc_refcount_t\fP * rc)"
+
+.PP
+Increase a reference counter\&. The counter must be active, that is, have a value greater than zero\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIrc\fP This reference counter must be valid (greater zero)\&. Its count is increased by one\&. 
+.RE
+.PP
+
+.SS "int sc_refcount_unref (\fBsc_refcount_t\fP * rc)"
+
+.PP
+Decrease the reference counter and notify when it reaches zero\&. The count must be greater zero on input\&. If the reference count reaches zero, which is indicated by the return value, the counter may not be used further with \fBsc_refcount_ref\fP or 
+.PP
+\fBSee also\fP
+.RS 4
+\fBsc_refcount_unref\fP\&. It is legal, however, to reactivate it later by calling 
+.PP
+\fBsc_refcount_init\fP\&. 
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIrc\fP This reference counter must be valid (greater zero)\&. Its count is decreased by one\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if the count has reached zero, false otherwise\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

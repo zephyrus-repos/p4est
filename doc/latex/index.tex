@@ -1,0 +1,44 @@
+\begin{DoxyAuthor}{Author}
+Carsten Burstedde, Lucas C. Wilcox, Tobin Isaac et.\+al. 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+GNU General Public License version 2 (or, at your option, any later version)
+\end{DoxyCopyright}
+\mbox{\hyperlink{structp4est}{p4est}} is a software library for parallel adaptive mesh refinement (AMR). It represents the mesh as one or more conforming hexahedra that can be individually refined as adaptive octrees, yielding a distributed non-\/conforming mesh. Both 2D and 3D are supported. \mbox{\hyperlink{structp4est}{p4est}} is intended to be compiled and linked against by numerical simulation codes that require efficient in-\/core, static or dynamic load balancing and (re-\/)adaptation of the computational mesh.
+
+If you like to just look at one example for a {\bfseries{typical workflow with data}}, please see \mbox{\hyperlink{example_userdata}{A demonstration of how to manage application data}}.
+
+The \mbox{\hyperlink{structp4est}{p4est}} provides data structures and routines for all of the following\+:
+
+
+\begin{DoxyItemize}
+\item creating a coarse computational mesh aka \mbox{\hyperlink{connectivity}{The connectivity structure}};
+\item adapting the mesh by refining, coarsening, and enforcing 2\+:1 conditions between neighbors;
+\item partitioning a mesh between MPI processes;
+\item visualizing a mesh;
+\item communicating ghost layers and data between processes;
+\item converting the octree format to other static mesh formats;
+\item searching local and remote objects in the mesh\+: \mbox{\hyperlink{search}{The search routines}};
+\item See \mbox{\hyperlink{forest}{The forest workflow}} for more information.
+\end{DoxyItemize}
+
+More guidance on the usage of \mbox{\hyperlink{structp4est}{p4est}} can be found in \href{http://p4est.github.io/p4est-howto.pdf}{\texttt{ p4est-\/howto.\+pdf}}, which is distributed with the \href{http://github.com/cburstedde/p4est}{\texttt{ source}} under the \href{https://github.com/cburstedde/p4est/tree/master/doc}{\texttt{ doc/}} directory.
+
+We provide installation instructions under \mbox{\hyperlink{installing_p4est}{Installation}}. To build the \mbox{\hyperlink{structp4est}{p4est}} library from a tar distribution, use the standard procedure of the GNU autotools. The configure script takes the following options\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily -\/-\/enable-\/debug} lowers the log level for increased verbosity and activates the {\ttfamily P4\+EST\+\_\+\+ASSERT} macro for consistency checks.
+\item {\ttfamily -\/-\/enable-\/mpi} pulls in the mpi.\+h include file and activates the MPI compiler wrappers. If this option is not given, wrappers for MPI routines are used instead and the code is compiled in serial only.
+\item {\ttfamily -\/-\/disable-\/mpiio} may be used to avoid using {\ttfamily MPI\+\_\+\+File} based calls.
+\end{DoxyItemize}
+
+A typical development configure line looks as follows (your mileage may vary wrt. compiler-\/dependent warning options)\+: \begin{quote}
+{\ttfamily relative/path/to/configure CFLAGS=\char`\"{}-\/\+Wall -\/\+Wuninitialized -\/\+O0 -\/g\char`\"{} -\/-\/enable-\/mpi -\/-\/enable-\/debug} \end{quote}
+A typical production configure line looks as follows\+: \begin{quote}
+{\ttfamily relative/path/to/configure CFLAGS=\char`\"{}-\/\+Wall -\/\+Wno-\/unused-\/but-\/set-\/variable -\/\+O2\char`\"{} -\/-\/enable-\/mpi} \end{quote}
+\begin{DoxySeeAlso}{See also}
+\href{http://www.p4est.org/}{\texttt{ http\+://www.\+p4est.\+org/}} 
+
+\href{http://www.gnu.org/licenses/licenses.html}{\texttt{ http\+://www.\+gnu.\+org/licenses/licenses.\+html}} 
+\end{DoxySeeAlso}

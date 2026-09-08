@@ -1,0 +1,48 @@
+\hypertarget{structsc__mempool}{}\doxysection{sc\+\_\+mempool Struct Reference}
+\label{structsc__mempool}\index{sc\_mempool@{sc\_mempool}}
+
+
+The \mbox{\hyperlink{structsc__mempool}{sc\+\_\+mempool}} object provides a large pool of equal-\/size elements.  
+
+
+
+
+{\ttfamily \#include $<$sc\+\_\+containers.\+h$>$}
+
+
+
+Collaboration diagram for sc\+\_\+mempool\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{structsc__mempool__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structsc__mempool_a89c7c3f9bda64a0c64322850e8771a59}\label{structsc__mempool_a89c7c3f9bda64a0c64322850e8771a59}} 
+size\+\_\+t \mbox{\hyperlink{structsc__mempool_a89c7c3f9bda64a0c64322850e8771a59}{elem\+\_\+size}}
+\begin{DoxyCompactList}\small\item\em size of a single element \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__mempool_a7e79816cd1b885d3522559424eee4602}\label{structsc__mempool_a7e79816cd1b885d3522559424eee4602}} 
+size\+\_\+t \mbox{\hyperlink{structsc__mempool_a7e79816cd1b885d3522559424eee4602}{elem\+\_\+count}}
+\begin{DoxyCompactList}\small\item\em number of valid elements \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__mempool_ae1a46fd06644ebcb63a295eb5a3dfb62}\label{structsc__mempool_ae1a46fd06644ebcb63a295eb5a3dfb62}} 
+int \mbox{\hyperlink{structsc__mempool_ae1a46fd06644ebcb63a295eb5a3dfb62}{zero\+\_\+and\+\_\+persist}}
+\begin{DoxyCompactList}\small\item\em Boolean; is set in constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__mempool_a714ad9fc40b29470e18dbfdaa1b8229f}\label{structsc__mempool_a714ad9fc40b29470e18dbfdaa1b8229f}} 
+\mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}} \mbox{\hyperlink{structsc__mempool_a714ad9fc40b29470e18dbfdaa1b8229f}{mstamp}}
+\begin{DoxyCompactList}\small\item\em fixed-\/size chunk allocator \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structsc__mempool_a46acd4bb81206f795dfa9ad5879aa685}\label{structsc__mempool_a46acd4bb81206f795dfa9ad5879aa685}} 
+\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} \mbox{\hyperlink{structsc__mempool_a46acd4bb81206f795dfa9ad5879aa685}{freed}}
+\begin{DoxyCompactList}\small\item\em buffers the freed elements \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The \mbox{\hyperlink{structsc__mempool}{sc\+\_\+mempool}} object provides a large pool of equal-\/size elements. 
+
+The pool grows dynamically for element allocation. Elements are referenced by their address which never changes. Elements can be freed (that is, returned to the pool) and are transparently reused. If the zero\+\_\+and\+\_\+persist option is selected, new elements are initialized to all zeros on creation, and the contents of an element are not touched between freeing and re-\/returning it. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{sc__containers_8h}{sc\+\_\+containers.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,35 @@
+\hypertarget{group__sc__parallelism}{}\doxysection{Parallelism}
+\label{group__sc__parallelism}\index{Parallelism@{Parallelism}}
+
+
+The sc library provides several mechanisms to work with MPI.  
+
+
+Collaboration diagram for Parallelism\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=272pt]{group__sc__parallelism}
+\end{center}
+\end{figure}
+\doxysubsection*{Files}
+\begin{DoxyCompactItemize}
+\item 
+file \mbox{\hyperlink{sc3__mpi__types_8h}{sc3\+\_\+mpi\+\_\+types.\+h}}
+\begin{DoxyCompactList}\small\item\em We provide MPI replacement data types for configuring without MPI. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{sc__allgather_8h}{sc\+\_\+allgather.\+h}}
+\begin{DoxyCompactList}\small\item\em Self-\/contained implementation of MPI\+\_\+\+Allgather. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{sc__mpi_8h}{sc\+\_\+mpi.\+h}}
+\begin{DoxyCompactList}\small\item\em Provide a consistent MPI interface with and without MPI configured. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{sc__notify_8h}{sc\+\_\+notify.\+h}}
+\begin{DoxyCompactList}\small\item\em We provide various algorithms to invert the communication pattern. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{sc__reduce_8h}{sc\+\_\+reduce.\+h}}
+\begin{DoxyCompactList}\small\item\em Self-\/contained implementations of MPI\+\_\+\+Reduce and MPI\+\_\+\+Allreduce. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The sc library provides several mechanisms to work with MPI. 
+
+The most important one is a wrapper that looks the same to the user whether MPI has been configured or not. This allows to use MPI commands in code without protecting \#defines.
+
+In addition, we provide MPI reduce, allreduce replacements with reproducible associativity as well as an allgather replacement. 

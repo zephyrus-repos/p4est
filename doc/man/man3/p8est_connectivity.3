@@ -1,0 +1,129 @@
+.TH "p8est_connectivity" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p8est_connectivity \- This structure holds the 3D inter-tree connectivity information\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p8est_connectivity\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBp4est_topidx_t\fP \fBnum_vertices\fP"
+.br
+.RI "the number of vertices that define the \fIembedding\fP of the forest (not the topology) "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP \fBnum_trees\fP"
+.br
+.RI "the number of trees "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP \fBnum_edges\fP"
+.br
+.RI "the number of edges that help define the topology "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP \fBnum_corners\fP"
+.br
+.RI "the number of corners that help define the topology "
+.ti -1c
+.RI "double * \fBvertices\fP"
+.br
+.RI "an array of size (3 * \fInum_vertices\fP) "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP * \fBtree_to_vertex\fP"
+.br
+.RI "embed each tree into $R^3$ for e\&.g\&. "
+.ti -1c
+.RI "size_t \fBtree_attr_bytes\fP"
+.br
+.RI "bytes per tree in tree_to_attr "
+.ti -1c
+.RI "char * \fBtree_to_attr\fP"
+.br
+.RI "not touched by \fBp4est\fP "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP * \fBtree_to_tree\fP"
+.br
+.RI "(6 * \fInum_trees\fP) neighbors across faces "
+.ti -1c
+.RI "int8_t * \fBtree_to_face\fP"
+.br
+.RI "(6 * \fInum_trees\fP) face to face+orientation (see description) "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP * \fBtree_to_edge\fP"
+.br
+.RI "(12 * \fInum_trees\fP) or NULL (see description) "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP * \fBett_offset\fP"
+.br
+.RI "edge to offset in \fIedge_to_tree\fP and \fIedge_to_edge\fP "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP * \fBedge_to_tree\fP"
+.br
+.RI "list of trees that meet at an edge "
+.ti -1c
+.RI "int8_t * \fBedge_to_edge\fP"
+.br
+.RI "list of tree-edges+orientations that meet at an edge (see description) "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP * \fBtree_to_corner\fP"
+.br
+.RI "(8 * \fInum_trees\fP) or NULL (see description) "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP * \fBctt_offset\fP"
+.br
+.RI "corner to offset in \fIcorner_to_tree\fP and \fIcorner_to_corner\fP "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP * \fBcorner_to_tree\fP"
+.br
+.RI "list of trees that meet at a corner "
+.ti -1c
+.RI "int8_t * \fBcorner_to_corner\fP"
+.br
+.RI "list of tree-corners that meet at a corner "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This structure holds the 3D inter-tree connectivity information\&. 
+
+Identification of arbitrary faces, edges and corners is possible\&.
+.PP
+The arrays tree_to_* are stored in z ordering\&. For corners the order wrt\&. zyx is 000 001 010 011 100 101 110 111\&. For faces the order is -x +x -y +y -z +z\&. They are allocated [0][0]\&.\&.[0][N-1]\&.\&.[num_trees-1][0]\&.\&.[num_trees-1][N-1]\&. where N is 6 for tree and face, 8 for corner, 12 for edge\&. If a face is on the physical boundary it must connect to itself\&.
+.PP
+The values for tree_to_face are in 0\&.\&.23 where ttf % 6 gives the face number and ttf / 6 the face orientation code\&. The orientation is determined as follows\&. Let my_face and other_face be the two face numbers of the connecting trees in 0\&.\&.5\&. Then the first face corner of the lower of my_face and other_face connects to a face corner numbered 0\&.\&.3 in the higher of my_face and other_face\&. The face orientation is defined as this number\&. If my_face == other_face, treating either of both faces as the lower one leads to the same result\&.
+.PP
+It is valid to specify num_vertices as 0\&. In this case vertices and tree_to_vertex are set to NULL\&. Otherwise the vertex coordinates are stored in the array vertices as [0][0]\&.\&.[0][2]\&.\&.[num_vertices-1][0]\&.\&.[num_vertices-1][2]\&. Vertex coordinates are optional and not used for inferring topology\&.
+.PP
+The edges are stored when they connect trees that are not already face neighbors at that specific edge\&. In this case tree_to_edge indexes into \fIett_offset\fP\&. Otherwise the tree_to_edge entry must be -1 and this edge is ignored\&. If num_edges == 0, tree_to_edge and edge_to_* arrays are set to NULL\&.
+.PP
+The arrays edge_to_* store a variable number of entries per edge\&. For edge e these are at position [ett_offset[e]]\&.\&.[ett_offset[e+1]-1]\&. Their number for edge e is ett_offset[e+1] - ett_offset[e]\&. The entries encode all trees adjacent to edge e\&. The size of the edge_to_* arrays is num_ett = ett_offset[num_edges]\&. The edge_to_edge array holds values in 0\&.\&.23, where the lower 12 indicate one edge orientation and the higher 12 the opposite edge orientation\&.
+.PP
+The corners are stored when they connect trees that are not already edge or face neighbors at that specific corner\&. In this case tree_to_corner indexes into \fIctt_offset\fP\&. Otherwise the tree_to_corner entry must be -1 and this corner is ignored\&. If num_corners == 0, tree_to_corner and corner_to_* arrays are set to NULL\&.
+.PP
+The arrays corner_to_* store a variable number of entries per corner\&. For corner c these are at position [ctt_offset[c]]\&.\&.[ctt_offset[c+1]-1]\&. Their number for corner c is ctt_offset[c+1] - ctt_offset[c]\&. The entries encode all trees adjacent to corner c\&. The size of the corner_to_* arrays is num_ctt = ctt_offset[num_corners]\&.
+.PP
+The *_to_attr arrays may have arbitrary contents defined by the user\&.
+.PP
+\fBNote\fP
+.RS 4
+If a connectivity implies natural connections between trees that are edge neighbors without being face neighbors, these edges shall be encoded explicitly in the connectivity\&. If a connectivity implies natural connections between trees that are corner neighbors without being edge or face neighbors, these corners shall be encoded explicitly in the connectivity\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "\fBp4est_topidx_t\fP* p8est_connectivity::tree_to_vertex"
+
+.PP
+embed each tree into $R^3$ for e\&.g\&. visualization (see \fBp8est_vtk\&.h\fP) 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

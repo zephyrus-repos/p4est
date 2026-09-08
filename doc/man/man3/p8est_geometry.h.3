@@ -1,0 +1,353 @@
+.TH "src/p8est_geometry.h" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/p8est_geometry.h \- Transform from tree-local 'reference' coordinate system to global 'physical space' coordinates\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <p8est_lnodes\&.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBp8est_geometry\fP"
+.br
+.RI "This structure can be created by the user, \fBp4est\fP will never change its contents\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBp8est_geometry\fP \fBp8est_geometry_t\fP"
+.br
+.RI "This object encapsulates a custom geometry transformation\&. "
+.ti -1c
+.RI "typedef void(* \fBp8est_geometry_X_t\fP) (\fBp8est_geometry_t\fP *geom, \fBp4est_topidx_t\fP which_tree, const double abc[3], double xyz[3])"
+.br
+.RI "Forward transformation from the reference unit square to physical space\&. "
+.ti -1c
+.RI "typedef void(* \fBp8est_geometry_destroy_t\fP) (\fBp8est_geometry_t\fP *geom)"
+.br
+.RI "Destructor prototype for a user-allocated \fIp8est_geometry_t\fP\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBpillow_sphere_config_t\fP { \fBFIG52B\fP = 0, \fBFIG52C\fP = 1 }"
+.br
+.RI "Characterize different mappings of the solid sphere using a 1-tree connectivity\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBp8est_geometry_transform_coordinates\fP (\fBp8est_geometry_t\fP *geom, \fBp4est_topidx_t\fP which_tree, \fBp4est_qcoord_t\fP coords_in[3], double coords_out[3])"
+.br
+.RI "Transform a quadrant reference coordinate into the geometry\&. "
+.ti -1c
+.RI "void \fBp8est_geometry_destroy\fP (\fBp8est_geometry_t\fP *geom)"
+.br
+.RI "Can be used to conveniently destroy a geometry structure\&. "
+.ti -1c
+.RI "\fBp8est_geometry_t\fP * \fBp8est_geometry_new_connectivity\fP (\fBp8est_connectivity_t\fP *conn)"
+.br
+.RI "Create a geometry structure based on the vertices in a connectivity\&. "
+.ti -1c
+.RI "void \fBp8est_geometry_connectivity_X\fP (\fBp8est_geometry_t\fP *geom, \fBp4est_topidx_t\fP which_tree, const double abc[3], double xyz[3])"
+.br
+.RI "Geometric coordinate transformation for geometry created with \fBp8est_geometry_new_connectivity\fP\&. "
+.ti -1c
+.RI "\fBp8est_geometry_t\fP * \fBp8est_geometry_new_pillow\fP (\fBp8est_connectivity_t\fP *conn, double R2, double R1)"
+.br
+.RI "Create a geometry structure for the spherical shell of 2 trees\&. "
+.ti -1c
+.RI "\fBp8est_geometry_t\fP * \fBp8est_geometry_new_pillow_sphere\fP (\fBp8est_connectivity_t\fP *conn, double R, \fBpillow_sphere_config_t\fP config)"
+.br
+.RI "Create a geometry for mapping the solid sphere using the 1-tree unit connectivity\&. "
+.ti -1c
+.RI "\fBp8est_geometry_t\fP * \fBp8est_geometry_new_shell\fP (\fBp8est_connectivity_t\fP *conn, double R2, double R1)"
+.br
+.RI "Create a geometry structure for the spherical shell of 24 trees\&. "
+.ti -1c
+.RI "\fBp8est_geometry_t\fP * \fBp8est_geometry_new_sphere\fP (\fBp8est_connectivity_t\fP *conn, double R2, double R1, double R0)"
+.br
+.RI "Create a geometry structure for the solid sphere of 13 trees\&. "
+.ti -1c
+.RI "\fBp8est_geometry_t\fP * \fBp8est_geometry_new_torus\fP (\fBp8est_connectivity_t\fP *conn, double R0, double R1, double R2)"
+.br
+.RI "Create a geometry structure for the torus\&. "
+.ti -1c
+.RI "void \fBp8est_geometry_coordinates_lnodes\fP (\fBp8est_t\fP *\fBp8est\fP, \fBp8est_lnodes_t\fP *lnodes, const double *refloc, \fBp8est_geometry_t\fP *geom, sc_array_t *coordinates, sc_array_t *element_coordinates)"
+.br
+.RI "Compute node coordinates for a \fBp8est_lnodes\fP structure\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Transform from tree-local 'reference' coordinate system to global 'physical space' coordinates\&. 
+
+These are used in \fBp8est_vtk\&.h\fP to write global coordinate meshes to disk\&.
+.PP
+We provide several example geometries for use\&. You may also implement your own geometry as you see fit\&.
+.PP
+\fBNote\fP
+.RS 4
+For geometry purposes, each tree has the local coordinate system $[0,1]^3$\&. 
+.RE
+.PP
+
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef void(* p8est_geometry_destroy_t) (\fBp8est_geometry_t\fP *geom)"
+
+.PP
+Destructor prototype for a user-allocated \fIp8est_geometry_t\fP\&. It is invoked by p8est_geometry_destroy\&. If the user chooses to reserve the structure statically, there is no need to provide it\&. 
+.SS "typedef void(* p8est_geometry_X_t) (\fBp8est_geometry_t\fP *geom, \fBp4est_topidx_t\fP which_tree, const double abc[3], double xyz[3])"
+
+.PP
+Forward transformation from the reference unit square to physical space\&. The physical space 'xyz' is user-defined, currently used for VTK output\&. 
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBpillow_sphere_config_t\fP"
+
+.PP
+Characterize different mappings of the solid sphere using a 1-tree connectivity\&. The different mappings correspond to the ones used to produce figure 5\&.2 in the following publication:
+.PP
+'Logically rectangular grids and finite volume methods for PDEs in circular
+and spherical domains', Calhoun et al, SIAM Review, volume 50, Issue 4, January 2008\&. https://doi.org/10.1137/060664094 
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "void p8est_geometry_connectivity_X (\fBp8est_geometry_t\fP * geom, \fBp4est_topidx_t\fP which_tree, const double abc[3], double xyz[3])"
+
+.PP
+Geometric coordinate transformation for geometry created with \fBp8est_geometry_new_connectivity\fP\&. This is defined by tri/binlinear interpolation from vertex coordinates\&.
+.PP
+May also be used as a building block in custom geometric coordinate transforms\&. See for example \fBp8est_geometry_new_shell\fP or \fBp8est_geometry_new_sphere\fP\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIgeom\fP associated geometry 
+.br
+\fIwhich_tree\fP tree id inside forest 
+.br
+\fIabc\fP tree-local reference coordinates : [0,1]^3\&. 
+.br
+\fIxyz\fP Cartesian coordinates in physical space after geometry
+.RE
+.PP
+\fBWarning\fP
+.RS 4
+The associated geometry is assumed to have a connectivity as its *user field, and this connectivity is assumed to have vertex information in its *tree_to_vertex field\&. 
+.RE
+.PP
+
+.SS "void p8est_geometry_coordinates_lnodes (\fBp8est_t\fP * p8est, \fBp8est_lnodes_t\fP * lnodes, const double * refloc, \fBp8est_geometry_t\fP * geom, sc_array_t * coordinates, sc_array_t * element_coordinates)"
+
+.PP
+Compute node coordinates for a \fBp8est_lnodes\fP structure\&. Presently we allow for an lnodes degree of 1 or 2\&. Cubic or higher degrees may be transparently enabled in the future\&.
+.PP
+The simple mode assigns one tree reference coordinate to each lnode\&. This may not be suitable for visualizing periodic connectivities\&.
+.PP
+In a more advanced mode indicated by NULL \fCelement_coordinates\fP input, the coordinates are made unique by reference location: If a tree is periodic, for example, its corners reference the same lnode but will generate separate coordinate entries for proper visualization\&. There will be more coordinates generated than there are lnodes\&.
+.PP
+The coordinate numbers generated by the present version of the function are partition-dependent\&. This may be seen as a flaw\&. Looking into it\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp8est\fP\fP A valid forest structure\&. 
+.br
+\fIlnodes\fP A valid \fBp4est_lnodes\fP structure of degree 1 or 2\&. Higher degrees not presently allowed\&. Must be derived from the \fC\fBp8est\fP\fP\&. 
+.br
+\fIrefloc\fP Eventually used for cubic and upwards degrees\&. We will expect degree + 1 many values for the one-dimensional reference node spacing\&. Out of these, the indices from 1 to (degree - 1) / 2 inclusive will be accessed by this function\&. The others default by symmetry considerations\&. 
+.br
+\fIgeom\fP May be NULL for generating the tree-reference coordinates, or a valid geometry object for transforming the reference into mapped space\&. 
+.br
+\fIcoordinates\fP On input, an array with entries of 3 double variables each\&. Resized in this function and populated with coordinate tuples\&. With a NULL geometry, these are in [0, 1]**3\&. Otherwise, they are mapped by the geometry\&. 
+.br
+\fIelement_coordinates\fP This may be NULL, in which case we generate one coordinate tuple for each lnode\&. Otherwise, this must be an array with entries of type \fBp4est_locidx_t\fP\&. Is resized to the same number of entries as \fClnodes->element_nodes\fP\&. Its entries point into the coordinates array\&. The tree index of any given entry is implicit in that this array is derived from a \fBp4est\fP, where sets of (degree + 1)**3 entries each correspond to the forest elements in order\&. 
+.RE
+.PP
+
+.SS "void p8est_geometry_destroy (\fBp8est_geometry_t\fP * geom)"
+
+.PP
+Can be used to conveniently destroy a geometry structure\&. The user is free not to call this function at all if they handle the memory of the \fBp8est_geometry_t\fP in their own way\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP\&.
+.SS "\fBp8est_geometry_t\fP* p8est_geometry_new_connectivity (\fBp8est_connectivity_t\fP * conn)"
+
+.PP
+Create a geometry structure based on the vertices in a connectivity\&. The transformation is constructed using trilinear interpolation\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP A p8est_connectivity_t with valid vertices\&. We do NOT take ownership and expect this structure to stay alive\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Geometry structure; use with \fBp4est_geometry_destroy\fP\&. 
+.RE
+.PP
+
+.SS "\fBp8est_geometry_t\fP* p8est_geometry_new_pillow (\fBp8est_connectivity_t\fP * conn, double R2, double R1)"
+
+.PP
+Create a geometry structure for the spherical shell of 2 trees\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP Result of p8est_connectivity_new_pillow\&. We do NOT take ownership and expect it to stay alive\&. 
+.br
+\fIR2\fP The outer radius of the shell\&. 
+.br
+\fIR1\fP The inner radius of the shell\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Geometry structure; use with \fBp4est_geometry_destroy\fP\&.
+.RE
+.PP
+\fBNote\fP
+.RS 4
+this coordinate transformation is describe in 'Logically rectangular
+grids and finite volume methods for PDEs in circular and spherical domains', Calhoun et al\&., https://doi.org/10.1137/060664094 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP\&.
+.SS "\fBp8est_geometry_t\fP* p8est_geometry_new_pillow_sphere (\fBp8est_connectivity_t\fP * conn, double R, \fBpillow_sphere_config_t\fP config)"
+
+.PP
+Create a geometry for mapping the solid sphere using the 1-tree unit connectivity\&. See companion routine \fBp4est_geometry_new_pillow_disk\fP which maps the 2d disk using 1-tree unit connectivity\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The result of \fBp8est_connectivity_new_unitcube\fP\&. 
+.br
+\fIR\fP The radius of the solid sphere\&. 
+.br
+\fIconfig\fP The configuration to identify a mapping variant\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP\&.
+.SS "\fBp8est_geometry_t\fP* p8est_geometry_new_shell (\fBp8est_connectivity_t\fP * conn, double R2, double R1)"
+
+.PP
+Create a geometry structure for the spherical shell of 24 trees\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP Result of p8est_connectivity_new_shell or equivalent\&. We do NOT take ownership and expect it to stay alive\&. 
+.br
+\fIR2\fP The outer radius of the shell\&. 
+.br
+\fIR1\fP The inner radius of the shell\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Geometry structure; use with \fBp4est_geometry_destroy\fP\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP, and \fBuserdata/userdata2\&.c\fP\&.
+.SS "\fBp8est_geometry_t\fP* p8est_geometry_new_sphere (\fBp8est_connectivity_t\fP * conn, double R2, double R1, double R0)"
+
+.PP
+Create a geometry structure for the solid sphere of 13 trees\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP Result of p8est_connectivity_new_sphere or equivalent\&. We do NOT take ownership and expect it to stay alive\&. 
+.br
+\fIR2\fP The outer radius of the sphere\&. 
+.br
+\fIR1\fP The outer radius of the inner shell\&. 
+.br
+\fIR0\fP The inner radius of the inner shell\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Geometry structure; use with \fBp4est_geometry_destroy\fP\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP, and \fBuserdata/userdata2\&.c\fP\&.
+.SS "\fBp8est_geometry_t\fP* p8est_geometry_new_torus (\fBp8est_connectivity_t\fP * conn, double R0, double R1, double R2)"
+
+.PP
+Create a geometry structure for the torus\&. This geometry maps a revolution torus, obtained using \fBp8est_connectivity_new_torus\fP\&.
+.PP
+The torus is divided into into segments around the revolution axis, each segment is made of 5 trees; so here we provided the geometric transformation in a piecewise manner for each tree of the connectivity\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP Result of p8est_connectivity_new_torus or equivalent\&. We do NOT take ownership and expect it to stay alive\&.
+.br
+\fIR0\fP The inner radius of the 2d disk slice as cross section\&. 
+.br
+\fIR1\fP The outer radius of the 2d disk slice as cross section\&. 
+.br
+\fIR2\fP The radius of the center circle of the torus\&. The outer radius of the torus is thus \fIR1\fP + \fIR2\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Geometry structure; use with \fBp4est_geometry_destroy\fP\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP, and \fBuserdata/userdata2\&.c\fP\&.
+.SS "void p8est_geometry_transform_coordinates (\fBp8est_geometry_t\fP * geom, \fBp4est_topidx_t\fP which_tree, \fBp4est_qcoord_t\fP coords_in[3], double coords_out[3])"
+
+.PP
+Transform a quadrant reference coordinate into the geometry\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIgeom\fP Properly initialized geometry object\&. 
+.br
+\fIwhich_tree\fP Valid tree number relative to the connectivity that is underlying the geometry\&. 
+.br
+\fIcoords_in\fP Valid quadrant reference coordinates\&. They must be in [0, P4EST_ROOT_LEN]^3\&. 
+.br
+\fIcoords_out\fP Coordinates in the physical geometry\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

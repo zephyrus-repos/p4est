@@ -1,0 +1,244 @@
+\hypertarget{sc__v4l2_8h}{}\doxysection{src/sc\+\_\+v4l2.h File Reference}
+\label{sc__v4l2_8h}\index{src/sc\_v4l2.h@{src/sc\_v4l2.h}}
+
+
+Support for video for linux version 2.  
+
+
+{\ttfamily \#include $<$sc.\+h$>$}\newline
+Include dependency graph for sc\+\_\+v4l2.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sc__v4l2_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}\label{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}} 
+typedef struct sc\+\_\+v4l2\+\_\+device \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Opaque structure for a video device. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__v4l2_8h_af502b5fb86c081298ed0f528ed61afe8}{sc\+\_\+v4l2\+\_\+device\+\_\+open}} (const char $\ast$devname)
+\begin{DoxyCompactList}\small\item\em Open a video device by special file name. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__v4l2_8h_a9eb657903d0d3e41b6b5aa926966a2d5}{sc\+\_\+v4l2\+\_\+device\+\_\+close}} (\mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$vd)
+\begin{DoxyCompactList}\small\item\em Close a video device. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{sc__v4l2_8h_a2d21e1a567d0fd18679d6f1072dab70b}{sc\+\_\+v4l2\+\_\+device\+\_\+devstring}} (const \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$vd)
+\begin{DoxyCompactList}\small\item\em Return string that details some driver and device properties. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{sc__v4l2_8h_a2f2a3f3223ee9164b919a5c1b772472b}{sc\+\_\+v4l2\+\_\+device\+\_\+capstring}} (const \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$vd)
+\begin{DoxyCompactList}\small\item\em Return string that details some device capabilities. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{sc__v4l2_8h_a4582b02a8722027370d2daa4b8a5b75f}{sc\+\_\+v4l2\+\_\+device\+\_\+outstring}} (const \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$vd)
+\begin{DoxyCompactList}\small\item\em Return string that details some output properties. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__v4l2_8h_a6787c8c6480324398c2024a8cfa9e38b}{sc\+\_\+v4l2\+\_\+device\+\_\+is\+\_\+readwrite}} (const \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$vd)
+\begin{DoxyCompactList}\small\item\em Query whether a device supports read/write I/O. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__v4l2_8h_abfdf8520f060f5db1f4f09526235ddaa}{sc\+\_\+v4l2\+\_\+device\+\_\+is\+\_\+streaming}} (const \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$vd)
+\begin{DoxyCompactList}\small\item\em Query whether a device supports streaming I/O. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__v4l2_8h_a036c3288084b0155150c31cce51e4025}{sc\+\_\+v4l2\+\_\+device\+\_\+select}} (\mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$vd, unsigned usec)
+\begin{DoxyCompactList}\small\item\em Call select (2) to wait for write availability of device. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__v4l2_8h_a02427f65eb556e2370d89214b536caba}{sc\+\_\+v4l2\+\_\+device\+\_\+write}} (\mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$vd, const char $\ast$wbuf)
+\begin{DoxyCompactList}\small\item\em Call write (2) to copy an image buffer to device. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__v4l2_8h_a2e52a6e6f825eebedff2e86b5969874a}{sc\+\_\+v4l2\+\_\+device\+\_\+format}} (\mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$vd, unsigned int $\ast$width, unsigned int $\ast$height, unsigned int $\ast$bytesperline, unsigned int $\ast$sizeimage)
+\begin{DoxyCompactList}\small\item\em Set output configuration of device. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Support for video for linux version 2. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sc__v4l2_8h_a2f2a3f3223ee9164b919a5c1b772472b}\label{sc__v4l2_8h_a2f2a3f3223ee9164b919a5c1b772472b}} 
+\index{sc\_v4l2.h@{sc\_v4l2.h}!sc\_v4l2\_device\_capstring@{sc\_v4l2\_device\_capstring}}
+\index{sc\_v4l2\_device\_capstring@{sc\_v4l2\_device\_capstring}!sc\_v4l2.h@{sc\_v4l2.h}}
+\doxysubsubsection{\texorpdfstring{sc\_v4l2\_device\_capstring()}{sc\_v4l2\_device\_capstring()}}
+{\footnotesize\ttfamily const char$\ast$ sc\+\_\+v4l2\+\_\+device\+\_\+capstring (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$}]{vd }\end{DoxyParamCaption})}
+
+
+
+Return string that details some device capabilities. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em vd} & Opened \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}}. Not modified. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+NUL-\/terminated string only valid while the device {\itshape vd} is. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__v4l2_8h_a9eb657903d0d3e41b6b5aa926966a2d5}\label{sc__v4l2_8h_a9eb657903d0d3e41b6b5aa926966a2d5}} 
+\index{sc\_v4l2.h@{sc\_v4l2.h}!sc\_v4l2\_device\_close@{sc\_v4l2\_device\_close}}
+\index{sc\_v4l2\_device\_close@{sc\_v4l2\_device\_close}!sc\_v4l2.h@{sc\_v4l2.h}}
+\doxysubsubsection{\texorpdfstring{sc\_v4l2\_device\_close()}{sc\_v4l2\_device\_close()}}
+{\footnotesize\ttfamily int sc\+\_\+v4l2\+\_\+device\+\_\+close (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$}]{vd }\end{DoxyParamCaption})}
+
+
+
+Close a video device. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em vd} & Close this device and deallocate associated resources. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__v4l2_8h_a2d21e1a567d0fd18679d6f1072dab70b}\label{sc__v4l2_8h_a2d21e1a567d0fd18679d6f1072dab70b}} 
+\index{sc\_v4l2.h@{sc\_v4l2.h}!sc\_v4l2\_device\_devstring@{sc\_v4l2\_device\_devstring}}
+\index{sc\_v4l2\_device\_devstring@{sc\_v4l2\_device\_devstring}!sc\_v4l2.h@{sc\_v4l2.h}}
+\doxysubsubsection{\texorpdfstring{sc\_v4l2\_device\_devstring()}{sc\_v4l2\_device\_devstring()}}
+{\footnotesize\ttfamily const char$\ast$ sc\+\_\+v4l2\+\_\+device\+\_\+devstring (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$}]{vd }\end{DoxyParamCaption})}
+
+
+
+Return string that details some driver and device properties. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em vd} & Opened \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}}. Not modified. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+NUL-\/terminated string only valid while the device {\itshape vd} is. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__v4l2_8h_a2e52a6e6f825eebedff2e86b5969874a}\label{sc__v4l2_8h_a2e52a6e6f825eebedff2e86b5969874a}} 
+\index{sc\_v4l2.h@{sc\_v4l2.h}!sc\_v4l2\_device\_format@{sc\_v4l2\_device\_format}}
+\index{sc\_v4l2\_device\_format@{sc\_v4l2\_device\_format}!sc\_v4l2.h@{sc\_v4l2.h}}
+\doxysubsubsection{\texorpdfstring{sc\_v4l2\_device\_format()}{sc\_v4l2\_device\_format()}}
+{\footnotesize\ttfamily int sc\+\_\+v4l2\+\_\+device\+\_\+format (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$}]{vd,  }\item[{unsigned int $\ast$}]{width,  }\item[{unsigned int $\ast$}]{height,  }\item[{unsigned int $\ast$}]{bytesperline,  }\item[{unsigned int $\ast$}]{sizeimage }\end{DoxyParamCaption})}
+
+
+
+Set output configuration of device. 
+
+We demand s\+RGB color space with RGB 565 pixel format (2 bytes). The image size values on output define the buffer size to allocate. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em vd} & Device must support the desired output format. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em width} & Desired width on input, actual width on output. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em height} & Desired height on input, actual height on output. \\
+\hline
+\mbox{\texttt{ out}}  & {\em bytesperline} & Bytes per line on output, including padding. \\
+\hline
+\mbox{\texttt{ out}}  & {\em sizeimage} & Bytes per image, including padding. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 otherwise and setting errno. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__v4l2_8h_a6787c8c6480324398c2024a8cfa9e38b}\label{sc__v4l2_8h_a6787c8c6480324398c2024a8cfa9e38b}} 
+\index{sc\_v4l2.h@{sc\_v4l2.h}!sc\_v4l2\_device\_is\_readwrite@{sc\_v4l2\_device\_is\_readwrite}}
+\index{sc\_v4l2\_device\_is\_readwrite@{sc\_v4l2\_device\_is\_readwrite}!sc\_v4l2.h@{sc\_v4l2.h}}
+\doxysubsubsection{\texorpdfstring{sc\_v4l2\_device\_is\_readwrite()}{sc\_v4l2\_device\_is\_readwrite()}}
+{\footnotesize\ttfamily int sc\+\_\+v4l2\+\_\+device\+\_\+is\+\_\+readwrite (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$}]{vd }\end{DoxyParamCaption})}
+
+
+
+Query whether a device supports read/write I/O. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em vd} & Any pointer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True iff {\itshape vd} is valid and read/write is supported. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__v4l2_8h_abfdf8520f060f5db1f4f09526235ddaa}\label{sc__v4l2_8h_abfdf8520f060f5db1f4f09526235ddaa}} 
+\index{sc\_v4l2.h@{sc\_v4l2.h}!sc\_v4l2\_device\_is\_streaming@{sc\_v4l2\_device\_is\_streaming}}
+\index{sc\_v4l2\_device\_is\_streaming@{sc\_v4l2\_device\_is\_streaming}!sc\_v4l2.h@{sc\_v4l2.h}}
+\doxysubsubsection{\texorpdfstring{sc\_v4l2\_device\_is\_streaming()}{sc\_v4l2\_device\_is\_streaming()}}
+{\footnotesize\ttfamily int sc\+\_\+v4l2\+\_\+device\+\_\+is\+\_\+streaming (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$}]{vd }\end{DoxyParamCaption})}
+
+
+
+Query whether a device supports streaming I/O. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em vd} & Any pointer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True iff {\itshape vd} is valid and streaming is supported. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__v4l2_8h_af502b5fb86c081298ed0f528ed61afe8}\label{sc__v4l2_8h_af502b5fb86c081298ed0f528ed61afe8}} 
+\index{sc\_v4l2.h@{sc\_v4l2.h}!sc\_v4l2\_device\_open@{sc\_v4l2\_device\_open}}
+\index{sc\_v4l2\_device\_open@{sc\_v4l2\_device\_open}!sc\_v4l2.h@{sc\_v4l2.h}}
+\doxysubsubsection{\texorpdfstring{sc\_v4l2\_device\_open()}{sc\_v4l2\_device\_open()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}}$\ast$ sc\+\_\+v4l2\+\_\+device\+\_\+open (\begin{DoxyParamCaption}\item[{const char $\ast$}]{devname }\end{DoxyParamCaption})}
+
+
+
+Open a video device by special file name. 
+
+The device is queried but its state is not modified. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em devname} & Special file name such as {\ttfamily /dev/video8}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Valid pointer on success, NULL on error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__v4l2_8h_a4582b02a8722027370d2daa4b8a5b75f}\label{sc__v4l2_8h_a4582b02a8722027370d2daa4b8a5b75f}} 
+\index{sc\_v4l2.h@{sc\_v4l2.h}!sc\_v4l2\_device\_outstring@{sc\_v4l2\_device\_outstring}}
+\index{sc\_v4l2\_device\_outstring@{sc\_v4l2\_device\_outstring}!sc\_v4l2.h@{sc\_v4l2.h}}
+\doxysubsubsection{\texorpdfstring{sc\_v4l2\_device\_outstring()}{sc\_v4l2\_device\_outstring()}}
+{\footnotesize\ttfamily const char$\ast$ sc\+\_\+v4l2\+\_\+device\+\_\+outstring (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$}]{vd }\end{DoxyParamCaption})}
+
+
+
+Return string that details some output properties. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em vd} & Opened \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}}. Not modified. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If output is supported as desired, return NUL-\/terminated string only valid while the {\itshape vd} object is alive. Otherwise return NULL. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__v4l2_8h_a036c3288084b0155150c31cce51e4025}\label{sc__v4l2_8h_a036c3288084b0155150c31cce51e4025}} 
+\index{sc\_v4l2.h@{sc\_v4l2.h}!sc\_v4l2\_device\_select@{sc\_v4l2\_device\_select}}
+\index{sc\_v4l2\_device\_select@{sc\_v4l2\_device\_select}!sc\_v4l2.h@{sc\_v4l2.h}}
+\doxysubsubsection{\texorpdfstring{sc\_v4l2\_device\_select()}{sc\_v4l2\_device\_select()}}
+{\footnotesize\ttfamily int sc\+\_\+v4l2\+\_\+device\+\_\+select (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$}]{vd,  }\item[{unsigned}]{usec }\end{DoxyParamCaption})}
+
+
+
+Call select (2) to wait for write availability of device. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em vd} & Opened \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} capable of output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em usec} & Number of microseconds to wait for device. We return sooner if interrupted by a signal. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+-\/1 on error, 0 on timeout, 1 when ready for writing. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__v4l2_8h_a02427f65eb556e2370d89214b536caba}\label{sc__v4l2_8h_a02427f65eb556e2370d89214b536caba}} 
+\index{sc\_v4l2.h@{sc\_v4l2.h}!sc\_v4l2\_device\_write@{sc\_v4l2\_device\_write}}
+\index{sc\_v4l2\_device\_write@{sc\_v4l2\_device\_write}!sc\_v4l2.h@{sc\_v4l2.h}}
+\doxysubsubsection{\texorpdfstring{sc\_v4l2\_device\_write()}{sc\_v4l2\_device\_write()}}
+{\footnotesize\ttfamily int sc\+\_\+v4l2\+\_\+device\+\_\+write (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} $\ast$}]{vd,  }\item[{const char $\ast$}]{wbuf }\end{DoxyParamCaption})}
+
+
+
+Call write (2) to copy an image buffer to device. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em vd} & Opened \mbox{\hyperlink{sc__v4l2_8h_a91e70dd2c565e38e2d8612de5a04a06b}{sc\+\_\+v4l2\+\_\+device\+\_\+t}} capable of output. \\
+\hline
+\mbox{\texttt{ in}}  & {\em wbuf} & Buffer holding at least {\itshape sizeimage} many bytes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 otherwise and setting errno. 
+\end{DoxyReturn}

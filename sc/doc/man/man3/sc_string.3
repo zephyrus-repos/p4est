@@ -1,0 +1,32 @@
+.TH "sc_string" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sc_string \- This is a simple type for growing a string by printf-like commands\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <sc_string\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "int \fBprinted\fP"
+.br
+.RI "Opaque object: do not access\&. "
+.ti -1c
+.RI "char \fBbuffer\fP [\fBSC_STRING_SIZE\fP]"
+.br
+.RI "Opaque object: do not access\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This is a simple type for growing a string by printf-like commands\&. 
+
+It is public so it can be declared on the stack to avoid malloc and free\&. This means that the length of the string is limited to \fBSC_STRING_SIZE\fP - 1\&. The current string can be accessed by \fBsc_string_get_content\fP\&. This is really an opaque object: its members shall not be accessed directly\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

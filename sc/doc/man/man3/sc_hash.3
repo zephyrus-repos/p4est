@@ -1,0 +1,60 @@
+.TH "sc_hash" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sc_hash \- The \fBsc_hash\fP implements a hash table\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <sc_containers\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "size_t \fBelem_count\fP"
+.br
+.RI "total number of objects contained "
+.ti -1c
+.RI "void * \fBuser_data\fP"
+.br
+.RI "User data passed to hash function\&. "
+.ti -1c
+.RI "\fBsc_array_t\fP * \fBslots\fP"
+.br
+.RI "The slot count is slots->elem_count\&. "
+.ti -1c
+.RI "\fBsc_hash_function_t\fP \fBhash_fn\fP"
+.br
+.RI "Function called to compute the hash value\&. "
+.ti -1c
+.RI "\fBsc_equal_function_t\fP \fBequal_fn\fP"
+.br
+.RI "Function called to check objects for equality\&. "
+.ti -1c
+.RI "size_t \fBresize_checks\fP"
+.br
+.RI "Running count of resize checks\&. "
+.ti -1c
+.RI "size_t \fBresize_actions\fP"
+.br
+.RI "Running count of resize actions\&. "
+.ti -1c
+.RI "int \fBallocator_owned\fP"
+.br
+.RI "Boolean designating allocator ownership\&. "
+.ti -1c
+.RI "\fBsc_mempool_t\fP * \fBallocator\fP"
+.br
+.RI "Must allocate sc_link_t objects\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+The \fBsc_hash\fP implements a hash table\&. 
+
+It uses an array which has linked lists as elements\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

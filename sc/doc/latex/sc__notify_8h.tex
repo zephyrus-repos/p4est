@@ -1,0 +1,705 @@
+\hypertarget{sc__notify_8h}{}\doxysection{src/sc\+\_\+notify.h File Reference}
+\label{sc__notify_8h}\index{src/sc\_notify.h@{src/sc\_notify.h}}
+
+
+We provide various algorithms to invert the communication pattern.  
+
+
+{\ttfamily \#include $<$sc\+\_\+statistics.\+h$>$}\newline
+Include dependency graph for sc\+\_\+notify.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sc__notify_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc__notify_8h_ae5b4a085b9203046abae304cd8e03053}\label{sc__notify_8h_ae5b4a085b9203046abae304cd8e03053}} 
+\#define \mbox{\hyperlink{sc__notify_8h_ae5b4a085b9203046abae304cd8e03053}{SC\+\_\+\+NOTIFY\+\_\+\+STR\+\_\+\+ALLGATHER}}~\char`\"{}allgather\char`\"{}
+\begin{DoxyCompactList}\small\item\em String for the allgather variant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_a7b1cf66b4dab1bfa790a43a13ec2034c}\label{sc__notify_8h_a7b1cf66b4dab1bfa790a43a13ec2034c}} 
+\#define \mbox{\hyperlink{sc__notify_8h_a7b1cf66b4dab1bfa790a43a13ec2034c}{SC\+\_\+\+NOTIFY\+\_\+\+STR\+\_\+\+BINARY}}~\char`\"{}binary\char`\"{}
+\begin{DoxyCompactList}\small\item\em String for the binary tree variant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_a9e50912af34b0eea501a89636bde8440}\label{sc__notify_8h_a9e50912af34b0eea501a89636bde8440}} 
+\#define \mbox{\hyperlink{sc__notify_8h_a9e50912af34b0eea501a89636bde8440}{SC\+\_\+\+NOTIFY\+\_\+\+STR\+\_\+\+NARY}}~\char`\"{}nary\char`\"{}
+\begin{DoxyCompactList}\small\item\em String for the n-\/ary tree variant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_ac7a64139adfe42263415c3a466312c26}\label{sc__notify_8h_ac7a64139adfe42263415c3a466312c26}} 
+\#define \mbox{\hyperlink{sc__notify_8h_ac7a64139adfe42263415c3a466312c26}{SC\+\_\+\+NOTIFY\+\_\+\+STR\+\_\+\+PEX}}~\char`\"{}pex\char`\"{}
+\begin{DoxyCompactList}\small\item\em String for the PEX variant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_ac223ccf7e3d8c874147cedff18ca5a25}\label{sc__notify_8h_ac223ccf7e3d8c874147cedff18ca5a25}} 
+\#define \mbox{\hyperlink{sc__notify_8h_ac223ccf7e3d8c874147cedff18ca5a25}{SC\+\_\+\+NOTIFY\+\_\+\+STR\+\_\+\+PCX}}~\char`\"{}pcx\char`\"{}
+\begin{DoxyCompactList}\small\item\em String for the PCX variant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_a3984f1aba145e854490596ebe412f65d}\label{sc__notify_8h_a3984f1aba145e854490596ebe412f65d}} 
+\#define \mbox{\hyperlink{sc__notify_8h_a3984f1aba145e854490596ebe412f65d}{SC\+\_\+\+NOTIFY\+\_\+\+STR\+\_\+\+RSX}}~\char`\"{}rsx\char`\"{}
+\begin{DoxyCompactList}\small\item\em String for the RSX variant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_a64507d69e85697614aa9e9c9a11b3124}\label{sc__notify_8h_a64507d69e85697614aa9e9c9a11b3124}} 
+\#define \mbox{\hyperlink{sc__notify_8h_a64507d69e85697614aa9e9c9a11b3124}{SC\+\_\+\+NOTIFY\+\_\+\+STR\+\_\+\+NBX}}~\char`\"{}nbx\char`\"{}
+\begin{DoxyCompactList}\small\item\em String for the NBX variant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_ad0fb4722bdcedc904be034606effcd2f}\label{sc__notify_8h_ad0fb4722bdcedc904be034606effcd2f}} 
+\#define \mbox{\hyperlink{sc__notify_8h_ad0fb4722bdcedc904be034606effcd2f}{SC\+\_\+\+NOTIFY\+\_\+\+STR\+\_\+\+RANGES}}~\char`\"{}ranges\char`\"{}
+\begin{DoxyCompactList}\small\item\em String for the ranges variant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_acc3e60f670fdc384086b13be473d6a19}\label{sc__notify_8h_acc3e60f670fdc384086b13be473d6a19}} 
+\#define \mbox{\hyperlink{sc__notify_8h_acc3e60f670fdc384086b13be473d6a19}{SC\+\_\+\+NOTIFY\+\_\+\+STR\+\_\+\+SUPERSET}}~\char`\"{}superset\char`\"{}
+\begin{DoxyCompactList}\small\item\em String for the superset variant. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}\label{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}} 
+typedef struct sc\+\_\+notify\+\_\+s \mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Opaque object used for controlling notification (AKA dynamic sparse data exchange) operations. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_a605fb4802f80207b5808bf4cc33f0428}\label{sc__notify_8h_a605fb4802f80207b5808bf4cc33f0428}} 
+typedef void($\ast$ \mbox{\hyperlink{sc__notify_8h_a605fb4802f80207b5808bf4cc33f0428}{sc\+\_\+compute\+\_\+superset\+\_\+t}}) (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$, \mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$, void $\ast$)
+\begin{DoxyCompactList}\small\item\em Type of callback function for the \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a6b6a2bcadbafcc3a0b1a91a877c36c41}{SC\+\_\+\+NOTIFY\+\_\+\+SUPERSET}} variant. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}{sc\+\_\+notify\+\_\+type\+\_\+t}} \{ \newline
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8abdf69817a36b300457bfb97c0ff2098e}{SC\+\_\+\+NOTIFY\+\_\+\+DEFAULT}} = -\/1
+, \newline
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a4763cb05b9e3cdb3d1c736249874eb53}{SC\+\_\+\+NOTIFY\+\_\+\+ALLGATHER}} = 0
+, \newline
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8af4188c1b3a3fd6e8166d0dc626749d6c}{SC\+\_\+\+NOTIFY\+\_\+\+BINARY}}
+, \newline
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae790c026816e15acc875689617f404e1}{SC\+\_\+\+NOTIFY\+\_\+\+NARY}}
+, \newline
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae798998eda8a2f159420438ba5966c80}{SC\+\_\+\+NOTIFY\+\_\+\+PEX}}
+, \newline
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ad820e616f2e0d38670955e44d975d3ec}{SC\+\_\+\+NOTIFY\+\_\+\+PCX}}
+, \newline
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8aa5e3b664208c405988ee3dbe56912943}{SC\+\_\+\+NOTIFY\+\_\+\+RSX}}
+, \newline
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8af1dd3c4e3c708121a42720c5957979c7}{SC\+\_\+\+NOTIFY\+\_\+\+NBX}}
+, \newline
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8acd3f427bdba923d7f721778499b0953a}{SC\+\_\+\+NOTIFY\+\_\+\+RANGES}}
+, \newline
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a6b6a2bcadbafcc3a0b1a91a877c36c41}{SC\+\_\+\+NOTIFY\+\_\+\+SUPERSET}}
+, \newline
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ab9ba2c97d4f21db03fc39ee600afc1a1}{SC\+\_\+\+NOTIFY\+\_\+\+NUM\+\_\+\+TYPES}}
+ \}
+\begin{DoxyCompactList}\small\item\em Various equivalent implementations of the functionality. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{Indent}\textbf{ Classic, simple interface.}\par
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{sc__notify_8h_a81b12ec89ce7aa5d9ce049ab6509bff5}{sc\+\_\+notify\+\_\+allgather}} (int $\ast$receivers, int num\+\_\+receivers, int $\ast$senders, int $\ast$num\+\_\+senders, \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} mpicomm)
+\begin{DoxyCompactList}\small\item\em Collective call to notify a set of receiver ranks of current rank. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__notify_8h_a25b1c5b285ee0bf6aa08dc9bfefc1e16}{sc\+\_\+notify}} (int $\ast$receivers, int num\+\_\+receivers, int $\ast$senders, int $\ast$num\+\_\+senders, \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} mpicomm)
+\begin{DoxyCompactList}\small\item\em Collective call to notify a set of receiver ranks of current rank. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__notify_8h_aa95b3d2205c9f473b453650bb2d15dba}{sc\+\_\+notify\+\_\+nary}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$receivers, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$senders, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$in\+\_\+payload, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$out\+\_\+payload, \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} mpicomm)
+\begin{DoxyCompactList}\small\item\em The n-\/ary tree implementation of the notify functionality. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__notify_8h_a68ba53034e92a90d2af1cb80228439e5}{sc\+\_\+notify\+\_\+ext}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$receivers, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$senders, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$in\+\_\+payload, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$out\+\_\+payload, \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} mpicomm)
+\begin{DoxyCompactList}\small\item\em The default implementation of the notify functionality, currently PEX. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Optional, most general interface.}\par
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__notify_8h_a2c60b8ee792368a6617e62d0c1b6e509}{sc\+\_\+notify\+\_\+new}} (\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} mpicomm)
+\begin{DoxyCompactList}\small\item\em Create a notify controller that can be used in \mbox{\hyperlink{sc__notify_8h_a1bb637268a14b63422eeef5b0acdb5de}{sc\+\_\+notify\+\_\+payload}} and \mbox{\hyperlink{sc__notify_8h_a1d26f916496dcb8abca383a9f5b64bd9}{sc\+\_\+notify\+\_\+payloadv}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__notify_8h_a0e84ade7ca9d795634830893016d2fd5}{sc\+\_\+notify\+\_\+destroy}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify)
+\begin{DoxyCompactList}\small\item\em Destroy a notify controller constructed with \mbox{\hyperlink{sc__notify_8h_a2c60b8ee792368a6617e62d0c1b6e509}{sc\+\_\+notify\+\_\+new}}. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{sc__notify_8h_a26eaea5ced2359186cee42c9d5e7804c}{sc\+\_\+notify\+\_\+get\+\_\+eager\+\_\+threshold}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify)
+\begin{DoxyCompactList}\small\item\em Get the payload size above which payloads are no longer transferred with notification packets in \mbox{\hyperlink{sc__notify_8h_a1bb637268a14b63422eeef5b0acdb5de}{sc\+\_\+notify\+\_\+payload}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__notify_8h_a9281fa8a98752ffe3654fee6f5cbe047}{sc\+\_\+notify\+\_\+set\+\_\+eager\+\_\+threshold}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify, size\+\_\+t thresh)
+\begin{DoxyCompactList}\small\item\em Get the payload size above which payloads are no longer transferred with notification packets in \mbox{\hyperlink{sc__notify_8h_a1bb637268a14b63422eeef5b0acdb5de}{sc\+\_\+notify\+\_\+payload}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__notify_8h_a971fe2751998ef3d8c13d411100f865e}{sc\+\_\+notify\+\_\+get\+\_\+stats}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify)
+\begin{DoxyCompactList}\small\item\em Get the \mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} object for logging runtimes (added by function name). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__notify_8h_ae4d82e5279fe982a51e71eb0c0bf2de8}{sc\+\_\+notify\+\_\+set\+\_\+stats}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify, \mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$stats)
+\begin{DoxyCompactList}\small\item\em Set a \mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} object for logging runtimes (added by function name). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} \mbox{\hyperlink{sc__notify_8h_a52235d358ea70efc75313e451e877d1c}{sc\+\_\+notify\+\_\+get\+\_\+comm}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify)
+\begin{DoxyCompactList}\small\item\em Get the MPI communicator of a notify controller. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__notify_8h_aea12e4ad4c61c83f11fe1a77e9b2a8c6}{sc\+\_\+notify\+\_\+supports\+\_\+type}} (\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}{sc\+\_\+notify\+\_\+type\+\_\+t}} type)
+\begin{DoxyCompactList}\small\item\em Query whether \mbox{\hyperlink{sc__notify_8h_ad5bb3083356dc8fb9887e66a614d5be8}{sc\+\_\+notify\+\_\+set\+\_\+type}} supports a given type. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}{sc\+\_\+notify\+\_\+type\+\_\+t}} \mbox{\hyperlink{sc__notify_8h_a15ba72f1b70b832936ca6f2c31e8e586}{sc\+\_\+notify\+\_\+get\+\_\+type}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify)
+\begin{DoxyCompactList}\small\item\em Get the type of a notify controller. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__notify_8h_ad5bb3083356dc8fb9887e66a614d5be8}{sc\+\_\+notify\+\_\+set\+\_\+type}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify, \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}{sc\+\_\+notify\+\_\+type\+\_\+t}} type)
+\begin{DoxyCompactList}\small\item\em Set the type of a notify controller. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__notify_8h_a99fc179eaa931e0f06d16ad6e4b916ce}{sc\+\_\+notify\+\_\+nary\+\_\+get\+\_\+widths}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify, int $\ast$ntop, int $\ast$nint, int $\ast$nbot)
+\begin{DoxyCompactList}\small\item\em For a notify of type \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae790c026816e15acc875689617f404e1}{SC\+\_\+\+NOTIFY\+\_\+\+NARY}}, get the branching widths of the recursive algorithm. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__notify_8h_a1bc96b79fce345e93f6444169cce9740}{sc\+\_\+notify\+\_\+nary\+\_\+set\+\_\+widths}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify, int ntop, int nint, int nbot)
+\begin{DoxyCompactList}\small\item\em For a notify of type \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae790c026816e15acc875689617f404e1}{SC\+\_\+\+NOTIFY\+\_\+\+NARY}}, set the branching widths of the recursive algorithm. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__notify_8h_ab09df7d05ec41ae0418797d1a14742b7}{sc\+\_\+notify\+\_\+ranges\+\_\+get\+\_\+num\+\_\+ranges}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify)
+\begin{DoxyCompactList}\small\item\em Query the number of ranges for the \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8acd3f427bdba923d7f721778499b0953a}{SC\+\_\+\+NOTIFY\+\_\+\+RANGES}} method. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__notify_8h_a38b45594935514542a473738d3fce5f0}{sc\+\_\+notify\+\_\+ranges\+\_\+set\+\_\+num\+\_\+ranges}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify, int num\+\_\+ranges)
+\begin{DoxyCompactList}\small\item\em Set the number of ranges for the \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8acd3f427bdba923d7f721778499b0953a}{SC\+\_\+\+NOTIFY\+\_\+\+RANGES}} method. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__notify_8h_ab03acbda8f2ab6505e9660478a41e82b}{sc\+\_\+notify\+\_\+superset\+\_\+get\+\_\+callback}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify, \mbox{\hyperlink{sc__notify_8h_a605fb4802f80207b5808bf4cc33f0428}{sc\+\_\+compute\+\_\+superset\+\_\+t}} $\ast$compute\+\_\+superset, void $\ast$ctx)
+\begin{DoxyCompactList}\small\item\em Query the callback for the \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a6b6a2bcadbafcc3a0b1a91a877c36c41}{SC\+\_\+\+NOTIFY\+\_\+\+SUPERSET}} method. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__notify_8h_aeaa1a4f2652b6d177f49efb7bf41f6fc}{sc\+\_\+notify\+\_\+superset\+\_\+set\+\_\+callback}} (\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify, \mbox{\hyperlink{sc__notify_8h_a605fb4802f80207b5808bf4cc33f0428}{sc\+\_\+compute\+\_\+superset\+\_\+t}} compute\+\_\+superset, void $\ast$ctx)
+\begin{DoxyCompactList}\small\item\em Set the callback for the \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a6b6a2bcadbafcc3a0b1a91a877c36c41}{SC\+\_\+\+NOTIFY\+\_\+\+SUPERSET}} method. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__notify_8h_a1bb637268a14b63422eeef5b0acdb5de}{sc\+\_\+notify\+\_\+payload}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$receivers, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$senders, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$in\+\_\+payload, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$out\+\_\+payload, int sorted, \mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify)
+\begin{DoxyCompactList}\small\item\em Collective call to notify a set of receiver ranks of current rank. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__notify_8h_a1d26f916496dcb8abca383a9f5b64bd9}{sc\+\_\+notify\+\_\+payloadv}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$receivers, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$senders, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$out\+\_\+payload, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$in\+\_\+payload, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$out\+\_\+offsets, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$in\+\_\+offsets, int sorted, \mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$notify)
+\begin{DoxyCompactList}\small\item\em Collective call to notify a set of receiver ranks of current rank and send a variable size message to the receiver. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc__notify_8h_a4db60160a1f739001fdf837d2dcfd7a8}\label{sc__notify_8h_a4db60160a1f739001fdf837d2dcfd7a8}} 
+int \mbox{\hyperlink{sc__notify_8h_a4db60160a1f739001fdf837d2dcfd7a8}{sc\+\_\+notify\+\_\+nary\+\_\+ntop\+\_\+default}}
+\begin{DoxyCompactList}\small\item\em Default number of children at root node of nary tree; initialized to 2. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_a86f17f170ffdcef7a73f16ef55173442}\label{sc__notify_8h_a86f17f170ffdcef7a73f16ef55173442}} 
+int \mbox{\hyperlink{sc__notify_8h_a86f17f170ffdcef7a73f16ef55173442}{sc\+\_\+notify\+\_\+nary\+\_\+nint\+\_\+default}}
+\begin{DoxyCompactList}\small\item\em Default number of children at intermediate tree nodes; initialized to 2. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_ac7da95a48e6b49de5ca259cd82a31308}\label{sc__notify_8h_ac7da95a48e6b49de5ca259cd82a31308}} 
+int \mbox{\hyperlink{sc__notify_8h_ac7da95a48e6b49de5ca259cd82a31308}{sc\+\_\+notify\+\_\+nary\+\_\+nbot\+\_\+default}}
+\begin{DoxyCompactList}\small\item\em Default number of children at deepest level of tree; initialized to 2. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_a518ea3a094211a70f1a09726c39e956e}\label{sc__notify_8h_a518ea3a094211a70f1a09726c39e956e}} 
+const char $\ast$ \mbox{\hyperlink{sc__notify_8h_a518ea3a094211a70f1a09726c39e956e}{sc\+\_\+notify\+\_\+type\+\_\+strings}} \mbox{[}\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ab9ba2c97d4f21db03fc39ee600afc1a1}{SC\+\_\+\+NOTIFY\+\_\+\+NUM\+\_\+\+TYPES}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em Names for each notify method. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_af252c0f6b4320d12359d8dc4af6ea443}\label{sc__notify_8h_af252c0f6b4320d12359d8dc4af6ea443}} 
+\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}{sc\+\_\+notify\+\_\+type\+\_\+t}} \mbox{\hyperlink{sc__notify_8h_af252c0f6b4320d12359d8dc4af6ea443}{sc\+\_\+notify\+\_\+type\+\_\+default}}
+\begin{DoxyCompactList}\small\item\em The default type used when constructing a notify controller; initialized to \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae798998eda8a2f159420438ba5966c80}{SC\+\_\+\+NOTIFY\+\_\+\+PEX}}. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{sc__notify_8h_a57289be49bfc92e1b71ad65b0d1df181}{sc\+\_\+notify\+\_\+eager\+\_\+threshold\+\_\+default}}
+\begin{DoxyCompactList}\small\item\em The default threshold for payload sizes (in bytes) that are communicated with the notification packet. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__notify_8h_a68f4d279c37ef4a49089d666222dad9f}\label{sc__notify_8h_a68f4d279c37ef4a49089d666222dad9f}} 
+int \mbox{\hyperlink{sc__notify_8h_a68f4d279c37ef4a49089d666222dad9f}{sc\+\_\+notify\+\_\+ranges\+\_\+num\+\_\+ranges\+\_\+default}}
+\begin{DoxyCompactList}\small\item\em For the \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8acd3f427bdba923d7f721778499b0953a}{SC\+\_\+\+NOTIFY\+\_\+\+RANGES}} method, the default is 25. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+We provide various algorithms to invert the communication pattern. 
+
+The task at hand is\+: given an individual set of receiver ranks for each process in a sender role, compute efficiently for the receiver role of each rank the set of senders to it.
+
+This file implements two approaches that solve the problem scalably.
+
+
+\begin{DoxyEnumerate}
+\item The first and original historic one offers the choice between a binary tree recursion, an n-\/ary tree recursion, optionally with payload data, and an allgather version. The n-\/ary tree version contains the binary one as a special case. It is called \mbox{\hyperlink{sc__notify_8h_aa95b3d2205c9f473b453650bb2d15dba}{sc\+\_\+notify\+\_\+nary}} and can be configured by the global variables
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{sc__notify_8h_a4db60160a1f739001fdf837d2dcfd7a8}{sc\+\_\+notify\+\_\+nary\+\_\+ntop\+\_\+default}}; \#children of the root tree node,
+\item \mbox{\hyperlink{sc__notify_8h_a86f17f170ffdcef7a73f16ef55173442}{sc\+\_\+notify\+\_\+nary\+\_\+nint\+\_\+default}}; \#children of intermediate nodes,
+\item \mbox{\hyperlink{sc__notify_8h_ac7da95a48e6b49de5ca259cd82a31308}{sc\+\_\+notify\+\_\+nary\+\_\+nbot\+\_\+default}}; \#siblings of each leaf node.
+\end{DoxyItemize}
+
+Thus it can be tailored to match for example distributed NUMA architectures. The default for each variable is a conservative 2 to choose a binary tree.
+
+Another addition to the family is \mbox{\hyperlink{sc__notify_8h_a68ba53034e92a90d2af1cb80228439e5}{sc\+\_\+notify\+\_\+ext}} for the best known default, which is currently the PEX algorithm.
+\item The more recent and general variant allows to choose between practically all currently known algorithms, enumerated by \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}{sc\+\_\+notify\+\_\+type\+\_\+t}}. This is managed by first creating a configuration object \mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}}, setting its type and further parameters, and passing it into the general \mbox{\hyperlink{sc__notify_8h_a1bb637268a14b63422eeef5b0acdb5de}{sc\+\_\+notify\+\_\+payload}} or \mbox{\hyperlink{sc__notify_8h_a1d26f916496dcb8abca383a9f5b64bd9}{sc\+\_\+notify\+\_\+payloadv}} functions. 
+\end{DoxyEnumerate}
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}\label{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_type\_t@{sc\_notify\_type\_t}}
+\index{sc\_notify\_type\_t@{sc\_notify\_type\_t}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_type\_t}{sc\_notify\_type\_t}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}{sc\+\_\+notify\+\_\+type\+\_\+t}}}
+
+
+
+Various equivalent implementations of the functionality. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_NOTIFY\_DEFAULT@{SC\_NOTIFY\_DEFAULT}!sc\_notify.h@{sc\_notify.h}}\index{sc\_notify.h@{sc\_notify.h}!SC\_NOTIFY\_DEFAULT@{SC\_NOTIFY\_DEFAULT}}}\mbox{\Hypertarget{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8abdf69817a36b300457bfb97c0ff2098e}\label{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8abdf69817a36b300457bfb97c0ff2098e}} 
+SC\+\_\+\+NOTIFY\+\_\+\+DEFAULT&Choose whatever type is stored in sc\+\_\+notify\+\_\+type\+\_\+default. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_NOTIFY\_ALLGATHER@{SC\_NOTIFY\_ALLGATHER}!sc\_notify.h@{sc\_notify.h}}\index{sc\_notify.h@{sc\_notify.h}!SC\_NOTIFY\_ALLGATHER@{SC\_NOTIFY\_ALLGATHER}}}\mbox{\Hypertarget{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a4763cb05b9e3cdb3d1c736249874eb53}\label{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a4763cb05b9e3cdb3d1c736249874eb53}} 
+SC\+\_\+\+NOTIFY\+\_\+\+ALLGATHER&Choose allgather algorithm. Likely suboptimal. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_NOTIFY\_BINARY@{SC\_NOTIFY\_BINARY}!sc\_notify.h@{sc\_notify.h}}\index{sc\_notify.h@{sc\_notify.h}!SC\_NOTIFY\_BINARY@{SC\_NOTIFY\_BINARY}}}\mbox{\Hypertarget{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8af4188c1b3a3fd6e8166d0dc626749d6c}\label{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8af4188c1b3a3fd6e8166d0dc626749d6c}} 
+SC\+\_\+\+NOTIFY\+\_\+\+BINARY&Choose simple binary recursion. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_NOTIFY\_NARY@{SC\_NOTIFY\_NARY}!sc\_notify.h@{sc\_notify.h}}\index{sc\_notify.h@{sc\_notify.h}!SC\_NOTIFY\_NARY@{SC\_NOTIFY\_NARY}}}\mbox{\Hypertarget{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae790c026816e15acc875689617f404e1}\label{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae790c026816e15acc875689617f404e1}} 
+SC\+\_\+\+NOTIFY\+\_\+\+NARY&Choose nary (k-\/way) recursion. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_NOTIFY\_PEX@{SC\_NOTIFY\_PEX}!sc\_notify.h@{sc\_notify.h}}\index{sc\_notify.h@{sc\_notify.h}!SC\_NOTIFY\_PEX@{SC\_NOTIFY\_PEX}}}\mbox{\Hypertarget{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae798998eda8a2f159420438ba5966c80}\label{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae798998eda8a2f159420438ba5966c80}} 
+SC\+\_\+\+NOTIFY\+\_\+\+PEX&Choose alltoall algorithm (AKA personalized exchange). Current best choice. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_NOTIFY\_PCX@{SC\_NOTIFY\_PCX}!sc\_notify.h@{sc\_notify.h}}\index{sc\_notify.h@{sc\_notify.h}!SC\_NOTIFY\_PCX@{SC\_NOTIFY\_PCX}}}\mbox{\Hypertarget{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ad820e616f2e0d38670955e44d975d3ec}\label{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ad820e616f2e0d38670955e44d975d3ec}} 
+SC\+\_\+\+NOTIFY\+\_\+\+PCX&Choose reduce\+\_\+scatter algorithm (AKA personalized census). \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_NOTIFY\_RSX@{SC\_NOTIFY\_RSX}!sc\_notify.h@{sc\_notify.h}}\index{sc\_notify.h@{sc\_notify.h}!SC\_NOTIFY\_RSX@{SC\_NOTIFY\_RSX}}}\mbox{\Hypertarget{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8aa5e3b664208c405988ee3dbe56912943}\label{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8aa5e3b664208c405988ee3dbe56912943}} 
+SC\+\_\+\+NOTIFY\+\_\+\+RSX&Choose remote summation algorithm. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_NOTIFY\_NBX@{SC\_NOTIFY\_NBX}!sc\_notify.h@{sc\_notify.h}}\index{sc\_notify.h@{sc\_notify.h}!SC\_NOTIFY\_NBX@{SC\_NOTIFY\_NBX}}}\mbox{\Hypertarget{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8af1dd3c4e3c708121a42720c5957979c7}\label{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8af1dd3c4e3c708121a42720c5957979c7}} 
+SC\+\_\+\+NOTIFY\+\_\+\+NBX&Choose non-\/blocking consensus algorithm. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_NOTIFY\_RANGES@{SC\_NOTIFY\_RANGES}!sc\_notify.h@{sc\_notify.h}}\index{sc\_notify.h@{sc\_notify.h}!SC\_NOTIFY\_RANGES@{SC\_NOTIFY\_RANGES}}}\mbox{\Hypertarget{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8acd3f427bdba923d7f721778499b0953a}\label{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8acd3f427bdba923d7f721778499b0953a}} 
+SC\+\_\+\+NOTIFY\+\_\+\+RANGES&Use the sc\+\_\+ranges functionality. Likely suboptimal. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_NOTIFY\_SUPERSET@{SC\_NOTIFY\_SUPERSET}!sc\_notify.h@{sc\_notify.h}}\index{sc\_notify.h@{sc\_notify.h}!SC\_NOTIFY\_SUPERSET@{SC\_NOTIFY\_SUPERSET}}}\mbox{\Hypertarget{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a6b6a2bcadbafcc3a0b1a91a877c36c41}\label{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a6b6a2bcadbafcc3a0b1a91a877c36c41}} 
+SC\+\_\+\+NOTIFY\+\_\+\+SUPERSET&Use a computable superset of communicators, computed by a callback function. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_NOTIFY\_NUM\_TYPES@{SC\_NOTIFY\_NUM\_TYPES}!sc\_notify.h@{sc\_notify.h}}\index{sc\_notify.h@{sc\_notify.h}!SC\_NOTIFY\_NUM\_TYPES@{SC\_NOTIFY\_NUM\_TYPES}}}\mbox{\Hypertarget{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ab9ba2c97d4f21db03fc39ee600afc1a1}\label{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ab9ba2c97d4f21db03fc39ee600afc1a1}} 
+SC\+\_\+\+NOTIFY\+\_\+\+NUM\+\_\+\+TYPES&End of list marker for notify algorithms. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sc__notify_8h_a25b1c5b285ee0bf6aa08dc9bfefc1e16}\label{sc__notify_8h_a25b1c5b285ee0bf6aa08dc9bfefc1e16}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify@{sc\_notify}}
+\index{sc\_notify@{sc\_notify}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify()}{sc\_notify()}}
+{\footnotesize\ttfamily int sc\+\_\+notify (\begin{DoxyParamCaption}\item[{int $\ast$}]{receivers,  }\item[{int}]{num\+\_\+receivers,  }\item[{int $\ast$}]{senders,  }\item[{int $\ast$}]{num\+\_\+senders,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{mpicomm }\end{DoxyParamCaption})}
+
+
+
+Collective call to notify a set of receiver ranks of current rank. 
+
+More generally, this function serves to transpose the nonzero pattern of a matrix, where each row and column corresponds to an MPI rank in order. We use a binary tree to construct the communication pattern. This minimizes the number of messages at the cost of more messages compared to a fatter tree such as configurable with \mbox{\hyperlink{sc__notify_8h_aa95b3d2205c9f473b453650bb2d15dba}{sc\+\_\+notify\+\_\+nary}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em receivers} & Sorted and unique array of MPI ranks to inform. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+receivers} & Count of ranks contained in receivers. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em senders} & Array of at least size sc\+\_\+\+MPI\+\_\+\+Comm\+\_\+size. On output it contains the notifying ranks, whose number is returned in {\bfseries{num\+\_\+senders}}. \\
+\hline
+\mbox{\texttt{ out}}  & {\em num\+\_\+senders} & On output the number of notifying ranks. \\
+\hline
+\mbox{\texttt{ in}}  & {\em mpicomm} & MPI communicator to use. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Aborts on MPI error or returns sc\+\_\+\+MPI\+\_\+\+SUCCESS. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__notify_8h_a81b12ec89ce7aa5d9ce049ab6509bff5}\label{sc__notify_8h_a81b12ec89ce7aa5d9ce049ab6509bff5}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_allgather@{sc\_notify\_allgather}}
+\index{sc\_notify\_allgather@{sc\_notify\_allgather}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_allgather()}{sc\_notify\_allgather()}}
+{\footnotesize\ttfamily int sc\+\_\+notify\+\_\+allgather (\begin{DoxyParamCaption}\item[{int $\ast$}]{receivers,  }\item[{int}]{num\+\_\+receivers,  }\item[{int $\ast$}]{senders,  }\item[{int $\ast$}]{num\+\_\+senders,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{mpicomm }\end{DoxyParamCaption})}
+
+
+
+Collective call to notify a set of receiver ranks of current rank. 
+
+This version uses one call to sc\+\_\+\+MPI\+\_\+\+Allgather and one to sc\+\_\+\+MPI\+\_\+\+Allgatherv. We provide hand-\/coded alternatives \mbox{\hyperlink{sc__notify_8h_a25b1c5b285ee0bf6aa08dc9bfefc1e16}{sc\+\_\+notify}} and \mbox{\hyperlink{sc__notify_8h_aa95b3d2205c9f473b453650bb2d15dba}{sc\+\_\+notify\+\_\+nary}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em receivers} & Sorted and unique array of MPI ranks to inform. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+receivers} & Count of ranks contained in receivers. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em senders} & Array of at least size sc\+\_\+\+MPI\+\_\+\+Comm\+\_\+size. On output it contains the notifying ranks. \\
+\hline
+\mbox{\texttt{ out}}  & {\em num\+\_\+senders} & On output the number of notifying ranks. \\
+\hline
+\mbox{\texttt{ in}}  & {\em mpicomm} & MPI communicator to use. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Aborts on MPI error or returns sc\+\_\+\+MPI\+\_\+\+SUCCESS. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__notify_8h_a0e84ade7ca9d795634830893016d2fd5}\label{sc__notify_8h_a0e84ade7ca9d795634830893016d2fd5}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_destroy@{sc\_notify\_destroy}}
+\index{sc\_notify\_destroy@{sc\_notify\_destroy}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_destroy()}{sc\_notify\_destroy()}}
+{\footnotesize\ttfamily void sc\+\_\+notify\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify }\end{DoxyParamCaption})}
+
+
+
+Destroy a notify controller constructed with \mbox{\hyperlink{sc__notify_8h_a2c60b8ee792368a6617e62d0c1b6e509}{sc\+\_\+notify\+\_\+new}}. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em notify} & The notify controller that will be destroyed. Pointer is invalid on completion. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__notify_8h_a68ba53034e92a90d2af1cb80228439e5}\label{sc__notify_8h_a68ba53034e92a90d2af1cb80228439e5}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_ext@{sc\_notify\_ext}}
+\index{sc\_notify\_ext@{sc\_notify\_ext}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_ext()}{sc\_notify\_ext()}}
+{\footnotesize\ttfamily void sc\+\_\+notify\+\_\+ext (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{receivers,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{senders,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{in\+\_\+payload,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{out\+\_\+payload,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{mpicomm }\end{DoxyParamCaption})}
+
+
+
+The default implementation of the notify functionality, currently PEX. 
+
+This function optionally transfers a fixed-\/size payload per rank. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em receivers} & Sorted, unique array of int members. If {\itshape senders} is NULL, repurposed as output. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em senders} & Aarray of int members, resized on output. If NULL, the output is placed in {\itshape receivers}. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em in\+\_\+payload} & Array of same length as {\itshape receivers} with arbitrary data to be transmitted to senders. If {\itshape out\+\_\+payload} is NULL, repurposed as output. Both payload arrays may be NULL altogether. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em out\+\_\+payload} & Of same type as {\itshape in\+\_\+payload}, resized on output. If NULL, the result is placed in {\itshape in\+\_\+payload}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em mpicomm} & MPI communicator to use. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Aborts on MPI error or returns sc\+\_\+\+MPI\+\_\+\+SUCCESS. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__notify_8h_a52235d358ea70efc75313e451e877d1c}\label{sc__notify_8h_a52235d358ea70efc75313e451e877d1c}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_get\_comm@{sc\_notify\_get\_comm}}
+\index{sc\_notify\_get\_comm@{sc\_notify\_get\_comm}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_get\_comm()}{sc\_notify\_get\_comm()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} sc\+\_\+notify\+\_\+get\+\_\+comm (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify }\end{DoxyParamCaption})}
+
+
+
+Get the MPI communicator of a notify controller. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em notify} & The notify controller. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The mpi communicator over which the notification occurs. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__notify_8h_a26eaea5ced2359186cee42c9d5e7804c}\label{sc__notify_8h_a26eaea5ced2359186cee42c9d5e7804c}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_get\_eager\_threshold@{sc\_notify\_get\_eager\_threshold}}
+\index{sc\_notify\_get\_eager\_threshold@{sc\_notify\_get\_eager\_threshold}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_get\_eager\_threshold()}{sc\_notify\_get\_eager\_threshold()}}
+{\footnotesize\ttfamily size\+\_\+t sc\+\_\+notify\+\_\+get\+\_\+eager\+\_\+threshold (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify }\end{DoxyParamCaption})}
+
+
+
+Get the payload size above which payloads are no longer transferred with notification packets in \mbox{\hyperlink{sc__notify_8h_a1bb637268a14b63422eeef5b0acdb5de}{sc\+\_\+notify\+\_\+payload}}. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em notify} & The notify controller. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The size in bytes of the maximum eager payload size. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__notify_8h_a971fe2751998ef3d8c13d411100f865e}\label{sc__notify_8h_a971fe2751998ef3d8c13d411100f865e}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_get\_stats@{sc\_notify\_get\_stats}}
+\index{sc\_notify\_get\_stats@{sc\_notify\_get\_stats}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_get\_stats()}{sc\_notify\_get\_stats()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}}$\ast$ sc\+\_\+notify\+\_\+get\+\_\+stats (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify }\end{DoxyParamCaption})}
+
+
+
+Get the \mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} object for logging runtimes (added by function name). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em notify} & The notify controller. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The sc\+\_\+statistics\+\_\+t $\ast$ object, may be NULL. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__notify_8h_a15ba72f1b70b832936ca6f2c31e8e586}\label{sc__notify_8h_a15ba72f1b70b832936ca6f2c31e8e586}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_get\_type@{sc\_notify\_get\_type}}
+\index{sc\_notify\_get\_type@{sc\_notify\_get\_type}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_get\_type()}{sc\_notify\_get\_type()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}{sc\+\_\+notify\+\_\+type\+\_\+t}} sc\+\_\+notify\+\_\+get\+\_\+type (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify }\end{DoxyParamCaption})}
+
+
+
+Get the type of a notify controller. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em notify} & The notify controller. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The type of the notify controller (see {\itshape sc\+\_\+notify\+\_\+type\+\_\+t}). 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__notify_8h_aa95b3d2205c9f473b453650bb2d15dba}\label{sc__notify_8h_aa95b3d2205c9f473b453650bb2d15dba}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_nary@{sc\_notify\_nary}}
+\index{sc\_notify\_nary@{sc\_notify\_nary}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_nary()}{sc\_notify\_nary()}}
+{\footnotesize\ttfamily void sc\+\_\+notify\+\_\+nary (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{receivers,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{senders,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{in\+\_\+payload,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{out\+\_\+payload,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{mpicomm }\end{DoxyParamCaption})}
+
+
+
+The n-\/ary tree implementation of the notify functionality. 
+
+This function optionally transfers a fixed-\/size payload per rank. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em receivers} & Sorted, unique array of int members. If {\itshape senders} is NULL, repurposed as output. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em senders} & Aarray of int members, resized on output. If NULL, the output is placed in {\itshape receivers}. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em in\+\_\+payload} & Array of same length as {\itshape receivers} with arbitrary data to be transmitted to senders. If {\itshape out\+\_\+payload} is NULL, repurposed as output. Both payload arrays may be NULL altogether. If {\itshape out\+\_\+payload} is not NULL, {\itshape in\+\_\+payload} must not be NULL either. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em out\+\_\+payload} & Of same type as {\itshape in\+\_\+payload}, resized on output. If NULL, the result is placed in {\itshape in\+\_\+payload}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em mpicomm} & MPI communicator to use. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Aborts on MPI error or returns sc\+\_\+\+MPI\+\_\+\+SUCCESS. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__notify_8h_a99fc179eaa931e0f06d16ad6e4b916ce}\label{sc__notify_8h_a99fc179eaa931e0f06d16ad6e4b916ce}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_nary\_get\_widths@{sc\_notify\_nary\_get\_widths}}
+\index{sc\_notify\_nary\_get\_widths@{sc\_notify\_nary\_get\_widths}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_nary\_get\_widths()}{sc\_notify\_nary\_get\_widths()}}
+{\footnotesize\ttfamily void sc\+\_\+notify\+\_\+nary\+\_\+get\+\_\+widths (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify,  }\item[{int $\ast$}]{ntop,  }\item[{int $\ast$}]{nint,  }\item[{int $\ast$}]{nbot }\end{DoxyParamCaption})}
+
+
+
+For a notify of type \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae790c026816e15acc875689617f404e1}{SC\+\_\+\+NOTIFY\+\_\+\+NARY}}, get the branching widths of the recursive algorithm. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em notify} & The notify controller must be of type \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae790c026816e15acc875689617f404e1}{SC\+\_\+\+NOTIFY\+\_\+\+NARY}}. \\
+\hline
+\mbox{\texttt{ out}}  & {\em ntop} & The number of children at root node of nary tree. \\
+\hline
+\mbox{\texttt{ out}}  & {\em nint} & The number of children at intermediate tree nodes. \\
+\hline
+\mbox{\texttt{ out}}  & {\em nbot} & The number of children at deepest level of the tree. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__notify_8h_a1bc96b79fce345e93f6444169cce9740}\label{sc__notify_8h_a1bc96b79fce345e93f6444169cce9740}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_nary\_set\_widths@{sc\_notify\_nary\_set\_widths}}
+\index{sc\_notify\_nary\_set\_widths@{sc\_notify\_nary\_set\_widths}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_nary\_set\_widths()}{sc\_notify\_nary\_set\_widths()}}
+{\footnotesize\ttfamily void sc\+\_\+notify\+\_\+nary\+\_\+set\+\_\+widths (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify,  }\item[{int}]{ntop,  }\item[{int}]{nint,  }\item[{int}]{nbot }\end{DoxyParamCaption})}
+
+
+
+For a notify of type \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae790c026816e15acc875689617f404e1}{SC\+\_\+\+NOTIFY\+\_\+\+NARY}}, set the branching widths of the recursive algorithm. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em notify} & The notify controller must be of type \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8ae790c026816e15acc875689617f404e1}{SC\+\_\+\+NOTIFY\+\_\+\+NARY}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ntop} & The number of children at root node of nary tree. \\
+\hline
+\mbox{\texttt{ in}}  & {\em nint} & The number of children at intermediate tree nodes. \\
+\hline
+\mbox{\texttt{ in}}  & {\em nbot} & The number of children at deepest level of the tree. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__notify_8h_a2c60b8ee792368a6617e62d0c1b6e509}\label{sc__notify_8h_a2c60b8ee792368a6617e62d0c1b6e509}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_new@{sc\_notify\_new}}
+\index{sc\_notify\_new@{sc\_notify\_new}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_new()}{sc\_notify\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}}$\ast$ sc\+\_\+notify\+\_\+new (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{mpicomm }\end{DoxyParamCaption})}
+
+
+
+Create a notify controller that can be used in \mbox{\hyperlink{sc__notify_8h_a1bb637268a14b63422eeef5b0acdb5de}{sc\+\_\+notify\+\_\+payload}} and \mbox{\hyperlink{sc__notify_8h_a1d26f916496dcb8abca383a9f5b64bd9}{sc\+\_\+notify\+\_\+payloadv}}. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & The MPI communicator over which the notification occurs. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to a notify controller that should be destroyed with \mbox{\hyperlink{sc__notify_8h_a0e84ade7ca9d795634830893016d2fd5}{sc\+\_\+notify\+\_\+destroy}}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__notify_8h_a1bb637268a14b63422eeef5b0acdb5de}\label{sc__notify_8h_a1bb637268a14b63422eeef5b0acdb5de}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_payload@{sc\_notify\_payload}}
+\index{sc\_notify\_payload@{sc\_notify\_payload}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_payload()}{sc\_notify\_payload()}}
+{\footnotesize\ttfamily void sc\+\_\+notify\+\_\+payload (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{receivers,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{senders,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{in\+\_\+payload,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{out\+\_\+payload,  }\item[{int}]{sorted,  }\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify }\end{DoxyParamCaption})}
+
+
+
+Collective call to notify a set of receiver ranks of current rank. 
+
+This function aborts on MPI error. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em receivers} & On input, sorted and uniqued array of type int. Contains the MPI ranks to inform. If {\bfseries{senders}} is not NULL, treated read-\/only. If {\bfseries{senders}} is NULL, takes its role on output. In this case it must not be a view. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em senders} & If NULL, the result is placed in {\bfseries{receivers}} as written below for the non-\/\+NULL case. If not NULL, array of type int and any length. Its entries on input are ignored and overwritten. On output it is resized to the number of notifying ranks, which it contains in order. Thus, it must not be a view. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em in\+\_\+payload} & This array pointer may be NULL. If not NULL, it must have {\bfseries{num\+\_\+receivers}} entries that are the same size on every process. If not NULL and {\bfseries{out\+\_\+payload}} is NULL, it must not be a view, and it will be resized to contain the output and have {\bfseries{$\ast$num\+\_\+senders}} entries. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em out\+\_\+payload} & This array pointer may be NULL. If not, it must not be a view, and on output will have {\bfseries{$\ast$}} num\+\_\+senders entries. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sorted} & whether {\bfseries{receivers}} and {\bfseries{senders}} are required to be sorted by MPI rank. \\
+\hline
+\mbox{\texttt{ in}}  & {\em notify} & Notify controller to use. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__notify_8h_a1d26f916496dcb8abca383a9f5b64bd9}\label{sc__notify_8h_a1d26f916496dcb8abca383a9f5b64bd9}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_payloadv@{sc\_notify\_payloadv}}
+\index{sc\_notify\_payloadv@{sc\_notify\_payloadv}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_payloadv()}{sc\_notify\_payloadv()}}
+{\footnotesize\ttfamily void sc\+\_\+notify\+\_\+payloadv (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{receivers,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{senders,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{out\+\_\+payload,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{in\+\_\+payload,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{out\+\_\+offsets,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{in\+\_\+offsets,  }\item[{int}]{sorted,  }\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify }\end{DoxyParamCaption})}
+
+
+
+Collective call to notify a set of receiver ranks of current rank and send a variable size message to the receiver. 
+
+This function aborts on MPI error. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em receivers} & On input, sorted and uniqued array of type int. Contains the MPI ranks to inform. If {\bfseries{senders}} is not NULL, treated read-\/only. If {\bfseries{senders}} is NULL, takes its role on output. In this case it must not be a view. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em senders} & If NULL, the result is placed in {\bfseries{receivers}} as written below for the non-\/\+NULL case. If not NULL, array of type int and any length. Its entries on input are ignored and overwritten. On output it is resized to the number of notifying ranks, which it contains in order. Thus, it must not be a view. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em in\+\_\+payload} & This array pointer may be NULL. If not, it must not be a view and have entries that are the same size on every process. This data will be communicated to the receivers. If {\bfseries{out\+\_\+payload}} is NULL, this will be resized to contain the received payload. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em out\+\_\+payload} & This array pointer may be NULL. If not, it must not be a view and have entries that are the same size on every process. If not NULL, this array will be resized to contain the received payload. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em in\+\_\+offsets} & If {\bfseries{in\+\_\+payload}} is not NULL, this is an array of int\textquotesingle{}s of size {\bfseries{num\+\_\+receivers}} + 1, giving offsets for the portion of the payload to be sent to every receiver. If {\bfseries{out\+\_\+offsets}} is NULL, it will be resized to give offsets of the received payload. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em out\+\_\+offsets} & This array pointer may be NULL. If {\bfseries{in\+\_\+payload}} is not NULL, it is an array of int\textquotesingle{}s that will be resized to {\bfseries{num\+\_\+senders}} + 1, giving offsets for the portion of the payload received from each sender. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sorted} & whether {\bfseries{receivers}} and {\bfseries{senders}} (and thus {\bfseries{in\+\_\+offsets}} and {\bfseries{out\+\_\+offsets}}) are required to be sorted by MPI rank. \\
+\hline
+\mbox{\texttt{ in}}  & {\em notify} & Notify controller to use. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__notify_8h_ab09df7d05ec41ae0418797d1a14742b7}\label{sc__notify_8h_ab09df7d05ec41ae0418797d1a14742b7}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_ranges\_get\_num\_ranges@{sc\_notify\_ranges\_get\_num\_ranges}}
+\index{sc\_notify\_ranges\_get\_num\_ranges@{sc\_notify\_ranges\_get\_num\_ranges}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_ranges\_get\_num\_ranges()}{sc\_notify\_ranges\_get\_num\_ranges()}}
+{\footnotesize\ttfamily int sc\+\_\+notify\+\_\+ranges\+\_\+get\+\_\+num\+\_\+ranges (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify }\end{DoxyParamCaption})}
+
+
+
+Query the number of ranges for the \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8acd3f427bdba923d7f721778499b0953a}{SC\+\_\+\+NOTIFY\+\_\+\+RANGES}} method. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em notify} & Must be of type \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8acd3f427bdba923d7f721778499b0953a}{SC\+\_\+\+NOTIFY\+\_\+\+RANGES}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of ranges. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__notify_8h_a38b45594935514542a473738d3fce5f0}\label{sc__notify_8h_a38b45594935514542a473738d3fce5f0}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_ranges\_set\_num\_ranges@{sc\_notify\_ranges\_set\_num\_ranges}}
+\index{sc\_notify\_ranges\_set\_num\_ranges@{sc\_notify\_ranges\_set\_num\_ranges}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_ranges\_set\_num\_ranges()}{sc\_notify\_ranges\_set\_num\_ranges()}}
+{\footnotesize\ttfamily void sc\+\_\+notify\+\_\+ranges\+\_\+set\+\_\+num\+\_\+ranges (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify,  }\item[{int}]{num\+\_\+ranges }\end{DoxyParamCaption})}
+
+
+
+Set the number of ranges for the \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8acd3f427bdba923d7f721778499b0953a}{SC\+\_\+\+NOTIFY\+\_\+\+RANGES}} method. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em notify} & Must be of type \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8acd3f427bdba923d7f721778499b0953a}{SC\+\_\+\+NOTIFY\+\_\+\+RANGES}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+ranges} & Number of ranges. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__notify_8h_a9281fa8a98752ffe3654fee6f5cbe047}\label{sc__notify_8h_a9281fa8a98752ffe3654fee6f5cbe047}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_set\_eager\_threshold@{sc\_notify\_set\_eager\_threshold}}
+\index{sc\_notify\_set\_eager\_threshold@{sc\_notify\_set\_eager\_threshold}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_set\_eager\_threshold()}{sc\_notify\_set\_eager\_threshold()}}
+{\footnotesize\ttfamily void sc\+\_\+notify\+\_\+set\+\_\+eager\+\_\+threshold (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify,  }\item[{size\+\_\+t}]{thresh }\end{DoxyParamCaption})}
+
+
+
+Get the payload size above which payloads are no longer transferred with notification packets in \mbox{\hyperlink{sc__notify_8h_a1bb637268a14b63422eeef5b0acdb5de}{sc\+\_\+notify\+\_\+payload}}. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em notify} & The notify controller. \\
+\hline
+\mbox{\texttt{ in}}  & {\em thresh} & The size in bytes of the maximum eager payload size. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__notify_8h_ae4d82e5279fe982a51e71eb0c0bf2de8}\label{sc__notify_8h_ae4d82e5279fe982a51e71eb0c0bf2de8}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_set\_stats@{sc\_notify\_set\_stats}}
+\index{sc\_notify\_set\_stats@{sc\_notify\_set\_stats}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_set\_stats()}{sc\_notify\_set\_stats()}}
+{\footnotesize\ttfamily void sc\+\_\+notify\+\_\+set\+\_\+stats (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify,  }\item[{\mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} $\ast$}]{stats }\end{DoxyParamCaption})}
+
+
+
+Set a \mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} object for logging runtimes (added by function name). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em notify} & The notify controller. \\
+\hline
+\mbox{\texttt{ in}}  & {\em stats} & The \mbox{\hyperlink{sc__statistics_8h_acb02d9af0a0a755a21d865684c8a0be4}{sc\+\_\+statistics\+\_\+t}} object. The notify controller will add timings for functions to the object, listed under their function names. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__notify_8h_ad5bb3083356dc8fb9887e66a614d5be8}\label{sc__notify_8h_ad5bb3083356dc8fb9887e66a614d5be8}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_set\_type@{sc\_notify\_set\_type}}
+\index{sc\_notify\_set\_type@{sc\_notify\_set\_type}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_set\_type()}{sc\_notify\_set\_type()}}
+{\footnotesize\ttfamily int sc\+\_\+notify\+\_\+set\+\_\+type (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify,  }\item[{\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}{sc\+\_\+notify\+\_\+type\+\_\+t}}}]{type }\end{DoxyParamCaption})}
+
+
+
+Set the type of a notify controller. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em notify} & The notify controller. \\
+\hline
+\mbox{\texttt{ in}}  & {\em type} & The type of algorithm used to affect the dynamic sparse data exchange.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false if the type is supported by the current MPI version, true otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__notify_8h_ab03acbda8f2ab6505e9660478a41e82b}\label{sc__notify_8h_ab03acbda8f2ab6505e9660478a41e82b}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_superset\_get\_callback@{sc\_notify\_superset\_get\_callback}}
+\index{sc\_notify\_superset\_get\_callback@{sc\_notify\_superset\_get\_callback}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_superset\_get\_callback()}{sc\_notify\_superset\_get\_callback()}}
+{\footnotesize\ttfamily void sc\+\_\+notify\+\_\+superset\+\_\+get\+\_\+callback (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify,  }\item[{\mbox{\hyperlink{sc__notify_8h_a605fb4802f80207b5808bf4cc33f0428}{sc\+\_\+compute\+\_\+superset\+\_\+t}} $\ast$}]{compute\+\_\+superset,  }\item[{void $\ast$}]{ctx }\end{DoxyParamCaption})}
+
+
+
+Query the callback for the \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a6b6a2bcadbafcc3a0b1a91a877c36c41}{SC\+\_\+\+NOTIFY\+\_\+\+SUPERSET}} method. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em notify} & Must be of type \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a6b6a2bcadbafcc3a0b1a91a877c36c41}{SC\+\_\+\+NOTIFY\+\_\+\+SUPERSET}}. \\
+\hline
+\mbox{\texttt{ out}}  & {\em compute\+\_\+superset} & Output the callback function. \\
+\hline
+\mbox{\texttt{ out}}  & {\em ctx} & Output the callback Context. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__notify_8h_aeaa1a4f2652b6d177f49efb7bf41f6fc}\label{sc__notify_8h_aeaa1a4f2652b6d177f49efb7bf41f6fc}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_superset\_set\_callback@{sc\_notify\_superset\_set\_callback}}
+\index{sc\_notify\_superset\_set\_callback@{sc\_notify\_superset\_set\_callback}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_superset\_set\_callback()}{sc\_notify\_superset\_set\_callback()}}
+{\footnotesize\ttfamily void sc\+\_\+notify\+\_\+superset\+\_\+set\+\_\+callback (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_af45e0174f6d9a3c1a108780116e1e5f8}{sc\+\_\+notify\+\_\+t}} $\ast$}]{notify,  }\item[{\mbox{\hyperlink{sc__notify_8h_a605fb4802f80207b5808bf4cc33f0428}{sc\+\_\+compute\+\_\+superset\+\_\+t}}}]{compute\+\_\+superset,  }\item[{void $\ast$}]{ctx }\end{DoxyParamCaption})}
+
+
+
+Set the callback for the \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a6b6a2bcadbafcc3a0b1a91a877c36c41}{SC\+\_\+\+NOTIFY\+\_\+\+SUPERSET}} method. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em notify} & Must be of type \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8a6b6a2bcadbafcc3a0b1a91a877c36c41}{SC\+\_\+\+NOTIFY\+\_\+\+SUPERSET}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em compute\+\_\+superset} & Callback function. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ctx} & Context passed to callback function. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__notify_8h_aea12e4ad4c61c83f11fe1a77e9b2a8c6}\label{sc__notify_8h_aea12e4ad4c61c83f11fe1a77e9b2a8c6}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_supports\_type@{sc\_notify\_supports\_type}}
+\index{sc\_notify\_supports\_type@{sc\_notify\_supports\_type}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_supports\_type()}{sc\_notify\_supports\_type()}}
+{\footnotesize\ttfamily int sc\+\_\+notify\+\_\+supports\+\_\+type (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}{sc\+\_\+notify\+\_\+type\+\_\+t}}}]{type }\end{DoxyParamCaption})}
+
+
+
+Query whether \mbox{\hyperlink{sc__notify_8h_ad5bb3083356dc8fb9887e66a614d5be8}{sc\+\_\+notify\+\_\+set\+\_\+type}} supports a given type. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em type} & Notify algorithm type from \mbox{\hyperlink{sc__notify_8h_a3efd21dcb5fd8499a9f199141c55abf8}{sc\+\_\+notify\+\_\+type\+\_\+t}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if supported, false if not. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{sc__notify_8h_a57289be49bfc92e1b71ad65b0d1df181}\label{sc__notify_8h_a57289be49bfc92e1b71ad65b0d1df181}} 
+\index{sc\_notify.h@{sc\_notify.h}!sc\_notify\_eager\_threshold\_default@{sc\_notify\_eager\_threshold\_default}}
+\index{sc\_notify\_eager\_threshold\_default@{sc\_notify\_eager\_threshold\_default}!sc\_notify.h@{sc\_notify.h}}
+\doxysubsubsection{\texorpdfstring{sc\_notify\_eager\_threshold\_default}{sc\_notify\_eager\_threshold\_default}}
+{\footnotesize\ttfamily size\+\_\+t sc\+\_\+notify\+\_\+eager\+\_\+threshold\+\_\+default\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+The default threshold for payload sizes (in bytes) that are communicated with the notification packet. 
+
+Initialized to 1024 (2$^\wedge$10) 

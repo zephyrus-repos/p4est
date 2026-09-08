@@ -1,0 +1,189 @@
+\hypertarget{steps_2p4est_step1_8c-example}{}\doxysection{steps/p4est\+\_\+step1.\+c}
+This software refines a basic domain using given image data.\+As a result, the resulting VTK file showcases the message \textquotesingle{}Hello World\textquotesingle{} through the mesh.
+
+Usage\+: \begin{quote}
+{\ttfamily p4est\+\_\+step1} \end{quote}
+
+
+
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{  This file is part of p4est.}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is a C library to manage a collection (a forest) of multiple}}
+\DoxyCodeLine{\textcolor{comment}{  connected adaptive quadtrees or octrees in parallel.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  Copyright (C) 2010 The University of Texas System}}
+\DoxyCodeLine{\textcolor{comment}{  Additional copyright (C) 2011 individual authors}}
+\DoxyCodeLine{\textcolor{comment}{  Written by Carsten Burstedde, Lucas C. Wilcox, and Tobin Isaac}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is free software; you can redistribute it and/or modify}}
+\DoxyCodeLine{\textcolor{comment}{  it under the terms of the GNU General Public License as published by}}
+\DoxyCodeLine{\textcolor{comment}{  the Free Software Foundation; either version 2 of the License, or}}
+\DoxyCodeLine{\textcolor{comment}{  (at your option) any later version.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is distributed in the hope that it will be useful,}}
+\DoxyCodeLine{\textcolor{comment}{  but WITHOUT ANY WARRANTY; without even the implied warranty of}}
+\DoxyCodeLine{\textcolor{comment}{  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the}}
+\DoxyCodeLine{\textcolor{comment}{  GNU General Public License for more details.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  You should have received a copy of the GNU General Public License}}
+\DoxyCodeLine{\textcolor{comment}{  along with p4est; if not, write to the Free Software Foundation, Inc.,}}
+\DoxyCodeLine{\textcolor{comment}{  51 Franklin Street, Fifth Floor, Boston, MA 02110-\/1301, USA.}}
+\DoxyCodeLine{\textcolor{comment}{*/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* p4est has two separate interfaces for 2D and 3D, p4est*.h and p8est*.h.}}
+\DoxyCodeLine{\textcolor{comment}{ * Most API functions are available for both dimensions.  The header file}}
+\DoxyCodeLine{\textcolor{comment}{ * p4est\_to\_p8est.h \#define's the 2D names to the 3D names such that most code}}
+\DoxyCodeLine{\textcolor{comment}{ * only needs to be written once.  In this example, we rely on this. */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__vtk_8h}{p4est\_vtk.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__vtk_8h}{p8est\_vtk.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "{}hw32.h"{}}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define P4EST\_STEP1\_PATTERN\_LEVEL 5}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define P4EST\_STEP1\_PATTERN\_LENGTH (1 << P4EST\_STEP1\_PATTERN\_LEVEL)}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int}    plv = P4EST\_STEP1\_PATTERN\_LEVEL;    }
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int}    ple = P4EST\_STEP1\_PATTERN\_LENGTH;   }
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\_qcoord\_t}} eighth = \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (3);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{refine\_fn (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{           \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrant)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 tilelen;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 offsi, offsj;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i, j;}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{char}         *d;}
+\DoxyCodeLine{  \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}       p[3];}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* The connectivity chosen in main () only consists of one tree. */}}
+\DoxyCodeLine{  P4EST\_ASSERT (which\_tree == 0);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* We do not want to refine deeper than a given maximum level. */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} > plv) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{  \textcolor{comment}{/* In 3D we extrude the 2D image in the z direction between [3/8, 5/8]. */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} >= 3 \&\&}
+\DoxyCodeLine{      (quadrant-\/>z < 3 * eighth || quadrant-\/>z >= 5 * eighth)) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* We read the image data and refine wherever the color value is dark.}}
+\DoxyCodeLine{\textcolor{comment}{   * We can then visualize the output and highlight level > PATTERN\_LEVEL. */}}
+\DoxyCodeLine{  tilelen = 1 << (plv -\/ quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}});       \textcolor{comment}{/* Pixel size of quadrant */}}
+\DoxyCodeLine{  offsi = quadrant-\/>x / \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (plv);       \textcolor{comment}{/* Pixel x offset */}}
+\DoxyCodeLine{  offsj = quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_ad226034132b973fe7955ef797938dea0}{y}} / \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (plv);       \textcolor{comment}{/* Pixel y offset */}}
+\DoxyCodeLine{  P4EST\_ASSERT (offsi >= 0 \&\& offsj >= 0);}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (j = 0; j < tilelen; ++j) \{}
+\DoxyCodeLine{    P4EST\_ASSERT (offsj + j < ple);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < tilelen; ++i) \{}
+\DoxyCodeLine{      \textcolor{keyword}{const} \textcolor{keywordtype}{int} allind = 4 * (ple * (ple -\/ 1 -\/ (offsj + j)) + (offsi + i));}
+\DoxyCodeLine{      P4EST\_ASSERT (offsi + i < ple);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{      \textcolor{comment}{/* this was the previous code indexing a 4096-\/byte string constant */}}
+\DoxyCodeLine{      d =}
+\DoxyCodeLine{        hw32\_header\_data + 4 * (ple * (ple -\/ 1 -\/ (offsj + j)) + (offsi + i));}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{      P4EST\_ASSERT (0 <= allind \&\& allind < 4096);}
+\DoxyCodeLine{      d = hw32\_header\_data[allind >> 10] + (allind \& ((1 << 10) -\/ 1));}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{      HW32\_HEADER\_PIXEL (d, p);}
+\DoxyCodeLine{      P4EST\_ASSERT (p[0] == p[1] \&\& p[1] == p[2]);      \textcolor{comment}{/* Grayscale image */}}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (p[0] < 128) \{}
+\DoxyCodeLine{        \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{int}}
+\DoxyCodeLine{main (\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char} **argv)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 recursive, partforcoarsen, balance;}
+\DoxyCodeLine{  sc\_MPI\_Comm         mpicomm;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est\_t}}            *\mbox{\hyperlink{structp4est}{p4est}};}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__connectivity}{p4est\_connectivity\_t}} *conn;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Initialize MPI; see sc\_mpi.h.}}
+\DoxyCodeLine{\textcolor{comment}{   * If configure -\/-\/enable-\/mpi is given these are true MPI calls.}}
+\DoxyCodeLine{\textcolor{comment}{   * Else these are dummy functions that simulate a single-\/processor run. */}}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Init (\&argc, \&argv);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  mpicomm = sc\_MPI\_COMM\_WORLD;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* These functions are optional.  If called they store the MPI rank as a}}
+\DoxyCodeLine{\textcolor{comment}{   * static variable so subsequent global p4est log messages are only issued}}
+\DoxyCodeLine{\textcolor{comment}{   * from processor zero.  Here we turn off most of the logging; see sc.h. */}}
+\DoxyCodeLine{  sc\_init (mpicomm, 1, 1, NULL, SC\_LP\_ESSENTIAL);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}{p4est\_init}} (NULL, SC\_LP\_PRODUCTION);}
+\DoxyCodeLine{  P4EST\_GLOBAL\_PRODUCTIONF}
+\DoxyCodeLine{    (\textcolor{stringliteral}{"{}This is the p4est \%dD demo example/steps/\%s\_step1\(\backslash\)n"{}},}
+\DoxyCodeLine{     \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}, \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Create a forest that consists of just one quadtree/octree.}}
+\DoxyCodeLine{\textcolor{comment}{   * This file is compiled for both 2D and 3D: the macro P4\_TO\_P8 can be}}
+\DoxyCodeLine{\textcolor{comment}{   * checked to execute dimension-\/dependent code. */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{  conn = \mbox{\hyperlink{p4est__connectivity_8h_aab03936b137ccdc4fa7520e7e017fcf0}{p4est\_connectivity\_new\_unitsquare}} ();}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  conn = \mbox{\hyperlink{p8est__connectivity_8h_a53bdb596e76c52c1e23aaecd0aacc763}{p8est\_connectivity\_new\_unitcube}} ();}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Create a forest that is not refined; it consists of the root octant. */}}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est}} = \mbox{\hyperlink{p4est_8h_ac10dc6f325322ad6af793c5b6acbf4c2}{p4est\_new}} (mpicomm, conn, 0, NULL, NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Refine the forest recursively in parallel.}}
+\DoxyCodeLine{\textcolor{comment}{   * Since refinement does not change the partition boundary, this call}}
+\DoxyCodeLine{\textcolor{comment}{   * must not create an overly large number of quadrants.  A numerical}}
+\DoxyCodeLine{\textcolor{comment}{   * application would call p4est\_refine non-\/recursively in a loop,}}
+\DoxyCodeLine{\textcolor{comment}{   * repartitioning in each iteration.}}
+\DoxyCodeLine{\textcolor{comment}{   * The P4EST\_ASSERT macro only activates with -\/-\/enable-\/debug.}}
+\DoxyCodeLine{\textcolor{comment}{   * We check against the data dimensions in example/steps/hw32.h. */}}
+\DoxyCodeLine{  P4EST\_ASSERT (P4EST\_STEP1\_PATTERN\_LENGTH == width);}
+\DoxyCodeLine{  P4EST\_ASSERT (P4EST\_STEP1\_PATTERN\_LENGTH == height);}
+\DoxyCodeLine{  recursive = 1;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a1a31375edfa42b5609e7656233c32cca}{p4est\_refine}} (\mbox{\hyperlink{structp4est}{p4est}}, recursive, refine\_fn, NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Partition: The quadrants are redistributed for equal element count.  The}}
+\DoxyCodeLine{\textcolor{comment}{   * partition can optionally be modified such that a family of octants, which}}
+\DoxyCodeLine{\textcolor{comment}{   * are possibly ready for coarsening, are never split between processors. */}}
+\DoxyCodeLine{  partforcoarsen = 0;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a54c1f4e6bc35c181952371a8046523aa}{p4est\_partition}} (\mbox{\hyperlink{structp4est}{p4est}}, partforcoarsen, NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* If we call the 2:1 balance we ensure that neighbors do not differ in size}}
+\DoxyCodeLine{\textcolor{comment}{   * by more than a factor of 2.  This can optionally include diagonal}}
+\DoxyCodeLine{\textcolor{comment}{   * neighbors across edges or corners as well; see p4est.h. */}}
+\DoxyCodeLine{  balance = 1;}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (balance) \{}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est_8h_a6b603736cf5007b14755197a9c179a85}{p4est\_balance}} (\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa33499fc87edef5b1226ade261dd0d6e6}{P4EST\_CONNECT\_FACE}}, NULL);}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est_8h_a54c1f4e6bc35c181952371a8046523aa}{p4est\_partition}} (\mbox{\hyperlink{structp4est}{p4est}}, partforcoarsen, NULL);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Write the forest to disk for visualization, one file per processor. */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__vtk_8h_a9e8a44b027b5372824a2c1ef2c17dea8}{p4est\_vtk\_write\_file}} (\mbox{\hyperlink{structp4est}{p4est}}, NULL, \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_step1"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Destroy the p4est and the connectivity structure. */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a1e78f347378fe8b097ef019214f2338e}{p4est\_destroy}} (\mbox{\hyperlink{structp4est}{p4est}});}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__connectivity_8h_a208e613cae5e1bd3baffb587387b672c}{p4est\_connectivity\_destroy}} (conn);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Verify that allocations internal to p4est and sc do not leak memory.}}
+\DoxyCodeLine{\textcolor{comment}{   * This should be called if sc\_init () has been called earlier. */}}
+\DoxyCodeLine{  sc\_finalize ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* This is standard MPI programs.  Without -\/-\/enable-\/mpi, this is a dummy. */}}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Finalize ();}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCodeInclude}
+ 

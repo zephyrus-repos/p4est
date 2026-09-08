@@ -1,0 +1,345 @@
+\hypertarget{p4est__lnodes_8h}{}\doxysection{src/p4est\+\_\+lnodes.h File Reference}
+\label{p4est__lnodes_8h}\index{src/p4est\_lnodes.h@{src/p4est\_lnodes.h}}
+
+
+Generate Lobatto node numbers for any degree.  
+
+
+{\ttfamily \#include $<$p4est\+\_\+ghost.\+h$>$}\newline
+Include dependency graph for p4est\+\_\+lnodes.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p4est__lnodes_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p4est__lnodes_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structp4est__lnodes}{p4est\+\_\+lnodes}}
+\begin{DoxyCompactList}\small\item\em Store a parallel numbering of Lobatto points of a given degree $>$ 0. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp4est__lnodes__rank}{p4est\+\_\+lnodes\+\_\+rank}}
+\begin{DoxyCompactList}\small\item\em The structure stored in the sharers array. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structp4est__lnodes__buffer}{p4est\+\_\+lnodes\+\_\+buffer}}
+\begin{DoxyCompactList}\small\item\em p4est\+\_\+lnodes\+\_\+buffer\+\_\+t handles the communication of data associated with nodes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p4est__lnodes_8h_ad1ce475e060c1a87e8aff86dde883e11}\label{p4est__lnodes_8h_ad1ce475e060c1a87e8aff86dde883e11}} 
+typedef int8\+\_\+t \mbox{\hyperlink{p4est__lnodes_8h_ad1ce475e060c1a87e8aff86dde883e11}{p4est\+\_\+lnodes\+\_\+code\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The face code encodes the configuration of a hanging quadrant. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structp4est__lnodes}{p4est\+\_\+lnodes}} \mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Store a parallel numbering of Lobatto points of a given degree $>$ 0. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structp4est__lnodes__rank}{p4est\+\_\+lnodes\+\_\+rank}} \mbox{\hyperlink{p4est__lnodes_8h_a5331e5d49cdcc6d81fd44e495b481178}{p4est\+\_\+lnodes\+\_\+rank\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The structure stored in the sharers array. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structp4est__lnodes__buffer}{p4est\+\_\+lnodes\+\_\+buffer}} \mbox{\hyperlink{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}{p4est\+\_\+lnodes\+\_\+buffer\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em p4est\+\_\+lnodes\+\_\+buffer\+\_\+t handles the communication of data associated with nodes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__lnodes_8h_af5aea4df6408e9ec5065e0b23f96e157}{p4est\+\_\+lnodes\+\_\+new}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$ghost\+\_\+layer, int degree)
+\begin{DoxyCompactList}\small\item\em Create a tensor-\/product Lobatto node structure for a given degree. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__lnodes_8h_ab0d0d912d5e6212b1b924bca21e922f5}{p4est\+\_\+lnodes\+\_\+destroy}} (\mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$lnodes)
+\begin{DoxyCompactList}\small\item\em Free all memory in a previously constructed lnodes structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__lnodes_8h_a863691d8c8fdd2913b887c9f611a1602}{p4est\+\_\+ghost\+\_\+support\+\_\+lnodes}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$lnodes, \mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$ghost)
+\begin{DoxyCompactList}\small\item\em Expand the ghost layer to include the support of all nodes supported on the local partition. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__lnodes_8h_a5398d19476ceafeaf9e32d6ccdcacff4}{p4est\+\_\+ghost\+\_\+expand\+\_\+by\+\_\+lnodes}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$lnodes, \mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$ghost)
+\begin{DoxyCompactList}\small\item\em Expand the ghost layer as in \mbox{\hyperlink{p4est__ghost_8h_ab9750fa62cbc17285a0eb5cfe13a1e28}{p4est\+\_\+ghost\+\_\+expand()}}, but use node support to define adjacency instead of geometric adjacency. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__lnodes_8h_a838a5869a10015c19af18f98d04b19e1}{p4est\+\_\+partition\+\_\+lnodes}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$ghost, int degree, int partition\+\_\+for\+\_\+coarsening)
+\begin{DoxyCompactList}\small\item\em Partition using weights based on the number of nodes assigned to each element in lnodes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__lnodes_8h_a4b71188f207a9d0d62d86d9f45058845}\label{p4est__lnodes_8h_a4b71188f207a9d0d62d86d9f45058845}} 
+void \mbox{\hyperlink{p4est__lnodes_8h_a4b71188f207a9d0d62d86d9f45058845}{p4est\+\_\+partition\+\_\+lnodes\+\_\+detailed}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$ghost, int nodes\+\_\+per\+\_\+volume, int nodes\+\_\+per\+\_\+face, int nodes\+\_\+per\+\_\+corner, int partition\+\_\+for\+\_\+coarsening)
+\begin{DoxyCompactList}\small\item\em Partition using weights that are broken down by where they reside\+: in volumes, on faces, or on corners. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}{p4est\+\_\+lnodes\+\_\+buffer\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__lnodes_8h_a69def7b9a01201b94f0fbeb3b082ea8c}{p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+begin}} (sc\+\_\+array\+\_\+t $\ast$node\+\_\+data, \mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$lnodes)
+\begin{DoxyCompactList}\small\item\em p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+begin \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__lnodes_8h_ae088b90299dc74e125d9ad20d497dbef}\label{p4est__lnodes_8h_ae088b90299dc74e125d9ad20d497dbef}} 
+void {\bfseries p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+end} (\mbox{\hyperlink{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}{p4est\+\_\+lnodes\+\_\+buffer\+\_\+t}} $\ast$buffer)
+\item 
+void \mbox{\hyperlink{p4est__lnodes_8h_a818e68d478dbdbf67f379e8885399176}{p4est\+\_\+lnodes\+\_\+share\+\_\+owned}} (sc\+\_\+array\+\_\+t $\ast$node\+\_\+data, \mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$lnodes)
+\begin{DoxyCompactList}\small\item\em Equivalent to calling p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+end directly after p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+begin. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}{p4est\+\_\+lnodes\+\_\+buffer\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__lnodes_8h_a13ef9e173e9878462430c44974019a62}{p4est\+\_\+lnodes\+\_\+share\+\_\+all\+\_\+begin}} (sc\+\_\+array\+\_\+t $\ast$node\+\_\+data, \mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$lnodes)
+\begin{DoxyCompactList}\small\item\em p4est\+\_\+lnodes\+\_\+share\+\_\+all\+\_\+begin \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__lnodes_8h_a7be7f1f2a944bf4e7ab09f753abe5d1a}\label{p4est__lnodes_8h_a7be7f1f2a944bf4e7ab09f753abe5d1a}} 
+void {\bfseries p4est\+\_\+lnodes\+\_\+share\+\_\+all\+\_\+end} (\mbox{\hyperlink{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}{p4est\+\_\+lnodes\+\_\+buffer\+\_\+t}} $\ast$buffer)
+\item 
+\mbox{\hyperlink{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}{p4est\+\_\+lnodes\+\_\+buffer\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__lnodes_8h_a52273b1dfb80a77723c04c8bb798e104}{p4est\+\_\+lnodes\+\_\+share\+\_\+all}} (sc\+\_\+array\+\_\+t $\ast$node\+\_\+data, \mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$lnodes)
+\begin{DoxyCompactList}\small\item\em Equivalent to calling p4est\+\_\+lnodes\+\_\+share\+\_\+all\+\_\+end directly after p4est\+\_\+lnodes\+\_\+share\+\_\+all\+\_\+begin. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__lnodes_8h_a12528066923ce7faae23ad86490fa35c}\label{p4est__lnodes_8h_a12528066923ce7faae23ad86490fa35c}} 
+void {\bfseries p4est\+\_\+lnodes\+\_\+buffer\+\_\+destroy} (\mbox{\hyperlink{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}{p4est\+\_\+lnodes\+\_\+buffer\+\_\+t}} $\ast$buffer)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const int \mbox{\hyperlink{p4est__lnodes_8h_abe70b7e5ac41fe704ae17b57b0d21834}{p4est\+\_\+lnodes\+\_\+corner\+\_\+hanging}} \mbox{[}4\mbox{]}
+\begin{DoxyCompactList}\small\item\em For each corner, the normal direction of the hanging face. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Generate Lobatto node numbers for any degree. 
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}\label{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_lnodes\_buffer\_t@{p4est\_lnodes\_buffer\_t}}
+\index{p4est\_lnodes\_buffer\_t@{p4est\_lnodes\_buffer\_t}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_lnodes\_buffer\_t}{p4est\_lnodes\_buffer\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structp4est__lnodes__buffer}{p4est\+\_\+lnodes\+\_\+buffer}} \mbox{\hyperlink{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}{p4est\+\_\+lnodes\+\_\+buffer\+\_\+t}}}
+
+
+
+p4est\+\_\+lnodes\+\_\+buffer\+\_\+t handles the communication of data associated with nodes. 
+
+{\itshape send\+\_\+buffers} is an array of arrays\+: one buffer for each process to which the current process sends node-\/data. It should not be altered between a shared\+\_\+$\ast$\+\_\+begin and a shared\+\_\+$\ast$\+\_\+end call.
+
+{\itshape recv\+\_\+buffers} is an array of arrays that is used in lnodes\+\_\+share\+\_\+all\+\_\+$\ast$. {\itshape recv\+\_\+buffers}\mbox{[}j\mbox{]} corresponds with lnodes-\/$>$sharers\mbox{[}j\mbox{]}\+: it is the same length as {\itshape lnodes-\/$>$sharers}\mbox{[}j\mbox{]}-\/$>$shared\+\_\+nodes. At the completion of lnodes\+\_\+share\+\_\+all or lnodes\+\_\+share\+\_\+all\+\_\+end, recv\+\_\+buffers\mbox{[}j\mbox{]} contains the node-\/data from the process lnodes-\/$>$sharers\mbox{[}j\mbox{]}-\/$>$rank (unless j is the current rank, in which case recv\+\_\+buffers\mbox{[}j\mbox{]} is empty). \mbox{\Hypertarget{p4est__lnodes_8h_a5331e5d49cdcc6d81fd44e495b481178}\label{p4est__lnodes_8h_a5331e5d49cdcc6d81fd44e495b481178}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_lnodes\_rank\_t@{p4est\_lnodes\_rank\_t}}
+\index{p4est\_lnodes\_rank\_t@{p4est\_lnodes\_rank\_t}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_lnodes\_rank\_t}{p4est\_lnodes\_rank\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structp4est__lnodes__rank}{p4est\+\_\+lnodes\+\_\+rank}} \mbox{\hyperlink{p4est__lnodes_8h_a5331e5d49cdcc6d81fd44e495b481178}{p4est\+\_\+lnodes\+\_\+rank\+\_\+t}}}
+
+
+
+The structure stored in the sharers array. 
+
+shared\+\_\+nodes is a sorted array of p4est\+\_\+locidx\+\_\+t that indexes into local nodes. The shared\+\_\+nodes array has a contiguous (or empty) section of nodes owned by the current rank. shared\+\_\+mine\+\_\+offset and shared\+\_\+mine\+\_\+count identify this section by indexing the shared\+\_\+nodes array, not the local nodes array. owned\+\_\+offset and owned\+\_\+count define the section of local nodes that is owned by the listed rank (the section may be empty). For the current process these coincide with those in p4est\+\_\+lnodes\+\_\+t. \mbox{\Hypertarget{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}\label{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_lnodes\_t@{p4est\_lnodes\_t}}
+\index{p4est\_lnodes\_t@{p4est\_lnodes\_t}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_lnodes\_t}{p4est\_lnodes\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structp4est__lnodes}{p4est\+\_\+lnodes}} \mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}}}
+
+
+
+Store a parallel numbering of Lobatto points of a given degree $>$ 0. 
+
+Each element has degree+1 nodes per face and vnodes = (degree+1)$^\wedge$2 nodes per volume. num\+\_\+local\+\_\+elements is the number of local quadrants in the \mbox{\hyperlink{structp4est}{p4est}}. element\+\_\+nodes is of dimension vnodes $\ast$ num\+\_\+local\+\_\+elements and lists the nodes of each element in lexicographic yx-\/order (x varies fastest); so for degree == 2, this is the layout of nodes\+: \begin{DoxyVerb}        f_3
+ c_2           c_3
+     6---7---8
+     |       |
+f_0  3   4   5  f_1
+     |       |
+     0---1---2
+ c_0           c_1
+        f_2
+\end{DoxyVerb}
+ element\+\_\+nodes indexes into the set of local nodes, layed out as follows\+: \begin{DoxyVerb}local nodes = [<-----owned_count----->|<-----nonlocal_nodes----->]
+            = [<----------------num_local_nodes----------------->]
+\end{DoxyVerb}
+ nonlocal\+\_\+nodes contains the globally unique numbers for independent nodes that are owned by other processes; for local nodes, the globally unique numbers are given by i + global\+\_\+offset, where i is the local number. Hanging nodes are always local and don\textquotesingle{}t have a global number. They index the geometrically corresponding independent nodes of a neighbor.
+
+Whether nodes are hanging or not is decided based on the element faces. This information is encoded in face\+\_\+code with one int8\+\_\+t per element. If no faces are hanging, the value is zero, otherwise the face\+\_\+code is interpreted by p4est\+\_\+lnodes\+\_\+decode.
+
+Independent nodes can be shared by multiple MPI ranks. The owner rank of a node is the one from the lowest numbered element on the lowest numbered octree {\itshape touching} the node.
+
+What is meant by {\itshape touching}? A quadrant is said to touch all faces/corners that are incident on it, and by extension all nodes that are contained in those faces/corners. \begin{DoxyVerb}        X +-----------+
+        o |           |
+        o |           |
++-----+ o |     p     |
+|  q  | o |           |
+|     | o |           |
++-----+ O +-----------+
+\end{DoxyVerb}
+ In this example degree = 6. There are 5 nodes that live on the face between q and p, and one at each corner of that face. The face is incident on q, so q owns the nodes on the face (provided q is from a lower tree or has a lower index than p). The lower corner is incident on q, so q owns it as well. The upper corner is not incident on q, so q cannot own it.
+
+global\+\_\+owned\+\_\+count contains the number of independent nodes owned by each process.
+
+The sharers array contains items of type p4est\+\_\+lnodes\+\_\+rank\+\_\+t that hold the ranks that own or share independent local nodes. If there are no shared nodes on this processor, it is empty. Otherwise, it is sorted by rank and the current process is included.
+
+degree $<$ 0 indicates that the lnodes data structure is being used to number the quadrant boundary object (faces and corners) rather than the \$C$^\wedge$0\$ Lobatto nodes\+:
+
+if degree == -\/1, then one node is assigned per face, and no nodes are assigned per volume or per corner\+: this numbering can be used for low-\/order Raviart-\/\+Thomas elements. In this case, vnodes == 4, and the nodes are listed in face-\/order\+: \begin{DoxyVerb}        f_3
+ c_2           c_3
+     +---3---+
+     |       |
+f_0  0       1  f_1
+     |       |
+     +---2---+
+ c_0           c_1
+        f_2
+\end{DoxyVerb}
+ if degree == -\/2, then one node is assigned per face and per corner and no nodes are assigned per volume. In this case, vnodes == 8, and the nodes are listed in face-\/order, followed by corner-\/order\+: \begin{DoxyVerb}        f_3
+ c_2           c_3
+     6---3---7
+     |       |
+f_0  0       1  f_1
+     |       |
+     4---2---5
+ c_0           c_1
+        f_2
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p4est__lnodes_8h_a5398d19476ceafeaf9e32d6ccdcacff4}\label{p4est__lnodes_8h_a5398d19476ceafeaf9e32d6ccdcacff4}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_ghost\_expand\_by\_lnodes@{p4est\_ghost\_expand\_by\_lnodes}}
+\index{p4est\_ghost\_expand\_by\_lnodes@{p4est\_ghost\_expand\_by\_lnodes}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_ghost\_expand\_by\_lnodes()}{p4est\_ghost\_expand\_by\_lnodes()}}
+{\footnotesize\ttfamily void p4est\+\_\+ghost\+\_\+expand\+\_\+by\+\_\+lnodes (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$}]{lnodes,  }\item[{\mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$}]{ghost }\end{DoxyParamCaption})}
+
+
+
+Expand the ghost layer as in \mbox{\hyperlink{p4est__ghost_8h_ab9750fa62cbc17285a0eb5cfe13a1e28}{p4est\+\_\+ghost\+\_\+expand()}}, but use node support to define adjacency instead of geometric adjacency. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The forest from which the ghost layer was generated. \\
+\hline
+\mbox{\texttt{ in}}  & {\em lnodes} & The nodes to support. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em ghost} & The ghost layer to be expanded. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__lnodes_8h_a863691d8c8fdd2913b887c9f611a1602}\label{p4est__lnodes_8h_a863691d8c8fdd2913b887c9f611a1602}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_ghost\_support\_lnodes@{p4est\_ghost\_support\_lnodes}}
+\index{p4est\_ghost\_support\_lnodes@{p4est\_ghost\_support\_lnodes}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_ghost\_support\_lnodes()}{p4est\_ghost\_support\_lnodes()}}
+{\footnotesize\ttfamily void p4est\+\_\+ghost\+\_\+support\+\_\+lnodes (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$}]{lnodes,  }\item[{\mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$}]{ghost }\end{DoxyParamCaption})}
+
+
+
+Expand the ghost layer to include the support of all nodes supported on the local partition. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The forest from which the ghost layer was generated. \\
+\hline
+\mbox{\texttt{ in}}  & {\em lnodes} & The nodes to support. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em ghost} & The ghost layer to be expanded. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__lnodes_8h_ab0d0d912d5e6212b1b924bca21e922f5}\label{p4est__lnodes_8h_ab0d0d912d5e6212b1b924bca21e922f5}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_lnodes\_destroy@{p4est\_lnodes\_destroy}}
+\index{p4est\_lnodes\_destroy@{p4est\_lnodes\_destroy}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_lnodes\_destroy()}{p4est\_lnodes\_destroy()}}
+{\footnotesize\ttfamily void p4est\+\_\+lnodes\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$}]{lnodes }\end{DoxyParamCaption})}
+
+
+
+Free all memory in a previously constructed lnodes structure. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em lnodes} & This pointer will be deep freed. Do no longer use once this function returns. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__lnodes_8h_af5aea4df6408e9ec5065e0b23f96e157}\label{p4est__lnodes_8h_af5aea4df6408e9ec5065e0b23f96e157}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_lnodes\_new@{p4est\_lnodes\_new}}
+\index{p4est\_lnodes\_new@{p4est\_lnodes\_new}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_lnodes\_new()}{p4est\_lnodes\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}}$\ast$ p4est\+\_\+lnodes\+\_\+new (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$}]{ghost\+\_\+layer,  }\item[{int}]{degree }\end{DoxyParamCaption})}
+
+
+
+Create a tensor-\/product Lobatto node structure for a given degree. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & Valid forest. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ghost\+\_\+layer} & Valid full ghost layer, i. e. constructed by \mbox{\hyperlink{p4est__ghost_8h_a34a0bfb7169437f6fc2382a67c47e89d}{p4est\+\_\+ghost\+\_\+new}} with the same forest and argument \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4\+EST\+\_\+\+CONNECT\+\_\+\+FULL}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em degree} & Degree $>$= 1 leads to N = degree + 1 nodes in every direction. Degrees -\/1 and -\/2 are legal for special constructions; see \mbox{\hyperlink{structp4est__lnodes}{p4est\+\_\+lnodes}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Fully initialized nodes structure. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__lnodes_8h_a52273b1dfb80a77723c04c8bb798e104}\label{p4est__lnodes_8h_a52273b1dfb80a77723c04c8bb798e104}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_lnodes\_share\_all@{p4est\_lnodes\_share\_all}}
+\index{p4est\_lnodes\_share\_all@{p4est\_lnodes\_share\_all}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_lnodes\_share\_all()}{p4est\_lnodes\_share\_all()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}{p4est\+\_\+lnodes\+\_\+buffer\+\_\+t}}$\ast$ p4est\+\_\+lnodes\+\_\+share\+\_\+all (\begin{DoxyParamCaption}\item[{sc\+\_\+array\+\_\+t $\ast$}]{node\+\_\+data,  }\item[{\mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$}]{lnodes }\end{DoxyParamCaption})}
+
+
+
+Equivalent to calling p4est\+\_\+lnodes\+\_\+share\+\_\+all\+\_\+end directly after p4est\+\_\+lnodes\+\_\+share\+\_\+all\+\_\+begin. 
+
+Use if there is no local work that can be done to mask the communication cost. \begin{DoxyReturn}{Returns}
+A fully initialized buffer that contains the received data. After processing this data, the buffer must be freed with p4est\+\_\+lnodes\+\_\+buffer\+\_\+destroy. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__lnodes_8h_a13ef9e173e9878462430c44974019a62}\label{p4est__lnodes_8h_a13ef9e173e9878462430c44974019a62}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_lnodes\_share\_all\_begin@{p4est\_lnodes\_share\_all\_begin}}
+\index{p4est\_lnodes\_share\_all\_begin@{p4est\_lnodes\_share\_all\_begin}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_lnodes\_share\_all\_begin()}{p4est\_lnodes\_share\_all\_begin()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}{p4est\+\_\+lnodes\+\_\+buffer\+\_\+t}}$\ast$ p4est\+\_\+lnodes\+\_\+share\+\_\+all\+\_\+begin (\begin{DoxyParamCaption}\item[{sc\+\_\+array\+\_\+t $\ast$}]{node\+\_\+data,  }\item[{\mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$}]{lnodes }\end{DoxyParamCaption})}
+
+
+
+p4est\+\_\+lnodes\+\_\+share\+\_\+all\+\_\+begin 
+
+{\itshape node\+\_\+data} is a user\+\_\+defined array of arbitrary type, where each entry is associated with the lnodes local nodes entry of matching index. For every process that shares an entry with the current one, the value in the {\itshape node\+\_\+data} array of that process is written into a {\itshape buffer-\/$>$recv\+\_\+buffers} entry as described above. The user can then perform some arbitrary work that requires the data from all processes that share a node (such as reduce, max, min, etc.). When the work concludes, the {\itshape buffer} should be destroyed with p4est\+\_\+lnodes\+\_\+buffer\+\_\+destroy.
+
+Values of {\itshape node\+\_\+data} are not guaranteed to be sent, and {\itshape buffer-\/$>$recv\+\_\+buffer} entries are not guaranteed to be received until the {\itshape buffer} created by p4est\+\_\+lnodes\+\_\+share\+\_\+all\+\_\+begin is passed to p4est\+\_\+lnodes\+\_\+share\+\_\+all\+\_\+end. \mbox{\Hypertarget{p4est__lnodes_8h_a818e68d478dbdbf67f379e8885399176}\label{p4est__lnodes_8h_a818e68d478dbdbf67f379e8885399176}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_lnodes\_share\_owned@{p4est\_lnodes\_share\_owned}}
+\index{p4est\_lnodes\_share\_owned@{p4est\_lnodes\_share\_owned}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_lnodes\_share\_owned()}{p4est\_lnodes\_share\_owned()}}
+{\footnotesize\ttfamily void p4est\+\_\+lnodes\+\_\+share\+\_\+owned (\begin{DoxyParamCaption}\item[{sc\+\_\+array\+\_\+t $\ast$}]{node\+\_\+data,  }\item[{\mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$}]{lnodes }\end{DoxyParamCaption})}
+
+
+
+Equivalent to calling p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+end directly after p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+begin. 
+
+Use if there is no local work that can be done to mask the communication cost. \mbox{\Hypertarget{p4est__lnodes_8h_a69def7b9a01201b94f0fbeb3b082ea8c}\label{p4est__lnodes_8h_a69def7b9a01201b94f0fbeb3b082ea8c}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_lnodes\_share\_owned\_begin@{p4est\_lnodes\_share\_owned\_begin}}
+\index{p4est\_lnodes\_share\_owned\_begin@{p4est\_lnodes\_share\_owned\_begin}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_lnodes\_share\_owned\_begin()}{p4est\_lnodes\_share\_owned\_begin()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__lnodes_8h_a9eae12d9e80d8357b23f2b10cdf0d3c5}{p4est\+\_\+lnodes\+\_\+buffer\+\_\+t}}$\ast$ p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+begin (\begin{DoxyParamCaption}\item[{sc\+\_\+array\+\_\+t $\ast$}]{node\+\_\+data,  }\item[{\mbox{\hyperlink{p4est__lnodes_8h_a5fe8612d498566c666929a4e97311219}{p4est\+\_\+lnodes\+\_\+t}} $\ast$}]{lnodes }\end{DoxyParamCaption})}
+
+
+
+p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+begin 
+
+{\itshape node\+\_\+data} is a user-\/defined array of arbitrary type, where each entry is associated with the {\itshape lnodes} local nodes entry of matching index. For every local nodes entry that is owned by a process other than the current one, the value in the {\itshape node\+\_\+data} array of the owning process is written directly into the {\itshape node\+\_\+data} array of the current process. Values of {\itshape node\+\_\+data} are not guaranteed to be sent or received until the {\itshape buffer} created by p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+begin is passed to p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+end.
+
+To be memory neutral, the {\itshape buffer} created by p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+begin must be destroying with p4est\+\_\+lnodes\+\_\+buffer\+\_\+destroy (it is not destroyed by p4est\+\_\+lnodes\+\_\+share\+\_\+owned\+\_\+end). \mbox{\Hypertarget{p4est__lnodes_8h_a838a5869a10015c19af18f98d04b19e1}\label{p4est__lnodes_8h_a838a5869a10015c19af18f98d04b19e1}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_partition\_lnodes@{p4est\_partition\_lnodes}}
+\index{p4est\_partition\_lnodes@{p4est\_partition\_lnodes}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_partition\_lnodes()}{p4est\_partition\_lnodes()}}
+{\footnotesize\ttfamily void p4est\+\_\+partition\+\_\+lnodes (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$}]{ghost,  }\item[{int}]{degree,  }\item[{int}]{partition\+\_\+for\+\_\+coarsening }\end{DoxyParamCaption})}
+
+
+
+Partition using weights based on the number of nodes assigned to each element in lnodes. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & the forest to be repartitioned \\
+\hline
+\mbox{\texttt{ in}}  & {\em ghost} & the ghost layer \\
+\hline
+\mbox{\texttt{ in}}  & {\em degree} & the degree that would be passed to \mbox{\hyperlink{p4est__lnodes_8h_af5aea4df6408e9ec5065e0b23f96e157}{p4est\+\_\+lnodes\+\_\+new()}} \\
+\hline
+\mbox{\texttt{ in}}  & {\em partition\+\_\+for\+\_\+coarsening} & whether the partition should allow coarsening (i.\+e. group siblings who might merge) \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}.\end{Desc}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{p4est__lnodes_8h_abe70b7e5ac41fe704ae17b57b0d21834}\label{p4est__lnodes_8h_abe70b7e5ac41fe704ae17b57b0d21834}} 
+\index{p4est\_lnodes.h@{p4est\_lnodes.h}!p4est\_lnodes\_corner\_hanging@{p4est\_lnodes\_corner\_hanging}}
+\index{p4est\_lnodes\_corner\_hanging@{p4est\_lnodes\_corner\_hanging}!p4est\_lnodes.h@{p4est\_lnodes.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_lnodes\_corner\_hanging}{p4est\_lnodes\_corner\_hanging}}
+{\footnotesize\ttfamily const int p4est\+\_\+lnodes\+\_\+corner\+\_\+hanging\mbox{[}4\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+For each corner, the normal direction of the hanging face. 
+
+The corner index is with respect to a zero child quadrant. Corners that may never hang store the value -\/1. 

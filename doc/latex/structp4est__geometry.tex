@@ -1,0 +1,64 @@
+\hypertarget{structp4est__geometry}{}\doxysection{p4est\+\_\+geometry Struct Reference}
+\label{structp4est__geometry}\index{p4est\_geometry@{p4est\_geometry}}
+
+
+Encapsulates a custom transformation from tree-\/local coordinates to user defined physical space.  
+
+
+
+
+{\ttfamily \#include $<$p4est\+\_\+geometry.\+h$>$}
+
+
+
+Collaboration diagram for p4est\+\_\+geometry\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=231pt]{structp4est__geometry__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp4est__geometry_a81c619f2b165e5d2f09c63428dec8b37}\label{structp4est__geometry_a81c619f2b165e5d2f09c63428dec8b37}} 
+const char $\ast$ \mbox{\hyperlink{structp4est__geometry_a81c619f2b165e5d2f09c63428dec8b37}{name}}
+\begin{DoxyCompactList}\small\item\em User\textquotesingle{}s choice is arbitrary. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__geometry_ab1df16344219bbbb530f5f357599f313}\label{structp4est__geometry_ab1df16344219bbbb530f5f357599f313}} 
+void $\ast$ \mbox{\hyperlink{structp4est__geometry_ab1df16344219bbbb530f5f357599f313}{user}}
+\begin{DoxyCompactList}\small\item\em User\textquotesingle{}s choice is arbitrary. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__geometry_a227a174acf419ea75bc1a5239e54d66d}\label{structp4est__geometry_a227a174acf419ea75bc1a5239e54d66d}} 
+\mbox{\hyperlink{p4est__geometry_8h_a38cd30f80cf04e44edbfc01b1ee974e5}{p4est\+\_\+geometry\+\_\+\+X\+\_\+t}} \mbox{\hyperlink{structp4est__geometry_a227a174acf419ea75bc1a5239e54d66d}{X}}
+\begin{DoxyCompactList}\small\item\em Coordinate transformation. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__geometry_8h_ac513949a8ae616d6c235a8de02ab7082}{p4est\+\_\+geometry\+\_\+destroy\+\_\+t}} \mbox{\hyperlink{structp4est__geometry_a12b6037b543e1375e27eee7eb4301148}{destroy}}
+\begin{DoxyCompactList}\small\item\em Destructor called by \mbox{\hyperlink{p4est__geometry_8h_ad389d94045e366e64a0c7854739f1f8f}{p4est\+\_\+geometry\+\_\+destroy}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encapsulates a custom transformation from tree-\/local coordinates to user defined physical space. 
+
+Used in \mbox{\hyperlink{p4est__vtk_8h}{p4est\+\_\+vtk.\+h}} to write global-\/coordinate meshes.
+
+Some internal \mbox{\hyperlink{structp4est}{p4est}} functions assume that $\ast$user points to a \mbox{\hyperlink{structp4est__connectivity}{p4est\+\_\+connectivity}}. However, in general it can be used as the user wishes.
+
+This structure can be filled or allocated by the user. \mbox{\hyperlink{structp4est}{p4est}} will never change its contents. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}.\end{Desc}
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structp4est__geometry_a12b6037b543e1375e27eee7eb4301148}\label{structp4est__geometry_a12b6037b543e1375e27eee7eb4301148}} 
+\index{p4est\_geometry@{p4est\_geometry}!destroy@{destroy}}
+\index{destroy@{destroy}!p4est\_geometry@{p4est\_geometry}}
+\doxysubsubsection{\texorpdfstring{destroy}{destroy}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__geometry_8h_ac513949a8ae616d6c235a8de02ab7082}{p4est\+\_\+geometry\+\_\+destroy\+\_\+t}} p4est\+\_\+geometry\+::destroy}
+
+
+
+Destructor called by \mbox{\hyperlink{p4est__geometry_8h_ad389d94045e366e64a0c7854739f1f8f}{p4est\+\_\+geometry\+\_\+destroy}}. 
+
+If NULL, P4\+EST\+\_\+\+FREE is called. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p4est__geometry_8h}{p4est\+\_\+geometry.\+h}}\end{DoxyCompactItemize}

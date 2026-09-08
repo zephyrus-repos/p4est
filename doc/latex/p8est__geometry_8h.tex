@@ -1,0 +1,376 @@
+\hypertarget{p8est__geometry_8h}{}\doxysection{src/p8est\+\_\+geometry.h File Reference}
+\label{p8est__geometry_8h}\index{src/p8est\_geometry.h@{src/p8est\_geometry.h}}
+
+
+Transform from tree-\/local \char`\"{}reference\char`\"{} coordinate system to global \char`\"{}physical space\char`\"{} coordinates.  
+
+
+{\ttfamily \#include $<$p8est\+\_\+lnodes.\+h$>$}\newline
+Include dependency graph for p8est\+\_\+geometry.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p8est__geometry_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=201pt]{p8est__geometry_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structp8est__geometry}{p8est\+\_\+geometry}}
+\begin{DoxyCompactList}\small\item\em This structure can be created by the user, \mbox{\hyperlink{structp4est}{p4est}} will never change its contents. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}\label{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}} 
+typedef struct \mbox{\hyperlink{structp8est__geometry}{p8est\+\_\+geometry}} \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em This object encapsulates a custom geometry transformation. \end{DoxyCompactList}\item 
+typedef void($\ast$ \mbox{\hyperlink{p8est__geometry_8h_a51e5193a1d3c67f4b01416dcf2e38447}{p8est\+\_\+geometry\+\_\+\+X\+\_\+t}}) (\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$geom, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, const double abc\mbox{[}3\mbox{]}, double xyz\mbox{[}3\mbox{]})
+\begin{DoxyCompactList}\small\item\em Forward transformation from the reference unit square to physical space. \end{DoxyCompactList}\item 
+typedef void($\ast$ \mbox{\hyperlink{p8est__geometry_8h_a2498f4e152c50526d97627887fb6eda2}{p8est\+\_\+geometry\+\_\+destroy\+\_\+t}}) (\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$geom)
+\begin{DoxyCompactList}\small\item\em Destructor prototype for a user-\/allocated {\itshape p8est\+\_\+geometry\+\_\+t}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{p8est__geometry_8h_aff051fa25a6b688a8c3e520ac3ed04ff}{pillow\+\_\+sphere\+\_\+config\+\_\+t}} \{ \newline
+{\bfseries FIG52B} = 0
+, \newline
+{\bfseries FIG52C} = 1
+ \}
+\begin{DoxyCompactList}\small\item\em Characterize different mappings of the solid sphere using a 1-\/tree connectivity. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{p8est__geometry_8h_a269042f8177588ab6f154a7fd625c6fb}{p8est\+\_\+geometry\+\_\+transform\+\_\+coordinates}} (\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$geom, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} coords\+\_\+in\mbox{[}3\mbox{]}, double coords\+\_\+out\mbox{[}3\mbox{]})
+\begin{DoxyCompactList}\small\item\em Transform a quadrant reference coordinate into the geometry. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__geometry_8h_a20998de5a5a4a4a3ee3be5808610c24d}{p8est\+\_\+geometry\+\_\+destroy}} (\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$geom)
+\begin{DoxyCompactList}\small\item\em Can be used to conveniently destroy a geometry structure. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__geometry_8h_a358133eb3dada44e4f6868b6bfa93b01}{p8est\+\_\+geometry\+\_\+new\+\_\+connectivity}} (\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$conn)
+\begin{DoxyCompactList}\small\item\em Create a geometry structure based on the vertices in a connectivity. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__geometry_8h_aa4094ef79011a0ef7c8aa6ed5841d8b0}{p8est\+\_\+geometry\+\_\+connectivity\+\_\+X}} (\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$geom, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, const double abc\mbox{[}3\mbox{]}, double xyz\mbox{[}3\mbox{]})
+\begin{DoxyCompactList}\small\item\em Geometric coordinate transformation for geometry created with \mbox{\hyperlink{p8est__geometry_8h_a358133eb3dada44e4f6868b6bfa93b01}{p8est\+\_\+geometry\+\_\+new\+\_\+connectivity}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__geometry_8h_a65edac0529c9c61a6f738a1f5c669df5}{p8est\+\_\+geometry\+\_\+new\+\_\+pillow}} (\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$conn, double R2, double R1)
+\begin{DoxyCompactList}\small\item\em Create a geometry structure for the spherical shell of 2 trees. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__geometry_8h_a6096f137bda076e7c987c577d42065a6}{p8est\+\_\+geometry\+\_\+new\+\_\+pillow\+\_\+sphere}} (\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$conn, double R, \mbox{\hyperlink{p8est__geometry_8h_aff051fa25a6b688a8c3e520ac3ed04ff}{pillow\+\_\+sphere\+\_\+config\+\_\+t}} config)
+\begin{DoxyCompactList}\small\item\em Create a geometry for mapping the solid sphere using the 1-\/tree unit connectivity. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__geometry_8h_acc7047c9e6923c9dd69bf77febc49301}{p8est\+\_\+geometry\+\_\+new\+\_\+shell}} (\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$conn, double R2, double R1)
+\begin{DoxyCompactList}\small\item\em Create a geometry structure for the spherical shell of 24 trees. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__geometry_8h_acbbb83633ccbc82ebb0c66bda3d3cd3e}{p8est\+\_\+geometry\+\_\+new\+\_\+sphere}} (\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$conn, double R2, double R1, double R0)
+\begin{DoxyCompactList}\small\item\em Create a geometry structure for the solid sphere of 13 trees. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__geometry_8h_a5809623dbb9a50f37488fd552f4c17d2}{p8est\+\_\+geometry\+\_\+new\+\_\+torus}} (\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$conn, double R0, double R1, double R2)
+\begin{DoxyCompactList}\small\item\em Create a geometry structure for the torus. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__geometry_8h_a222c5bf112b7d90e28a446e04e632625}{p8est\+\_\+geometry\+\_\+coordinates\+\_\+lnodes}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$\mbox{\hyperlink{structp8est}{p8est}}, \mbox{\hyperlink{p8est__lnodes_8h_ae40d19ac09f9c4d09b4d956bd546ab45}{p8est\+\_\+lnodes\+\_\+t}} $\ast$lnodes, const double $\ast$refloc, \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$geom, sc\+\_\+array\+\_\+t $\ast$coordinates, sc\+\_\+array\+\_\+t $\ast$element\+\_\+coordinates)
+\begin{DoxyCompactList}\small\item\em Compute node coordinates for a \mbox{\hyperlink{structp8est__lnodes}{p8est\+\_\+lnodes}} structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Transform from tree-\/local \char`\"{}reference\char`\"{} coordinate system to global \char`\"{}physical space\char`\"{} coordinates. 
+
+These are used in \mbox{\hyperlink{p8est__vtk_8h}{p8est\+\_\+vtk.\+h}} to write global coordinate meshes to disk.
+
+We provide several example geometries for use. You may also implement your own geometry as you see fit.
+
+\begin{DoxyNote}{Note}
+For geometry purposes, each tree has the local coordinate system $[0,1]^3$. 
+\end{DoxyNote}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{p8est__geometry_8h_a2498f4e152c50526d97627887fb6eda2}\label{p8est__geometry_8h_a2498f4e152c50526d97627887fb6eda2}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!p8est\_geometry\_destroy\_t@{p8est\_geometry\_destroy\_t}}
+\index{p8est\_geometry\_destroy\_t@{p8est\_geometry\_destroy\_t}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_geometry\_destroy\_t}{p8est\_geometry\_destroy\_t}}
+{\footnotesize\ttfamily typedef void($\ast$ p8est\+\_\+geometry\+\_\+destroy\+\_\+t) (\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$geom)}
+
+
+
+Destructor prototype for a user-\/allocated {\itshape p8est\+\_\+geometry\+\_\+t}. 
+
+It is invoked by p8est\+\_\+geometry\+\_\+destroy. If the user chooses to reserve the structure statically, there is no need to provide it. \mbox{\Hypertarget{p8est__geometry_8h_a51e5193a1d3c67f4b01416dcf2e38447}\label{p8est__geometry_8h_a51e5193a1d3c67f4b01416dcf2e38447}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!p8est\_geometry\_X\_t@{p8est\_geometry\_X\_t}}
+\index{p8est\_geometry\_X\_t@{p8est\_geometry\_X\_t}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_geometry\_X\_t}{p8est\_geometry\_X\_t}}
+{\footnotesize\ttfamily typedef void($\ast$ p8est\+\_\+geometry\+\_\+\+X\+\_\+t) (\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$geom, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, const double abc\mbox{[}3\mbox{]}, double xyz\mbox{[}3\mbox{]})}
+
+
+
+Forward transformation from the reference unit square to physical space. 
+
+The physical space \char`\"{}xyz\char`\"{} is user-\/defined, currently used for VTK output. 
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{p8est__geometry_8h_aff051fa25a6b688a8c3e520ac3ed04ff}\label{p8est__geometry_8h_aff051fa25a6b688a8c3e520ac3ed04ff}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!pillow\_sphere\_config\_t@{pillow\_sphere\_config\_t}}
+\index{pillow\_sphere\_config\_t@{pillow\_sphere\_config\_t}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{pillow\_sphere\_config\_t}{pillow\_sphere\_config\_t}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{p8est__geometry_8h_aff051fa25a6b688a8c3e520ac3ed04ff}{pillow\+\_\+sphere\+\_\+config\+\_\+t}}}
+
+
+
+Characterize different mappings of the solid sphere using a 1-\/tree connectivity. 
+
+The different mappings correspond to the ones used to produce figure 5.\+2 in the following publication\+:
+
+\char`\"{}\+Logically rectangular grids and finite volume methods for PDEs in circular and spherical domains\char`\"{}, Calhoun et al, SIAM Review, volume 50, Issue 4, January 2008. \href{https://doi.org/10.1137/060664094}{\texttt{ https\+://doi.\+org/10.\+1137/060664094}} \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p8est__geometry_8h_aa4094ef79011a0ef7c8aa6ed5841d8b0}\label{p8est__geometry_8h_aa4094ef79011a0ef7c8aa6ed5841d8b0}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!p8est\_geometry\_connectivity\_X@{p8est\_geometry\_connectivity\_X}}
+\index{p8est\_geometry\_connectivity\_X@{p8est\_geometry\_connectivity\_X}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_geometry\_connectivity\_X()}{p8est\_geometry\_connectivity\_X()}}
+{\footnotesize\ttfamily void p8est\+\_\+geometry\+\_\+connectivity\+\_\+X (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$}]{geom,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{const double}]{abc\mbox{[}3\mbox{]},  }\item[{double}]{xyz\mbox{[}3\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Geometric coordinate transformation for geometry created with \mbox{\hyperlink{p8est__geometry_8h_a358133eb3dada44e4f6868b6bfa93b01}{p8est\+\_\+geometry\+\_\+new\+\_\+connectivity}}. 
+
+This is defined by tri/binlinear interpolation from vertex coordinates.
+
+May also be used as a building block in custom geometric coordinate transforms. See for example \mbox{\hyperlink{p8est__geometry_8h_acc7047c9e6923c9dd69bf77febc49301}{p8est\+\_\+geometry\+\_\+new\+\_\+shell}} or \mbox{\hyperlink{p8est__geometry_8h_acbbb83633ccbc82ebb0c66bda3d3cd3e}{p8est\+\_\+geometry\+\_\+new\+\_\+sphere}}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em geom} & associated geometry \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & tree id inside forest \\
+\hline
+\mbox{\texttt{ in}}  & {\em abc} & tree-\/local reference coordinates \+: \mbox{[}0,1\mbox{]}$^\wedge$3. \\
+\hline
+\mbox{\texttt{ out}}  & {\em xyz} & Cartesian coordinates in physical space after geometry\\
+\hline
+\end{DoxyParams}
+\begin{DoxyWarning}{Warning}
+The associated geometry is assumed to have a connectivity as its $\ast$user field, and this connectivity is assumed to have vertex information in its $\ast$tree\+\_\+to\+\_\+vertex field. 
+\end{DoxyWarning}
+\mbox{\Hypertarget{p8est__geometry_8h_a222c5bf112b7d90e28a446e04e632625}\label{p8est__geometry_8h_a222c5bf112b7d90e28a446e04e632625}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!p8est\_geometry\_coordinates\_lnodes@{p8est\_geometry\_coordinates\_lnodes}}
+\index{p8est\_geometry\_coordinates\_lnodes@{p8est\_geometry\_coordinates\_lnodes}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_geometry\_coordinates\_lnodes()}{p8est\_geometry\_coordinates\_lnodes()}}
+{\footnotesize\ttfamily void p8est\+\_\+geometry\+\_\+coordinates\+\_\+lnodes (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{p8est,  }\item[{\mbox{\hyperlink{p8est__lnodes_8h_ae40d19ac09f9c4d09b4d956bd546ab45}{p8est\+\_\+lnodes\+\_\+t}} $\ast$}]{lnodes,  }\item[{const double $\ast$}]{refloc,  }\item[{\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$}]{geom,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{coordinates,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{element\+\_\+coordinates }\end{DoxyParamCaption})}
+
+
+
+Compute node coordinates for a \mbox{\hyperlink{structp8est__lnodes}{p8est\+\_\+lnodes}} structure. 
+
+Presently we allow for an lnodes degree of 1 or 2. Cubic or higher degrees may be transparently enabled in the future.
+
+The simple mode assigns one tree reference coordinate to each lnode. This may not be suitable for visualizing periodic connectivities.
+
+In a more advanced mode indicated by NULL {\ttfamily element\+\_\+coordinates} input, the coordinates are made unique by reference location\+: If a tree is periodic, for example, its corners reference the same lnode but will generate separate coordinate entries for proper visualization. There will be more coordinates generated than there are lnodes.
+
+The coordinate numbers generated by the present version of the function are partition-\/dependent. This may be seen as a flaw. Looking into it.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp8est}{p8est}}} & A valid forest structure. \\
+\hline
+\mbox{\texttt{ in}}  & {\em lnodes} & A valid \mbox{\hyperlink{structp4est__lnodes}{p4est\+\_\+lnodes}} structure of degree 1 or 2. Higher degrees not presently allowed. Must be derived from the {\ttfamily \mbox{\hyperlink{structp8est}{p8est}}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em refloc} & Eventually used for cubic and upwards degrees. We will expect degree + 1 many values for the one-\/dimensional reference node spacing. Out of these, the indices from 1 to (degree -\/ 1) / 2 inclusive will be accessed by this function. The others default by symmetry considerations. \\
+\hline
+\mbox{\texttt{ in}}  & {\em geom} & May be NULL for generating the tree-\/reference coordinates, or a valid geometry object for transforming the reference into mapped space. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em coordinates} & On input, an array with entries of 3 double variables each. Resized in this function and populated with coordinate tuples. With a NULL geometry, these are in \mbox{[}0, 1\mbox{]}$\ast$$\ast$3. Otherwise, they are mapped by the geometry. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em element\+\_\+coordinates} & This may be NULL, in which case we generate one coordinate tuple for each lnode. Otherwise, this must be an array with entries of type \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}. Is resized to the same number of entries as {\ttfamily lnodes-\/$>$element\+\_\+nodes}. Its entries point into the coordinates array. The tree index of any given entry is implicit in that this array is derived from a \mbox{\hyperlink{structp4est}{p4est}}, where sets of (degree + 1)$\ast$$\ast$3 entries each correspond to the forest elements in order. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__geometry_8h_a20998de5a5a4a4a3ee3be5808610c24d}\label{p8est__geometry_8h_a20998de5a5a4a4a3ee3be5808610c24d}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!p8est\_geometry\_destroy@{p8est\_geometry\_destroy}}
+\index{p8est\_geometry\_destroy@{p8est\_geometry\_destroy}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_geometry\_destroy()}{p8est\_geometry\_destroy()}}
+{\footnotesize\ttfamily void p8est\+\_\+geometry\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$}]{geom }\end{DoxyParamCaption})}
+
+
+
+Can be used to conveniently destroy a geometry structure. 
+
+The user is free not to call this function at all if they handle the memory of the \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} in their own way. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est__geometry_8h_a358133eb3dada44e4f6868b6bfa93b01}\label{p8est__geometry_8h_a358133eb3dada44e4f6868b6bfa93b01}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!p8est\_geometry\_new\_connectivity@{p8est\_geometry\_new\_connectivity}}
+\index{p8est\_geometry\_new\_connectivity@{p8est\_geometry\_new\_connectivity}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_geometry\_new\_connectivity()}{p8est\_geometry\_new\_connectivity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}}$\ast$ p8est\+\_\+geometry\+\_\+new\+\_\+connectivity (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn }\end{DoxyParamCaption})}
+
+
+
+Create a geometry structure based on the vertices in a connectivity. 
+
+The transformation is constructed using trilinear interpolation. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn} & A p8est\+\_\+connectivity\+\_\+t with valid vertices. We do NOT take ownership and expect this structure to stay alive. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Geometry structure; use with \mbox{\hyperlink{p4est__geometry_8h_ad389d94045e366e64a0c7854739f1f8f}{p4est\+\_\+geometry\+\_\+destroy}}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__geometry_8h_a65edac0529c9c61a6f738a1f5c669df5}\label{p8est__geometry_8h_a65edac0529c9c61a6f738a1f5c669df5}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!p8est\_geometry\_new\_pillow@{p8est\_geometry\_new\_pillow}}
+\index{p8est\_geometry\_new\_pillow@{p8est\_geometry\_new\_pillow}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_geometry\_new\_pillow()}{p8est\_geometry\_new\_pillow()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}}$\ast$ p8est\+\_\+geometry\+\_\+new\+\_\+pillow (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{double}]{R2,  }\item[{double}]{R1 }\end{DoxyParamCaption})}
+
+
+
+Create a geometry structure for the spherical shell of 2 trees. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn} & Result of p8est\+\_\+connectivity\+\_\+new\+\_\+pillow. We do NOT take ownership and expect it to stay alive. \\
+\hline
+\mbox{\texttt{ in}}  & {\em R2} & The outer radius of the shell. \\
+\hline
+\mbox{\texttt{ in}}  & {\em R1} & The inner radius of the shell. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Geometry structure; use with \mbox{\hyperlink{p4est__geometry_8h_ad389d94045e366e64a0c7854739f1f8f}{p4est\+\_\+geometry\+\_\+destroy}}.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+this coordinate transformation is describe in \char`\"{}\+Logically rectangular grids and finite volume methods for PDEs in circular and spherical domains\char`\"{}, Calhoun et al., \href{https://doi.org/10.1137/060664094}{\texttt{ https\+://doi.\+org/10.\+1137/060664094}} 
+\end{DoxyNote}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est__geometry_8h_a6096f137bda076e7c987c577d42065a6}\label{p8est__geometry_8h_a6096f137bda076e7c987c577d42065a6}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!p8est\_geometry\_new\_pillow\_sphere@{p8est\_geometry\_new\_pillow\_sphere}}
+\index{p8est\_geometry\_new\_pillow\_sphere@{p8est\_geometry\_new\_pillow\_sphere}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_geometry\_new\_pillow\_sphere()}{p8est\_geometry\_new\_pillow\_sphere()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}}$\ast$ p8est\+\_\+geometry\+\_\+new\+\_\+pillow\+\_\+sphere (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{double}]{R,  }\item[{\mbox{\hyperlink{p8est__geometry_8h_aff051fa25a6b688a8c3e520ac3ed04ff}{pillow\+\_\+sphere\+\_\+config\+\_\+t}}}]{config }\end{DoxyParamCaption})}
+
+
+
+Create a geometry for mapping the solid sphere using the 1-\/tree unit connectivity. 
+
+See companion routine \mbox{\hyperlink{p4est__geometry_8h_a6d66e0d2f78c8dd3ea359c1cdd366187}{p4est\+\_\+geometry\+\_\+new\+\_\+pillow\+\_\+disk}} which maps the 2d disk using 1-\/tree unit connectivity.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn} & The result of \mbox{\hyperlink{p8est__connectivity_8h_a53bdb596e76c52c1e23aaecd0aacc763}{p8est\+\_\+connectivity\+\_\+new\+\_\+unitcube}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em R} & The radius of the solid sphere. \\
+\hline
+\mbox{\texttt{ in}}  & {\em config} & The configuration to identify a mapping variant. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est__geometry_8h_acc7047c9e6923c9dd69bf77febc49301}\label{p8est__geometry_8h_acc7047c9e6923c9dd69bf77febc49301}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!p8est\_geometry\_new\_shell@{p8est\_geometry\_new\_shell}}
+\index{p8est\_geometry\_new\_shell@{p8est\_geometry\_new\_shell}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_geometry\_new\_shell()}{p8est\_geometry\_new\_shell()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}}$\ast$ p8est\+\_\+geometry\+\_\+new\+\_\+shell (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{double}]{R2,  }\item[{double}]{R1 }\end{DoxyParamCaption})}
+
+
+
+Create a geometry structure for the spherical shell of 24 trees. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn} & Result of p8est\+\_\+connectivity\+\_\+new\+\_\+shell or equivalent. We do NOT take ownership and expect it to stay alive. \\
+\hline
+\mbox{\texttt{ in}}  & {\em R2} & The outer radius of the shell. \\
+\hline
+\mbox{\texttt{ in}}  & {\em R1} & The inner radius of the shell. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Geometry structure; use with \mbox{\hyperlink{p4est__geometry_8h_ad389d94045e366e64a0c7854739f1f8f}{p4est\+\_\+geometry\+\_\+destroy}}. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}, and \mbox{\hyperlink{userdata_2userdata2_8c-example}{userdata/userdata2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est__geometry_8h_acbbb83633ccbc82ebb0c66bda3d3cd3e}\label{p8est__geometry_8h_acbbb83633ccbc82ebb0c66bda3d3cd3e}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!p8est\_geometry\_new\_sphere@{p8est\_geometry\_new\_sphere}}
+\index{p8est\_geometry\_new\_sphere@{p8est\_geometry\_new\_sphere}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_geometry\_new\_sphere()}{p8est\_geometry\_new\_sphere()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}}$\ast$ p8est\+\_\+geometry\+\_\+new\+\_\+sphere (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{double}]{R2,  }\item[{double}]{R1,  }\item[{double}]{R0 }\end{DoxyParamCaption})}
+
+
+
+Create a geometry structure for the solid sphere of 13 trees. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn} & Result of p8est\+\_\+connectivity\+\_\+new\+\_\+sphere or equivalent. We do NOT take ownership and expect it to stay alive. \\
+\hline
+\mbox{\texttt{ in}}  & {\em R2} & The outer radius of the sphere. \\
+\hline
+\mbox{\texttt{ in}}  & {\em R1} & The outer radius of the inner shell. \\
+\hline
+\mbox{\texttt{ in}}  & {\em R0} & The inner radius of the inner shell. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Geometry structure; use with \mbox{\hyperlink{p4est__geometry_8h_ad389d94045e366e64a0c7854739f1f8f}{p4est\+\_\+geometry\+\_\+destroy}}. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}, and \mbox{\hyperlink{userdata_2userdata2_8c-example}{userdata/userdata2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est__geometry_8h_a5809623dbb9a50f37488fd552f4c17d2}\label{p8est__geometry_8h_a5809623dbb9a50f37488fd552f4c17d2}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!p8est\_geometry\_new\_torus@{p8est\_geometry\_new\_torus}}
+\index{p8est\_geometry\_new\_torus@{p8est\_geometry\_new\_torus}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_geometry\_new\_torus()}{p8est\_geometry\_new\_torus()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}}$\ast$ p8est\+\_\+geometry\+\_\+new\+\_\+torus (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__connectivity_8h_ae35f889062e2e420a5534facd7aaf6a0}{p8est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn,  }\item[{double}]{R0,  }\item[{double}]{R1,  }\item[{double}]{R2 }\end{DoxyParamCaption})}
+
+
+
+Create a geometry structure for the torus. 
+
+This geometry maps a revolution torus, obtained using \mbox{\hyperlink{p8est__connectivity_8h_aa50117d066094039f84db7e27600d0a9}{p8est\+\_\+connectivity\+\_\+new\+\_\+torus}}.
+
+The torus is divided into into segments around the revolution axis, each segment is made of 5 trees; so here we provided the geometric transformation in a piecewise manner for each tree of the connectivity.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em conn} & Result of p8est\+\_\+connectivity\+\_\+new\+\_\+torus or equivalent. We do NOT take ownership and expect it to stay alive.\\
+\hline
+\mbox{\texttt{ in}}  & {\em R0} & The inner radius of the 2d disk slice as cross section. \\
+\hline
+\mbox{\texttt{ in}}  & {\em R1} & The outer radius of the 2d disk slice as cross section. \\
+\hline
+\mbox{\texttt{ in}}  & {\em R2} & The radius of the center circle of the torus. The outer radius of the torus is thus {\itshape R1} + {\itshape R2}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Geometry structure; use with \mbox{\hyperlink{p4est__geometry_8h_ad389d94045e366e64a0c7854739f1f8f}{p4est\+\_\+geometry\+\_\+destroy}}. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}, and \mbox{\hyperlink{userdata_2userdata2_8c-example}{userdata/userdata2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p8est__geometry_8h_a269042f8177588ab6f154a7fd625c6fb}\label{p8est__geometry_8h_a269042f8177588ab6f154a7fd625c6fb}} 
+\index{p8est\_geometry.h@{p8est\_geometry.h}!p8est\_geometry\_transform\_coordinates@{p8est\_geometry\_transform\_coordinates}}
+\index{p8est\_geometry\_transform\_coordinates@{p8est\_geometry\_transform\_coordinates}!p8est\_geometry.h@{p8est\_geometry.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_geometry\_transform\_coordinates()}{p8est\_geometry\_transform\_coordinates()}}
+{\footnotesize\ttfamily void p8est\+\_\+geometry\+\_\+transform\+\_\+coordinates (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__geometry_8h_a2ca5a4a5abb07e01d047518c0c540715}{p8est\+\_\+geometry\+\_\+t}} $\ast$}]{geom,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{coords\+\_\+in\mbox{[}3\mbox{]},  }\item[{double}]{coords\+\_\+out\mbox{[}3\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Transform a quadrant reference coordinate into the geometry. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em geom} & Properly initialized geometry object. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & Valid tree number relative to the connectivity that is underlying the geometry. \\
+\hline
+\mbox{\texttt{ in}}  & {\em coords\+\_\+in} & Valid quadrant reference coordinates. They must be in \mbox{[}0, P4\+EST\+\_\+\+ROOT\+\_\+\+LEN\mbox{]}$^\wedge$3. \\
+\hline
+\mbox{\texttt{ out}}  & {\em coords\+\_\+out} & Coordinates in the physical geometry. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}.\end{Desc}

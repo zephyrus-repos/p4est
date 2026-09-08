@@ -1,0 +1,150 @@
+.TH "src/p6est_communication.h" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/p6est_communication.h \- Parallel messaging and support code\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <p6est\&.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBp6est_comm_parallel_env_assign\fP (\fBp6est_t\fP *\fBp6est\fP, sc_MPI_Comm mpicomm)"
+.br
+.RI "Assign an MPI communicator to \fBp6est\fP; retrieve parallel environment\&. "
+.ti -1c
+.RI "void \fBp6est_comm_parallel_env_duplicate\fP (\fBp6est_t\fP *\fBp6est\fP)"
+.br
+.RI "Duplicate MPI communicator and replace the current one by the duplicate\&. "
+.ti -1c
+.RI "void \fBp6est_comm_parallel_env_release\fP (\fBp6est_t\fP *\fBp6est\fP)"
+.br
+.RI "Release MPI communicator if it is owned by \fBp6est\fP\&. "
+.ti -1c
+.RI "void \fBp6est_comm_parallel_env_replace\fP (\fBp6est_t\fP *\fBp6est\fP, sc_MPI_Comm mpicomm)"
+.br
+.RI "Replace the current MPI communicator by the one provided as input\&. "
+.ti -1c
+.RI "void \fBp6est_comm_parallel_env_get_info\fP (\fBp6est_t\fP *\fBp6est\fP)"
+.br
+.RI "Retrieve parallel environment information\&. "
+.ti -1c
+.RI "int \fBp6est_comm_parallel_env_is_null\fP (\fBp6est_t\fP *\fBp6est\fP)"
+.br
+.RI "Check if the MPI communicator is valid\&. "
+.ti -1c
+.RI "int \fBp6est_comm_parallel_env_reduce\fP (\fBp6est_t\fP **p6est_supercomm)"
+.br
+.RI "Reduce MPI communicator to non-empty ranks (i\&.e\&., nonzero quadrant counts)\&. "
+.ti -1c
+.RI "int \fBp6est_comm_parallel_env_reduce_ext\fP (\fBp6est_t\fP **p6est_supercomm, sc_MPI_Group group_add, int add_to_beginning, int **ranks_subcomm)"
+.br
+.RI "Reduce MPI communicator to non-empty ranks and add a group of ranks that will remain in the reduced communicator regardless whether they are empty or not\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Parallel messaging and support code\&. 
+
+
+.SH "Function Documentation"
+.PP 
+.SS "void p6est_comm_parallel_env_assign (\fBp6est_t\fP * p6est, sc_MPI_Comm mpicomm)"
+
+.PP
+Assign an MPI communicator to \fBp6est\fP; retrieve parallel environment\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpicomm\fP A valid MPI communicator\&.
+.RE
+.PP
+\fBNote\fP
+.RS 4
+The provided MPI communicator is not owned by \fBp6est\fP\&. 
+.RE
+.PP
+
+.SS "void p6est_comm_parallel_env_duplicate (\fBp6est_t\fP * p6est)"
+
+.PP
+Duplicate MPI communicator and replace the current one by the duplicate\&. 
+.PP
+\fBNote\fP
+.RS 4
+The duplicated MPI communicator is owned by \fBp6est\fP\&. 
+.RE
+.PP
+
+.SS "int p6est_comm_parallel_env_is_null (\fBp6est_t\fP * p6est)"
+
+.PP
+Check if the MPI communicator is valid\&. 
+.PP
+\fBReturns\fP
+.RS 4
+True if communicator is not NULL communicator, false otherwise\&. 
+.RE
+.PP
+
+.SS "int p6est_comm_parallel_env_reduce (\fBp6est_t\fP ** p6est_supercomm)"
+
+.PP
+Reduce MPI communicator to non-empty ranks (i\&.e\&., nonzero quadrant counts)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIp6est_supercomm\fP Object which communicator is reduced\&. points to NULL if this \fBp6est\fP does not exists\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if \fBp6est\fP exists on this MPI rank after reduction\&. 
+.RE
+.PP
+
+.SS "int p6est_comm_parallel_env_reduce_ext (\fBp6est_t\fP ** p6est_supercomm, sc_MPI_Group group_add, int add_to_beginning, int ** ranks_subcomm)"
+
+.PP
+Reduce MPI communicator to non-empty ranks and add a group of ranks that will remain in the reduced communicator regardless whether they are empty or not\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIp6est_supercomm\fP Object which communicator is reduced\&. Points to NULL if this \fBp6est\fP does not exists\&. 
+.br
+\fIgroup_add\fP Group of ranks that will remain in communicator\&. 
+.br
+\fIadd_to_beginning\fP If true, ranks will be added to the beginning of the reduced communicator, otherwise to the end\&. 
+.br
+\fIranks_subcomm\fP If not null, array of size 'subcommsize' with subcommrank->supercommrank map\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if \fBp6est\fP exists on this MPI rank after reduction\&. 
+.RE
+.PP
+
+.SS "void p6est_comm_parallel_env_replace (\fBp6est_t\fP * p6est, sc_MPI_Comm mpicomm)"
+
+.PP
+Replace the current MPI communicator by the one provided as input\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpicomm\fP A valid MPI communicator\&.
+.RE
+.PP
+\fBNote\fP
+.RS 4
+The provided MPI communicator is not owned by \fBp6est\fP\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

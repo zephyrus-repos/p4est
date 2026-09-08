@@ -1,0 +1,24 @@
+\hypertarget{group__p6est}{}\doxysection{p6est}
+\label{group__p6est}\index{p6est@{p6est}}
+
+
+A hybrid 2D+1D AMR extension.  
+
+
+\doxysubsection*{Files}
+\begin{DoxyCompactItemize}
+\item 
+file \mbox{\hyperlink{p6est_8h}{p6est.\+h}}
+\begin{DoxyCompactList}\small\item\em A hybrid 2D+1D AMR extension. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{p6est__communication_8h}{p6est\+\_\+communication.\+h}}
+\begin{DoxyCompactList}\small\item\em Parallel messaging and support code. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{p6est__extended_8h}{p6est\+\_\+extended.\+h}}
+\begin{DoxyCompactList}\small\item\em Interface routines with extended capabilities. \end{DoxyCompactList}\item 
+file \mbox{\hyperlink{p6est__ghost_8h}{p6est\+\_\+ghost.\+h}}
+\begin{DoxyCompactList}\small\item\em passing columns of layers and data to neighboring processes \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A hybrid 2D+1D AMR extension. 
+
+To include this component of the \mbox{\hyperlink{structp4est}{p4est}} library, configure \mbox{\hyperlink{structp4est}{p4est}} with the --enable-\/p6est option given. This module provides a specific kind of anisotropic adaptive mesh refinement for 3D meshes\+: it organizes the hexahedral cells into columns. Each column has the footprint of a 2D \mbox{\hyperlink{structp4est}{p4est}} quadrant. The cells within a column can be individually refined vertically, and a whole column of cells can be refined horizontally. When the forest is partitioned, each column is assigned to a single MPI process, i.\+e., a column cannot be split between processes. Most of the main 2D / 3D interface is available for \mbox{\hyperlink{structp6est}{p6est}}\+: refinement and coarsening, balance, ghost layers, and i/o. Finite element nodes can also be created using p6est\+\_\+lnodes\+\_\+new()\+: this creates nodes in the same data structure as \mbox{\hyperlink{p8est__lnodes_8h_af335bac4a831cb515abc27f154c755ea}{p8est\+\_\+lnodes\+\_\+new()}}. 

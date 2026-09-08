@@ -1,0 +1,57 @@
+.TH "p4est_quadrant" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p4est_quadrant \- The 2D quadrant datatype\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p4est\&.h>\fP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "union \fBp4est_quadrant_data\fP"
+.br
+.RI "Union for quadrant data\&. "
+.in -1c
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBp4est_qcoord_t\fP \fBx\fP"
+.br
+.ti -1c
+.RI "\fBp4est_qcoord_t\fP \fBy\fP"
+.br
+.RI "coordinates "
+.ti -1c
+.RI "int8_t \fBlevel\fP"
+.br
+.RI "level of refinement "
+.ti -1c
+.RI "int8_t \fBpad8\fP"
+.br
+.RI "padding "
+.ti -1c
+.RI "int16_t \fBpad16\fP"
+.br
+.RI "padding "
+.ti -1c
+.RI "union \fBp4est_quadrant::p4est_quadrant_data\fP \fBp\fP"
+.br
+.RI "a union of additional data attached to a quadrant "
+.in -1c
+.SH "Detailed Description"
+.PP 
+The 2D quadrant datatype\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBparticles/particles2\&.c\fP, \fBsimple/simple2\&.c\fP, \fBspheres/spheres2\&.c\fP, \fBsteps/p4est_step1\&.c\fP, \fBsteps/p4est_step3\&.c\fP, \fBtest_coordinates2\&.c\fP, \fBtimings/timings2\&.c\fP, and \fBuserdata/userdata_run2\&.c\fP\&.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

@@ -1,0 +1,46 @@
+\hypertarget{structp4est__neighbor__transform__t}{}\doxysection{p4est\+\_\+neighbor\+\_\+transform\+\_\+t Struct Reference}
+\label{structp4est__neighbor__transform__t}\index{p4est\_neighbor\_transform\_t@{p4est\_neighbor\_transform\_t}}
+
+
+Generic interface for transformations between a tree and any of its neighbors.  
+
+
+
+
+{\ttfamily \#include $<$p4est\+\_\+connectivity.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp4est__neighbor__transform__t_ac2b7c44887a7cb3161f671c32c847444}\label{structp4est__neighbor__transform__t_ac2b7c44887a7cb3161f671c32c847444}} 
+\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}} \mbox{\hyperlink{structp4est__neighbor__transform__t_ac2b7c44887a7cb3161f671c32c847444}{neighbor\+\_\+type}}
+\begin{DoxyCompactList}\small\item\em type of connection to neighbor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__neighbor__transform__t_a9c02552b8c271611f50677c1da0e754d}\label{structp4est__neighbor__transform__t_a9c02552b8c271611f50677c1da0e754d}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{structp4est__neighbor__transform__t_a9c02552b8c271611f50677c1da0e754d}{neighbor}}
+\begin{DoxyCompactList}\small\item\em neighbor tree index \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__neighbor__transform__t_a6b724fa4313821fda99a51e03af0c944}\label{structp4est__neighbor__transform__t_a6b724fa4313821fda99a51e03af0c944}} 
+int8\+\_\+t \mbox{\hyperlink{structp4est__neighbor__transform__t_a6b724fa4313821fda99a51e03af0c944}{index\+\_\+self}}
+\begin{DoxyCompactList}\small\item\em index of interface from self\textquotesingle{}s perspective \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__neighbor__transform__t_a9c73e70604484b9d1c41f9d8b6328d84}\label{structp4est__neighbor__transform__t_a9c73e70604484b9d1c41f9d8b6328d84}} 
+int8\+\_\+t \mbox{\hyperlink{structp4est__neighbor__transform__t_a9c73e70604484b9d1c41f9d8b6328d84}{index\+\_\+neighbor}}
+\begin{DoxyCompactList}\small\item\em index of interface from neighbor\textquotesingle{}s perspective \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__neighbor__transform__t_ac705d09b6ca993d2463b906e6f134bb1}\label{structp4est__neighbor__transform__t_ac705d09b6ca993d2463b906e6f134bb1}} 
+int8\+\_\+t \mbox{\hyperlink{structp4est__neighbor__transform__t_ac705d09b6ca993d2463b906e6f134bb1}{perm}} \mbox{[}\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4\+EST\+\_\+\+DIM}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em permutation of dimensions when transforming self coords to neighbor coords \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__neighbor__transform__t_ab4388a04e1e0ba6784d2226f8eba7e6f}\label{structp4est__neighbor__transform__t_ab4388a04e1e0ba6784d2226f8eba7e6f}} 
+int8\+\_\+t \mbox{\hyperlink{structp4est__neighbor__transform__t_ab4388a04e1e0ba6784d2226f8eba7e6f}{sign}} \mbox{[}\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4\+EST\+\_\+\+DIM}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em sign changes when transforming self coords to neighbor coords \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__neighbor__transform__t_ab3339a86dcd1cec8c794c516b3a63094}\label{structp4est__neighbor__transform__t_ab3339a86dcd1cec8c794c516b3a63094}} 
+\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} \mbox{\hyperlink{structp4est__neighbor__transform__t_ab3339a86dcd1cec8c794c516b3a63094}{origin\+\_\+self}} \mbox{[}\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4\+EST\+\_\+\+DIM}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em point on the interface from self\textquotesingle{}s perspective \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__neighbor__transform__t_a921955b959cfb9d38880582a288a8aa6}\label{structp4est__neighbor__transform__t_a921955b959cfb9d38880582a288a8aa6}} 
+\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} \mbox{\hyperlink{structp4est__neighbor__transform__t_a921955b959cfb9d38880582a288a8aa6}{origin\+\_\+neighbor}} \mbox{[}\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4\+EST\+\_\+\+DIM}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em point on the interface from neighbor\textquotesingle{}s perspective \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Generic interface for transformations between a tree and any of its neighbors. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p4est__connectivity_8h}{p4est\+\_\+connectivity.\+h}}\end{DoxyCompactItemize}

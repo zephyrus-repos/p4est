@@ -1,0 +1,246 @@
+.TH "src/sc_v4l2.h" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/sc_v4l2.h \- Support for video for linux version 2\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <sc\&.h>\fP
+.br
+
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct sc_v4l2_device \fBsc_v4l2_device_t\fP"
+.br
+.RI "Opaque structure for a video device\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBsc_v4l2_device_t\fP * \fBsc_v4l2_device_open\fP (const char *devname)"
+.br
+.RI "Open a video device by special file name\&. "
+.ti -1c
+.RI "int \fBsc_v4l2_device_close\fP (\fBsc_v4l2_device_t\fP *vd)"
+.br
+.RI "Close a video device\&. "
+.ti -1c
+.RI "const char * \fBsc_v4l2_device_devstring\fP (const \fBsc_v4l2_device_t\fP *vd)"
+.br
+.RI "Return string that details some driver and device properties\&. "
+.ti -1c
+.RI "const char * \fBsc_v4l2_device_capstring\fP (const \fBsc_v4l2_device_t\fP *vd)"
+.br
+.RI "Return string that details some device capabilities\&. "
+.ti -1c
+.RI "const char * \fBsc_v4l2_device_outstring\fP (const \fBsc_v4l2_device_t\fP *vd)"
+.br
+.RI "Return string that details some output properties\&. "
+.ti -1c
+.RI "int \fBsc_v4l2_device_is_readwrite\fP (const \fBsc_v4l2_device_t\fP *vd)"
+.br
+.RI "Query whether a device supports read/write I/O\&. "
+.ti -1c
+.RI "int \fBsc_v4l2_device_is_streaming\fP (const \fBsc_v4l2_device_t\fP *vd)"
+.br
+.RI "Query whether a device supports streaming I/O\&. "
+.ti -1c
+.RI "int \fBsc_v4l2_device_select\fP (\fBsc_v4l2_device_t\fP *vd, unsigned usec)"
+.br
+.RI "Call select (2) to wait for write availability of device\&. "
+.ti -1c
+.RI "int \fBsc_v4l2_device_write\fP (\fBsc_v4l2_device_t\fP *vd, const char *wbuf)"
+.br
+.RI "Call write (2) to copy an image buffer to device\&. "
+.ti -1c
+.RI "int \fBsc_v4l2_device_format\fP (\fBsc_v4l2_device_t\fP *vd, unsigned int *width, unsigned int *height, unsigned int *bytesperline, unsigned int *sizeimage)"
+.br
+.RI "Set output configuration of device\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Support for video for linux version 2\&. 
+
+
+.SH "Function Documentation"
+.PP 
+.SS "const char* sc_v4l2_device_capstring (const \fBsc_v4l2_device_t\fP * vd)"
+
+.PP
+Return string that details some device capabilities\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvd\fP Opened \fBsc_v4l2_device_t\fP\&. Not modified\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+NUL-terminated string only valid while the device \fIvd\fP is\&. 
+.RE
+.PP
+
+.SS "int sc_v4l2_device_close (\fBsc_v4l2_device_t\fP * vd)"
+
+.PP
+Close a video device\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvd\fP Close this device and deallocate associated resources\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, -1 otherwise\&. 
+.RE
+.PP
+
+.SS "const char* sc_v4l2_device_devstring (const \fBsc_v4l2_device_t\fP * vd)"
+
+.PP
+Return string that details some driver and device properties\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvd\fP Opened \fBsc_v4l2_device_t\fP\&. Not modified\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+NUL-terminated string only valid while the device \fIvd\fP is\&. 
+.RE
+.PP
+
+.SS "int sc_v4l2_device_format (\fBsc_v4l2_device_t\fP * vd, unsigned int * width, unsigned int * height, unsigned int * bytesperline, unsigned int * sizeimage)"
+
+.PP
+Set output configuration of device\&. We demand sRGB color space with RGB 565 pixel format (2 bytes)\&. The image size values on output define the buffer size to allocate\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvd\fP Device must support the desired output format\&. 
+.br
+\fIwidth\fP Desired width on input, actual width on output\&. 
+.br
+\fIheight\fP Desired height on input, actual height on output\&. 
+.br
+\fIbytesperline\fP Bytes per line on output, including padding\&. 
+.br
+\fIsizeimage\fP Bytes per image, including padding\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, -1 otherwise and setting errno\&. 
+.RE
+.PP
+
+.SS "int sc_v4l2_device_is_readwrite (const \fBsc_v4l2_device_t\fP * vd)"
+
+.PP
+Query whether a device supports read/write I/O\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvd\fP Any pointer\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True iff \fIvd\fP is valid and read/write is supported\&. 
+.RE
+.PP
+
+.SS "int sc_v4l2_device_is_streaming (const \fBsc_v4l2_device_t\fP * vd)"
+
+.PP
+Query whether a device supports streaming I/O\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvd\fP Any pointer\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True iff \fIvd\fP is valid and streaming is supported\&. 
+.RE
+.PP
+
+.SS "\fBsc_v4l2_device_t\fP* sc_v4l2_device_open (const char * devname)"
+
+.PP
+Open a video device by special file name\&. The device is queried but its state is not modified\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdevname\fP Special file name such as \fC/dev/video8\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Valid pointer on success, NULL on error\&. 
+.RE
+.PP
+
+.SS "const char* sc_v4l2_device_outstring (const \fBsc_v4l2_device_t\fP * vd)"
+
+.PP
+Return string that details some output properties\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvd\fP Opened \fBsc_v4l2_device_t\fP\&. Not modified\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+If output is supported as desired, return NUL-terminated string only valid while the \fIvd\fP object is alive\&. Otherwise return NULL\&. 
+.RE
+.PP
+
+.SS "int sc_v4l2_device_select (\fBsc_v4l2_device_t\fP * vd, unsigned usec)"
+
+.PP
+Call select (2) to wait for write availability of device\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvd\fP Opened \fBsc_v4l2_device_t\fP capable of output\&. 
+.br
+\fIusec\fP Number of microseconds to wait for device\&. We return sooner if interrupted by a signal\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+-1 on error, 0 on timeout, 1 when ready for writing\&. 
+.RE
+.PP
+
+.SS "int sc_v4l2_device_write (\fBsc_v4l2_device_t\fP * vd, const char * wbuf)"
+
+.PP
+Call write (2) to copy an image buffer to device\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIvd\fP Opened \fBsc_v4l2_device_t\fP capable of output\&. 
+.br
+\fIwbuf\fP Buffer holding at least \fIsizeimage\fP many bytes\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 on success, -1 otherwise and setting errno\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

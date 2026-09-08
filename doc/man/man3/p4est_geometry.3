@@ -1,0 +1,54 @@
+.TH "p4est_geometry" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p4est_geometry \- Encapsulates a custom transformation from tree-local coordinates to user defined physical space\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p4est_geometry\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "const char * \fBname\fP"
+.br
+.RI "User's choice is arbitrary\&. "
+.ti -1c
+.RI "void * \fBuser\fP"
+.br
+.RI "User's choice is arbitrary\&. "
+.ti -1c
+.RI "\fBp4est_geometry_X_t\fP \fBX\fP"
+.br
+.RI "Coordinate transformation\&. "
+.ti -1c
+.RI "\fBp4est_geometry_destroy_t\fP \fBdestroy\fP"
+.br
+.RI "Destructor called by \fBp4est_geometry_destroy\fP\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Encapsulates a custom transformation from tree-local coordinates to user defined physical space\&. 
+
+Used in \fBp4est_vtk\&.h\fP to write global-coordinate meshes\&.
+.PP
+Some internal \fBp4est\fP functions assume that *user points to a \fBp4est_connectivity\fP\&. However, in general it can be used as the user wishes\&.
+.PP
+This structure can be filled or allocated by the user\&. \fBp4est\fP will never change its contents\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple2\&.c\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "\fBp4est_geometry_destroy_t\fP p4est_geometry::destroy"
+
+.PP
+Destructor called by \fBp4est_geometry_destroy\fP\&. If NULL, P4EST_FREE is called\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

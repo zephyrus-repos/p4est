@@ -1,0 +1,42 @@
+.TH "p8est_lnodes_rank" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p8est_lnodes_rank \- The structure stored in the sharers array\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p8est_lnodes\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "int \fBrank\fP"
+.br
+.ti -1c
+.RI "sc_array_t \fBshared_nodes\fP"
+.br
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBshared_mine_offset\fP"
+.br
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBshared_mine_count\fP"
+.br
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBowned_offset\fP"
+.br
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBowned_count\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+The structure stored in the sharers array\&. 
+
+shared_nodes is a sorted array of p4est_locidx_t that indexes into local nodes\&. The shared_nodes array has a contiguous (or empty) section of nodes owned by the current rank\&. shared_mine_offset and shared_mine_count identify this section by indexing the shared_nodes array, not the local nodes array\&. owned_offset and owned_count define the section of local nodes that is owned by the listed rank (the section may be empty)\&. For the current process these coincide with those in p8est_lnodes_t\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

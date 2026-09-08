@@ -1,0 +1,2015 @@
+\hypertarget{sc__containers_8h}{}\doxysection{src/sc\+\_\+containers.h File Reference}
+\label{sc__containers_8h}\index{src/sc\_containers.h@{src/sc\_containers.h}}
+
+
+Dynamic containers such as lists, arrays, and hash tables.  
+
+
+{\ttfamily \#include $<$sc.\+h$>$}\newline
+Include dependency graph for sc\+\_\+containers.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sc__containers_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sc__containers_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structsc__array}{sc\+\_\+array}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__array}{sc\+\_\+array}} object provides a dynamic array of equal-\/size elements. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structsc__mstamp}{sc\+\_\+mstamp}}
+\begin{DoxyCompactList}\small\item\em A data container to create memory items of the same size. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structsc__mempool}{sc\+\_\+mempool}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__mempool}{sc\+\_\+mempool}} object provides a large pool of equal-\/size elements. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structsc__link}{sc\+\_\+link}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__link}{sc\+\_\+link}} structure is one link of a linked list. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structsc__list}{sc\+\_\+list}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__list}{sc\+\_\+list}} object provides a linked list. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structsc__hash}{sc\+\_\+hash}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__hash}{sc\+\_\+hash}} implements a hash table. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structsc__hash__array}{sc\+\_\+hash\+\_\+array}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__hash__array}{sc\+\_\+hash\+\_\+array}} implements an array backed up by a hash table. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structsc__recycle__array}{sc\+\_\+recycle\+\_\+array}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__recycle__array}{sc\+\_\+recycle\+\_\+array}} object provides an array of slots that can be reused. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\+\_\+hash\+\_\+rot}}(x,  k)~(((x) $<$$<$ (k)) $\vert$ ((x) $>$$>$ (32 -\/ (k))))
+\begin{DoxyCompactList}\small\item\em Bijective bit rotation as building block for hash functions. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{sc__containers_8h_a9b111eda1aeb1c0c756c59d001a07caa}{sc\+\_\+hash\+\_\+mix}}(a,  b,  c)
+\begin{DoxyCompactList}\small\item\em Integer bit mixer as building block for hash functions. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{sc__containers_8h_a15fd16d6e7d37a678e3e764f68893541}{sc\+\_\+hash\+\_\+final}}(a,  b,  c)
+\begin{DoxyCompactList}\small\item\em Integer bit operations as building block for hash functions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__containers_8h_ad9e37c27d608aabb0db95b28ccc27a8d}\label{sc__containers_8h_ad9e37c27d608aabb0db95b28ccc27a8d}} 
+\#define \mbox{\hyperlink{sc__containers_8h_ad9e37c27d608aabb0db95b28ccc27a8d}{SC\+\_\+\+ARRAY\+\_\+\+IS\+\_\+\+OWNER}}(a)~((a)-\/$>$byte\+\_\+alloc $>$= 0)
+\begin{DoxyCompactList}\small\item\em Test whether the sc\+\_\+array\+\_\+t owns its {\itshape array}. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{sc__containers_8h_ae94de2c6227fdb03f497aa2524257003}{SC\+\_\+\+ARRAY\+\_\+\+BYTE\+\_\+\+ALLOC}}(a)
+\begin{DoxyCompactList}\small\item\em Return the allocated size of the array. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__containers_8h_a1dfb7566369027bc94437c6973469c8c}\label{sc__containers_8h_a1dfb7566369027bc94437c6973469c8c}} 
+\#define \mbox{\hyperlink{sc__containers_8h_a1dfb7566369027bc94437c6973469c8c}{sc\+\_\+array\+\_\+new\+\_\+size}}(s,  c)~(\mbox{\hyperlink{sc__containers_8h_a995cca28e6413132e14691834e279504}{sc\+\_\+array\+\_\+new\+\_\+count}} ((s), (c)))
+\begin{DoxyCompactList}\small\item\em Deprecated\+: use \mbox{\hyperlink{sc__containers_8h_a995cca28e6413132e14691834e279504}{sc\+\_\+array\+\_\+new\+\_\+count}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef unsigned int($\ast$ \mbox{\hyperlink{sc__containers_8h_a0a303b68788b49895e85f4a80fb061aa}{sc\+\_\+hash\+\_\+function\+\_\+t}}) (const void $\ast$v, const void $\ast$u)
+\begin{DoxyCompactList}\small\item\em Function to compute a hash value of an object. \end{DoxyCompactList}\item 
+typedef int($\ast$ \mbox{\hyperlink{sc__containers_8h_afa3afb1f6aca73ea1b310e6d91c65c36}{sc\+\_\+equal\+\_\+function\+\_\+t}}) (const void $\ast$v1, const void $\ast$v2, const void $\ast$u)
+\begin{DoxyCompactList}\small\item\em Function to check equality of two objects. \end{DoxyCompactList}\item 
+typedef int($\ast$ \mbox{\hyperlink{sc__containers_8h_a377b6d1c8ddd0e9fd27113be5ac70bf7}{sc\+\_\+hash\+\_\+foreach\+\_\+t}}) (void $\ast$$\ast$v, const void $\ast$u)
+\begin{DoxyCompactList}\small\item\em Function to call on every data item of a hash table or hash array. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structsc__array}{sc\+\_\+array}} \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__array}{sc\+\_\+array}} object provides a dynamic array of equal-\/size elements. \end{DoxyCompactList}\item 
+typedef size\+\_\+t($\ast$ \mbox{\hyperlink{sc__containers_8h_a783687760fbe3e2c531cd99a695ab7e1}{sc\+\_\+array\+\_\+type\+\_\+t}}) (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, size\+\_\+t index, void $\ast$data)
+\begin{DoxyCompactList}\small\item\em Function to determine the enumerable type of an object in an array. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structsc__mstamp}{sc\+\_\+mstamp}} \mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em A data container to create memory items of the same size. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structsc__mempool}{sc\+\_\+mempool}} \mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__mempool}{sc\+\_\+mempool}} object provides a large pool of equal-\/size elements. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}\label{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}} 
+typedef struct \mbox{\hyperlink{structsc__link}{sc\+\_\+link}} \mbox{\hyperlink{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}{sc\+\_\+link\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__link}{sc\+\_\+link}} structure is one link of a linked list. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}\label{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}} 
+typedef struct \mbox{\hyperlink{structsc__list}{sc\+\_\+list}} \mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__list}{sc\+\_\+list}} object provides a linked list. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structsc__hash}{sc\+\_\+hash}} \mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__hash}{sc\+\_\+hash}} implements a hash table. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sc__containers_8h_a0be514049863b2889ab2a6e028192b4d}\label{sc__containers_8h_a0be514049863b2889ab2a6e028192b4d}} 
+typedef struct sc\+\_\+hash\+\_\+array\+\_\+data \mbox{\hyperlink{sc__containers_8h_a0be514049863b2889ab2a6e028192b4d}{sc\+\_\+hash\+\_\+array\+\_\+data\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Internal context structure for \mbox{\hyperlink{structsc__hash__array}{sc\+\_\+hash\+\_\+array}}. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structsc__hash__array}{sc\+\_\+hash\+\_\+array}} \mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__hash__array}{sc\+\_\+hash\+\_\+array}} implements an array backed up by a hash table. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structsc__recycle__array}{sc\+\_\+recycle\+\_\+array}} \mbox{\hyperlink{sc__containers_8h_a135d3d31f993e731607abaad2fd43ee6}{sc\+\_\+recycle\+\_\+array\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structsc__recycle__array}{sc\+\_\+recycle\+\_\+array}} object provides an array of slots that can be reused. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{sc__containers_8h_a9c156f095e1050cd568689fa3615a7ed}{sc\+\_\+array\+\_\+memory\+\_\+used}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, int is\+\_\+dynamic)
+\begin{DoxyCompactList}\small\item\em Calculate the memory used by an array. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__containers_8h_ad880facede1dd567bd4da71fc8b46dcd}{sc\+\_\+array\+\_\+new}} (size\+\_\+t elem\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Creates a new array structure with 0 elements. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__containers_8h_a995cca28e6413132e14691834e279504}{sc\+\_\+array\+\_\+new\+\_\+count}} (size\+\_\+t elem\+\_\+size, size\+\_\+t elem\+\_\+count)
+\begin{DoxyCompactList}\small\item\em Creates a new array structure with a given length (number of elements). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__containers_8h_acff8923e5659a46da89edfabb089d3f4}{sc\+\_\+array\+\_\+new\+\_\+view}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, size\+\_\+t offset, size\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Creates a new view of an existing sc\+\_\+array\+\_\+t. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__containers_8h_a45ac4f8d8add15a6838cb0ec9c3319be}{sc\+\_\+array\+\_\+new\+\_\+data}} (void $\ast$base, size\+\_\+t elem\+\_\+size, size\+\_\+t elem\+\_\+count)
+\begin{DoxyCompactList}\small\item\em Creates a new view of an existing plain C array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a9538f758ce0adf6f61c7091dff1a693a}{sc\+\_\+array\+\_\+destroy}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array)
+\begin{DoxyCompactList}\small\item\em Destroys an array structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a66a53cdb69696fe2dbf8dd8dda821155}{sc\+\_\+array\+\_\+destroy\+\_\+null}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$$\ast$parray)
+\begin{DoxyCompactList}\small\item\em Destroys an array structure and sets the pointer to NULL. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a253a39f46eda1adfc12871e3e52e2251}{sc\+\_\+array\+\_\+init}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, size\+\_\+t elem\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Initializes an already allocated (or static) array structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a34588e4788f67b33bea0c99dc34e0473}{sc\+\_\+array\+\_\+init\+\_\+size}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, size\+\_\+t elem\+\_\+size, size\+\_\+t elem\+\_\+count)
+\begin{DoxyCompactList}\small\item\em Initializes an already allocated (or static) array structure and allocates a given number of elements. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_ab123c042db61b86447f9c68edff6c275}{sc\+\_\+array\+\_\+init\+\_\+count}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, size\+\_\+t elem\+\_\+size, size\+\_\+t elem\+\_\+count)
+\begin{DoxyCompactList}\small\item\em Initializes an already allocated (or static) array structure and allocates a given number of elements. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_aa7c755a6fdc7f4e3c490d9edb786cc5d}{sc\+\_\+array\+\_\+init\+\_\+view}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$view, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, size\+\_\+t offset, size\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Initializes an already allocated (or static) view from existing sc\+\_\+array\+\_\+t. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a225c9354782d37590e63d704124cd113}{sc\+\_\+array\+\_\+init\+\_\+reshape}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$view, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, size\+\_\+t elem\+\_\+size, size\+\_\+t elem\+\_\+count)
+\begin{DoxyCompactList}\small\item\em Initialize an already allocated (or static) view from existing sc\+\_\+array\+\_\+t. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a314b3cdbde02bc48303c9d60391286ee}{sc\+\_\+array\+\_\+init\+\_\+data}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$view, void $\ast$base, size\+\_\+t elem\+\_\+size, size\+\_\+t elem\+\_\+count)
+\begin{DoxyCompactList}\small\item\em Initializes an already allocated (or static) view from given plain C data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_aacb264d085512739969ce4fb6d643d7a}{sc\+\_\+array\+\_\+memset}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, int c)
+\begin{DoxyCompactList}\small\item\em Run memset on the array storage. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a6df54afbedf05d9cf789c5ebb7599ab4}{sc\+\_\+array\+\_\+reset}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array)
+\begin{DoxyCompactList}\small\item\em Sets the array count to zero and frees all elements. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_acd6536ee67b1b02848dd529ffd1e3fec}{sc\+\_\+array\+\_\+truncate}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array)
+\begin{DoxyCompactList}\small\item\em Sets the array count to zero, but does not free elements. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a30ec6fe1bb8a06481c6677e63efc76ec}{sc\+\_\+array\+\_\+rewind}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, size\+\_\+t new\+\_\+count)
+\begin{DoxyCompactList}\small\item\em Shorten an array without reallocating it. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a584d8488f231972c68d44eb6239c9cd8}{sc\+\_\+array\+\_\+resize}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, size\+\_\+t new\+\_\+count)
+\begin{DoxyCompactList}\small\item\em Sets the element count to new\+\_\+count. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a396352376b97fd861557f4b844ba0730}{sc\+\_\+array\+\_\+copy}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$dest, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$src)
+\begin{DoxyCompactList}\small\item\em Copy the contents of one array into another. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_ac6838c27c4655cb9e3637e2277be1371}{sc\+\_\+array\+\_\+copy\+\_\+into}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$dest, size\+\_\+t dest\+\_\+offset, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$src)
+\begin{DoxyCompactList}\small\item\em Copy the contents of one array into some portion of another. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_ae1d66f0bf86f9f8975611dda4d0b2880}{sc\+\_\+array\+\_\+move\+\_\+part}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$dest, size\+\_\+t dest\+\_\+offset, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$src, size\+\_\+t src\+\_\+offset, size\+\_\+t count)
+\begin{DoxyCompactList}\small\item\em Copy part of one array into another using memmove (3). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a750f7188a30c8c2756c77d70967b0caf}{sc\+\_\+array\+\_\+sort}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, int($\ast$compar)(const void $\ast$, const void $\ast$))
+\begin{DoxyCompactList}\small\item\em Sorts the array in ascending order wrt. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__containers_8h_ab930cdd0da30cd639b20a639990568e1}{sc\+\_\+array\+\_\+is\+\_\+sorted}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, int($\ast$compar)(const void $\ast$, const void $\ast$))
+\begin{DoxyCompactList}\small\item\em Check whether the array is sorted wrt. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__containers_8h_adc880037e9e90efb76648a5faa926e5b}{sc\+\_\+array\+\_\+is\+\_\+equal}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$other)
+\begin{DoxyCompactList}\small\item\em Check whether two arrays have equal size, count, and content. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a7be396714f4ea39005cab1bc666666a6}{sc\+\_\+array\+\_\+uniq}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, int($\ast$compar)(const void $\ast$, const void $\ast$))
+\begin{DoxyCompactList}\small\item\em Removed duplicate entries from a sorted array. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{sc__containers_8h_aa0759d2b44ed0aadb8c325f7bd5f5449}{sc\+\_\+array\+\_\+bsearch}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, const void $\ast$key, int($\ast$compar)(const void $\ast$, const void $\ast$))
+\begin{DoxyCompactList}\small\item\em Performs a binary search on an array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a4ef2072803b22a940c6e39498940768c}{sc\+\_\+array\+\_\+split}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$offsets, size\+\_\+t num\+\_\+types, \mbox{\hyperlink{sc__containers_8h_a783687760fbe3e2c531cd99a695ab7e1}{sc\+\_\+array\+\_\+type\+\_\+t}} type\+\_\+fn, void $\ast$data)
+\begin{DoxyCompactList}\small\item\em Compute the offsets of groups of enumerable types in an array. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__containers_8h_aba51287db7e298935bd1fda5557fbacf}{sc\+\_\+array\+\_\+is\+\_\+permutation}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array)
+\begin{DoxyCompactList}\small\item\em Determine whether {\itshape array} is an array of size\+\_\+t\textquotesingle{}s whose entries include every integer 0 $<$= i $<$ array-\/$>$elem\+\_\+count. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a05188345c402a4374c9e7ed4753e5c8e}{sc\+\_\+array\+\_\+permute}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$newindices, int keepperm)
+\begin{DoxyCompactList}\small\item\em Given permutation {\itshape newindices}, permute {\itshape array} in place. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{sc__containers_8h_aff8a3c56854a5efc06605541278ea3dd}{sc\+\_\+array\+\_\+checksum}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array)
+\begin{DoxyCompactList}\small\item\em Computes the adler32 checksum of array data (see zlib documentation). \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{sc__containers_8h_aadd0c405a3d83dfc251de2a390f43d88}{sc\+\_\+array\+\_\+pqueue\+\_\+add}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, void $\ast$temp, int($\ast$compar)(const void $\ast$, const void $\ast$))
+\begin{DoxyCompactList}\small\item\em Adds an element to a priority queue. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{sc__containers_8h_af8ec1c3d19267b204a2f756fe428f196}{sc\+\_\+array\+\_\+pqueue\+\_\+pop}} (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, void $\ast$result, int($\ast$compar)(const void $\ast$, const void $\ast$))
+\begin{DoxyCompactList}\small\item\em Pops the smallest element from a priority queue. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_ac9a667b4bf2d1777550917a00ca1ee46}{sc\+\_\+mstamp\+\_\+init}} (\mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}} $\ast$mst, size\+\_\+t stamp\+\_\+unit, size\+\_\+t elem\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Initialize a memory stamp container. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a3e36faece884b10645816c2b85cd6a27}{sc\+\_\+mstamp\+\_\+reset}} (\mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}} $\ast$mst)
+\begin{DoxyCompactList}\small\item\em Free all memory in a stamp structure and all items previously returned. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a9e50a88d5c99bc2a7f1749a77fe26641}{sc\+\_\+mstamp\+\_\+truncate}} (\mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}} $\ast$mst)
+\begin{DoxyCompactList}\small\item\em Free all memory in a stamp structure and initialize it anew. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{sc__containers_8h_af9d1bec5cb6c6826ff4095e3052437bf}{sc\+\_\+mstamp\+\_\+alloc}} (\mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}} $\ast$mst)
+\begin{DoxyCompactList}\small\item\em Return a new item. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{sc__containers_8h_a41fa1c49411f637464a99522a3370145}{sc\+\_\+mstamp\+\_\+memory\+\_\+used}} (\mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}} $\ast$mst)
+\begin{DoxyCompactList}\small\item\em Return memory size in bytes of all data allocated in the container. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{sc__containers_8h_a73235130bba53a9ed8b07ddfa27fadae}{sc\+\_\+mempool\+\_\+memory\+\_\+used}} (\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$mempool)
+\begin{DoxyCompactList}\small\item\em Calculate the memory used by a memory pool. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__containers_8h_ab416c24d85ffd174f0dd3ad89c4c1163}{sc\+\_\+mempool\+\_\+new}} (size\+\_\+t elem\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Creates a new mempool structure with the zero\+\_\+and\+\_\+persist option off. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__containers_8h_a561743511cacdfaacb29ad28442a5a4c}{sc\+\_\+mempool\+\_\+new\+\_\+zero\+\_\+and\+\_\+persist}} (size\+\_\+t elem\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Creates a new mempool structure with the zero\+\_\+and\+\_\+persist option on. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_aac8778c147e092b73df13afdbc2e4c84}{sc\+\_\+mempool\+\_\+init}} (\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$mempool, size\+\_\+t elem\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Same as sc\+\_\+mempool\+\_\+new, but for an already allocated object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a45ecbb2b02cf93632c79c7307f5238ba}{sc\+\_\+mempool\+\_\+destroy}} (\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$mempool)
+\begin{DoxyCompactList}\small\item\em Destroy a mempool structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a81b560f3010038ed71dad8635eb747fd}{sc\+\_\+mempool\+\_\+destroy\+\_\+null}} (\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$$\ast$pmempool)
+\begin{DoxyCompactList}\small\item\em Destroy a mempool structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a1e2a7bbce18983023e61ff681e66d94f}{sc\+\_\+mempool\+\_\+reset}} (\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$mempool)
+\begin{DoxyCompactList}\small\item\em Same as sc\+\_\+mempool\+\_\+destroy, but does not free the pointer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_ab483d01f1670c336d9cf76a8a2789d21}{sc\+\_\+mempool\+\_\+truncate}} (\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$mempool)
+\begin{DoxyCompactList}\small\item\em Invalidates all previously returned pointers, resets count to 0. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{sc__containers_8h_abc4ec6b2855dcb3125310f6ad2928ca1}{sc\+\_\+list\+\_\+memory\+\_\+used}} (\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$list, int is\+\_\+dynamic)
+\begin{DoxyCompactList}\small\item\em Calculate the total memory used by a list. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__containers_8h_a16ed388e36eb3088d911d68f995be3b1}{sc\+\_\+list\+\_\+new}} (\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$allocator)
+\begin{DoxyCompactList}\small\item\em Allocate a new, empty linked list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_ab9d366868c0011ee034b4e1b5d6f701f}{sc\+\_\+list\+\_\+destroy}} (\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$list)
+\begin{DoxyCompactList}\small\item\em Destroy a linked list structure in O(\+N). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a2345f4f800f46d60d612c6d9545758dd}{sc\+\_\+list\+\_\+init}} (\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$list, \mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$allocator)
+\begin{DoxyCompactList}\small\item\em Initialize a list object with an external link allocator. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_ab87b22d2b61f04d3c73d93e9218b97c7}{sc\+\_\+list\+\_\+reset}} (\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$list)
+\begin{DoxyCompactList}\small\item\em Remove all elements from a list in O(\+N). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a5934247f1587a5376772ec2d035f812f}{sc\+\_\+list\+\_\+unlink}} (\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$list)
+\begin{DoxyCompactList}\small\item\em Unlink all list elements without returning them to the mempool. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}{sc\+\_\+link\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__containers_8h_a6d609be9c0904f955ea15eddab01ef12}{sc\+\_\+list\+\_\+prepend}} (\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$list, void $\ast$data)
+\begin{DoxyCompactList}\small\item\em Insert a list element at the beginning of the list. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}{sc\+\_\+link\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__containers_8h_adfae475a3fb1f3fe8e0f5a7548262065}{sc\+\_\+list\+\_\+append}} (\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$list, void $\ast$data)
+\begin{DoxyCompactList}\small\item\em Insert a list element at the end of the list. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}{sc\+\_\+link\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__containers_8h_a0b94f6cf468b02dbaabd780e162cbeaa}{sc\+\_\+list\+\_\+insert}} (\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$list, \mbox{\hyperlink{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}{sc\+\_\+link\+\_\+t}} $\ast$pred, void $\ast$data)
+\begin{DoxyCompactList}\small\item\em Insert an element after a given list position. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{sc__containers_8h_aaf1dfcc941294ac2b6898db6b798938d}{sc\+\_\+list\+\_\+remove}} (\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$list, \mbox{\hyperlink{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}{sc\+\_\+link\+\_\+t}} $\ast$pred)
+\begin{DoxyCompactList}\small\item\em Remove an element after a given list position. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{sc__containers_8h_affcaa9043e79854360ab37bdc670e668}{sc\+\_\+list\+\_\+pop}} (\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$list)
+\begin{DoxyCompactList}\small\item\em Remove an element from the front of the list. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{sc__containers_8h_a5f50ed06f72928a512bf013da66231dd}{sc\+\_\+hash\+\_\+function\+\_\+string}} (const void $\ast$s, const void $\ast$u)
+\begin{DoxyCompactList}\small\item\em Compute a hash value from a null-\/terminated string. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{sc__containers_8h_a61448f834b749daa38248ad391417e0a}{sc\+\_\+hash\+\_\+memory\+\_\+used}} (\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$hash)
+\begin{DoxyCompactList}\small\item\em Calculate the memory used by a hash table. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__containers_8h_a79301891a134c0765dd8770cd88545d1}{sc\+\_\+hash\+\_\+new}} (\mbox{\hyperlink{sc__containers_8h_a0a303b68788b49895e85f4a80fb061aa}{sc\+\_\+hash\+\_\+function\+\_\+t}} hash\+\_\+fn, \mbox{\hyperlink{sc__containers_8h_afa3afb1f6aca73ea1b310e6d91c65c36}{sc\+\_\+equal\+\_\+function\+\_\+t}} equal\+\_\+fn, void $\ast$user\+\_\+data, \mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$allocator)
+\begin{DoxyCompactList}\small\item\em Create a new hash table. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a4485f83fdfee14e4a14573f4efe7c108}{sc\+\_\+hash\+\_\+destroy}} (\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$hash)
+\begin{DoxyCompactList}\small\item\em Destroy a hash table. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a50845e587caa053395c696b4fdb274e1}{sc\+\_\+hash\+\_\+destroy\+\_\+null}} (\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$$\ast$phash)
+\begin{DoxyCompactList}\small\item\em Destroy a hash table and set its pointer to NULL. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a6018b3a4e5c51501d52094335bb85d11}{sc\+\_\+hash\+\_\+truncate}} (\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$hash)
+\begin{DoxyCompactList}\small\item\em Remove all entries from a hash table in O(\+N). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_ab2992a0fc01581345b413f460a4b7927}{sc\+\_\+hash\+\_\+unlink}} (\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$hash)
+\begin{DoxyCompactList}\small\item\em Unlink all hash elements without returning them to the mempool. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_ab6fe8987fef58946b5327ea202cfb9c7}{sc\+\_\+hash\+\_\+unlink\+\_\+destroy}} (\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$hash)
+\begin{DoxyCompactList}\small\item\em Same effect as unlink and destroy, but in O(1). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__containers_8h_ac491f058bd4a47555c203e94db47f37c}{sc\+\_\+hash\+\_\+lookup}} (\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$hash, void $\ast$v, void $\ast$$\ast$$\ast$found)
+\begin{DoxyCompactList}\small\item\em Check if an object is contained in the hash table. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__containers_8h_a471ac510c147c97b396a980d7cfc6852}{sc\+\_\+hash\+\_\+insert\+\_\+unique}} (\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$hash, void $\ast$v, void $\ast$$\ast$$\ast$found)
+\begin{DoxyCompactList}\small\item\em Insert an object into a hash table if it is not contained already. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__containers_8h_a3368ef4a371e8128a96e159ea28c3c63}{sc\+\_\+hash\+\_\+remove}} (\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$hash, void $\ast$v, void $\ast$$\ast$found)
+\begin{DoxyCompactList}\small\item\em Remove an object from a hash table. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_accbe548fa780a3d3ce1a719075eb3d5a}{sc\+\_\+hash\+\_\+foreach}} (\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$hash, \mbox{\hyperlink{sc__containers_8h_a377b6d1c8ddd0e9fd27113be5ac70bf7}{sc\+\_\+hash\+\_\+foreach\+\_\+t}} fn)
+\begin{DoxyCompactList}\small\item\em Invoke a callback for every member of the hash table. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_ae1b5d86966197595ae5ecd9471af8e05}{sc\+\_\+hash\+\_\+print\+\_\+statistics}} (int package\+\_\+id, int log\+\_\+priority, \mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$hash)
+\begin{DoxyCompactList}\small\item\em Compute and print statistical information about the occupancy. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{sc__containers_8h_a287e5cf0f7ea5b4a16e534a19fffa595}{sc\+\_\+hash\+\_\+array\+\_\+memory\+\_\+used}} (\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$ha)
+\begin{DoxyCompactList}\small\item\em Calculate the memory used by a hash array. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$ \mbox{\hyperlink{sc__containers_8h_aa086b8ede8a18ebdcfb690d6bf73e86a}{sc\+\_\+hash\+\_\+array\+\_\+new}} (size\+\_\+t elem\+\_\+size, \mbox{\hyperlink{sc__containers_8h_a0a303b68788b49895e85f4a80fb061aa}{sc\+\_\+hash\+\_\+function\+\_\+t}} hash\+\_\+fn, \mbox{\hyperlink{sc__containers_8h_afa3afb1f6aca73ea1b310e6d91c65c36}{sc\+\_\+equal\+\_\+function\+\_\+t}} equal\+\_\+fn, void $\ast$user\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Create a new hash array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_abe72e9f693035fffc01e42dbd1f52859}{sc\+\_\+hash\+\_\+array\+\_\+destroy}} (\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$hash\+\_\+array)
+\begin{DoxyCompactList}\small\item\em Destroy a hash array. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__containers_8h_ac36fbe3c869bded837f9976c20ea7b95}{sc\+\_\+hash\+\_\+array\+\_\+is\+\_\+valid}} (\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$hash\+\_\+array)
+\begin{DoxyCompactList}\small\item\em Check the internal consistency of a hash array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a8557bf638bc729901df79c86f05e04c4}{sc\+\_\+hash\+\_\+array\+\_\+truncate}} (\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$hash\+\_\+array)
+\begin{DoxyCompactList}\small\item\em Remove all elements from the hash array. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__containers_8h_a1743a8aa716313f45e754b05f4066d07}{sc\+\_\+hash\+\_\+array\+\_\+lookup}} (\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$hash\+\_\+array, void $\ast$v, size\+\_\+t $\ast$position)
+\begin{DoxyCompactList}\small\item\em Check if an object is contained in a hash array. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{sc__containers_8h_a0cc4c1933168da0ac3b075df053ceab3}{sc\+\_\+hash\+\_\+array\+\_\+insert\+\_\+unique}} (\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$hash\+\_\+array, void $\ast$v, size\+\_\+t $\ast$position)
+\begin{DoxyCompactList}\small\item\em Insert an object into a hash array if it is not contained already. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a6d905b28782d768b687cd0bf0d75cf5a}{sc\+\_\+hash\+\_\+array\+\_\+foreach}} (\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$hash\+\_\+array, \mbox{\hyperlink{sc__containers_8h_a377b6d1c8ddd0e9fd27113be5ac70bf7}{sc\+\_\+hash\+\_\+foreach\+\_\+t}} fn)
+\begin{DoxyCompactList}\small\item\em Invoke a callback for every member of the hash array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_aaf5b81adba0e4c4c3c557dcf7613f36b}{sc\+\_\+hash\+\_\+array\+\_\+rip}} (\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$hash\+\_\+array, \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$rip)
+\begin{DoxyCompactList}\small\item\em Extract the array data from a hash array and destroy everything else. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a953f00fc29ceeed5ee0b0629aa36ec7e}{sc\+\_\+recycle\+\_\+array\+\_\+init}} (\mbox{\hyperlink{sc__containers_8h_a135d3d31f993e731607abaad2fd43ee6}{sc\+\_\+recycle\+\_\+array\+\_\+t}} $\ast$rec\+\_\+array, size\+\_\+t elem\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Initialize a recycle array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__containers_8h_a2cade0e4211936ded04e2a2e7df9ca33}{sc\+\_\+recycle\+\_\+array\+\_\+reset}} (\mbox{\hyperlink{sc__containers_8h_a135d3d31f993e731607abaad2fd43ee6}{sc\+\_\+recycle\+\_\+array\+\_\+t}} $\ast$rec\+\_\+array)
+\begin{DoxyCompactList}\small\item\em Reset a recycle array. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{sc__containers_8h_adc40dce6d559ee358c2bb469e64c379d}{sc\+\_\+recycle\+\_\+array\+\_\+insert}} (\mbox{\hyperlink{sc__containers_8h_a135d3d31f993e731607abaad2fd43ee6}{sc\+\_\+recycle\+\_\+array\+\_\+t}} $\ast$rec\+\_\+array, size\+\_\+t $\ast$position)
+\begin{DoxyCompactList}\small\item\em Insert an object into the recycle array. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{sc__containers_8h_a788e8444ddf769046c38afc05bfac38e}{sc\+\_\+recycle\+\_\+array\+\_\+remove}} (\mbox{\hyperlink{sc__containers_8h_a135d3d31f993e731607abaad2fd43ee6}{sc\+\_\+recycle\+\_\+array\+\_\+t}} $\ast$rec\+\_\+array, size\+\_\+t position)
+\begin{DoxyCompactList}\small\item\em Remove an object from the recycle array. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Dynamic containers such as lists, arrays, and hash tables. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{sc__containers_8h_ae94de2c6227fdb03f497aa2524257003}\label{sc__containers_8h_ae94de2c6227fdb03f497aa2524257003}} 
+\index{sc\_containers.h@{sc\_containers.h}!SC\_ARRAY\_BYTE\_ALLOC@{SC\_ARRAY\_BYTE\_ALLOC}}
+\index{SC\_ARRAY\_BYTE\_ALLOC@{SC\_ARRAY\_BYTE\_ALLOC}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{SC\_ARRAY\_BYTE\_ALLOC}{SC\_ARRAY\_BYTE\_ALLOC}}
+{\footnotesize\ttfamily \#define SC\+\_\+\+ARRAY\+\_\+\+BYTE\+\_\+\+ALLOC(\begin{DoxyParamCaption}\item[{}]{a }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{         ((size\_t) \(\backslash\)}
+\DoxyCodeLine{         (\mbox{\hyperlink{sc__containers_8h_ad9e37c27d608aabb0db95b28ccc27a8d}{SC\_ARRAY\_IS\_OWNER}} (a) ? (a)-\/>byte\_alloc : -\/((a)-\/>byte\_alloc + 1)))}
+
+\end{DoxyCode}
+
+
+Return the allocated size of the array. 
+
+\mbox{\Hypertarget{sc__containers_8h_a15fd16d6e7d37a678e3e764f68893541}\label{sc__containers_8h_a15fd16d6e7d37a678e3e764f68893541}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_final@{sc\_hash\_final}}
+\index{sc\_hash\_final@{sc\_hash\_final}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_final}{sc\_hash\_final}}
+{\footnotesize\ttfamily \#define sc\+\_\+hash\+\_\+final(\begin{DoxyParamCaption}\item[{}]{a,  }\item[{}]{b,  }\item[{}]{c }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                              ((void)                            \(\backslash\)}
+\DoxyCodeLine{                              (c \string^= b, c -\/= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(b,14),  \(\backslash\)}
+\DoxyCodeLine{                               a \string^= c, a -\/= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(c,11),  \(\backslash\)}
+\DoxyCodeLine{                               b \string^= a, b -\/= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(a,25),  \(\backslash\)}
+\DoxyCodeLine{                               c \string^= b, c -\/= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(b,16),  \(\backslash\)}
+\DoxyCodeLine{                               a \string^= c, a -\/= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(c, 4),  \(\backslash\)}
+\DoxyCodeLine{                               b \string^= a, b -\/= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(a,14),  \(\backslash\)}
+\DoxyCodeLine{                               c \string^= b, c -\/= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(b,24)))}
+
+\end{DoxyCode}
+
+
+Integer bit operations as building block for hash functions. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em a} & First in/out value (32-\/bit integer). \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em b} & Second in/out value (32-\/bit integer). \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em c} & Third in/out value (32-\/bit integer). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a9b111eda1aeb1c0c756c59d001a07caa}\label{sc__containers_8h_a9b111eda1aeb1c0c756c59d001a07caa}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_mix@{sc\_hash\_mix}}
+\index{sc\_hash\_mix@{sc\_hash\_mix}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_mix}{sc\_hash\_mix}}
+{\footnotesize\ttfamily \#define sc\+\_\+hash\+\_\+mix(\begin{DoxyParamCaption}\item[{}]{a,  }\item[{}]{b,  }\item[{}]{c }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                            ((void)                                      \(\backslash\)}
+\DoxyCodeLine{                            (a -\/= c, a \string^= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(c, 4), c += b,    \(\backslash\)}
+\DoxyCodeLine{                             b -\/= a, b \string^= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(a, 6), a += c,    \(\backslash\)}
+\DoxyCodeLine{                             c -\/= b, c \string^= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(b, 8), b += a,    \(\backslash\)}
+\DoxyCodeLine{                             a -\/= c, a \string^= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(c,16), c += b,    \(\backslash\)}
+\DoxyCodeLine{                             b -\/= a, b \string^= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(a,19), a += c,    \(\backslash\)}
+\DoxyCodeLine{                             c -\/= b, c \string^= \mbox{\hyperlink{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}{sc\_hash\_rot}}(b, 4), b += a))}
+
+\end{DoxyCode}
+
+
+Integer bit mixer as building block for hash functions. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em a} & First in/out value (32-\/bit integer). \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em b} & Second in/out value (32-\/bit integer). \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em c} & Third in/out value (32-\/bit integer). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}\label{sc__containers_8h_ab07c2062a328d6072fa398dcf34df750}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_rot@{sc\_hash\_rot}}
+\index{sc\_hash\_rot@{sc\_hash\_rot}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_rot}{sc\_hash\_rot}}
+{\footnotesize\ttfamily \#define sc\+\_\+hash\+\_\+rot(\begin{DoxyParamCaption}\item[{}]{x,  }\item[{}]{k }\end{DoxyParamCaption})~(((x) $<$$<$ (k)) $\vert$ ((x) $>$$>$ (32 -\/ (k))))}
+
+
+
+Bijective bit rotation as building block for hash functions. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em x} & Input value (32-\/bit integer). \\
+\hline
+\mbox{\texttt{ in}}  & {\em k} & Bit shift amount ($<$= 32). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Circular shifted integer. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}\label{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_t@{sc\_array\_t}}
+\index{sc\_array\_t@{sc\_array\_t}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_t}{sc\_array\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structsc__array}{sc\+\_\+array}} \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}}}
+
+
+
+The \mbox{\hyperlink{structsc__array}{sc\+\_\+array}} object provides a dynamic array of equal-\/size elements. 
+
+Elements are accessed by their 0-\/based index. Their address may change. The number of elements (== elem\+\_\+count) of the array can be changed by \mbox{\hyperlink{sc__containers_8h_a584d8488f231972c68d44eb6239c9cd8}{sc\+\_\+array\+\_\+resize}} and \mbox{\hyperlink{sc__containers_8h_a30ec6fe1bb8a06481c6677e63efc76ec}{sc\+\_\+array\+\_\+rewind}}. Elements can be sorted with \mbox{\hyperlink{sc__containers_8h_a750f7188a30c8c2756c77d70967b0caf}{sc\+\_\+array\+\_\+sort}}. If the array is sorted, it can be searched with \mbox{\hyperlink{sc__containers_8h_aa0759d2b44ed0aadb8c325f7bd5f5449}{sc\+\_\+array\+\_\+bsearch}}. A priority queue is implemented with pqueue\+\_\+add and pqueue\+\_\+pop (untested). \mbox{\Hypertarget{sc__containers_8h_a783687760fbe3e2c531cd99a695ab7e1}\label{sc__containers_8h_a783687760fbe3e2c531cd99a695ab7e1}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_type\_t@{sc\_array\_type\_t}}
+\index{sc\_array\_type\_t@{sc\_array\_type\_t}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_type\_t}{sc\_array\_type\_t}}
+{\footnotesize\ttfamily typedef size\+\_\+t($\ast$ sc\+\_\+array\+\_\+type\+\_\+t) (\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$array, size\+\_\+t index, void $\ast$data)}
+
+
+
+Function to determine the enumerable type of an object in an array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em array} & Array containing the object. \\
+\hline
+\mbox{\texttt{ in}}  & {\em index} & The location of the object. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data} & Arbitrary user data. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_afa3afb1f6aca73ea1b310e6d91c65c36}\label{sc__containers_8h_afa3afb1f6aca73ea1b310e6d91c65c36}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_equal\_function\_t@{sc\_equal\_function\_t}}
+\index{sc\_equal\_function\_t@{sc\_equal\_function\_t}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_equal\_function\_t}{sc\_equal\_function\_t}}
+{\footnotesize\ttfamily typedef int($\ast$ sc\+\_\+equal\+\_\+function\+\_\+t) (const void $\ast$v1, const void $\ast$v2, const void $\ast$u)}
+
+
+
+Function to check equality of two objects. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em v1} & Pointer to first object checked for equality. \\
+\hline
+\mbox{\texttt{ in}}  & {\em v2} & Pointer to second object checked for equality. \\
+\hline
+\mbox{\texttt{ in}}  & {\em u} & Arbitrary user data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+False if $\ast$v1 is unequal $\ast$v2 and true otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}\label{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_array\_t@{sc\_hash\_array\_t}}
+\index{sc\_hash\_array\_t@{sc\_hash\_array\_t}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_array\_t}{sc\_hash\_array\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structsc__hash__array}{sc\+\_\+hash\+\_\+array}} \mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}}}
+
+
+
+The \mbox{\hyperlink{structsc__hash__array}{sc\+\_\+hash\+\_\+array}} implements an array backed up by a hash table. 
+
+This enables O(1) access for array elements. \mbox{\Hypertarget{sc__containers_8h_a377b6d1c8ddd0e9fd27113be5ac70bf7}\label{sc__containers_8h_a377b6d1c8ddd0e9fd27113be5ac70bf7}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_foreach\_t@{sc\_hash\_foreach\_t}}
+\index{sc\_hash\_foreach\_t@{sc\_hash\_foreach\_t}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_foreach\_t}{sc\_hash\_foreach\_t}}
+{\footnotesize\ttfamily typedef int($\ast$ sc\+\_\+hash\+\_\+foreach\+\_\+t) (void $\ast$$\ast$v, const void $\ast$u)}
+
+
+
+Function to call on every data item of a hash table or hash array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em v} & The address of the pointer to the current object. \\
+\hline
+\mbox{\texttt{ in}}  & {\em u} & Arbitrary user data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return true if the traversal should continue, false to stop. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a0a303b68788b49895e85f4a80fb061aa}\label{sc__containers_8h_a0a303b68788b49895e85f4a80fb061aa}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_function\_t@{sc\_hash\_function\_t}}
+\index{sc\_hash\_function\_t@{sc\_hash\_function\_t}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_function\_t}{sc\_hash\_function\_t}}
+{\footnotesize\ttfamily typedef unsigned int($\ast$ sc\+\_\+hash\+\_\+function\+\_\+t) (const void $\ast$v, const void $\ast$u)}
+
+
+
+Function to compute a hash value of an object. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em v} & The object to hash. \\
+\hline
+\mbox{\texttt{ in}}  & {\em u} & Arbitrary user data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an unsigned integer. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}\label{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_t@{sc\_hash\_t}}
+\index{sc\_hash\_t@{sc\_hash\_t}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_t}{sc\_hash\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structsc__hash}{sc\+\_\+hash}} \mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}}}
+
+
+
+The \mbox{\hyperlink{structsc__hash}{sc\+\_\+hash}} implements a hash table. 
+
+It uses an array which has linked lists as elements. \mbox{\Hypertarget{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}\label{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mempool\_t@{sc\_mempool\_t}}
+\index{sc\_mempool\_t@{sc\_mempool\_t}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mempool\_t}{sc\_mempool\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structsc__mempool}{sc\+\_\+mempool}} \mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}}}
+
+
+
+The \mbox{\hyperlink{structsc__mempool}{sc\+\_\+mempool}} object provides a large pool of equal-\/size elements. 
+
+The pool grows dynamically for element allocation. Elements are referenced by their address which never changes. Elements can be freed (that is, returned to the pool) and are transparently reused. If the zero\+\_\+and\+\_\+persist option is selected, new elements are initialized to all zeros on creation, and the contents of an element are not touched between freeing and re-\/returning it. \mbox{\Hypertarget{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}\label{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mstamp\_t@{sc\_mstamp\_t}}
+\index{sc\_mstamp\_t@{sc\_mstamp\_t}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mstamp\_t}{sc\_mstamp\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structsc__mstamp}{sc\+\_\+mstamp}} \mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}}}
+
+
+
+A data container to create memory items of the same size. 
+
+Allocations are bundled so it\textquotesingle{}s fast for small memory sizes. The items created will remain valid until the container is destroyed. There is no option to return an item to the container. See \mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} for that purpose. \mbox{\Hypertarget{sc__containers_8h_a135d3d31f993e731607abaad2fd43ee6}\label{sc__containers_8h_a135d3d31f993e731607abaad2fd43ee6}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_recycle\_array\_t@{sc\_recycle\_array\_t}}
+\index{sc\_recycle\_array\_t@{sc\_recycle\_array\_t}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_recycle\_array\_t}{sc\_recycle\_array\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structsc__recycle__array}{sc\+\_\+recycle\+\_\+array}} \mbox{\hyperlink{sc__containers_8h_a135d3d31f993e731607abaad2fd43ee6}{sc\+\_\+recycle\+\_\+array\+\_\+t}}}
+
+
+
+The \mbox{\hyperlink{structsc__recycle__array}{sc\+\_\+recycle\+\_\+array}} object provides an array of slots that can be reused. 
+
+It keeps a list of free slots in the array which will be used for insertion while available. Otherwise, the array is grown. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sc__containers_8h_aa0759d2b44ed0aadb8c325f7bd5f5449}\label{sc__containers_8h_aa0759d2b44ed0aadb8c325f7bd5f5449}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_bsearch@{sc\_array\_bsearch}}
+\index{sc\_array\_bsearch@{sc\_array\_bsearch}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_bsearch()}{sc\_array\_bsearch()}}
+{\footnotesize\ttfamily ssize\+\_\+t sc\+\_\+array\+\_\+bsearch (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{const void $\ast$}]{key,  }\item[{int($\ast$)(const void $\ast$, const void $\ast$)}]{compar }\end{DoxyParamCaption})}
+
+
+
+Performs a binary search on an array. 
+
+The array must be sorted. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em array} & A sorted array to search in. \\
+\hline
+\mbox{\texttt{ in}}  & {\em key} & An element to be searched for. \\
+\hline
+\mbox{\texttt{ in}}  & {\em compar} & The comparison function to be used. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the index into array for the item found, or -\/1. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_aff8a3c56854a5efc06605541278ea3dd}\label{sc__containers_8h_aff8a3c56854a5efc06605541278ea3dd}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_checksum@{sc\_array\_checksum}}
+\index{sc\_array\_checksum@{sc\_array\_checksum}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_checksum()}{sc\_array\_checksum()}}
+{\footnotesize\ttfamily unsigned int sc\+\_\+array\+\_\+checksum (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array }\end{DoxyParamCaption})}
+
+
+
+Computes the adler32 checksum of array data (see zlib documentation). 
+
+This is a faster checksum than crc32, and it works with zeros as data. \mbox{\Hypertarget{sc__containers_8h_a396352376b97fd861557f4b844ba0730}\label{sc__containers_8h_a396352376b97fd861557f4b844ba0730}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_copy@{sc\_array\_copy}}
+\index{sc\_array\_copy@{sc\_array\_copy}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_copy()}{sc\_array\_copy()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+copy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{dest,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{src }\end{DoxyParamCaption})}
+
+
+
+Copy the contents of one array into another. 
+
+Both arrays must have equal element sizes. The source array may be a view. We use memcpy (3)\+: If the two arrays overlap, results are undefined. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em dest} & Array (not a view) will be resized and get new data. \\
+\hline
+\mbox{\texttt{ in}}  & {\em src} & Array used as source of new data, will not be changed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_ac6838c27c4655cb9e3637e2277be1371}\label{sc__containers_8h_ac6838c27c4655cb9e3637e2277be1371}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_copy\_into@{sc\_array\_copy\_into}}
+\index{sc\_array\_copy\_into@{sc\_array\_copy\_into}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_copy\_into()}{sc\_array\_copy\_into()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+copy\+\_\+into (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{dest,  }\item[{size\+\_\+t}]{dest\+\_\+offset,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{src }\end{DoxyParamCaption})}
+
+
+
+Copy the contents of one array into some portion of another. 
+
+Both arrays must have equal element sizes. Either array may be a view. The destination array must be large enough. We use memcpy (3)\+: If the two arrays overlap, results are undefined. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em dest} & Array will be written into. Its element count must be at least {\bfseries{dest\+\_\+offset}} + {\bfseries{src-\/$>$elem\+\_\+count}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em dest\+\_\+offset} & First index in {\bfseries{dest}} array to be overwritten. As every index, it refers to elements, not bytes. \\
+\hline
+\mbox{\texttt{ in}}  & {\em src} & Array used as source of new data, will not be changed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a9538f758ce0adf6f61c7091dff1a693a}\label{sc__containers_8h_a9538f758ce0adf6f61c7091dff1a693a}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_destroy@{sc\_array\_destroy}}
+\index{sc\_array\_destroy@{sc\_array\_destroy}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_destroy()}{sc\_array\_destroy()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array }\end{DoxyParamCaption})}
+
+
+
+Destroys an array structure. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em array} & The array to be destroyed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a66a53cdb69696fe2dbf8dd8dda821155}\label{sc__containers_8h_a66a53cdb69696fe2dbf8dd8dda821155}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_destroy\_null@{sc\_array\_destroy\_null}}
+\index{sc\_array\_destroy\_null@{sc\_array\_destroy\_null}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_destroy\_null()}{sc\_array\_destroy\_null()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+destroy\+\_\+null (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$$\ast$}]{parray }\end{DoxyParamCaption})}
+
+
+
+Destroys an array structure and sets the pointer to NULL. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em parray} & Pointer to address of array to be destroyed. On output, $\ast$parray is NULL. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a253a39f46eda1adfc12871e3e52e2251}\label{sc__containers_8h_a253a39f46eda1adfc12871e3e52e2251}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_init@{sc\_array\_init}}
+\index{sc\_array\_init@{sc\_array\_init}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_init()}{sc\_array\_init()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{size\+\_\+t}]{elem\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Initializes an already allocated (or static) array structure. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em array} & Array structure to be initialized. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of one array element in bytes. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_ab123c042db61b86447f9c68edff6c275}\label{sc__containers_8h_ab123c042db61b86447f9c68edff6c275}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_init\_count@{sc\_array\_init\_count}}
+\index{sc\_array\_init\_count@{sc\_array\_init\_count}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_init\_count()}{sc\_array\_init\_count()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+init\+\_\+count (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{size\+\_\+t}]{elem\+\_\+size,  }\item[{size\+\_\+t}]{elem\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+Initializes an already allocated (or static) array structure and allocates a given number of elements. 
+
+This function supersedes \mbox{\hyperlink{sc__containers_8h_a34588e4788f67b33bea0c99dc34e0473}{sc\+\_\+array\+\_\+init\+\_\+size}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em array} & Array structure to be initialized. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of one array element in bytes. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+count} & Number of initial array elements. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a314b3cdbde02bc48303c9d60391286ee}\label{sc__containers_8h_a314b3cdbde02bc48303c9d60391286ee}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_init\_data@{sc\_array\_init\_data}}
+\index{sc\_array\_init\_data@{sc\_array\_init\_data}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_init\_data()}{sc\_array\_init\_data()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+init\+\_\+data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{view,  }\item[{void $\ast$}]{base,  }\item[{size\+\_\+t}]{elem\+\_\+size,  }\item[{size\+\_\+t}]{elem\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+Initializes an already allocated (or static) view from given plain C data. 
+
+The array view returned does not require sc\+\_\+array\+\_\+reset (doesn\textquotesingle{}t hurt though). 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em view} & Array structure to be initialized. \\
+\hline
+\mbox{\texttt{ in}}  & {\em base} & The data must not be moved while view is alive. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of one array element in bytes. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+count} & The length of the view in element units. The view cannot be resized to exceed this length. It is not necessary to call sc\+\_\+array\+\_\+reset later. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a225c9354782d37590e63d704124cd113}\label{sc__containers_8h_a225c9354782d37590e63d704124cd113}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_init\_reshape@{sc\_array\_init\_reshape}}
+\index{sc\_array\_init\_reshape@{sc\_array\_init\_reshape}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_init\_reshape()}{sc\_array\_init\_reshape()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+init\+\_\+reshape (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{view,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{size\+\_\+t}]{elem\+\_\+size,  }\item[{size\+\_\+t}]{elem\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+Initialize an already allocated (or static) view from existing sc\+\_\+array\+\_\+t. 
+
+The total data size of the view is the same, but size and count may differ. The array view returned does not require sc\+\_\+array\+\_\+reset (doesn\textquotesingle{}t hurt though). 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em view} & Array structure to be initialized. \\
+\hline
+\mbox{\texttt{ in}}  & {\em array} & The array must not be resized while view is alive. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of one array element of the view in bytes. The product of size and count of {\itshape array} must be the same as {\itshape elem\+\_\+size} $\ast$ {\itshape elem\+\_\+count}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+count} & The length of the view in element units. The view cannot be resized to exceed this length. It is not necessary to call sc\+\_\+array\+\_\+reset later. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a34588e4788f67b33bea0c99dc34e0473}\label{sc__containers_8h_a34588e4788f67b33bea0c99dc34e0473}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_init\_size@{sc\_array\_init\_size}}
+\index{sc\_array\_init\_size@{sc\_array\_init\_size}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_init\_size()}{sc\_array\_init\_size()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+init\+\_\+size (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{size\+\_\+t}]{elem\+\_\+size,  }\item[{size\+\_\+t}]{elem\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+Initializes an already allocated (or static) array structure and allocates a given number of elements. 
+
+Deprecated\+: use \mbox{\hyperlink{sc__containers_8h_ab123c042db61b86447f9c68edff6c275}{sc\+\_\+array\+\_\+init\+\_\+count}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em array} & Array structure to be initialized. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of one array element in bytes. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+count} & Number of initial array elements. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_aa7c755a6fdc7f4e3c490d9edb786cc5d}\label{sc__containers_8h_aa7c755a6fdc7f4e3c490d9edb786cc5d}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_init\_view@{sc\_array\_init\_view}}
+\index{sc\_array\_init\_view@{sc\_array\_init\_view}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_init\_view()}{sc\_array\_init\_view()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+init\+\_\+view (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{view,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{size\+\_\+t}]{offset,  }\item[{size\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+
+
+Initializes an already allocated (or static) view from existing sc\+\_\+array\+\_\+t. 
+
+The array view returned does not require sc\+\_\+array\+\_\+reset (doesn\textquotesingle{}t hurt though). 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em view} & Array structure to be initialized. \\
+\hline
+\mbox{\texttt{ in}}  & {\em array} & The array must not be resized while view is alive. \\
+\hline
+\mbox{\texttt{ in}}  & {\em offset} & The offset of the viewed section in element units. This offset cannot be changed until the view is reset. \\
+\hline
+\mbox{\texttt{ in}}  & {\em length} & The length of the view in element units. The view cannot be resized to exceed this length. It is not necessary to call sc\+\_\+array\+\_\+reset later. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_adc880037e9e90efb76648a5faa926e5b}\label{sc__containers_8h_adc880037e9e90efb76648a5faa926e5b}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_is\_equal@{sc\_array\_is\_equal}}
+\index{sc\_array\_is\_equal@{sc\_array\_is\_equal}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_is\_equal()}{sc\_array\_is\_equal()}}
+{\footnotesize\ttfamily int sc\+\_\+array\+\_\+is\+\_\+equal (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{other }\end{DoxyParamCaption})}
+
+
+
+Check whether two arrays have equal size, count, and content. 
+
+Either array may be a view. Both arrays will not be changed. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em array} & One array to be compared. \\
+\hline
+\mbox{\texttt{ in}}  & {\em other} & A second array to be compared. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if array and other are equal, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_aba51287db7e298935bd1fda5557fbacf}\label{sc__containers_8h_aba51287db7e298935bd1fda5557fbacf}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_is\_permutation@{sc\_array\_is\_permutation}}
+\index{sc\_array\_is\_permutation@{sc\_array\_is\_permutation}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_is\_permutation()}{sc\_array\_is\_permutation()}}
+{\footnotesize\ttfamily int sc\+\_\+array\+\_\+is\+\_\+permutation (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array }\end{DoxyParamCaption})}
+
+
+
+Determine whether {\itshape array} is an array of size\+\_\+t\textquotesingle{}s whose entries include every integer 0 $<$= i $<$ array-\/$>$elem\+\_\+count. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em array} & An array. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns 1 if array contains size\+\_\+t elements whose entries include every integer 0 $<$= i $<$ {\itshape array-\/$>$elem\+\_\+count}, 0 otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_ab930cdd0da30cd639b20a639990568e1}\label{sc__containers_8h_ab930cdd0da30cd639b20a639990568e1}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_is\_sorted@{sc\_array\_is\_sorted}}
+\index{sc\_array\_is\_sorted@{sc\_array\_is\_sorted}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_is\_sorted()}{sc\_array\_is\_sorted()}}
+{\footnotesize\ttfamily int sc\+\_\+array\+\_\+is\+\_\+sorted (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{int($\ast$)(const void $\ast$, const void $\ast$)}]{compar }\end{DoxyParamCaption})}
+
+
+
+Check whether the array is sorted wrt. 
+
+the comparison function. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em array} & The array to check. \\
+\hline
+\mbox{\texttt{ in}}  & {\em compar} & The comparison function to be used. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if array is sorted, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a9c156f095e1050cd568689fa3615a7ed}\label{sc__containers_8h_a9c156f095e1050cd568689fa3615a7ed}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_memory\_used@{sc\_array\_memory\_used}}
+\index{sc\_array\_memory\_used@{sc\_array\_memory\_used}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_memory\_used()}{sc\_array\_memory\_used()}}
+{\footnotesize\ttfamily size\+\_\+t sc\+\_\+array\+\_\+memory\+\_\+used (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{int}]{is\+\_\+dynamic }\end{DoxyParamCaption})}
+
+
+
+Calculate the memory used by an array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em array} & The array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em is\+\_\+dynamic} & True if created with sc\+\_\+array\+\_\+new, false if initialized with sc\+\_\+array\+\_\+init \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Memory used in bytes. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_aacb264d085512739969ce4fb6d643d7a}\label{sc__containers_8h_aacb264d085512739969ce4fb6d643d7a}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_memset@{sc\_array\_memset}}
+\index{sc\_array\_memset@{sc\_array\_memset}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_memset()}{sc\_array\_memset()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+memset (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{int}]{c }\end{DoxyParamCaption})}
+
+
+
+Run memset on the array storage. 
+
+We pass the character to memset unchanged. Thus, care must be taken when setting values below -\/1 or above 127, just as with standard memset (3). 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em array} & This array\textquotesingle{}s storage will be overwritten. \\
+\hline
+\mbox{\texttt{ in}}  & {\em c} & Character to overwrite every byte with. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_ae1d66f0bf86f9f8975611dda4d0b2880}\label{sc__containers_8h_ae1d66f0bf86f9f8975611dda4d0b2880}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_move\_part@{sc\_array\_move\_part}}
+\index{sc\_array\_move\_part@{sc\_array\_move\_part}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_move\_part()}{sc\_array\_move\_part()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+move\+\_\+part (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{dest,  }\item[{size\+\_\+t}]{dest\+\_\+offset,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{src,  }\item[{size\+\_\+t}]{src\+\_\+offset,  }\item[{size\+\_\+t}]{count }\end{DoxyParamCaption})}
+
+
+
+Copy part of one array into another using memmove (3). 
+
+Both arrays must have equal element sizes. Either array may be a view. The destination array must be large enough. We use memmove (3)\+: The two arrays may overlap. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em dest} & Array will be written into. Its element count must be at least {\bfseries{dest\+\_\+offset}} + {\bfseries{count}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em dest\+\_\+offset} & First index in {\bfseries{dest}} array to be overwritten. As every index, it refers to elements, not bytes. \\
+\hline
+\mbox{\texttt{ in}}  & {\em src} & Array will be read from. Its element count must be at least {\bfseries{src\+\_\+offset}} + {\bfseries{count}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em src\+\_\+offset} & First index in {\bfseries{src}} array to be used. As every index, it refers to elements, not bytes. \\
+\hline
+\mbox{\texttt{ in}}  & {\em count} & Number of entries copied. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_ad880facede1dd567bd4da71fc8b46dcd}\label{sc__containers_8h_ad880facede1dd567bd4da71fc8b46dcd}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_new@{sc\_array\_new}}
+\index{sc\_array\_new@{sc\_array\_new}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_new()}{sc\_array\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}}$\ast$ sc\+\_\+array\+\_\+new (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{elem\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Creates a new array structure with 0 elements. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of one array element in bytes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return an allocated array of zero length. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a995cca28e6413132e14691834e279504}\label{sc__containers_8h_a995cca28e6413132e14691834e279504}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_new\_count@{sc\_array\_new\_count}}
+\index{sc\_array\_new\_count@{sc\_array\_new\_count}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_new\_count()}{sc\_array\_new\_count()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}}$\ast$ sc\+\_\+array\+\_\+new\+\_\+count (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{elem\+\_\+size,  }\item[{size\+\_\+t}]{elem\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+Creates a new array structure with a given length (number of elements). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of one array element in bytes. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+count} & Initial number of array elements. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return an allocated array with allocated but uninitialized elements. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a45ac4f8d8add15a6838cb0ec9c3319be}\label{sc__containers_8h_a45ac4f8d8add15a6838cb0ec9c3319be}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_new\_data@{sc\_array\_new\_data}}
+\index{sc\_array\_new\_data@{sc\_array\_new\_data}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_new\_data()}{sc\_array\_new\_data()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}}$\ast$ sc\+\_\+array\+\_\+new\+\_\+data (\begin{DoxyParamCaption}\item[{void $\ast$}]{base,  }\item[{size\+\_\+t}]{elem\+\_\+size,  }\item[{size\+\_\+t}]{elem\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+Creates a new view of an existing plain C array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em base} & The data must not be moved while view is alive. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of one array element in bytes. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+count} & The length of the view in element units. The view cannot be resized to exceed this length. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_acff8923e5659a46da89edfabb089d3f4}\label{sc__containers_8h_acff8923e5659a46da89edfabb089d3f4}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_new\_view@{sc\_array\_new\_view}}
+\index{sc\_array\_new\_view@{sc\_array\_new\_view}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_new\_view()}{sc\_array\_new\_view()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}}$\ast$ sc\+\_\+array\+\_\+new\+\_\+view (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{size\+\_\+t}]{offset,  }\item[{size\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+
+
+Creates a new view of an existing sc\+\_\+array\+\_\+t. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em array} & The array must not be resized while view is alive. \\
+\hline
+\mbox{\texttt{ in}}  & {\em offset} & The offset of the viewed section in element units. This offset cannot be changed until the view is reset. \\
+\hline
+\mbox{\texttt{ in}}  & {\em length} & The length of the viewed section in element units. The view cannot be resized to exceed this length. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a05188345c402a4374c9e7ed4753e5c8e}\label{sc__containers_8h_a05188345c402a4374c9e7ed4753e5c8e}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_permute@{sc\_array\_permute}}
+\index{sc\_array\_permute@{sc\_array\_permute}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_permute()}{sc\_array\_permute()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+permute (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{newindices,  }\item[{int}]{keepperm }\end{DoxyParamCaption})}
+
+
+
+Given permutation {\itshape newindices}, permute {\itshape array} in place. 
+
+The data that on input is contained in {\itshape array}\mbox{[}i\mbox{]} will be contained in {\itshape array}\mbox{[}newindices\mbox{[}i\mbox{]}\mbox{]} on output. The entries of newindices will be altered unless {\itshape keepperm} is true. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em array} & An array. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em newindices} & Permutation array (see sc\+\_\+array\+\_\+is\+\_\+permutation). \\
+\hline
+\mbox{\texttt{ in}}  & {\em keepperm} & If true, {\itshape newindices} will be unchanged by the algorithm; if false, {\itshape newindices} will be the identity permutation on output, but the algorithm will only use O(1) space. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_aadd0c405a3d83dfc251de2a390f43d88}\label{sc__containers_8h_aadd0c405a3d83dfc251de2a390f43d88}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_pqueue\_add@{sc\_array\_pqueue\_add}}
+\index{sc\_array\_pqueue\_add@{sc\_array\_pqueue\_add}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_pqueue\_add()}{sc\_array\_pqueue\_add()}}
+{\footnotesize\ttfamily size\+\_\+t sc\+\_\+array\+\_\+pqueue\+\_\+add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{void $\ast$}]{temp,  }\item[{int($\ast$)(const void $\ast$, const void $\ast$)}]{compar }\end{DoxyParamCaption})}
+
+
+
+Adds an element to a priority queue. 
+
+\begin{DoxyNote}{Note}
+PQUEUE FUNCTIONS ARE UNTESTED AND CURRENTLY DISABLED. This function is not allowed for views. The priority queue is implemented as a heap in ascending order. A heap is a binary tree where the children are not less than their parent. Assumes that elements \mbox{[}0\mbox{]}..\mbox{[}elem\+\_\+count-\/2\mbox{]} form a valid heap. Then propagates \mbox{[}elem\+\_\+count-\/1\mbox{]} upward by swapping if necessary. 
+\end{DoxyNote}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em array} & Valid priority queue object. \\
+\hline
+\mbox{\texttt{ in}}  & {\em temp} & Pointer to unused allocated memory of elem\+\_\+size. \\
+\hline
+\mbox{\texttt{ in}}  & {\em compar} & The comparison function to be used. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the number of swap operations. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+If the return value is zero for all elements in an array, the array is sorted linearly and unchanged. 
+\end{DoxyNote}
+\mbox{\Hypertarget{sc__containers_8h_af8ec1c3d19267b204a2f756fe428f196}\label{sc__containers_8h_af8ec1c3d19267b204a2f756fe428f196}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_pqueue\_pop@{sc\_array\_pqueue\_pop}}
+\index{sc\_array\_pqueue\_pop@{sc\_array\_pqueue\_pop}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_pqueue\_pop()}{sc\_array\_pqueue\_pop()}}
+{\footnotesize\ttfamily size\+\_\+t sc\+\_\+array\+\_\+pqueue\+\_\+pop (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{void $\ast$}]{result,  }\item[{int($\ast$)(const void $\ast$, const void $\ast$)}]{compar }\end{DoxyParamCaption})}
+
+
+
+Pops the smallest element from a priority queue. 
+
+\begin{DoxyNote}{Note}
+PQUEUE FUNCTIONS ARE UNTESTED AND CURRENTLY DISABLED. This function is not allowed for views. This function assumes that the array forms a valid heap in ascending order. 
+\end{DoxyNote}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em array} & Valid priority queue object. \\
+\hline
+\mbox{\texttt{ out}}  & {\em result} & Pointer to unused allocated memory of elem\+\_\+size. \\
+\hline
+\mbox{\texttt{ in}}  & {\em compar} & The comparison function to be used. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the number of swap operations. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This function resizes the array to elem\+\_\+count-\/1. 
+\end{DoxyNote}
+\mbox{\Hypertarget{sc__containers_8h_a6df54afbedf05d9cf789c5ebb7599ab4}\label{sc__containers_8h_a6df54afbedf05d9cf789c5ebb7599ab4}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_reset@{sc\_array\_reset}}
+\index{sc\_array\_reset@{sc\_array\_reset}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_reset()}{sc\_array\_reset()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+reset (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array }\end{DoxyParamCaption})}
+
+
+
+Sets the array count to zero and frees all elements. 
+
+This function turns a view into a newly initialized array. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em array} & Array structure to be reset. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Calling sc\+\_\+array\+\_\+init, then any array operations, then sc\+\_\+array\+\_\+reset is memory neutral. As an exception, the two functions sc\+\_\+array\+\_\+init\+\_\+view and sc\+\_\+array\+\_\+init\+\_\+data do not require a subsequent call to sc\+\_\+array\+\_\+reset. Regardless, it is legal to call sc\+\_\+array\+\_\+reset anyway. 
+\end{DoxyNote}
+\mbox{\Hypertarget{sc__containers_8h_a584d8488f231972c68d44eb6239c9cd8}\label{sc__containers_8h_a584d8488f231972c68d44eb6239c9cd8}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_resize@{sc\_array\_resize}}
+\index{sc\_array\_resize@{sc\_array\_resize}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_resize()}{sc\_array\_resize()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+resize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{size\+\_\+t}]{new\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+Sets the element count to new\+\_\+count. 
+
+If the array is not a view, reallocation takes place occasionally. If the array is a view, new\+\_\+count must not be greater than the element count of the view when it was created. The original offset of the view cannot be changed. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em array} & The element count and address is modified. \\
+\hline
+\mbox{\texttt{ in}}  & {\em new\+\_\+count} & New element count of the array. If it is zero and the array is not a view, the effect equals \mbox{\hyperlink{sc__containers_8h_a6df54afbedf05d9cf789c5ebb7599ab4}{sc\+\_\+array\+\_\+reset}}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a30ec6fe1bb8a06481c6677e63efc76ec}\label{sc__containers_8h_a30ec6fe1bb8a06481c6677e63efc76ec}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_rewind@{sc\_array\_rewind}}
+\index{sc\_array\_rewind@{sc\_array\_rewind}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_rewind()}{sc\_array\_rewind()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+rewind (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{size\+\_\+t}]{new\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+Shorten an array without reallocating it. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em array} & The element count of this array is modified. \\
+\hline
+\mbox{\texttt{ in}}  & {\em new\+\_\+count} & Must be less or equal than the {\bfseries{array\textquotesingle{}s}} count. If it is less, the number of elements in the array is reduced without reallocating memory. The exception is a {\bfseries{new\+\_\+count}} of zero specified for an array that is not a view\+: In this case \mbox{\hyperlink{sc__containers_8h_a6df54afbedf05d9cf789c5ebb7599ab4}{sc\+\_\+array\+\_\+reset}} is equivalent. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a750f7188a30c8c2756c77d70967b0caf}\label{sc__containers_8h_a750f7188a30c8c2756c77d70967b0caf}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_sort@{sc\_array\_sort}}
+\index{sc\_array\_sort@{sc\_array\_sort}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_sort()}{sc\_array\_sort()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+sort (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{int($\ast$)(const void $\ast$, const void $\ast$)}]{compar }\end{DoxyParamCaption})}
+
+
+
+Sorts the array in ascending order wrt. 
+
+the comparison function. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em array} & The array to sort. \\
+\hline
+\mbox{\texttt{ in}}  & {\em compar} & The comparison function to be used. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a4ef2072803b22a940c6e39498940768c}\label{sc__containers_8h_a4ef2072803b22a940c6e39498940768c}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_split@{sc\_array\_split}}
+\index{sc\_array\_split@{sc\_array\_split}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_split()}{sc\_array\_split()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+split (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{offsets,  }\item[{size\+\_\+t}]{num\+\_\+types,  }\item[{\mbox{\hyperlink{sc__containers_8h_a783687760fbe3e2c531cd99a695ab7e1}{sc\+\_\+array\+\_\+type\+\_\+t}}}]{type\+\_\+fn,  }\item[{void $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Compute the offsets of groups of enumerable types in an array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em array} & Array that is sorted in ascending order by type. If k indexes {\itshape array}, then 0 $<$= {\itshape type\+\_\+fn} ({\itshape array}, k, {\itshape data}) $<$ {\itshape num\+\_\+types}. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em offsets} & An initialized array of type size\+\_\+t that is resized to {\itshape num\+\_\+types} + 1 entries. The indices j of {\itshape array} that contain objects of type k are {\itshape offsets}\mbox{[}k\mbox{]} $<$= j $<$ {\itshape offsets}\mbox{[}k + 1\mbox{]}. If there are no objects of type k, then {\itshape offsets}\mbox{[}k\mbox{]} = {\itshape offset}\mbox{[}k + 1\mbox{]}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+types} & The number of possible types of objects in {\itshape array}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em type\+\_\+fn} & Returns the type of an object in the array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data} & Arbitrary user data passed to {\itshape type\+\_\+fn}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_acd6536ee67b1b02848dd529ffd1e3fec}\label{sc__containers_8h_acd6536ee67b1b02848dd529ffd1e3fec}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_truncate@{sc\_array\_truncate}}
+\index{sc\_array\_truncate@{sc\_array\_truncate}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_truncate()}{sc\_array\_truncate()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+truncate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array }\end{DoxyParamCaption})}
+
+
+
+Sets the array count to zero, but does not free elements. 
+
+Not allowed for views. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em array} & Array structure to be truncated. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+This is intended to allow an \mbox{\hyperlink{structsc__array}{sc\+\_\+array}} to be used as a reusable buffer, where the \char`\"{}high water mark\char`\"{} of the buffer is preserved, so that O(log (max n)) reallocs occur over the life of the buffer. 
+\end{DoxyNote}
+\mbox{\Hypertarget{sc__containers_8h_a7be396714f4ea39005cab1bc666666a6}\label{sc__containers_8h_a7be396714f4ea39005cab1bc666666a6}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_array\_uniq@{sc\_array\_uniq}}
+\index{sc\_array\_uniq@{sc\_array\_uniq}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_array\_uniq()}{sc\_array\_uniq()}}
+{\footnotesize\ttfamily void sc\+\_\+array\+\_\+uniq (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{array,  }\item[{int($\ast$)(const void $\ast$, const void $\ast$)}]{compar }\end{DoxyParamCaption})}
+
+
+
+Removed duplicate entries from a sorted array. 
+
+This function is not allowed for views. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em array} & The array size will be reduced as necessary. \\
+\hline
+\mbox{\texttt{ in}}  & {\em compar} & The comparison function to be used. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_abe72e9f693035fffc01e42dbd1f52859}\label{sc__containers_8h_abe72e9f693035fffc01e42dbd1f52859}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_array\_destroy@{sc\_hash\_array\_destroy}}
+\index{sc\_hash\_array\_destroy@{sc\_hash\_array\_destroy}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_array\_destroy()}{sc\_hash\_array\_destroy()}}
+{\footnotesize\ttfamily void sc\+\_\+hash\+\_\+array\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$}]{hash\+\_\+array }\end{DoxyParamCaption})}
+
+
+
+Destroy a hash array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em hash\+\_\+array} & Valid hash array is deallocated. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a6d905b28782d768b687cd0bf0d75cf5a}\label{sc__containers_8h_a6d905b28782d768b687cd0bf0d75cf5a}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_array\_foreach@{sc\_hash\_array\_foreach}}
+\index{sc\_hash\_array\_foreach@{sc\_hash\_array\_foreach}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_array\_foreach()}{sc\_hash\_array\_foreach()}}
+{\footnotesize\ttfamily void sc\+\_\+hash\+\_\+array\+\_\+foreach (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$}]{hash\+\_\+array,  }\item[{\mbox{\hyperlink{sc__containers_8h_a377b6d1c8ddd0e9fd27113be5ac70bf7}{sc\+\_\+hash\+\_\+foreach\+\_\+t}}}]{fn }\end{DoxyParamCaption})}
+
+
+
+Invoke a callback for every member of the hash array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em hash\+\_\+array} & Valid hash array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em fn} & Callback executed on every hash array element. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a0cc4c1933168da0ac3b075df053ceab3}\label{sc__containers_8h_a0cc4c1933168da0ac3b075df053ceab3}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_array\_insert\_unique@{sc\_hash\_array\_insert\_unique}}
+\index{sc\_hash\_array\_insert\_unique@{sc\_hash\_array\_insert\_unique}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_array\_insert\_unique()}{sc\_hash\_array\_insert\_unique()}}
+{\footnotesize\ttfamily void$\ast$ sc\+\_\+hash\+\_\+array\+\_\+insert\+\_\+unique (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$}]{hash\+\_\+array,  }\item[{void $\ast$}]{v,  }\item[{size\+\_\+t $\ast$}]{position }\end{DoxyParamCaption})}
+
+
+
+Insert an object into a hash array if it is not contained already. 
+
+The object is not copied into the array. Use the return value for that. New objects are guaranteed to be added at the end of the array.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em hash\+\_\+array} & Valid hash array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em v} & A pointer to the object. Used for search only. \\
+\hline
+\mbox{\texttt{ out}}  & {\em position} & If position != NULL, $\ast$position is set to the array position of the already contained, or if not present, the new object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns NULL if the object is already contained. Otherwise returns its new address in the array. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_ac36fbe3c869bded837f9976c20ea7b95}\label{sc__containers_8h_ac36fbe3c869bded837f9976c20ea7b95}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_array\_is\_valid@{sc\_hash\_array\_is\_valid}}
+\index{sc\_hash\_array\_is\_valid@{sc\_hash\_array\_is\_valid}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_array\_is\_valid()}{sc\_hash\_array\_is\_valid()}}
+{\footnotesize\ttfamily int sc\+\_\+hash\+\_\+array\+\_\+is\+\_\+valid (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$}]{hash\+\_\+array }\end{DoxyParamCaption})}
+
+
+
+Check the internal consistency of a hash array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em hash\+\_\+array} & Hash array structure is checked for validity. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if and only if {\itshape hash\+\_\+array} is valid. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a1743a8aa716313f45e754b05f4066d07}\label{sc__containers_8h_a1743a8aa716313f45e754b05f4066d07}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_array\_lookup@{sc\_hash\_array\_lookup}}
+\index{sc\_hash\_array\_lookup@{sc\_hash\_array\_lookup}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_array\_lookup()}{sc\_hash\_array\_lookup()}}
+{\footnotesize\ttfamily int sc\+\_\+hash\+\_\+array\+\_\+lookup (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$}]{hash\+\_\+array,  }\item[{void $\ast$}]{v,  }\item[{size\+\_\+t $\ast$}]{position }\end{DoxyParamCaption})}
+
+
+
+Check if an object is contained in a hash array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em hash\+\_\+array} & Valid hash array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em v} & A pointer to the object. \\
+\hline
+\mbox{\texttt{ out}}  & {\em position} & If position != NULL, $\ast$position is set to the array position of the already contained object if found. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if object is found, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a287e5cf0f7ea5b4a16e534a19fffa595}\label{sc__containers_8h_a287e5cf0f7ea5b4a16e534a19fffa595}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_array\_memory\_used@{sc\_hash\_array\_memory\_used}}
+\index{sc\_hash\_array\_memory\_used@{sc\_hash\_array\_memory\_used}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_array\_memory\_used()}{sc\_hash\_array\_memory\_used()}}
+{\footnotesize\ttfamily size\+\_\+t sc\+\_\+hash\+\_\+array\+\_\+memory\+\_\+used (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$}]{ha }\end{DoxyParamCaption})}
+
+
+
+Calculate the memory used by a hash array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em ha} & The hash array. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Memory used in bytes. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_aa086b8ede8a18ebdcfb690d6bf73e86a}\label{sc__containers_8h_aa086b8ede8a18ebdcfb690d6bf73e86a}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_array\_new@{sc\_hash\_array\_new}}
+\index{sc\_hash\_array\_new@{sc\_hash\_array\_new}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_array\_new()}{sc\_hash\_array\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}}$\ast$ sc\+\_\+hash\+\_\+array\+\_\+new (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{elem\+\_\+size,  }\item[{\mbox{\hyperlink{sc__containers_8h_a0a303b68788b49895e85f4a80fb061aa}{sc\+\_\+hash\+\_\+function\+\_\+t}}}]{hash\+\_\+fn,  }\item[{\mbox{\hyperlink{sc__containers_8h_afa3afb1f6aca73ea1b310e6d91c65c36}{sc\+\_\+equal\+\_\+function\+\_\+t}}}]{equal\+\_\+fn,  }\item[{void $\ast$}]{user\+\_\+data }\end{DoxyParamCaption})}
+
+
+
+Create a new hash array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of one array element in bytes. \\
+\hline
+\mbox{\texttt{ in}}  & {\em hash\+\_\+fn} & Function to compute the hash value. \\
+\hline
+\mbox{\texttt{ in}}  & {\em equal\+\_\+fn} & Function to test two objects for equality. \\
+\hline
+\mbox{\texttt{ in}}  & {\em user\+\_\+data} & Anonymous context data stored in the hash array. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_aaf5b81adba0e4c4c3c557dcf7613f36b}\label{sc__containers_8h_aaf5b81adba0e4c4c3c557dcf7613f36b}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_array\_rip@{sc\_hash\_array\_rip}}
+\index{sc\_hash\_array\_rip@{sc\_hash\_array\_rip}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_array\_rip()}{sc\_hash\_array\_rip()}}
+{\footnotesize\ttfamily void sc\+\_\+hash\+\_\+array\+\_\+rip (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$}]{hash\+\_\+array,  }\item[{\mbox{\hyperlink{sc__containers_8h_a619346753d2a15625bda06835c83e5e2}{sc\+\_\+array\+\_\+t}} $\ast$}]{rip }\end{DoxyParamCaption})}
+
+
+
+Extract the array data from a hash array and destroy everything else. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em hash\+\_\+array} & The hash array is destroyed after extraction. \\
+\hline
+\mbox{\texttt{ in}}  & {\em rip} & Array structure that will be overwritten. All previous array data (if any) will be leaked. The filled array can be freed with sc\+\_\+array\+\_\+reset. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a8557bf638bc729901df79c86f05e04c4}\label{sc__containers_8h_a8557bf638bc729901df79c86f05e04c4}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_array\_truncate@{sc\_hash\_array\_truncate}}
+\index{sc\_hash\_array\_truncate@{sc\_hash\_array\_truncate}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_array\_truncate()}{sc\_hash\_array\_truncate()}}
+{\footnotesize\ttfamily void sc\+\_\+hash\+\_\+array\+\_\+truncate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a663eb6e36259a43ad0e583b19e9926c7}{sc\+\_\+hash\+\_\+array\+\_\+t}} $\ast$}]{hash\+\_\+array }\end{DoxyParamCaption})}
+
+
+
+Remove all elements from the hash array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em hash\+\_\+array} & Hash array to truncate. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a4485f83fdfee14e4a14573f4efe7c108}\label{sc__containers_8h_a4485f83fdfee14e4a14573f4efe7c108}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_destroy@{sc\_hash\_destroy}}
+\index{sc\_hash\_destroy@{sc\_hash\_destroy}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_destroy()}{sc\_hash\_destroy()}}
+{\footnotesize\ttfamily void sc\+\_\+hash\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$}]{hash }\end{DoxyParamCaption})}
+
+
+
+Destroy a hash table. 
+
+If the allocator is owned, this runs in O(1), otherwise in O(\+N). \begin{DoxyNote}{Note}
+If allocator was provided in sc\+\_\+hash\+\_\+new, it will not be destroyed. 
+\end{DoxyNote}
+\mbox{\Hypertarget{sc__containers_8h_a50845e587caa053395c696b4fdb274e1}\label{sc__containers_8h_a50845e587caa053395c696b4fdb274e1}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_destroy\_null@{sc\_hash\_destroy\_null}}
+\index{sc\_hash\_destroy\_null@{sc\_hash\_destroy\_null}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_destroy\_null()}{sc\_hash\_destroy\_null()}}
+{\footnotesize\ttfamily void sc\+\_\+hash\+\_\+destroy\+\_\+null (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$$\ast$}]{phash }\end{DoxyParamCaption})}
+
+
+
+Destroy a hash table and set its pointer to NULL. 
+
+Destruction is done using \mbox{\hyperlink{sc__containers_8h_a4485f83fdfee14e4a14573f4efe7c108}{sc\+\_\+hash\+\_\+destroy}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em phash} & Address of pointer to hash table. On output, pointer is NULLed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_accbe548fa780a3d3ce1a719075eb3d5a}\label{sc__containers_8h_accbe548fa780a3d3ce1a719075eb3d5a}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_foreach@{sc\_hash\_foreach}}
+\index{sc\_hash\_foreach@{sc\_hash\_foreach}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_foreach()}{sc\_hash\_foreach()}}
+{\footnotesize\ttfamily void sc\+\_\+hash\+\_\+foreach (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$}]{hash,  }\item[{\mbox{\hyperlink{sc__containers_8h_a377b6d1c8ddd0e9fd27113be5ac70bf7}{sc\+\_\+hash\+\_\+foreach\+\_\+t}}}]{fn }\end{DoxyParamCaption})}
+
+
+
+Invoke a callback for every member of the hash table. 
+
+The hashing and equality functions are not called from within this function. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em hash} & Valid hash table. \\
+\hline
+\mbox{\texttt{ in}}  & {\em fn} & Callback executed on every hash table element. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a5f50ed06f72928a512bf013da66231dd}\label{sc__containers_8h_a5f50ed06f72928a512bf013da66231dd}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_function\_string@{sc\_hash\_function\_string}}
+\index{sc\_hash\_function\_string@{sc\_hash\_function\_string}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_function\_string()}{sc\_hash\_function\_string()}}
+{\footnotesize\ttfamily unsigned int sc\+\_\+hash\+\_\+function\+\_\+string (\begin{DoxyParamCaption}\item[{const void $\ast$}]{s,  }\item[{const void $\ast$}]{u }\end{DoxyParamCaption})}
+
+
+
+Compute a hash value from a null-\/terminated string. 
+
+This hash function is NOT cryptographically safe! Use libcrypt then. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em s} & Null-\/terminated string to be hashed. \\
+\hline
+\mbox{\texttt{ in}}  & {\em u} & Not used. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The computed hash value as an unsigned integer. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a471ac510c147c97b396a980d7cfc6852}\label{sc__containers_8h_a471ac510c147c97b396a980d7cfc6852}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_insert\_unique@{sc\_hash\_insert\_unique}}
+\index{sc\_hash\_insert\_unique@{sc\_hash\_insert\_unique}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_insert\_unique()}{sc\_hash\_insert\_unique()}}
+{\footnotesize\ttfamily int sc\+\_\+hash\+\_\+insert\+\_\+unique (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$}]{hash,  }\item[{void $\ast$}]{v,  }\item[{void $\ast$$\ast$$\ast$}]{found }\end{DoxyParamCaption})}
+
+
+
+Insert an object into a hash table if it is not contained already. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em hash} & Valid hash table. \\
+\hline
+\mbox{\texttt{ in}}  & {\em v} & The object to be inserted. \\
+\hline
+\mbox{\texttt{ out}}  & {\em found} & If found != NULL, $\ast$found is set to the address of the pointer to the already contained, or if not present, the new object. You can assign to $\ast$$\ast$found to override. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if object is added, false if it is already contained. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_ac491f058bd4a47555c203e94db47f37c}\label{sc__containers_8h_ac491f058bd4a47555c203e94db47f37c}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_lookup@{sc\_hash\_lookup}}
+\index{sc\_hash\_lookup@{sc\_hash\_lookup}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_lookup()}{sc\_hash\_lookup()}}
+{\footnotesize\ttfamily int sc\+\_\+hash\+\_\+lookup (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$}]{hash,  }\item[{void $\ast$}]{v,  }\item[{void $\ast$$\ast$$\ast$}]{found }\end{DoxyParamCaption})}
+
+
+
+Check if an object is contained in the hash table. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em hash} & Valid hash table. \\
+\hline
+\mbox{\texttt{ in}}  & {\em v} & The object to be looked up. \\
+\hline
+\mbox{\texttt{ out}}  & {\em found} & If found != NULL, $\ast$found is set to the address of the pointer to the already contained object if the object is found. You can assign to $\ast$$\ast$found to override. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if object is found, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a61448f834b749daa38248ad391417e0a}\label{sc__containers_8h_a61448f834b749daa38248ad391417e0a}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_memory\_used@{sc\_hash\_memory\_used}}
+\index{sc\_hash\_memory\_used@{sc\_hash\_memory\_used}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_memory\_used()}{sc\_hash\_memory\_used()}}
+{\footnotesize\ttfamily size\+\_\+t sc\+\_\+hash\+\_\+memory\+\_\+used (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$}]{hash }\end{DoxyParamCaption})}
+
+
+
+Calculate the memory used by a hash table. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em hash} & The hash table. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Memory used in bytes. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a79301891a134c0765dd8770cd88545d1}\label{sc__containers_8h_a79301891a134c0765dd8770cd88545d1}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_new@{sc\_hash\_new}}
+\index{sc\_hash\_new@{sc\_hash\_new}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_new()}{sc\_hash\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}}$\ast$ sc\+\_\+hash\+\_\+new (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a0a303b68788b49895e85f4a80fb061aa}{sc\+\_\+hash\+\_\+function\+\_\+t}}}]{hash\+\_\+fn,  }\item[{\mbox{\hyperlink{sc__containers_8h_afa3afb1f6aca73ea1b310e6d91c65c36}{sc\+\_\+equal\+\_\+function\+\_\+t}}}]{equal\+\_\+fn,  }\item[{void $\ast$}]{user\+\_\+data,  }\item[{\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$}]{allocator }\end{DoxyParamCaption})}
+
+
+
+Create a new hash table. 
+
+The number of hash slots is chosen dynamically. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em hash\+\_\+fn} & Function to compute the hash value. \\
+\hline
+\mbox{\texttt{ in}}  & {\em equal\+\_\+fn} & Function to test two objects for equality. \\
+\hline
+\mbox{\texttt{ in}}  & {\em user\+\_\+data} & User data passed through to the hash function. \\
+\hline
+\mbox{\texttt{ in}}  & {\em allocator} & Memory allocator for sc\+\_\+link\+\_\+t, can be NULL. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_ae1b5d86966197595ae5ecd9471af8e05}\label{sc__containers_8h_ae1b5d86966197595ae5ecd9471af8e05}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_print\_statistics@{sc\_hash\_print\_statistics}}
+\index{sc\_hash\_print\_statistics@{sc\_hash\_print\_statistics}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_print\_statistics()}{sc\_hash\_print\_statistics()}}
+{\footnotesize\ttfamily void sc\+\_\+hash\+\_\+print\+\_\+statistics (\begin{DoxyParamCaption}\item[{int}]{package\+\_\+id,  }\item[{int}]{log\+\_\+priority,  }\item[{\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$}]{hash }\end{DoxyParamCaption})}
+
+
+
+Compute and print statistical information about the occupancy. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em package\+\_\+id} & Library package id for logging. \\
+\hline
+\mbox{\texttt{ in}}  & {\em log\+\_\+priority} & Priority for logging; see \mbox{\hyperlink{sc_8h_a4fae12646e51b0ec8755db8c1e6c323e}{sc\+\_\+log}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em hash} & Valid hash table. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a3368ef4a371e8128a96e159ea28c3c63}\label{sc__containers_8h_a3368ef4a371e8128a96e159ea28c3c63}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_remove@{sc\_hash\_remove}}
+\index{sc\_hash\_remove@{sc\_hash\_remove}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_remove()}{sc\_hash\_remove()}}
+{\footnotesize\ttfamily int sc\+\_\+hash\+\_\+remove (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$}]{hash,  }\item[{void $\ast$}]{v,  }\item[{void $\ast$$\ast$}]{found }\end{DoxyParamCaption})}
+
+
+
+Remove an object from a hash table. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em hash} & Valid hash table. \\
+\hline
+\mbox{\texttt{ in}}  & {\em v} & The object to be removed. \\
+\hline
+\mbox{\texttt{ out}}  & {\em found} & If found != NULL, $\ast$found is set to the object that is removed if that exists. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if object is found, false if is not contained. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a6018b3a4e5c51501d52094335bb85d11}\label{sc__containers_8h_a6018b3a4e5c51501d52094335bb85d11}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_truncate@{sc\_hash\_truncate}}
+\index{sc\_hash\_truncate@{sc\_hash\_truncate}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_truncate()}{sc\_hash\_truncate()}}
+{\footnotesize\ttfamily void sc\+\_\+hash\+\_\+truncate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$}]{hash }\end{DoxyParamCaption})}
+
+
+
+Remove all entries from a hash table in O(\+N). 
+
+If the allocator is owned, it calls sc\+\_\+hash\+\_\+unlink and sc\+\_\+mempool\+\_\+truncate. Otherwise, it calls sc\+\_\+list\+\_\+reset on every hash slot which is slower. \mbox{\Hypertarget{sc__containers_8h_ab2992a0fc01581345b413f460a4b7927}\label{sc__containers_8h_ab2992a0fc01581345b413f460a4b7927}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_unlink@{sc\_hash\_unlink}}
+\index{sc\_hash\_unlink@{sc\_hash\_unlink}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_unlink()}{sc\_hash\_unlink()}}
+{\footnotesize\ttfamily void sc\+\_\+hash\+\_\+unlink (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$}]{hash }\end{DoxyParamCaption})}
+
+
+
+Unlink all hash elements without returning them to the mempool. 
+
+If the allocator is not owned, this runs faster than sc\+\_\+hash\+\_\+truncate, but is dangerous because of potential memory leaks. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em hash} & Hash structure to be unlinked. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_ab6fe8987fef58946b5327ea202cfb9c7}\label{sc__containers_8h_ab6fe8987fef58946b5327ea202cfb9c7}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_hash\_unlink\_destroy@{sc\_hash\_unlink\_destroy}}
+\index{sc\_hash\_unlink\_destroy@{sc\_hash\_unlink\_destroy}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_hash\_unlink\_destroy()}{sc\_hash\_unlink\_destroy()}}
+{\footnotesize\ttfamily void sc\+\_\+hash\+\_\+unlink\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a7966c694715add48d4d3ac86b330592b}{sc\+\_\+hash\+\_\+t}} $\ast$}]{hash }\end{DoxyParamCaption})}
+
+
+
+Same effect as unlink and destroy, but in O(1). 
+
+This is dangerous because of potential memory leaks. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em hash} & Hash structure to be unlinked and destroyed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_adfae475a3fb1f3fe8e0f5a7548262065}\label{sc__containers_8h_adfae475a3fb1f3fe8e0f5a7548262065}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_list\_append@{sc\_list\_append}}
+\index{sc\_list\_append@{sc\_list\_append}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_list\_append()}{sc\_list\_append()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}{sc\+\_\+link\+\_\+t}}$\ast$ sc\+\_\+list\+\_\+append (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$}]{list,  }\item[{void $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Insert a list element at the end of the list. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em list} & Valid list object. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data} & A new link is created holding this data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The link that has been created for data. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_ab9d366868c0011ee034b4e1b5d6f701f}\label{sc__containers_8h_ab9d366868c0011ee034b4e1b5d6f701f}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_list\_destroy@{sc\_list\_destroy}}
+\index{sc\_list\_destroy@{sc\_list\_destroy}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_list\_destroy()}{sc\_list\_destroy()}}
+{\footnotesize\ttfamily void sc\+\_\+list\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+
+
+Destroy a linked list structure in O(\+N). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em list} & All memory allocated for this list is freed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+If allocator was provided in sc\+\_\+list\+\_\+new, it will not be destroyed. 
+\end{DoxyNote}
+\mbox{\Hypertarget{sc__containers_8h_a2345f4f800f46d60d612c6d9545758dd}\label{sc__containers_8h_a2345f4f800f46d60d612c6d9545758dd}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_list\_init@{sc\_list\_init}}
+\index{sc\_list\_init@{sc\_list\_init}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_list\_init()}{sc\_list\_init()}}
+{\footnotesize\ttfamily void sc\+\_\+list\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$}]{list,  }\item[{\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$}]{allocator }\end{DoxyParamCaption})}
+
+
+
+Initialize a list object with an external link allocator. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em list} & List structure to be initialized. \\
+\hline
+\mbox{\texttt{ in}}  & {\em allocator} & External memory allocator for sc\+\_\+link\+\_\+t, which must exist already. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a0b94f6cf468b02dbaabd780e162cbeaa}\label{sc__containers_8h_a0b94f6cf468b02dbaabd780e162cbeaa}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_list\_insert@{sc\_list\_insert}}
+\index{sc\_list\_insert@{sc\_list\_insert}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_list\_insert()}{sc\_list\_insert()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}{sc\+\_\+link\+\_\+t}}$\ast$ sc\+\_\+list\+\_\+insert (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$}]{list,  }\item[{\mbox{\hyperlink{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}{sc\+\_\+link\+\_\+t}} $\ast$}]{pred,  }\item[{void $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Insert an element after a given list position. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em list} & Valid list object. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em pred} & The predecessor of the element to be inserted. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data} & A new link is created holding this data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The link that has been created for data. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_abc4ec6b2855dcb3125310f6ad2928ca1}\label{sc__containers_8h_abc4ec6b2855dcb3125310f6ad2928ca1}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_list\_memory\_used@{sc\_list\_memory\_used}}
+\index{sc\_list\_memory\_used@{sc\_list\_memory\_used}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_list\_memory\_used()}{sc\_list\_memory\_used()}}
+{\footnotesize\ttfamily size\+\_\+t sc\+\_\+list\+\_\+memory\+\_\+used (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$}]{list,  }\item[{int}]{is\+\_\+dynamic }\end{DoxyParamCaption})}
+
+
+
+Calculate the total memory used by a list. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em list} & The list. \\
+\hline
+\mbox{\texttt{ in}}  & {\em is\+\_\+dynamic} & True if created with sc\+\_\+list\+\_\+new, false if initialized with sc\+\_\+list\+\_\+init \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Memory used in bytes. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a16ed388e36eb3088d911d68f995be3b1}\label{sc__containers_8h_a16ed388e36eb3088d911d68f995be3b1}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_list\_new@{sc\_list\_new}}
+\index{sc\_list\_new@{sc\_list\_new}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_list\_new()}{sc\_list\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}}$\ast$ sc\+\_\+list\+\_\+new (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$}]{allocator }\end{DoxyParamCaption})}
+
+
+
+Allocate a new, empty linked list. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em allocator} & Memory allocator for sc\+\_\+link\+\_\+t, can be NULL in which case an internal allocator is created. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to a newly allocated, empty list object. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_affcaa9043e79854360ab37bdc670e668}\label{sc__containers_8h_affcaa9043e79854360ab37bdc670e668}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_list\_pop@{sc\_list\_pop}}
+\index{sc\_list\_pop@{sc\_list\_pop}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_list\_pop()}{sc\_list\_pop()}}
+{\footnotesize\ttfamily void$\ast$ sc\+\_\+list\+\_\+pop (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+
+
+Remove an element from the front of the list. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em list} & Valid, non-\/empty list object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the data of the removed first list element. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a6d609be9c0904f955ea15eddab01ef12}\label{sc__containers_8h_a6d609be9c0904f955ea15eddab01ef12}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_list\_prepend@{sc\_list\_prepend}}
+\index{sc\_list\_prepend@{sc\_list\_prepend}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_list\_prepend()}{sc\_list\_prepend()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}{sc\+\_\+link\+\_\+t}}$\ast$ sc\+\_\+list\+\_\+prepend (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$}]{list,  }\item[{void $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Insert a list element at the beginning of the list. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em list} & Valid list object. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data} & A new link is created holding this data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The link that has been created for data. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_aaf1dfcc941294ac2b6898db6b798938d}\label{sc__containers_8h_aaf1dfcc941294ac2b6898db6b798938d}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_list\_remove@{sc\_list\_remove}}
+\index{sc\_list\_remove@{sc\_list\_remove}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_list\_remove()}{sc\_list\_remove()}}
+{\footnotesize\ttfamily void$\ast$ sc\+\_\+list\+\_\+remove (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$}]{list,  }\item[{\mbox{\hyperlink{sc__containers_8h_a88fdd18bc0086f8cdba6971f505dcbb0}{sc\+\_\+link\+\_\+t}} $\ast$}]{pred }\end{DoxyParamCaption})}
+
+
+
+Remove an element after a given list position. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em list} & Valid, non-\/empty list object. \\
+\hline
+\mbox{\texttt{ in}}  & {\em pred} & The predecessor of the element to be removed. If {\itshape pred} == NULL, the first element is removed, which is equivalent to calling sc\+\_\+list\+\_\+pop (list). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The data of the removed and freed link. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_ab87b22d2b61f04d3c73d93e9218b97c7}\label{sc__containers_8h_ab87b22d2b61f04d3c73d93e9218b97c7}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_list\_reset@{sc\_list\_reset}}
+\index{sc\_list\_reset@{sc\_list\_reset}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_list\_reset()}{sc\_list\_reset()}}
+{\footnotesize\ttfamily void sc\+\_\+list\+\_\+reset (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+
+
+Remove all elements from a list in O(\+N). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em list} & List structure to be emptied. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Calling sc\+\_\+list\+\_\+init, then any list operations, then sc\+\_\+list\+\_\+reset is memory neutral. 
+\end{DoxyNote}
+\mbox{\Hypertarget{sc__containers_8h_a5934247f1587a5376772ec2d035f812f}\label{sc__containers_8h_a5934247f1587a5376772ec2d035f812f}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_list\_unlink@{sc\_list\_unlink}}
+\index{sc\_list\_unlink@{sc\_list\_unlink}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_list\_unlink()}{sc\_list\_unlink()}}
+{\footnotesize\ttfamily void sc\+\_\+list\+\_\+unlink (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a0d7968381a6d40057f3af6acec771a70}{sc\+\_\+list\+\_\+t}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+
+
+Unlink all list elements without returning them to the mempool. 
+
+This runs in O(1) but is dangerous because the link memory stays alive. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em list} & List structure to be unlinked. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a45ecbb2b02cf93632c79c7307f5238ba}\label{sc__containers_8h_a45ecbb2b02cf93632c79c7307f5238ba}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mempool\_destroy@{sc\_mempool\_destroy}}
+\index{sc\_mempool\_destroy@{sc\_mempool\_destroy}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mempool\_destroy()}{sc\_mempool\_destroy()}}
+{\footnotesize\ttfamily void sc\+\_\+mempool\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$}]{mempool }\end{DoxyParamCaption})}
+
+
+
+Destroy a mempool structure. 
+
+All elements that are still in use are invalidated. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em mempool} & Its memory is freed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a81b560f3010038ed71dad8635eb747fd}\label{sc__containers_8h_a81b560f3010038ed71dad8635eb747fd}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mempool\_destroy\_null@{sc\_mempool\_destroy\_null}}
+\index{sc\_mempool\_destroy\_null@{sc\_mempool\_destroy\_null}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mempool\_destroy\_null()}{sc\_mempool\_destroy\_null()}}
+{\footnotesize\ttfamily void sc\+\_\+mempool\+\_\+destroy\+\_\+null (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$$\ast$}]{pmempool }\end{DoxyParamCaption})}
+
+
+
+Destroy a mempool structure. 
+
+All elements that are still in use are invalidated. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em pmempool} & Address of pointer to memory pool. Its memory is freed, pointer is NULLed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_aac8778c147e092b73df13afdbc2e4c84}\label{sc__containers_8h_aac8778c147e092b73df13afdbc2e4c84}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mempool\_init@{sc\_mempool\_init}}
+\index{sc\_mempool\_init@{sc\_mempool\_init}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mempool\_init()}{sc\_mempool\_init()}}
+{\footnotesize\ttfamily void sc\+\_\+mempool\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$}]{mempool,  }\item[{size\+\_\+t}]{elem\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Same as sc\+\_\+mempool\+\_\+new, but for an already allocated object. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em mempool} & Allocated memory is overwritten and initialized. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of one element in bytes. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a73235130bba53a9ed8b07ddfa27fadae}\label{sc__containers_8h_a73235130bba53a9ed8b07ddfa27fadae}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mempool\_memory\_used@{sc\_mempool\_memory\_used}}
+\index{sc\_mempool\_memory\_used@{sc\_mempool\_memory\_used}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mempool\_memory\_used()}{sc\_mempool\_memory\_used()}}
+{\footnotesize\ttfamily size\+\_\+t sc\+\_\+mempool\+\_\+memory\+\_\+used (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$}]{mempool }\end{DoxyParamCaption})}
+
+
+
+Calculate the memory used by a memory pool. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mempool} & The memory pool. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Memory used in bytes. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_ab416c24d85ffd174f0dd3ad89c4c1163}\label{sc__containers_8h_ab416c24d85ffd174f0dd3ad89c4c1163}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mempool\_new@{sc\_mempool\_new}}
+\index{sc\_mempool\_new@{sc\_mempool\_new}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mempool\_new()}{sc\_mempool\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}}$\ast$ sc\+\_\+mempool\+\_\+new (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{elem\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Creates a new mempool structure with the zero\+\_\+and\+\_\+persist option off. 
+
+The contents of any elements returned by sc\+\_\+mempool\+\_\+alloc are undefined. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of one element in bytes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an allocated and initialized memory pool. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a561743511cacdfaacb29ad28442a5a4c}\label{sc__containers_8h_a561743511cacdfaacb29ad28442a5a4c}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mempool\_new\_zero\_and\_persist@{sc\_mempool\_new\_zero\_and\_persist}}
+\index{sc\_mempool\_new\_zero\_and\_persist@{sc\_mempool\_new\_zero\_and\_persist}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mempool\_new\_zero\_and\_persist()}{sc\_mempool\_new\_zero\_and\_persist()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}}$\ast$ sc\+\_\+mempool\+\_\+new\+\_\+zero\+\_\+and\+\_\+persist (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{elem\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Creates a new mempool structure with the zero\+\_\+and\+\_\+persist option on. 
+
+The memory of newly created elements is zero\textquotesingle{}d out, and the contents of an element are not touched between freeing and re-\/returning it. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of one element in bytes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an allocated and initialized memory pool. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a1e2a7bbce18983023e61ff681e66d94f}\label{sc__containers_8h_a1e2a7bbce18983023e61ff681e66d94f}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mempool\_reset@{sc\_mempool\_reset}}
+\index{sc\_mempool\_reset@{sc\_mempool\_reset}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mempool\_reset()}{sc\_mempool\_reset()}}
+{\footnotesize\ttfamily void sc\+\_\+mempool\+\_\+reset (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$}]{mempool }\end{DoxyParamCaption})}
+
+
+
+Same as sc\+\_\+mempool\+\_\+destroy, but does not free the pointer. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em mempool} & Valid mempool object is deallocated. The structure memory itself stays alive. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_ab483d01f1670c336d9cf76a8a2789d21}\label{sc__containers_8h_ab483d01f1670c336d9cf76a8a2789d21}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mempool\_truncate@{sc\_mempool\_truncate}}
+\index{sc\_mempool\_truncate@{sc\_mempool\_truncate}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mempool\_truncate()}{sc\_mempool\_truncate()}}
+{\footnotesize\ttfamily void sc\+\_\+mempool\+\_\+truncate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a9d4ef6fe706382d2d67a66fba72d0bf4}{sc\+\_\+mempool\+\_\+t}} $\ast$}]{mempool }\end{DoxyParamCaption})}
+
+
+
+Invalidates all previously returned pointers, resets count to 0. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em mempool} & Valid mempool is truncated. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_af9d1bec5cb6c6826ff4095e3052437bf}\label{sc__containers_8h_af9d1bec5cb6c6826ff4095e3052437bf}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mstamp\_alloc@{sc\_mstamp\_alloc}}
+\index{sc\_mstamp\_alloc@{sc\_mstamp\_alloc}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mstamp\_alloc()}{sc\_mstamp\_alloc()}}
+{\footnotesize\ttfamily void$\ast$ sc\+\_\+mstamp\+\_\+alloc (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}} $\ast$}]{mst }\end{DoxyParamCaption})}
+
+
+
+Return a new item. 
+
+The memory returned will stay legal until container is destroyed or truncated. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em mst} & Properly initialized stamp container. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to an item ready to use. Legal until \mbox{\hyperlink{sc__containers_8h_a3e36faece884b10645816c2b85cd6a27}{sc\+\_\+mstamp\+\_\+reset}} or \mbox{\hyperlink{sc__containers_8h_a9e50a88d5c99bc2a7f1749a77fe26641}{sc\+\_\+mstamp\+\_\+truncate}} is called on mst. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_ac9a667b4bf2d1777550917a00ca1ee46}\label{sc__containers_8h_ac9a667b4bf2d1777550917a00ca1ee46}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mstamp\_init@{sc\_mstamp\_init}}
+\index{sc\_mstamp\_init@{sc\_mstamp\_init}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mstamp\_init()}{sc\_mstamp\_init()}}
+{\footnotesize\ttfamily void sc\+\_\+mstamp\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}} $\ast$}]{mst,  }\item[{size\+\_\+t}]{stamp\+\_\+unit,  }\item[{size\+\_\+t}]{elem\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Initialize a memory stamp container. 
+
+We provide allocation of fixed-\/size memory items without allocating new memory in every request. Instead we block the allocations in what we call a stamp of multiple items. Even if no allocations are done, the container\textquotesingle{}s internal memory must be freed eventually by \mbox{\hyperlink{sc__containers_8h_a3e36faece884b10645816c2b85cd6a27}{sc\+\_\+mstamp\+\_\+reset}}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em mst} & Legal pointer to a stamp structure. \\
+\hline
+\mbox{\texttt{ in}}  & {\em stamp\+\_\+unit} & Size of each memory block that we allocate. If it is larger than the element size, we may place more than one element in it. Passing 0 is legal and forces stamps that hold one item each. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of each item. Passing 0 is legal. In that case, \mbox{\hyperlink{sc__containers_8h_af9d1bec5cb6c6826ff4095e3052437bf}{sc\+\_\+mstamp\+\_\+alloc}} returns NULL. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a41fa1c49411f637464a99522a3370145}\label{sc__containers_8h_a41fa1c49411f637464a99522a3370145}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mstamp\_memory\_used@{sc\_mstamp\_memory\_used}}
+\index{sc\_mstamp\_memory\_used@{sc\_mstamp\_memory\_used}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mstamp\_memory\_used()}{sc\_mstamp\_memory\_used()}}
+{\footnotesize\ttfamily size\+\_\+t sc\+\_\+mstamp\+\_\+memory\+\_\+used (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}} $\ast$}]{mst }\end{DoxyParamCaption})}
+
+
+
+Return memory size in bytes of all data allocated in the container. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mst} & Properly initialized stamp container. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Total container memory size in bytes. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a3e36faece884b10645816c2b85cd6a27}\label{sc__containers_8h_a3e36faece884b10645816c2b85cd6a27}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mstamp\_reset@{sc\_mstamp\_reset}}
+\index{sc\_mstamp\_reset@{sc\_mstamp\_reset}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mstamp\_reset()}{sc\_mstamp\_reset()}}
+{\footnotesize\ttfamily void sc\+\_\+mstamp\+\_\+reset (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}} $\ast$}]{mst }\end{DoxyParamCaption})}
+
+
+
+Free all memory in a stamp structure and all items previously returned. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em mst} & Properly initialized stamp container. On output, the structure is undefined. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a9e50a88d5c99bc2a7f1749a77fe26641}\label{sc__containers_8h_a9e50a88d5c99bc2a7f1749a77fe26641}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_mstamp\_truncate@{sc\_mstamp\_truncate}}
+\index{sc\_mstamp\_truncate@{sc\_mstamp\_truncate}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_mstamp\_truncate()}{sc\_mstamp\_truncate()}}
+{\footnotesize\ttfamily void sc\+\_\+mstamp\+\_\+truncate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_ab9cd613ca16520c612c4dd38d0ce3070}{sc\+\_\+mstamp\+\_\+t}} $\ast$}]{mst }\end{DoxyParamCaption})}
+
+
+
+Free all memory in a stamp structure and initialize it anew. 
+
+Equivalent to calling \mbox{\hyperlink{sc__containers_8h_a3e36faece884b10645816c2b85cd6a27}{sc\+\_\+mstamp\+\_\+reset}} followed by \mbox{\hyperlink{sc__containers_8h_ac9a667b4bf2d1777550917a00ca1ee46}{sc\+\_\+mstamp\+\_\+init}} with the same stamp\+\_\+unit and elem\+\_\+size.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em mst} & Properly initialized stamp container. On output, its elements have been freed and it is ready for further use. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_a953f00fc29ceeed5ee0b0629aa36ec7e}\label{sc__containers_8h_a953f00fc29ceeed5ee0b0629aa36ec7e}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_recycle\_array\_init@{sc\_recycle\_array\_init}}
+\index{sc\_recycle\_array\_init@{sc\_recycle\_array\_init}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_recycle\_array\_init()}{sc\_recycle\_array\_init()}}
+{\footnotesize\ttfamily void sc\+\_\+recycle\+\_\+array\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a135d3d31f993e731607abaad2fd43ee6}{sc\+\_\+recycle\+\_\+array\+\_\+t}} $\ast$}]{rec\+\_\+array,  }\item[{size\+\_\+t}]{elem\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Initialize a recycle array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em rec\+\_\+array} & Uninitialized turned into a recycle array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & Size of the objects to be stored in the array. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__containers_8h_adc40dce6d559ee358c2bb469e64c379d}\label{sc__containers_8h_adc40dce6d559ee358c2bb469e64c379d}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_recycle\_array\_insert@{sc\_recycle\_array\_insert}}
+\index{sc\_recycle\_array\_insert@{sc\_recycle\_array\_insert}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_recycle\_array\_insert()}{sc\_recycle\_array\_insert()}}
+{\footnotesize\ttfamily void$\ast$ sc\+\_\+recycle\+\_\+array\+\_\+insert (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a135d3d31f993e731607abaad2fd43ee6}{sc\+\_\+recycle\+\_\+array\+\_\+t}} $\ast$}]{rec\+\_\+array,  }\item[{size\+\_\+t $\ast$}]{position }\end{DoxyParamCaption})}
+
+
+
+Insert an object into the recycle array. 
+
+The object is not copied into the array. Use the return value for that.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em rec\+\_\+array} & Valid recycle array. \\
+\hline
+\mbox{\texttt{ out}}  & {\em position} & If position != NULL, $\ast$position is set to the array position of the inserted object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The new address of the object in the array. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a788e8444ddf769046c38afc05bfac38e}\label{sc__containers_8h_a788e8444ddf769046c38afc05bfac38e}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_recycle\_array\_remove@{sc\_recycle\_array\_remove}}
+\index{sc\_recycle\_array\_remove@{sc\_recycle\_array\_remove}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_recycle\_array\_remove()}{sc\_recycle\_array\_remove()}}
+{\footnotesize\ttfamily void$\ast$ sc\+\_\+recycle\+\_\+array\+\_\+remove (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a135d3d31f993e731607abaad2fd43ee6}{sc\+\_\+recycle\+\_\+array\+\_\+t}} $\ast$}]{rec\+\_\+array,  }\item[{size\+\_\+t}]{position }\end{DoxyParamCaption})}
+
+
+
+Remove an object from the recycle array. 
+
+It must be valid.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em rec\+\_\+array} & Valid recycle array. \\
+\hline
+\mbox{\texttt{ in}}  & {\em position} & Index into the array for the object to remove. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The pointer to the removed object. Will be valid as long as no other function is called on this recycle array. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__containers_8h_a2cade0e4211936ded04e2a2e7df9ca33}\label{sc__containers_8h_a2cade0e4211936ded04e2a2e7df9ca33}} 
+\index{sc\_containers.h@{sc\_containers.h}!sc\_recycle\_array\_reset@{sc\_recycle\_array\_reset}}
+\index{sc\_recycle\_array\_reset@{sc\_recycle\_array\_reset}!sc\_containers.h@{sc\_containers.h}}
+\doxysubsubsection{\texorpdfstring{sc\_recycle\_array\_reset()}{sc\_recycle\_array\_reset()}}
+{\footnotesize\ttfamily void sc\+\_\+recycle\+\_\+array\+\_\+reset (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__containers_8h_a135d3d31f993e731607abaad2fd43ee6}{sc\+\_\+recycle\+\_\+array\+\_\+t}} $\ast$}]{rec\+\_\+array }\end{DoxyParamCaption})}
+
+
+
+Reset a recycle array. 
+
+As with all \+\_\+reset functions, calling \+\_\+init, then any array operations, then \+\_\+reset is memory neutral. 

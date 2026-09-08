@@ -1,0 +1,360 @@
+.TH "src/p4est_geometry.h" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/p4est_geometry.h \- Transform from tree-local 'reference' coordinate system to global 'physical space' coordinates\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <p4est_lnodes\&.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBp4est_geometry\fP"
+.br
+.RI "Encapsulates a custom transformation from tree-local coordinates to user defined physical space\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBp4est_geometry\fP \fBp4est_geometry_t\fP"
+.br
+.RI "This object encapsulates a custom geometry transformation\&. "
+.ti -1c
+.RI "typedef void(* \fBp4est_geometry_X_t\fP) (\fBp4est_geometry_t\fP *geom, \fBp4est_topidx_t\fP which_tree, const double abc[3], double xyz[3])"
+.br
+.RI "Forward transformation from the tree-local coordinates to physical space\&. "
+.ti -1c
+.RI "typedef void(* \fBp4est_geometry_destroy_t\fP) (\fBp4est_geometry_t\fP *geom)"
+.br
+.RI "Destructor prototype for a user-allocated \fBp4est_geometry_t\fP\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBpillow_disk_config_t\fP { \fBFIG32A\fP = 0, \fBFIG32B\fP = 1, \fBFIG32C\fP = 2, \fBFIG32D\fP = 3 }"
+.br
+.RI "Characterize different mappings of the disk using a 1-tree connectivity\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBp4est_geometry_transform_coordinates\fP (\fBp4est_geometry_t\fP *geom, \fBp4est_topidx_t\fP which_tree, \fBp4est_qcoord_t\fP coords_in[2], double coords_out[3])"
+.br
+.RI "Transform a quadrant reference coordinate into the geometry\&. "
+.ti -1c
+.RI "void \fBp4est_geometry_destroy\fP (\fBp4est_geometry_t\fP *geom)"
+.br
+.RI "Can be used to conveniently destroy a geometry structure\&. "
+.ti -1c
+.RI "\fBp4est_geometry_t\fP * \fBp4est_geometry_new_connectivity\fP (\fBp4est_connectivity_t\fP *conn)"
+.br
+.RI "Create a geometry structure based on the vertices in a connectivity\&. "
+.ti -1c
+.RI "void \fBp4est_geometry_connectivity_X\fP (\fBp4est_geometry_t\fP *geom, \fBp4est_topidx_t\fP which_tree, const double abc[3], double xyz[3])"
+.br
+.RI "Geometric coordinate transformation for geometry created with \fBp4est_geometry_new_connectivity\fP\&. "
+.ti -1c
+.RI "\fBp4est_geometry_t\fP * \fBp4est_geometry_new_icosahedron\fP (\fBp4est_connectivity_t\fP *conn, double R)"
+.br
+.RI "Create a geometry for mapping the sphere using 2d connectivity icosahedron\&. "
+.ti -1c
+.RI "\fBp4est_geometry_t\fP * \fBp4est_geometry_new_shell2d\fP (\fBp4est_connectivity_t\fP *conn, double R2, double R1)"
+.br
+.RI "Create a geometry for mapping the annulus\&. "
+.ti -1c
+.RI "\fBp4est_geometry_t\fP * \fBp4est_geometry_new_disk2d\fP (\fBp4est_connectivity_t\fP *conn, double R0, double R1)"
+.br
+.RI "Create disk2d geometry associated to disk2d connectivity\&. "
+.ti -1c
+.RI "\fBp4est_geometry_t\fP * \fBp4est_geometry_new_sphere2d\fP (\fBp4est_connectivity_t\fP *conn, double R)"
+.br
+.RI "Create sphere geometry associated to cubed connectivity\&. "
+.ti -1c
+.RI "\fBp4est_geometry_t\fP * \fBp4est_geometry_new_pillow\fP (\fBp4est_connectivity_t\fP *conn, double R)"
+.br
+.RI "Create a geometry for mapping the sphere using 2d connectivity pillow\&. "
+.ti -1c
+.RI "\fBp4est_geometry_t\fP * \fBp4est_geometry_new_pillow_disk\fP (\fBp4est_connectivity_t\fP *conn, double R, \fBpillow_disk_config_t\fP config)"
+.br
+.RI "Create a geometry for mapping the disk using 2d connectivity unit\&. "
+.ti -1c
+.RI "void \fBp4est_geometry_coordinates_lnodes\fP (\fBp4est_t\fP *\fBp4est\fP, \fBp4est_lnodes_t\fP *lnodes, const double *refloc, \fBp4est_geometry_t\fP *geom, sc_array_t *coordinates, sc_array_t *element_coordinates)"
+.br
+.RI "Compute node coordinates for a \fBp4est_lnodes\fP structure\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Transform from tree-local 'reference' coordinate system to global 'physical space' coordinates\&. 
+
+These are used in \fBp4est_vtk\&.h\fP to write global coordinate meshes to disk\&.
+.PP
+We provide several example geometries for use\&. You may also implement your own geometry as you see fit\&.
+.PP
+\fBNote\fP
+.RS 4
+For geometry purposes, each tree has the local coordinate system $[0,1]^d$\&. For legacy/\fBp8est\fP compatibility reasons the local coordinates are always represented as a triple abc[3]\&. For a 2D quadtree mesh the local coordinates are abc[0] and abc[1] and the third coordinate abc[2] should be ignored\&. 
+.RE
+.PP
+
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef void(* p4est_geometry_destroy_t) (\fBp4est_geometry_t\fP *geom)"
+
+.PP
+Destructor prototype for a user-allocated \fBp4est_geometry_t\fP\&. It is invoked by \fBp4est_geometry_destroy\fP\&. If the user chooses to reserve the structure statically, there is no need to provide it\&. 
+.SS "typedef void(* p4est_geometry_X_t) (\fBp4est_geometry_t\fP *geom, \fBp4est_topidx_t\fP which_tree, const double abc[3], double xyz[3])"
+
+.PP
+Forward transformation from the tree-local coordinates to physical space\&. 
+.PP
+\fBNote\fP
+.RS 4
+The two-dimensional connectivities built into \fBp4est\fP have 3D vertex coordinates that can be used in the transformation if so desired\&. However, connectivities are not in general required to have vertex coordinate information\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIgeom\fP associated geometry 
+.br
+\fIwhich_tree\fP tree id inside forest 
+.br
+\fIabc\fP tree-local coordinates: $[0,1]^d$\&. For 2D meshes abc[2] should never be accessed\&. 
+.br
+\fIxyz\fP cartesian coordinates in physical space after geometry 
+.RE
+.PP
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBpillow_disk_config_t\fP"
+
+.PP
+Characterize different mappings of the disk using a 1-tree connectivity\&. The different mappings correspond to the ones used to produce figure 3\&.2 in the following publication:
+.PP
+'Logically rectangular grids and finite volume methods for PDEs in circular
+and spherical domains', Calhoun et al, SIAM Review, volume 50, Issue 4, January 2008\&. https://doi.org/10.1137/060664094 
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple2\&.c\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "void p4est_geometry_connectivity_X (\fBp4est_geometry_t\fP * geom, \fBp4est_topidx_t\fP which_tree, const double abc[3], double xyz[3])"
+
+.PP
+Geometric coordinate transformation for geometry created with \fBp4est_geometry_new_connectivity\fP\&. This is defined by tri/binlinear interpolation from vertex coordinates\&.
+.PP
+May also be used as a building block in custom geometric coordinate transforms\&. See for example \fBp4est_geometry_new_sphere2d\fP or \fBp4est_geometry_new_disk2d\fP\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIgeom\fP associated geometry 
+.br
+\fIwhich_tree\fP tree id inside forest 
+.br
+\fIabc\fP tree-local reference coordinates : [0,1]^3\&. Note: abc[2] is only accessed by the P4_TO_P8 version 
+.br
+\fIxyz\fP Cartesian coordinates in physical space after geometry
+.RE
+.PP
+\fBWarning\fP
+.RS 4
+The associated geometry is assumed to have a connectivity as its *user field, and this connectivity is assumed to have vertex information in its *tree_to_vertex field\&. 
+.RE
+.PP
+
+.SS "void p4est_geometry_coordinates_lnodes (\fBp4est_t\fP * p4est, \fBp4est_lnodes_t\fP * lnodes, const double * refloc, \fBp4est_geometry_t\fP * geom, sc_array_t * coordinates, sc_array_t * element_coordinates)"
+
+.PP
+Compute node coordinates for a \fBp4est_lnodes\fP structure\&. Presently we allow for an lnodes degree of 1 or 2\&. Cubic or higher degrees may be transparently enabled in the future\&.
+.PP
+The simple mode assigns one tree reference coordinate to each lnode\&. This may not be suitable for visualizing periodic connectivities\&.
+.PP
+In a more advanced mode indicated by NULL \fCelement_coordinates\fP input, the coordinates are made unique by reference location: If a tree is periodic, for example, its corners reference the same lnode but will generate separate coordinate entries for proper visualization\&. There will be more coordinates generated than there are lnodes\&.
+.PP
+The coordinate numbers generated by the present version of the function are partition-dependent\&. This may be seen as a flaw\&. Looking into it\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP A valid forest structure\&. 
+.br
+\fIlnodes\fP A valid \fBp4est_lnodes\fP structure of degree 1 or 2\&. Higher degrees not presently allowed\&. Must be derived from the \fC\fBp4est\fP\fP\&. 
+.br
+\fIrefloc\fP Eventually used for cubic and upwards degrees\&. We will expect degree + 1 many values for the one-dimensional reference node spacing\&. Out of these, the indices from 1 to (degree - 1) / 2 inclusive will be accessed by this function\&. The others default by symmetry considerations\&. 
+.br
+\fIgeom\fP May be NULL for generating the tree-reference coordinates, or a valid geometry object for transforming the reference into mapped space\&. 
+.br
+\fIcoordinates\fP On input, an array with entries of 3 double variables each\&. Resized in this function and populated with coordinate tuples\&. With a NULL geometry, these are in [0, 1]**2\&. Otherwise, they are mapped by the geometry\&. 
+.br
+\fIelement_coordinates\fP This may be NULL, in which case we generate one coordinate tuple for each lnode\&. Otherwise, this must be an array with entries of type \fBp4est_locidx_t\fP\&. Is resized to the same number of entries as \fClnodes->element_nodes\fP\&. Its entries point into the coordinates array\&. The tree index of any given entry is implicit in that this array is derived from a \fBp4est\fP, where sets of (degree + 1)**2 entries each correspond to the forest elements in order\&. 
+.RE
+.PP
+
+.SS "void p4est_geometry_destroy (\fBp4est_geometry_t\fP * geom)"
+
+.PP
+Can be used to conveniently destroy a geometry structure\&. The user is free not to call this function at all if they handle the memory of the \fBp4est_geometry_t\fP in their own way\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple2\&.c\fP, and \fBuserdata/userdata2\&.c\fP\&.
+.SS "\fBp4est_geometry_t\fP* p4est_geometry_new_connectivity (\fBp4est_connectivity_t\fP * conn)"
+
+.PP
+Create a geometry structure based on the vertices in a connectivity\&. The transformation is constructed using bilinear interpolation\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP A connectivity with vertex coordinate information\&. We do \fInot\fP take ownership and expect this structure to stay alive\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Geometry structure; use with \fBp4est_geometry_destroy\fP\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBuserdata/userdata2\&.c\fP\&.
+.SS "\fBp4est_geometry_t\fP* p4est_geometry_new_disk2d (\fBp4est_connectivity_t\fP * conn, double R0, double R1)"
+
+.PP
+Create disk2d geometry associated to disk2d connectivity\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The result of \fBp4est_connectivity_new_disk2d\fP\&. 
+.br
+\fIR0\fP radius of the inner circle\&. 
+.br
+\fIR1\fP radius of the outer circle (external border)\&.
+.RE
+.PP
+This geometry is meant to be used with the disk2d connectivity, which is a 5-tree connectivity to map the spherical disk\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple2\&.c\fP, and \fBuserdata/userdata2\&.c\fP\&.
+.SS "\fBp4est_geometry_t\fP* p4est_geometry_new_icosahedron (\fBp4est_connectivity_t\fP * conn, double R)"
+
+.PP
+Create a geometry for mapping the sphere using 2d connectivity icosahedron\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The result of \fBp4est_connectivity_new_icosahedron\fP\&. 
+.br
+\fIR\fP The radius of the sphere\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple2\&.c\fP, and \fBuserdata/userdata2\&.c\fP\&.
+.SS "\fBp4est_geometry_t\fP* p4est_geometry_new_pillow (\fBp4est_connectivity_t\fP * conn, double R)"
+
+.PP
+Create a geometry for mapping the sphere using 2d connectivity pillow\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The result of \fBp4est_connectivity_new_pillow\fP\&. 
+.br
+\fIR\fP The radius of the sphere\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple2\&.c\fP\&.
+.SS "\fBp4est_geometry_t\fP* p4est_geometry_new_pillow_disk (\fBp4est_connectivity_t\fP * conn, double R, \fBpillow_disk_config_t\fP config)"
+
+.PP
+Create a geometry for mapping the disk using 2d connectivity unit\&. See companion routine \fBp8est_geometry_new_pillow_sphere\fP which maps the 3d solid sphere using 1-tree unit connectivity\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The result of \fBp4est_connectivity_new_unitsquare\fP\&. 
+.br
+\fIR\fP The radius of the disk\&. 
+.br
+\fIconfig\fP The configuration to identify a mapping variant\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple2\&.c\fP\&.
+.SS "\fBp4est_geometry_t\fP* p4est_geometry_new_shell2d (\fBp4est_connectivity_t\fP * conn, double R2, double R1)"
+
+.PP
+Create a geometry for mapping the annulus\&. This a direct adaptation of geometric shell in 3d\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The result of \fBp4est_connectivity_new_shell2d\fP\&. 
+.br
+\fIR1\fP radius of the inner circle (internal border)\&. 
+.br
+\fIR2\fP radius of the outer circle (external border)\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple2\&.c\fP\&.
+.SS "\fBp4est_geometry_t\fP* p4est_geometry_new_sphere2d (\fBp4est_connectivity_t\fP * conn, double R)"
+
+.PP
+Create sphere geometry associated to cubed connectivity\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIconn\fP The result of \fBp4est_connectivity_new_cubed\fP\&. 
+.br
+\fIR\fP radius of the sphere
+.RE
+.PP
+This geometry is meant to be used with the cubed connectivity \fBp4est_connectivity_new_cubed\fP, which is a 6-tree connectivity, to map the sphere\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple2\&.c\fP\&.
+.SS "void p4est_geometry_transform_coordinates (\fBp4est_geometry_t\fP * geom, \fBp4est_topidx_t\fP which_tree, \fBp4est_qcoord_t\fP coords_in[2], double coords_out[3])"
+
+.PP
+Transform a quadrant reference coordinate into the geometry\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIgeom\fP Properly initialized geometry object\&. 
+.br
+\fIwhich_tree\fP Valid tree number relative to the connectivity that is underlying the geometry\&. 
+.br
+\fIcoords_in\fP Valid quadrant reference coordinates\&. They must be in [0, P4EST_ROOT_LEN]^2\&. 
+.br
+\fIcoords_out\fP Coordinates in the physical geometry\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple2\&.c\fP, and \fBuserdata/userdata_run2\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

@@ -1,0 +1,557 @@
+.TH "src/p4est_algorithms.h" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/p4est_algorithms.h \- Routines for managing quadrants as elements of trees and subtrees\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <p4est_extended\&.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "sc_mempool_t * \fBp4est_quadrant_mempool_new\fP (void)"
+.br
+.RI "Create a memory pool for quadrants that initializes compiler padding\&. "
+.ti -1c
+.RI "void \fBp4est_quadrant_init_data\fP (\fBp4est_t\fP *\fBp4est\fP, \fBp4est_topidx_t\fP which_tree, \fBp4est_quadrant_t\fP *quad, \fBp4est_init_t\fP init_fn)"
+.br
+.RI "Alloc and initialize the user data of a valid quadrant\&. "
+.ti -1c
+.RI "void \fBp4est_quadrant_free_data\fP (\fBp4est_t\fP *\fBp4est\fP, \fBp4est_quadrant_t\fP *quad)"
+.br
+.RI "Free the user data of a valid quadrant\&. "
+.ti -1c
+.RI "unsigned \fBp4est_quadrant_checksum\fP (sc_array_t *quadrants, sc_array_t *checkarray, size_t first_quadrant)"
+.br
+.RI "Computes a machine-independent checksum of a list of quadrants\&. "
+.ti -1c
+.RI "int \fBp4est_quadrant_in_range\fP (const \fBp4est_quadrant_t\fP *fd, const \fBp4est_quadrant_t\fP *ld, const \fBp4est_quadrant_t\fP *quadrant)"
+.br
+.RI "Report whether a quadrant fits into the limits of a quadrant range\&. "
+.ti -1c
+.RI "int \fBp4est_tree_is_sorted\fP (\fBp4est_tree_t\fP *tree)"
+.br
+.RI "Test if a tree is sorted in Morton ordering\&. "
+.ti -1c
+.RI "int \fBp4est_tree_is_linear\fP (\fBp4est_tree_t\fP *tree)"
+.br
+.RI "Test if a tree is sorted in Morton ordering and linear\&. "
+.ti -1c
+.RI "int \fBp4est_tree_is_complete\fP (\fBp4est_tree_t\fP *tree)"
+.br
+.RI "Test if a tree is sorted in Morton ordering and complete\&. "
+.ti -1c
+.RI "int \fBp4est_tree_is_almost_sorted\fP (\fBp4est_tree_t\fP *tree, int check_linearity)"
+.br
+.RI "Check if a tree is sorted/linear except for diagonally outside corners\&. "
+.ti -1c
+.RI "void \fBp4est_tree_print\fP (int log_priority, \fBp4est_tree_t\fP *tree)"
+.br
+.RI "Print the quadrants in a tree\&. "
+.ti -1c
+.RI "int \fBp4est_is_equal\fP (\fBp4est_t\fP *p4est1, \fBp4est_t\fP *p4est2, int compare_data)"
+.br
+.RI "Locally check forest/connectivity structures for equality\&. "
+.ti -1c
+.RI "int \fBp4est_is_valid\fP (\fBp4est_t\fP *\fBp4est\fP)"
+.br
+.RI "Check a forest for validity and allreduce the result\&. "
+.ti -1c
+.RI "void \fBp4est_tree_compute_overlap\fP (\fBp4est_t\fP *\fBp4est\fP, sc_array_t *in, sc_array_t *out, \fBp4est_connect_type_t\fP balance, sc_array_t *borders, sc_array_t *inseeds)"
+.br
+.RI "Compute the overlap of a number of insulation layers with a tree\&. "
+.ti -1c
+.RI "void \fBp4est_tree_uniqify_overlap\fP (sc_array_t *out)"
+.br
+.RI "Gets the reduced representation of the overlap that results from using p4est_tree_compute_overlap_new\&. "
+.ti -1c
+.RI "size_t \fBp4est_tree_remove_nonowned\fP (\fBp4est_t\fP *\fBp4est\fP, \fBp4est_topidx_t\fP which_tree)"
+.br
+.RI "Removes quadrants that are outside the owned tree boundaries from a tree\&. "
+.ti -1c
+.RI "void \fBp4est_complete_region\fP (\fBp4est_t\fP *\fBp4est\fP, const \fBp4est_quadrant_t\fP *q1, int include_q1, const \fBp4est_quadrant_t\fP *q2, int include_q2, \fBp4est_tree_t\fP *tree, \fBp4est_topidx_t\fP which_tree, \fBp4est_init_t\fP init_fn)"
+.br
+.RI "Constructs a minimal linear octree between two octants\&. "
+.ti -1c
+.RI "void \fBp4est_complete_subtree\fP (\fBp4est_t\fP *\fBp4est\fP, \fBp4est_topidx_t\fP which_tree, \fBp4est_init_t\fP init_fn)"
+.br
+.RI "Completes a sorted tree within a \fBp4est\fP\&. "
+.ti -1c
+.RI "void \fBp4est_balance_subtree\fP (\fBp4est_t\fP *\fBp4est\fP, \fBp4est_connect_type_t\fP btype, \fBp4est_topidx_t\fP which_tree, \fBp4est_init_t\fP init_fn)"
+.br
+.RI "Balances a sorted tree within a \fBp4est\fP\&. "
+.ti -1c
+.RI "void \fBp4est_balance_border\fP (\fBp4est_t\fP *\fBp4est\fP, \fBp4est_connect_type_t\fP btype, \fBp4est_topidx_t\fP which_tree, \fBp4est_init_t\fP init_fn, \fBp4est_replace_t\fP replace_fn, sc_array_t *borders)"
+.br
+.ti -1c
+.RI "size_t \fBp4est_linearize_tree\fP (\fBp4est_t\fP *\fBp4est\fP, \fBp4est_tree_t\fP *tree)"
+.br
+.RI "Remove overlaps from a sorted list of quadrants\&. "
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBp4est_partition_correction\fP (\fBp4est_gloidx_t\fP *partition, int num_procs, int rank, \fBp4est_gloidx_t\fP min_quadrant_id, \fBp4est_gloidx_t\fP max_quadrant_id)"
+.br
+.RI "Compute correction of partition for a process\&. "
+.ti -1c
+.RI "\fBp4est_gloidx_t\fP \fBp4est_partition_for_coarsening\fP (\fBp4est_t\fP *\fBp4est\fP, \fBp4est_locidx_t\fP *num_quadrants_in_proc)"
+.br
+.RI "Correct partition counters to allow one level of coarsening\&. "
+.ti -1c
+.RI "int \fBp4est_next_nonempty_process\fP (int rank, int num_procs, \fBp4est_locidx_t\fP *num_quadrants_in_proc)"
+.br
+.RI "Find next non-empty process\&. "
+.ti -1c
+.RI "\fBp4est_gloidx_t\fP \fBp4est_partition_given\fP (\fBp4est_t\fP *\fBp4est\fP, const \fBp4est_locidx_t\fP *num_quadrants_in_proc)"
+.br
+.RI "Partition \fI\fBp4est\fP\fP given the number of quadrants per proc\&. "
+.ti -1c
+.RI "int \fBp4est_quadrant_on_face_boundary\fP (\fBp4est_t\fP *\fBp4est\fP, \fBp4est_topidx_t\fP treeid, int face, const \fBp4est_quadrant_t\fP *q)"
+.br
+.RI "Checks if a quadrant's face is on the boundary of the forest\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Routines for managing quadrants as elements of trees and subtrees\&. 
+
+In addition, some high level algorithms such as \fBp4est_partition_given\fP\&. 
+.SH "Function Documentation"
+.PP 
+.SS "void p4est_balance_subtree (\fBp4est_t\fP * p4est, \fBp4est_connect_type_t\fP btype, \fBp4est_topidx_t\fP which_tree, \fBp4est_init_t\fP init_fn)"
+
+.PP
+Balances a sorted tree within a \fBp4est\fP\&. It may have exterior quadrants\&. The completed tree will have only owned quadrants and no overlap\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP The \fBp4est\fP to work on\&. 
+.br
+\fIbtype\fP The balance type (face or corner)\&. 
+.br
+\fIwhich_tree\fP The 0-based index of the subtree to balance\&. 
+.br
+\fIinit_fn\fP Callback function to initialize the user_data which is already allocated automatically\&. 
+.RE
+.PP
+
+.SS "void p4est_complete_region (\fBp4est_t\fP * p4est, const \fBp4est_quadrant_t\fP * q1, int include_q1, const \fBp4est_quadrant_t\fP * q2, int include_q2, \fBp4est_tree_t\fP * tree, \fBp4est_topidx_t\fP which_tree, \fBp4est_init_t\fP init_fn)"
+
+.PP
+Constructs a minimal linear octree between two octants\&. This is algorithm 2 from H\&. Sundar, R\&.S\&. Sampath and G\&. Biros with the additional improvements that we do not require sorting and the runtime is O(N)\&.
+.PP
+\fBPrecondition\fP
+.RS 4
+\fIq1\fP < \fIq2\fP in the Morton ordering\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP Used for the memory pools and quadrant init\&. 
+.br
+\fIq1\fP First input quadrant\&. Data init'ed if included\&. 
+.br
+\fIinclude_q1\fP Flag to specify whether q1 is included\&. 
+.br
+\fIq2\fP Second input quadrant\&. Data init'ed if included\&. 
+.br
+\fIinclude_q2\fP Flag to specify whether q2 is included\&. 
+.br
+\fItree\fP Initialized tree with zero elements\&. 
+.br
+\fIwhich_tree\fP The 0-based index of \fItree\fP which is needed for the \fCp4est_quadrant_init_data\fP routine\&. 
+.br
+\fIinit_fn\fP Callback function to initialize the user_data which is already allocated automatically\&. 
+.RE
+.PP
+
+.SS "void p4est_complete_subtree (\fBp4est_t\fP * p4est, \fBp4est_topidx_t\fP which_tree, \fBp4est_init_t\fP init_fn)"
+
+.PP
+Completes a sorted tree within a \fBp4est\fP\&. It may have exterior quadrants\&. The completed tree will have only owned quadrants and no overlap\&. Note that the tree's counters (\fIquadrants_per_level\fP, \fImaxlevel\fP) must be correct for the quadrants in the incoming tree\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP The \fBp4est\fP to work on\&. 
+.br
+\fIwhich_tree\fP The 0-based index of the subtree to complete\&. 
+.br
+\fIinit_fn\fP Callback function to initialize the user_data which is already allocated automatically\&. 
+.RE
+.PP
+
+.SS "int p4est_is_equal (\fBp4est_t\fP * p4est1, \fBp4est_t\fP * p4est2, int compare_data)"
+
+.PP
+Locally check forest/connectivity structures for equality\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIp4est1\fP The first forest to be compared\&. 
+.br
+\fIp4est2\fP The second forest to be compared\&. 
+.br
+\fIcompare_data\fP Also check if quadrant data are identical\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if forests and their connectivities are equal\&. 
+.RE
+.PP
+
+.SS "int p4est_is_valid (\fBp4est_t\fP * p4est)"
+
+.PP
+Check a forest for validity and allreduce the result\&. Some properties of a valid forest are: the quadrant counters are consistent all trees are complete all non-local trees are empty This function is collective! It is also relatively expensive, so its use in production should be limited\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP The forest to be tested\&. Itself and its connectivity must be non-NULL\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if valid, false otherwise\&. 
+.RE
+.PP
+
+.SS "size_t p4est_linearize_tree (\fBp4est_t\fP * p4est, \fBp4est_tree_t\fP * tree)"
+
+.PP
+Remove overlaps from a sorted list of quadrants\&. This is algorithm 8 from H\&. Sundar, R\&.S\&. Sampath and G\&. Biros with the additional improvement that it works in-place\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP used for the memory pool and quadrant free\&. 
+.br
+\fItree\fP A sorted tree to be linearized in-place\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the number of removed quadrants\&. 
+.RE
+.PP
+
+.SS "int p4est_next_nonempty_process (int rank, int num_procs, \fBp4est_locidx_t\fP * num_quadrants_in_proc)"
+
+.PP
+Find next non-empty process\&. Finds the next process id >= \fIrank\fP which is not empty according to \fInum_quadrants_in_proc\fP\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIrank\fP process id where search starts 
+.br
+\fInum_procs\fP number of processes 
+.br
+\fInum_quadrants_in_proc\fP number of quadrants for each process 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+process id of a non empty process 
+.RE
+.PP
+
+.SS "\fBp4est_locidx_t\fP p4est_partition_correction (\fBp4est_gloidx_t\fP * partition, int num_procs, int rank, \fBp4est_gloidx_t\fP min_quadrant_id, \fBp4est_gloidx_t\fP max_quadrant_id)"
+
+.PP
+Compute correction of partition for a process\&. The correction denotes how many quadrants the process with id \fIrank\fP takes from (if correction positive) or gives to (if correction negative) the previous process with id \fIrank-1\fP in order to assign a family of quadrants to one process\&. The process with the highest number of quadrants of a family gets all quadrants belonging to this family from other processes\&. If this applies to several processes, then the process with the lowest id gets the quadrants\&. A process can give more quadrants than it owns, if it passes quadrants from other processes\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIpartition\fP first global quadrant index for each process (+1) 
+.br
+\fInum_procs\fP number of processes 
+.br
+\fIrank\fP process id for which correction is computed 
+.br
+\fImin_quadrant_id\fP minimal global quadrant index of family 
+.br
+\fImax_quadrant_id\fP maximal global quadrant index of family 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+correction for process \fIrank\fP 
+.RE
+.PP
+
+.SS "\fBp4est_gloidx_t\fP p4est_partition_for_coarsening (\fBp4est_t\fP * p4est, \fBp4est_locidx_t\fP * num_quadrants_in_proc)"
+
+.PP
+Correct partition counters to allow one level of coarsening\&. No quadrants are actually shipped, just the desired number is updated\&. This function guarantees that empty processors remain empty\&. This function is collective and acts as a synchronization point\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP forest whose partition is corrected 
+.br
+\fInum_quadrants_in_proc\fP partition that will be corrected 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+total absolute number of moved quadrants\&. In practice, at most a small number per processor\&. 
+.RE
+.PP
+
+.SS "\fBp4est_gloidx_t\fP p4est_partition_given (\fBp4est_t\fP * p4est, const \fBp4est_locidx_t\fP * num_quadrants_in_proc)"
+
+.PP
+Partition \fI\fBp4est\fP\fP given the number of quadrants per proc\&. Given the desired number of quadrants per proc \fInum_quadrants_in_proc\fP the forest \fI\fBp4est\fP\fP is partitioned\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP the forest that is partitioned\&. 
+.br
+\fInum_quadrants_in_proc\fP an integer array of the number of quadrants desired per processor\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the global count of shipped quadrants\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBtimings/timings2\&.c\fP\&.
+.SS "unsigned p4est_quadrant_checksum (sc_array_t * quadrants, sc_array_t * checkarray, size_t first_quadrant)"
+
+.PP
+Computes a machine-independent checksum of a list of quadrants\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIquadrants\fP Array of quadrants\&. 
+.br
+\fIcheckarray\fP Temporary array of elem_size 4\&. Will be resized to quadrants->elem_count * 3\&. If it is NULL, will be allocated internally\&. 
+.br
+\fIfirst_quadrant\fP Index of the quadrant to start with\&. Can be between 0 and elem_count (inclusive)\&. 
+.RE
+.PP
+
+.SS "void p4est_quadrant_free_data (\fBp4est_t\fP * p4est, \fBp4est_quadrant_t\fP * quad)"
+
+.PP
+Free the user data of a valid quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP Forest for accessing the memory pool\&. 
+.br
+\fIquad\fP The quadrant whose data shall be freed\&. 
+.RE
+.PP
+
+.SS "int p4est_quadrant_in_range (const \fBp4est_quadrant_t\fP * fd, const \fBp4est_quadrant_t\fP * ld, const \fBp4est_quadrant_t\fP * quadrant)"
+
+.PP
+Report whether a quadrant fits into the limits of a quadrant range\&. The range's boundaries are determined by its first and last descendant\&. Such descendants are for example stored in each tree of a p4est_t\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfd\fP First descendant quadrant of a range\&. Thus its level must be P4EST_QMAXLEVEL\&. Must be valid, its data is ignored\&. 
+.br
+\fIld\fP Last descendant quadrant of a range\&. Thus it must not be smaller than \fIfd\fP and its level must be P4EST_QMAXLEVEL\&. Must be valid, its data is ignored\&. 
+.br
+\fIquadrant\fP Quadrant checked to be fully inside the range\&. Must at least be extended, its data is ignored\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if and only if quadrant is contained in range\&. 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBp4est_quadrant_is_extended\fP 
+.RE
+.PP
+
+.SS "void p4est_quadrant_init_data (\fBp4est_t\fP * p4est, \fBp4est_topidx_t\fP which_tree, \fBp4est_quadrant_t\fP * quad, \fBp4est_init_t\fP init_fn)"
+
+.PP
+Alloc and initialize the user data of a valid quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP Forest for accessing the memory pool\&. 
+.br
+\fIwhich_tree\fP 0-based index of this quadrant's tree\&. 
+.br
+\fIquad\fP The quadrant to be initialized\&. 
+.br
+\fIinit_fn\fP User-supplied callback function to init data\&. 
+.RE
+.PP
+
+.SS "sc_mempool_t* p4est_quadrant_mempool_new (void)"
+
+.PP
+Create a memory pool for quadrants that initializes compiler padding\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Initialized mempool with zero_and_persist setting\&. 
+.RE
+.PP
+
+.SS "int p4est_quadrant_on_face_boundary (\fBp4est_t\fP * p4est, \fBp4est_topidx_t\fP treeid, int face, const \fBp4est_quadrant_t\fP * q)"
+
+.PP
+Checks if a quadrant's face is on the boundary of the forest\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP The forest in which to search for \fIq\fP 
+.br
+\fItreeid\fP The tree to which \fIq\fP belongs\&. 
+.br
+\fIq\fP The quadrant that is in question\&. 
+.br
+\fIface\fP The face of the quadrant that is in question\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the quadrant's face is on the boundary of the forest and false otherwise\&. 
+.RE
+.PP
+
+.SS "void p4est_tree_compute_overlap (\fBp4est_t\fP * p4est, sc_array_t * in, sc_array_t * out, \fBp4est_connect_type_t\fP balance, sc_array_t * borders, sc_array_t * inseeds)"
+
+.PP
+Compute the overlap of a number of insulation layers with a tree\&. Every quadrant out of the insulation layer of the quadrants in \fIin\fP except the quadrant itself is checked for overlap of quadrants from all trees that are smaller by at least two levels and thus can cause a split\&. Those elements that cause a split (as determined by the p4est_balance_*_test routines) create quadrants in \fIout\fP that will reproduce those splits when \fIin\fP is balanced\&. Note: Use this version if you are using less than full balance\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP The \fBp4est\fP to work on\&. 
+.br
+\fIin\fP A piggy-sorted linear list of quadrants\&. The piggy2->from_tree member must be set\&. 
+.br
+\fIout\fP A piggy-sorted subset of tree->quadrants\&. 
+.br
+\fIbalance\fP The type of balance condition that should be enforced\&. 
+.br
+\fIborders\fP Array of arrays of tree border elements: if not NULL, this will be used to fill \fIout\fP\&. 
+.br
+\fIinseeds\fP The seeds that \fIin\fP generates locally\&. 
+.RE
+.PP
+
+.SS "int p4est_tree_is_almost_sorted (\fBp4est_tree_t\fP * tree, int check_linearity)"
+
+.PP
+Check if a tree is sorted/linear except for diagonally outside corners\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fItree\fP Tree data structure of a forest\&. 
+.br
+\fIcheck_linearity\fP Boolean for additional check for linearity\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if almost sorted/linear, false otherwise\&. 
+.RE
+.PP
+
+.SS "int p4est_tree_is_complete (\fBp4est_tree_t\fP * tree)"
+
+.PP
+Test if a tree is sorted in Morton ordering and complete\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if complete, false otherwise\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Complete means that the tree has no holes and no overlaps\&. 
+.RE
+.PP
+
+.SS "int p4est_tree_is_linear (\fBp4est_tree_t\fP * tree)"
+
+.PP
+Test if a tree is sorted in Morton ordering and linear\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if linear, false otherwise\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Linear means that the tree has no overlaps\&. 
+.RE
+.PP
+
+.SS "int p4est_tree_is_sorted (\fBp4est_tree_t\fP * tree)"
+
+.PP
+Test if a tree is sorted in Morton ordering\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if sorted, false otherwise\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+Duplicate quadrants are not allowed\&. 
+.RE
+.PP
+
+.SS "void p4est_tree_print (int log_priority, \fBp4est_tree_t\fP * tree)"
+
+.PP
+Print the quadrants in a tree\&. Prints one line per quadrant with x, y, level and a string\&. The string denotes the relation to the previous quadrant and can be: Fn for the first quadrant in the tree with child id n I for identical quadrants R for a quadrant that with smaller Morton index Cn for child id n Sn for sibling with child id n D for a descendant Nn for a next quadrant in the tree with no holes in between and child id n qn for a general quadrant whose child id is n 
+.PP
+\fBParameters\fP
+.RS 4
+\fIlog_priority\fP Priority for log message (see sc\&.h)\&. 
+.br
+\fItree\fP Any (possibly incomplete, unsorted) tree to be printed\&. 
+.RE
+.PP
+
+.SS "size_t p4est_tree_remove_nonowned (\fBp4est_t\fP * p4est, \fBp4est_topidx_t\fP which_tree)"
+
+.PP
+Removes quadrants that are outside the owned tree boundaries from a tree\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP The \fBp4est\fP to work on\&. 
+.br
+\fIwhich_tree\fP Index to a sorted owned tree in the \fBp4est\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the number of removed quadrants\&. 
+.RE
+.PP
+
+.SS "void p4est_tree_uniqify_overlap (sc_array_t * out)"
+
+.PP
+Gets the reduced representation of the overlap that results from using p4est_tree_compute_overlap_new\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIout\fP A piggy-sorted subset of tree->quadrants\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

@@ -1,0 +1,276 @@
+\hypertarget{sc__shmem_8h}{}\doxysection{src/sc\+\_\+shmem.h File Reference}
+\label{sc__shmem_8h}\index{src/sc\_shmem.h@{src/sc\_shmem.h}}
+{\ttfamily \#include $<$sc.\+h$>$}\newline
+Include dependency graph for sc\+\_\+shmem.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sc__shmem_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc__shmem_8h_a2ed89adbf26acb64f5607f7b17237741}\label{sc__shmem_8h_a2ed89adbf26acb64f5607f7b17237741}} 
+\#define {\bfseries SC\+\_\+\+SHMEM\+\_\+\+ALLOC}(t,  e,  c)~(t $\ast$) \mbox{\hyperlink{sc__shmem_8h_a706d975c29f3de678c65b6859e0998c4}{sc\+\_\+shmem\+\_\+malloc}}(\mbox{\hyperlink{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}{sc\+\_\+package\+\_\+id}},sizeof(t),e,c)
+\item 
+\mbox{\Hypertarget{sc__shmem_8h_a77cb28ec30c6fe61fc1037e92d8ea4fa}\label{sc__shmem_8h_a77cb28ec30c6fe61fc1037e92d8ea4fa}} 
+\#define {\bfseries SC\+\_\+\+SHMEM\+\_\+\+FREE}(a,  c)~\mbox{\hyperlink{sc__shmem_8h_a9290444f0a90e84460c67ee885821775}{sc\+\_\+shmem\+\_\+free}} (\mbox{\hyperlink{sc_8h_a70aa24cb6fbdf7fce8e9d293af8b663c}{sc\+\_\+package\+\_\+id}},a,c)
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289ee}{sc\+\_\+shmem\+\_\+type\+\_\+t}} \{ \newline
+\mbox{\hyperlink{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289eea49f2d2de6cc2f0fa7c565c15d04c2d41}{SC\+\_\+\+SHMEM\+\_\+\+BASIC}} = 0
+, \newline
+\mbox{\hyperlink{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289eea6519898e8bc2291b0f4096d63e5bdca7}{SC\+\_\+\+SHMEM\+\_\+\+PRESCAN}}
+, \newline
+{\bfseries SC\+\_\+\+SHMEM\+\_\+\+NUM\+\_\+\+TYPES}
+, \newline
+{\bfseries SC\+\_\+\+SHMEM\+\_\+\+NOT\+\_\+\+SET}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{sc__shmem_8h_a06a4c2e2b3fb23afd44abf9f6212d503}{sc\+\_\+shmem\+\_\+set\+\_\+type}} (\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} comm, \mbox{\hyperlink{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289ee}{sc\+\_\+shmem\+\_\+type\+\_\+t}} type)
+\begin{DoxyCompactList}\small\item\em Set the type of shared memory arrays to use on this mpi communicator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289ee}{sc\+\_\+shmem\+\_\+type\+\_\+t}} \mbox{\hyperlink{sc__shmem_8h_a18351c93df32aa5965a0c87ba413cfc5}{sc\+\_\+shmem\+\_\+get\+\_\+type}} (\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} comm)
+\begin{DoxyCompactList}\small\item\em Get the type of shared memory arrays to use on this mpi communicator. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{sc__shmem_8h_a706d975c29f3de678c65b6859e0998c4}{sc\+\_\+shmem\+\_\+malloc}} (int package, size\+\_\+t elem\+\_\+size, size\+\_\+t elem\+\_\+count, \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} comm)
+\begin{DoxyCompactList}\small\item\em Allocate a shmem array\+: an array that is redundant on every process. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__shmem_8h_a9290444f0a90e84460c67ee885821775}{sc\+\_\+shmem\+\_\+free}} (int package, void $\ast$array, \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} comm)
+\begin{DoxyCompactList}\small\item\em Destroy a shmem array created with sc\+\_\+shmem\+\_\+alloc() \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{sc__shmem_8h_a57a6eb963e2c2b308d001a515b87cb19}{sc\+\_\+shmem\+\_\+write\+\_\+start}} (void $\ast$array, \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} comm)
+\begin{DoxyCompactList}\small\item\em Start a write window for a shared array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__shmem_8h_a47cc947b391b4a974fb0e36dbb8ca9df}{sc\+\_\+shmem\+\_\+write\+\_\+end}} (void $\ast$array, \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} comm)
+\begin{DoxyCompactList}\small\item\em End a write window for a shared array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__shmem_8h_ab82188d1279872ef323721a5f0675b33}{sc\+\_\+shmem\+\_\+memcpy}} (void $\ast$destarray, void $\ast$srcarray, size\+\_\+t bytes, \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} comm)
+\begin{DoxyCompactList}\small\item\em Copy a shmem array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__shmem_8h_ac6f10c9c300420f228ce481372dbc081}{sc\+\_\+shmem\+\_\+allgather}} (void $\ast$sendbuf, int sendcount, \mbox{\hyperlink{sc__mpi_8h_a34a4ebfb3c1546ae0be1a446de46019f}{sc\+\_\+\+MPI\+\_\+\+Datatype}} sendtype, void $\ast$recvbuf, int recvcount, \mbox{\hyperlink{sc__mpi_8h_a34a4ebfb3c1546ae0be1a446de46019f}{sc\+\_\+\+MPI\+\_\+\+Datatype}} recvtype, \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} comm)
+\begin{DoxyCompactList}\small\item\em Fill a shmem array with an allgather. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sc__shmem_8h_a43e56e75d81a23e102889e4300a493d4}{sc\+\_\+shmem\+\_\+prefix}} (void $\ast$sendbuf, void $\ast$recvbuf, int count, \mbox{\hyperlink{sc__mpi_8h_a34a4ebfb3c1546ae0be1a446de46019f}{sc\+\_\+\+MPI\+\_\+\+Datatype}} type, \mbox{\hyperlink{sc__mpi_8h_ae51eb789bf445aad00b7b8cb7999bd69}{sc\+\_\+\+MPI\+\_\+\+Op}} op, \mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}} comm)
+\begin{DoxyCompactList}\small\item\em Fill a shmem array with an allgather of the prefix op over all processes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sc__shmem_8h_ae43cc99458579b6ea96593a523568726}\label{sc__shmem_8h_ae43cc99458579b6ea96593a523568726}} 
+const char $\ast$ {\bfseries sc\+\_\+shmem\+\_\+type\+\_\+to\+\_\+string} \mbox{[}SC\+\_\+\+SHMEM\+\_\+\+NUM\+\_\+\+TYPES\mbox{]}
+\item 
+\mbox{\Hypertarget{sc__shmem_8h_aa23e22b617ed0f813732abc6502966d1}\label{sc__shmem_8h_aa23e22b617ed0f813732abc6502966d1}} 
+\mbox{\hyperlink{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289ee}{sc\+\_\+shmem\+\_\+type\+\_\+t}} {\bfseries sc\+\_\+shmem\+\_\+default\+\_\+type}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289ee}\label{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289ee}} 
+\index{sc\_shmem.h@{sc\_shmem.h}!sc\_shmem\_type\_t@{sc\_shmem\_type\_t}}
+\index{sc\_shmem\_type\_t@{sc\_shmem\_type\_t}!sc\_shmem.h@{sc\_shmem.h}}
+\doxysubsubsection{\texorpdfstring{sc\_shmem\_type\_t}{sc\_shmem\_type\_t}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289ee}{sc\+\_\+shmem\+\_\+type\+\_\+t}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_SHMEM\_BASIC@{SC\_SHMEM\_BASIC}!sc\_shmem.h@{sc\_shmem.h}}\index{sc\_shmem.h@{sc\_shmem.h}!SC\_SHMEM\_BASIC@{SC\_SHMEM\_BASIC}}}\mbox{\Hypertarget{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289eea49f2d2de6cc2f0fa7c565c15d04c2d41}\label{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289eea49f2d2de6cc2f0fa7c565c15d04c2d41}} 
+SC\+\_\+\+SHMEM\+\_\+\+BASIC&use allgathers, then sum to simulate scan \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SC\_SHMEM\_PRESCAN@{SC\_SHMEM\_PRESCAN}!sc\_shmem.h@{sc\_shmem.h}}\index{sc\_shmem.h@{sc\_shmem.h}!SC\_SHMEM\_PRESCAN@{SC\_SHMEM\_PRESCAN}}}\mbox{\Hypertarget{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289eea6519898e8bc2291b0f4096d63e5bdca7}\label{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289eea6519898e8bc2291b0f4096d63e5bdca7}} 
+SC\+\_\+\+SHMEM\+\_\+\+PRESCAN&mpi\+\_\+scan, then allgather \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sc__shmem_8h_ac6f10c9c300420f228ce481372dbc081}\label{sc__shmem_8h_ac6f10c9c300420f228ce481372dbc081}} 
+\index{sc\_shmem.h@{sc\_shmem.h}!sc\_shmem\_allgather@{sc\_shmem\_allgather}}
+\index{sc\_shmem\_allgather@{sc\_shmem\_allgather}!sc\_shmem.h@{sc\_shmem.h}}
+\doxysubsubsection{\texorpdfstring{sc\_shmem\_allgather()}{sc\_shmem\_allgather()}}
+{\footnotesize\ttfamily void sc\+\_\+shmem\+\_\+allgather (\begin{DoxyParamCaption}\item[{void $\ast$}]{sendbuf,  }\item[{int}]{sendcount,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a34a4ebfb3c1546ae0be1a446de46019f}{sc\+\_\+\+MPI\+\_\+\+Datatype}}}]{sendtype,  }\item[{void $\ast$}]{recvbuf,  }\item[{int}]{recvcount,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a34a4ebfb3c1546ae0be1a446de46019f}{sc\+\_\+\+MPI\+\_\+\+Datatype}}}]{recvtype,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{comm }\end{DoxyParamCaption})}
+
+
+
+Fill a shmem array with an allgather. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em sendbuf} & the source from this process \\
+\hline
+\mbox{\texttt{ in}}  & {\em sendcount} & the number of items to allgather \\
+\hline
+\mbox{\texttt{ in}}  & {\em sendtype} & the type of items to allgather \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em recvbuf} & the destination shmem array \\
+\hline
+\mbox{\texttt{ in}}  & {\em recvcount} & the number of items to allgather \\
+\hline
+\mbox{\texttt{ in}}  & {\em recvtype} & the type of items to allgather \\
+\hline
+\mbox{\texttt{ in}}  & {\em comm} & the mpi communicator \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__shmem_8h_a9290444f0a90e84460c67ee885821775}\label{sc__shmem_8h_a9290444f0a90e84460c67ee885821775}} 
+\index{sc\_shmem.h@{sc\_shmem.h}!sc\_shmem\_free@{sc\_shmem\_free}}
+\index{sc\_shmem\_free@{sc\_shmem\_free}!sc\_shmem.h@{sc\_shmem.h}}
+\doxysubsubsection{\texorpdfstring{sc\_shmem\_free()}{sc\_shmem\_free()}}
+{\footnotesize\ttfamily void sc\+\_\+shmem\+\_\+free (\begin{DoxyParamCaption}\item[{int}]{package,  }\item[{void $\ast$}]{array,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{comm }\end{DoxyParamCaption})}
+
+
+
+Destroy a shmem array created with sc\+\_\+shmem\+\_\+alloc() 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em package} & package freeing memory \\
+\hline
+\mbox{\texttt{ in}}  & {\em array} & array to be freed \\
+\hline
+\mbox{\texttt{ in}}  & {\em comm} & the mpi communicator \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__shmem_8h_a18351c93df32aa5965a0c87ba413cfc5}\label{sc__shmem_8h_a18351c93df32aa5965a0c87ba413cfc5}} 
+\index{sc\_shmem.h@{sc\_shmem.h}!sc\_shmem\_get\_type@{sc\_shmem\_get\_type}}
+\index{sc\_shmem\_get\_type@{sc\_shmem\_get\_type}!sc\_shmem.h@{sc\_shmem.h}}
+\doxysubsubsection{\texorpdfstring{sc\_shmem\_get\_type()}{sc\_shmem\_get\_type()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289ee}{sc\+\_\+shmem\+\_\+type\+\_\+t}} sc\+\_\+shmem\+\_\+get\+\_\+type (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{comm }\end{DoxyParamCaption})}
+
+
+
+Get the type of shared memory arrays to use on this mpi communicator. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em comm} & the mpi communicator\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the type of shmem array used on this communicator. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__shmem_8h_a706d975c29f3de678c65b6859e0998c4}\label{sc__shmem_8h_a706d975c29f3de678c65b6859e0998c4}} 
+\index{sc\_shmem.h@{sc\_shmem.h}!sc\_shmem\_malloc@{sc\_shmem\_malloc}}
+\index{sc\_shmem\_malloc@{sc\_shmem\_malloc}!sc\_shmem.h@{sc\_shmem.h}}
+\doxysubsubsection{\texorpdfstring{sc\_shmem\_malloc()}{sc\_shmem\_malloc()}}
+{\footnotesize\ttfamily void$\ast$ sc\+\_\+shmem\+\_\+malloc (\begin{DoxyParamCaption}\item[{int}]{package,  }\item[{size\+\_\+t}]{elem\+\_\+size,  }\item[{size\+\_\+t}]{elem\+\_\+count,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{comm }\end{DoxyParamCaption})}
+
+
+
+Allocate a shmem array\+: an array that is redundant on every process. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em package} & package requesting memory \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+size} & the size of each element in the array \\
+\hline
+\mbox{\texttt{ in}}  & {\em elem\+\_\+count} & the number of elements in the array \\
+\hline
+\mbox{\texttt{ in}}  & {\em comm} & the mpi communicator\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a shared memory array 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sc__shmem_8h_ab82188d1279872ef323721a5f0675b33}\label{sc__shmem_8h_ab82188d1279872ef323721a5f0675b33}} 
+\index{sc\_shmem.h@{sc\_shmem.h}!sc\_shmem\_memcpy@{sc\_shmem\_memcpy}}
+\index{sc\_shmem\_memcpy@{sc\_shmem\_memcpy}!sc\_shmem.h@{sc\_shmem.h}}
+\doxysubsubsection{\texorpdfstring{sc\_shmem\_memcpy()}{sc\_shmem\_memcpy()}}
+{\footnotesize\ttfamily void sc\+\_\+shmem\+\_\+memcpy (\begin{DoxyParamCaption}\item[{void $\ast$}]{destarray,  }\item[{void $\ast$}]{srcarray,  }\item[{size\+\_\+t}]{bytes,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{comm }\end{DoxyParamCaption})}
+
+
+
+Copy a shmem array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em destarray} & array to write to \\
+\hline
+\mbox{\texttt{ in}}  & {\em srcarray} & array to write from \\
+\hline
+\mbox{\texttt{ in}}  & {\em bytes} & number of bytes to write \\
+\hline
+\mbox{\texttt{ in}}  & {\em comm} & the mpi communicator \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__shmem_8h_a43e56e75d81a23e102889e4300a493d4}\label{sc__shmem_8h_a43e56e75d81a23e102889e4300a493d4}} 
+\index{sc\_shmem.h@{sc\_shmem.h}!sc\_shmem\_prefix@{sc\_shmem\_prefix}}
+\index{sc\_shmem\_prefix@{sc\_shmem\_prefix}!sc\_shmem.h@{sc\_shmem.h}}
+\doxysubsubsection{\texorpdfstring{sc\_shmem\_prefix()}{sc\_shmem\_prefix()}}
+{\footnotesize\ttfamily void sc\+\_\+shmem\+\_\+prefix (\begin{DoxyParamCaption}\item[{void $\ast$}]{sendbuf,  }\item[{void $\ast$}]{recvbuf,  }\item[{int}]{count,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a34a4ebfb3c1546ae0be1a446de46019f}{sc\+\_\+\+MPI\+\_\+\+Datatype}}}]{type,  }\item[{\mbox{\hyperlink{sc__mpi_8h_ae51eb789bf445aad00b7b8cb7999bd69}{sc\+\_\+\+MPI\+\_\+\+Op}}}]{op,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{comm }\end{DoxyParamCaption})}
+
+
+
+Fill a shmem array with an allgather of the prefix op over all processes. 
+
+The return array will be (0, send0, send0 op send1, send0 op send1 op send2, ...)
+
+Note that the first entry of {\itshape recvbuf} will be set to 0 using memset\+: if this is not the desired value for the first entry of the array, the user can change it {\itshape after} calling sc\+\_\+shmem\+\_\+prefix.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em sendbuf} & the source from this process \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em recvbuf} & the destination shmem array \\
+\hline
+\mbox{\texttt{ in}}  & {\em count} & the number of items to allgather \\
+\hline
+\mbox{\texttt{ in}}  & {\em type} & the type of items to allgather \\
+\hline
+\mbox{\texttt{ in}}  & {\em op} & the operation to prefix (e.\+g., sc\+\_\+\+MPI\+\_\+\+SUM) \\
+\hline
+\mbox{\texttt{ in}}  & {\em comm} & the mpi communicator \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__shmem_8h_a06a4c2e2b3fb23afd44abf9f6212d503}\label{sc__shmem_8h_a06a4c2e2b3fb23afd44abf9f6212d503}} 
+\index{sc\_shmem.h@{sc\_shmem.h}!sc\_shmem\_set\_type@{sc\_shmem\_set\_type}}
+\index{sc\_shmem\_set\_type@{sc\_shmem\_set\_type}!sc\_shmem.h@{sc\_shmem.h}}
+\doxysubsubsection{\texorpdfstring{sc\_shmem\_set\_type()}{sc\_shmem\_set\_type()}}
+{\footnotesize\ttfamily void sc\+\_\+shmem\+\_\+set\+\_\+type (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{comm,  }\item[{\mbox{\hyperlink{sc__shmem_8h_a3d6c4a7436e5e0271c505fed957289ee}{sc\+\_\+shmem\+\_\+type\+\_\+t}}}]{type }\end{DoxyParamCaption})}
+
+
+
+Set the type of shared memory arrays to use on this mpi communicator. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em comm} & the mpi communicator \\
+\hline
+\mbox{\texttt{ in}}  & {\em type} & the type of shmem array behavior. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__shmem_8h_a47cc947b391b4a974fb0e36dbb8ca9df}\label{sc__shmem_8h_a47cc947b391b4a974fb0e36dbb8ca9df}} 
+\index{sc\_shmem.h@{sc\_shmem.h}!sc\_shmem\_write\_end@{sc\_shmem\_write\_end}}
+\index{sc\_shmem\_write\_end@{sc\_shmem\_write\_end}!sc\_shmem.h@{sc\_shmem.h}}
+\doxysubsubsection{\texorpdfstring{sc\_shmem\_write\_end()}{sc\_shmem\_write\_end()}}
+{\footnotesize\ttfamily void sc\+\_\+shmem\+\_\+write\+\_\+end (\begin{DoxyParamCaption}\item[{void $\ast$}]{array,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{comm }\end{DoxyParamCaption})}
+
+
+
+End a write window for a shared array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em array} & array that has changed \\
+\hline
+\mbox{\texttt{ in}}  & {\em comm} & the mpi communicator \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sc__shmem_8h_a57a6eb963e2c2b308d001a515b87cb19}\label{sc__shmem_8h_a57a6eb963e2c2b308d001a515b87cb19}} 
+\index{sc\_shmem.h@{sc\_shmem.h}!sc\_shmem\_write\_start@{sc\_shmem\_write\_start}}
+\index{sc\_shmem\_write\_start@{sc\_shmem\_write\_start}!sc\_shmem.h@{sc\_shmem.h}}
+\doxysubsubsection{\texorpdfstring{sc\_shmem\_write\_start()}{sc\_shmem\_write\_start()}}
+{\footnotesize\ttfamily int sc\+\_\+shmem\+\_\+write\+\_\+start (\begin{DoxyParamCaption}\item[{void $\ast$}]{array,  }\item[{\mbox{\hyperlink{sc__mpi_8h_a969bae9e79f582bf2addd41537625ed8}{sc\+\_\+\+MPI\+\_\+\+Comm}}}]{comm }\end{DoxyParamCaption})}
+
+
+
+Start a write window for a shared array. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em array} & array that will be changed. \\
+\hline
+\mbox{\texttt{ in}}  & {\em comm} & the mpi communicator\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if I have write access, 0 if my proc should not change the array. 
+\end{DoxyReturn}

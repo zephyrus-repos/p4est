@@ -1,0 +1,44 @@
+.TH "sc_no_mpiio_file" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sc_no_mpiio_file \- Replacement structure for \fCMPI_File\fP\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <sc_mpi\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBsc_MPI_Comm\fP \fBmpicomm\fP"
+.br
+.RI "The MPI communicator\&. "
+.ti -1c
+.RI "const char * \fBfilename\fP"
+.br
+.RI "Name of the file\&. "
+.ti -1c
+.RI "FILE * \fBfile\fP"
+.br
+.RI "Underlying file object\&. "
+.ti -1c
+.RI "int \fBmpisize\fP"
+.br
+.RI "Ranks in communicator\&. "
+.ti -1c
+.RI "int \fBmpirank\fP"
+.br
+.RI "Rank of this process\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Replacement structure for \fCMPI_File\fP\&. 
+
+When MPI I/O is not enabled, this is used as file object\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsc from the source code\&.

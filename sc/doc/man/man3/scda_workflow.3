@@ -1,0 +1,49 @@
+.TH "scda_workflow" 3 "Thu Mar 13 2025" "Version 2.8.6.361-d917" "libsc" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+scda_workflow \- Parallel I/O workflow 
+The general workflow for the scda format provided by \fBsc_scda\&.h\fP
+.PP
+All workflows start with \fBsc_scda_fopen_write\fP or \fBsc_scda_fopen_read\fP that creates a file context \fBsc_scda_fcontext_t\fP that never moves backwards\&.
+.PP
+Then the user may call any combination of functions out of:
+.PP
+.IP "\(bu" 2
+\fBsc_scda_fwrite_inline\fP,
+.IP "\(bu" 2
+\fBsc_scda_fwrite_block\fP,
+.IP "\(bu" 2
+\fBsc_scda_fwrite_array\fP and
+.IP "\(bu" 2
+\fBsc_scda_fwrite_varray\fP,
+.PP
+.PP
+for a context obtained from \fBsc_scda_fopen_write\fP\&.
+.PP
+Alternatively, after using \fBsc_scda_fopen_read\fP the user must call \fBsc_scda_fread_section_header\fP that examines the current file section and then call accordingly to the retrieved file section type one of
+.PP
+.IP "\(bu" 2
+\fBsc_scda_fread_inline_data\fP,
+.IP "\(bu" 2
+\fBsc_scda_fread_block_data\fP,
+.IP "\(bu" 2
+\fBsc_scda_fread_array_data\fP,
+.IP "\(bu" 2
+\fBsc_scda_fread_varray_sizes\fP and
+.IP "\(bu" 2
+\fBsc_scda_fread_varray_data\fP\&.
+.PP
+.PP
+Finally, the file context is collectively closed and deallocated by \fBsc_scda_fclose\fP\&.
+.PP
+All above mentioned sc_scda functions are collective and output an error code (cf\&. \fBsc_scda_ferror_t\fP) that can be translated by \fBsc_scda_ferror_string\fP\&.
+.PP
+For more details and the option for encoding metadata and data see the functions in \fBsc_scda\&.h\fP\&.
+.PP
+\fBWarning\fP
+.RS 4
+The scda API will change in the next libsc version! 
+.RE
+.PP
+
