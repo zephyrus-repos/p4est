@@ -1,3 +1,0 @@
-I place my contributions to libsc under the FreeBSD license.
-Gautam Ghosh (ghosh@ins.uni-bonn.de)
-
