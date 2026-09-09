@@ -36,42 +36,40 @@
 #include <p4est_geometry.h>
 #else
 #include <p8est_geometry.h>
-#define p4est_userdata_run              p8est_userdata_run
-#define p4est_userdata_global           p8est_userdata_global
-#define p4est_userdata_global_t         p8est_userdata_global_t
+#define p4est_userdata_run p8est_userdata_run
+#define p4est_userdata_global p8est_userdata_global
+#define p4est_userdata_global_t p8est_userdata_global_t
 #endif
 
 /* we maintain application data in a global structure and pass it around */
-typedef struct p4est_userdata_global
-{
-  /* global objects */
-  sc_MPI_Comm         mpicomm;
-  sc_options_t       *options;
-  int                 help;
-  int                 maxlevel;
-  int                 novtk;
-  int                 noint;
-  int                 noext;
-  const char         *configuration;
-  p4est_geometry_t   *geom;
-  p4est_connectivity_t *conn;
-  p4est_t            *p4est;
+typedef struct p4est_userdata_global {
+    /* global objects */
+    sc_MPI_Comm           mpicomm;
+    sc_options_t         *options;
+    int                   help;
+    int                   maxlevel;
+    int                   novtk;
+    int                   noint;
+    int                   noext;
+    const char           *configuration;
+    p4est_geometry_t     *geom;
+    p4est_connectivity_t *conn;
+    p4est_t              *p4est;
 
-  /* temporary work storage */
-  int                 in_internal;
-  int                 in_external;
-  int                 in_balance;
-  p4est_locidx_t      qcount;
-  p4est_locidx_t      bcount;
-  p4est_t            *n4est;
+    /* temporary work storage */
+    int            in_internal;
+    int            in_external;
+    int            in_balance;
+    p4est_locidx_t qcount;
+    p4est_locidx_t bcount;
+    p4est_t       *n4est;
 
-  /* With internal user data, used temporarily for VTK output.
+    /* With internal user data, used temporarily for VTK output.
      With external user data, this is where it lives. */
-  sc_array_t         *qarray;
-}
-p4est_userdata_global_t;
+    sc_array_t *qarray;
+} p4est_userdata_global_t;
 
 /* this function contains the core of the demonstration program */
-int                 p4est_userdata_run (p4est_userdata_global_t *g);
+int p4est_userdata_run(p4est_userdata_global_t *g);
 
 #endif /* !P4EST_USERDATA_GLOBAL_H */
