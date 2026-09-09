@@ -1,2 +1,0 @@
--I/opt/openmpi/4.1.8-release/include
--I/opt/p4est/include
