@@ -41,6 +41,7 @@ endfunction()
 # builds the p4est (2D quadtree) program, a *_3.c source the p8est (3D
 # octree) program.
 add_subdirectory(balance)
+add_subdirectory(blockforest)
 add_subdirectory(mesh)
 add_subdirectory(particles)
 add_subdirectory(points)

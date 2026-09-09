@@ -3,3 +3,8 @@ tmp
 
 # build
 build
+
+# paraview
+*.vtu
+*.pvtu
+*.visit
