@@ -37,6 +37,16 @@ cmake --build examples/build -j$(nproc)
   installed elsewhere, that line (and `compile_flags.txt`, used by editor tooling / clangd) must be
   updated.
 
+The `blockforest/` directory at the repository root is a **standalone program**, not part of
+`examples/`. Its `CMakeLists.txt` is the top-level build (same link pattern as `p4est_example`,
+hardcoded `P4EST_PREFIX` = `/opt/p4est`). Configure and build it in its own subdirectory:
+
+```bash
+cmake -S blockforest -B blockforest/build
+cmake --build blockforest/build -j$(nproc)
+mpirun -np 4 ./blockforest/build/bin/p8est_blockforest -c blockforest/blockforest_config.ini
+```
+
 Run any example under `mpirun`:
 
 ```bash
@@ -57,6 +67,11 @@ dir; that is a test of the library, not this repo — see `notes/install.md`.)
   (`balance/`, `mesh/`, `particles/`, `points/`, `search/`, `simple/`, `spheres/`, `steps/`,
   `tetgen/`, `timings/`, `userdata/`), one `.c` per program with a `2`/`3` suffix for
   2D-quadtree (p4est) vs 3D-octree (p8est) variants. `build/` is the CMake build dir (gitignored).
+- `blockforest/` — a standalone 3D-only (p8est) program at the repo root, not part of `examples/`.
+  It reads an INI config (AABB + dx → global grid, block size, MPI process count, per-block `w`)
+  and generates a uniform block forest with one p8est tree per block. Its `CMakeLists.txt` is the
+  top-level build; `build/` inside it is the CMake build dir (gitignored) holding the
+  `p8est_blockforest` binary.
 - `notes/install.md` — how p4est was built and installed from the tarball (Autotools flow:
   `../configure --enable-mpi --disable-shared CFLAGS=... LIBS="-lm -lz -ljansson"`, `make`, `make
   install`). Rebuild/install the library, not the examples, per this doc.
