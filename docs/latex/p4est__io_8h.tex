@@ -1,0 +1,121 @@
+\hypertarget{p4est__io_8h}{}\doxysection{src/p4est\+\_\+io.h File Reference}
+\label{p4est__io_8h}\index{src/p4est\_io.h@{src/p4est\_io.h}}
+
+
+Provide functions to serialize/deserialize a forest.  
+
+
+{\ttfamily \#include $<$p4est.\+h$>$}\newline
+Include dependency graph for p4est\+\_\+io.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p4est__io_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=326pt]{p4est__io_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+sc\+\_\+array\+\_\+t $\ast$ \mbox{\hyperlink{p4est__io_8h_aeefe19fc737debe40085399da34ba302}{p4est\+\_\+deflate\+\_\+quadrants}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, sc\+\_\+array\+\_\+t $\ast$$\ast$data)
+\begin{DoxyCompactList}\small\item\em This parallel data file format is deprecated since we plan to release an updated version of it soon. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__io_8h_ab9cb9b94f1c369b25331fd93fc7e185e}{p4est\+\_\+inflate}} (sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$connectivity, const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$global\+\_\+first\+\_\+quadrant, const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$pertree, sc\+\_\+array\+\_\+t $\ast$quadrants, sc\+\_\+array\+\_\+t $\ast$data, void $\ast$user\+\_\+pointer)
+\begin{DoxyCompactList}\small\item\em Create a new \mbox{\hyperlink{structp4est}{p4est}} based on serialized data. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$ \mbox{\hyperlink{p4est__io_8h_a200c3bb41319e99d3a57c152c79ad8cf}{p4est\+\_\+inflate\+\_\+null}} (sc\+\_\+\+MPI\+\_\+\+Comm mpicomm, \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$connectivity, const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$global\+\_\+first\+\_\+quadrant, const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$pertree, sc\+\_\+array\+\_\+t $\ast$quadrants, sc\+\_\+array\+\_\+t $\ast$data, void $\ast$user\+\_\+pointer)
+\begin{DoxyCompactList}\small\item\em Create a new \mbox{\hyperlink{structp4est}{p4est}} based on serialized data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Provide functions to serialize/deserialize a forest. 
+
+Some are used as building blocks for \mbox{\hyperlink{p4est_8h_a9296defed7471c1a85d6dd2cc3d62f30}{p4est\+\_\+load}} and \mbox{\hyperlink{p4est_8h_a43227500492e202775123cfca6772b1d}{p4est\+\_\+save}}. Others allow for saving and loading user-\/defined data to a parallel file.
+
+Furthermore, this module provides functions to write and read general data files associated with a \mbox{\hyperlink{structp4est}{p4est}}. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p4est__io_8h_aeefe19fc737debe40085399da34ba302}\label{p4est__io_8h_aeefe19fc737debe40085399da34ba302}} 
+\index{p4est\_io.h@{p4est\_io.h}!p4est\_deflate\_quadrants@{p4est\_deflate\_quadrants}}
+\index{p4est\_deflate\_quadrants@{p4est\_deflate\_quadrants}!p4est\_io.h@{p4est\_io.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_deflate\_quadrants()}{p4est\_deflate\_quadrants()}}
+{\footnotesize\ttfamily sc\+\_\+array\+\_\+t$\ast$ p4est\+\_\+deflate\+\_\+quadrants (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{sc\+\_\+array\+\_\+t $\ast$$\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+This parallel data file format is deprecated since we plan to release an updated version of it soon. 
+
+You can still use \mbox{\hyperlink{p4est_8h_a9296defed7471c1a85d6dd2cc3d62f30}{p4est\+\_\+load}} and \mbox{\hyperlink{p4est_8h_a43227500492e202775123cfca6772b1d}{p4est\+\_\+save}} to read and write a \mbox{\hyperlink{structp4est}{p4est}} including the connectivity and quadrant data. However, you can not read and write external mesh associated data using a \mbox{\hyperlink{structp4est}{p4est}} function if you do not use the p4est\+\_\+file functions. If you still want to use the p4est\+\_\+file functions you can configure with --enable-\/file-\/deprecated or use the variable enable-\/file-\/deprecated in CMake. Extract processor local quadrants\textquotesingle{} x y level data. Optionally extracts the quadrant data as well into a separate array. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The forest is not modified. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em data} & If not NULL, pointer to a pointer that will be set to a newly allocated array with per-\/quadrant data. Must be NULL if p4est-\/$>$data\+\_\+size == 0. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An array of type p4est\+\_\+qcoord\+\_\+t that contains x y level for each quadrant on this processor. The tree information is not extracted. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__io_8h_ab9cb9b94f1c369b25331fd93fc7e185e}\label{p4est__io_8h_ab9cb9b94f1c369b25331fd93fc7e185e}} 
+\index{p4est\_io.h@{p4est\_io.h}!p4est\_inflate@{p4est\_inflate}}
+\index{p4est\_inflate@{p4est\_inflate}!p4est\_io.h@{p4est\_io.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_inflate()}{p4est\_inflate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}}$\ast$ p4est\+\_\+inflate (\begin{DoxyParamCaption}\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{connectivity,  }\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{global\+\_\+first\+\_\+quadrant,  }\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{pertree,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{quadrants,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{data,  }\item[{void $\ast$}]{user\+\_\+pointer }\end{DoxyParamCaption})}
+
+
+
+Create a new \mbox{\hyperlink{structp4est}{p4est}} based on serialized data. 
+
+Its revision counter is set to zero. See \mbox{\hyperlink{p4est_8h}{p4est.\+h}} and \mbox{\hyperlink{p4est__communication_8h}{p4est\+\_\+communication.\+h}} for more information on parameters. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & A valid MPI communicator. \\
+\hline
+\mbox{\texttt{ in}}  & {\em connectivity} & This is the connectivity information that the forest is built with. Note that \mbox{\hyperlink{structp4est}{p4est}} does not take ownership of the memory. \\
+\hline
+\mbox{\texttt{ in}}  & {\em global\+\_\+first\+\_\+quadrant} & First global quadrant on each proc and one beyond. Copied into global\+\_\+first\+\_\+quadrant. Local count on rank is gfq\mbox{[}rank + 1\mbox{]} -\/ gfq\mbox{[}rank\mbox{]}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em pertree} & The cumulative quadrant counts per tree. \\
+\hline
+\mbox{\texttt{ in}}  & {\em quadrants} & Array as returned by p4est\+\_\+deflate\+\_\+quadrants. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data} & Array as from p4est\+\_\+deflate\+\_\+quadrants or NULL. The elem\+\_\+size of this array informs data\+\_\+size. Its elem\+\_\+count equals the number of local quads. \\
+\hline
+\mbox{\texttt{ in}}  & {\em user\+\_\+pointer} & Assign to the user\+\_\+pointer member of the \mbox{\hyperlink{structp4est}{p4est}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The newly created \mbox{\hyperlink{structp4est}{p4est}} with a zero revision counter. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__io_8h_a200c3bb41319e99d3a57c152c79ad8cf}\label{p4est__io_8h_a200c3bb41319e99d3a57c152c79ad8cf}} 
+\index{p4est\_io.h@{p4est\_io.h}!p4est\_inflate\_null@{p4est\_inflate\_null}}
+\index{p4est\_inflate\_null@{p4est\_inflate\_null}!p4est\_io.h@{p4est\_io.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_inflate\_null()}{p4est\_inflate\_null()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}}$\ast$ p4est\+\_\+inflate\+\_\+null (\begin{DoxyParamCaption}\item[{sc\+\_\+\+MPI\+\_\+\+Comm}]{mpicomm,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{connectivity,  }\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{global\+\_\+first\+\_\+quadrant,  }\item[{const \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{pertree,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{quadrants,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{data,  }\item[{void $\ast$}]{user\+\_\+pointer }\end{DoxyParamCaption})}
+
+
+
+Create a new \mbox{\hyperlink{structp4est}{p4est}} based on serialized data. 
+
+Its revision counter is set to zero. See \mbox{\hyperlink{p4est_8h}{p4est.\+h}} and \mbox{\hyperlink{p4est__communication_8h}{p4est\+\_\+communication.\+h}} for more information on parameters. In contrast to \mbox{\hyperlink{p4est__io_8h_ab9cb9b94f1c369b25331fd93fc7e185e}{p4est\+\_\+inflate}} this function indicates soft errors by returning NULL. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em mpicomm} & A valid MPI communicator. \\
+\hline
+\mbox{\texttt{ in}}  & {\em connectivity} & This is the connectivity information that the forest is built with. Note that \mbox{\hyperlink{structp4est}{p4est}} does not take ownership of the memory. \\
+\hline
+\mbox{\texttt{ in}}  & {\em global\+\_\+first\+\_\+quadrant} & First global quadrant on each proc and one beyond. Copied into global\+\_\+first\+\_\+quadrant. Local count on rank is gfq\mbox{[}rank + 1\mbox{]} -\/ gfq\mbox{[}rank\mbox{]}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em pertree} & The cumulative quadrant counts per tree. \\
+\hline
+\mbox{\texttt{ in}}  & {\em quadrants} & Array as returned by p4est\+\_\+deflate\+\_\+quadrants. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data} & Array as from p4est\+\_\+deflate\+\_\+quadrants or NULL. The elem\+\_\+size of this array informs data\+\_\+size. Its elem\+\_\+count equals the number of local quads. \\
+\hline
+\mbox{\texttt{ in}}  & {\em user\+\_\+pointer} & Assign to the user\+\_\+pointer member of the \mbox{\hyperlink{structp4est}{p4est}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The newly created \mbox{\hyperlink{structp4est}{p4est}} with a zero revision counter. If the created \mbox{\hyperlink{structp4est}{p4est}} would not be valid, no \mbox{\hyperlink{structp4est}{p4est}} is created and the function returns NULL. 
+\end{DoxyReturn}

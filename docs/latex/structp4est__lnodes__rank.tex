@@ -1,0 +1,42 @@
+\hypertarget{structp4est__lnodes__rank}{}\doxysection{p4est\+\_\+lnodes\+\_\+rank Struct Reference}
+\label{structp4est__lnodes__rank}\index{p4est\_lnodes\_rank@{p4est\_lnodes\_rank}}
+
+
+The structure stored in the sharers array.  
+
+
+
+
+{\ttfamily \#include $<$p4est\+\_\+lnodes.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp4est__lnodes__rank_a7af2ecd6bbb22a92716d0090a9146561}\label{structp4est__lnodes__rank_a7af2ecd6bbb22a92716d0090a9146561}} 
+int {\bfseries rank}
+\item 
+\mbox{\Hypertarget{structp4est__lnodes__rank_a2e3f462a2319916e5175e5d0156265cc}\label{structp4est__lnodes__rank_a2e3f462a2319916e5175e5d0156265cc}} 
+sc\+\_\+array\+\_\+t {\bfseries shared\+\_\+nodes}
+\item 
+\mbox{\Hypertarget{structp4est__lnodes__rank_a3d96d9976868df7ed1ff76c2bd315c46}\label{structp4est__lnodes__rank_a3d96d9976868df7ed1ff76c2bd315c46}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} {\bfseries shared\+\_\+mine\+\_\+offset}
+\item 
+\mbox{\Hypertarget{structp4est__lnodes__rank_ab17987334bff8e5d0d42befc1a9e26d8}\label{structp4est__lnodes__rank_ab17987334bff8e5d0d42befc1a9e26d8}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} {\bfseries shared\+\_\+mine\+\_\+count}
+\item 
+\mbox{\Hypertarget{structp4est__lnodes__rank_a5d04a0ea2d1d8b632cfe73c187437b78}\label{structp4est__lnodes__rank_a5d04a0ea2d1d8b632cfe73c187437b78}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} {\bfseries owned\+\_\+offset}
+\item 
+\mbox{\Hypertarget{structp4est__lnodes__rank_a2599233fac5ef199ecc99652a41b5106}\label{structp4est__lnodes__rank_a2599233fac5ef199ecc99652a41b5106}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} {\bfseries owned\+\_\+count}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The structure stored in the sharers array. 
+
+shared\+\_\+nodes is a sorted array of p4est\+\_\+locidx\+\_\+t that indexes into local nodes. The shared\+\_\+nodes array has a contiguous (or empty) section of nodes owned by the current rank. shared\+\_\+mine\+\_\+offset and shared\+\_\+mine\+\_\+count identify this section by indexing the shared\+\_\+nodes array, not the local nodes array. owned\+\_\+offset and owned\+\_\+count define the section of local nodes that is owned by the listed rank (the section may be empty). For the current process these coincide with those in p4est\+\_\+lnodes\+\_\+t. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p4est__lnodes_8h}{p4est\+\_\+lnodes.\+h}}\end{DoxyCompactItemize}

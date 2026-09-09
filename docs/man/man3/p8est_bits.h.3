@@ -1,0 +1,1796 @@
+.TH "src/p8est_bits.h" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/p8est_bits.h \- Routines for manipulating quadrants (neighbors, parents, children, etc\&.)  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <p8est\&.h>\fP
+.br
+\fC#include <sc_random\&.h>\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBP8EST_COORDINATES_IS_VALID\fP(c)     (\fBp8est_coordinates_is_valid\fP ((c), \fBP8EST_MAXLEVEL\fP))"
+.br
+.RI "Check whether coordinates are a valid quadrant boundary point\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBp8est_quadrant_pad\fP (\fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Write -1 into the pad8 and pad16 members of a quadrant\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_print\fP (int log_priority, const \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Prints one line with quadrant's x, y, z and level\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_equal\fP (const \fBp8est_quadrant_t\fP *q1, const \fBp8est_quadrant_t\fP *q2)"
+.br
+.RI "Test if two quadrants have equal Morton indices\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_copy\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *copy)"
+.br
+.RI "Copy the Morton indices of the quadrant \fIq\fP\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_overlaps\fP (const \fBp8est_quadrant_t\fP *q1, const \fBp8est_quadrant_t\fP *q2)"
+.br
+.RI "Test if two quadrants overlap\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_equal_piggy\fP (const \fBp8est_quadrant_t\fP *q1, const \fBp8est_quadrant_t\fP *q2)"
+.br
+.RI "Test if two quadrants have equal Morton indices and the same tree id\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_compare\fP (const void *v1, const void *v2)"
+.br
+.RI "Compare two quadrants in their Morton ordering\&. "
+.ti -1c
+.RI "int \fBp8est_coordinates_compare\fP (const \fBp4est_qcoord_t\fP v1[], const \fBp4est_qcoord_t\fP v2[])"
+.br
+.RI "Compare two sets of coordinates in their Morton ordering\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_disjoint\fP (const void *v1, const void *v2)"
+.br
+.RI "Compare two quadrants in their Morton ordering, with equivalence if the two quadrants overlap\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_compare_piggy\fP (const void *v1, const void *v2)"
+.br
+.RI "Compare two quadrants in their Morton ordering and the which_tree member\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_compare_local_num\fP (const void *v1, const void *v2)"
+.br
+.RI "Compare two quadrants with respect to their local_num in the piggy3 member\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_equal_fn\fP (const void *v1, const void *v2, const void *u)"
+.br
+.RI "Test if two quadrants have equal Morton indices, callback version\&. "
+.ti -1c
+.RI "unsigned \fBp8est_quadrant_hash_fn\fP (const void *v, const void *u)"
+.br
+.RI "Computes a hash value for a quadrant by the lookup3 method\&. "
+.ti -1c
+.RI "int \fBp8est_node_equal_piggy_fn\fP (const void *v1, const void *v2, const void *u)"
+.br
+.RI "Test if two nodes are in the same tree and have equal Morton indices\&. "
+.ti -1c
+.RI "unsigned \fBp8est_node_hash_piggy_fn\fP (const void *v, const void *u)"
+.br
+.RI "Compute hash value of a node based on its tree and Morton index\&. "
+.ti -1c
+.RI "void \fBp8est_node_clamp_inside\fP (const \fBp8est_quadrant_t\fP *n, \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Clamp a node inside the unit tree if it sits on a high border\&. "
+.ti -1c
+.RI "void \fBp8est_node_unclamp\fP (\fBp8est_quadrant_t\fP *n)"
+.br
+.RI "Move a clamped node out on the border\&. "
+.ti -1c
+.RI "void \fBp8est_node_to_quadrant\fP (const \fBp8est_quadrant_t\fP *n, int level, \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Find the enclosing quadrant of a given node at a given level\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_contains_node\fP (const \fBp8est_quadrant_t\fP *q, const \fBp8est_quadrant_t\fP *n)"
+.br
+.RI "Decide if a node is completely contained within a quadrant\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_ancestor_id\fP (const \fBp8est_quadrant_t\fP *q, int level)"
+.br
+.RI "Compute the position of the ancestor of this child at level \fIlevel\fP within its siblings\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_child_id\fP (const \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Compute the position of this child within its siblings\&. "
+.ti -1c
+.RI "int \fBp8est_coordinates_is_inside_root\fP (const \fBp4est_qcoord_t\fP coord[])"
+.br
+.RI "Test if Morton indices are inside the unit tree or on its boundary\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_inside_root\fP (const \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Test if a quadrant is inside the unit tree\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_inside_3x3\fP (const \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Test if a quadrant is inside the 3x3 box around the root tree\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_outside_face\fP (const \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Test if a quadrant is outside a tree face boundary (no edge or corner)\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_outside_edge\fP (const \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Test if a quadrant is outside a tree edge boundary (no corner)\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_outside_edge_extra\fP (const \fBp8est_quadrant_t\fP *q, int *edge)"
+.br
+.RI "Test if a quadrant is outside a tree edge boundary (no corner)\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_outside_corner\fP (const \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Test if a quadrant is outside a tree corner boundary\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_node\fP (const \fBp8est_quadrant_t\fP *q, int inside)"
+.br
+.RI "Test if a quadrant is used to represent a mesh node\&. "
+.ti -1c
+.RI "int \fBp8est_coordinates_is_valid\fP (const \fBp4est_qcoord_t\fP coord[], int level)"
+.br
+.RI "Test if Morton indices are valid and inside the unit tree\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_valid\fP (const \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Test if a quadrant has valid Morton indices and is inside the unit tree\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_extended\fP (const \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Test if a quadrant has valid Morton indices in the 3x3 box around root\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_sibling\fP (const \fBp8est_quadrant_t\fP *q1, const \fBp8est_quadrant_t\fP *q2)"
+.br
+.RI "Test if two quadrants are siblings\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_child\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *r, int child_id)"
+.br
+.RI "Compute a specific child of a quadrant\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_sibling_D\fP (const \fBp8est_quadrant_t\fP *q1, const \fBp8est_quadrant_t\fP *q2)"
+.br
+.RI "Test if two quadrants are siblings\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_family\fP (const \fBp8est_quadrant_t\fP *q0, const \fBp8est_quadrant_t\fP *q1, const \fBp8est_quadrant_t\fP *q2, const \fBp8est_quadrant_t\fP *q3, const \fBp8est_quadrant_t\fP *q4, const \fBp8est_quadrant_t\fP *q5, const \fBp8est_quadrant_t\fP *q6, const \fBp8est_quadrant_t\fP *q7)"
+.br
+.RI "Test if 8 quadrants are siblings in Morton ordering\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_familyv\fP (const \fBp8est_quadrant_t\fP q[])"
+.br
+.RI "Test if 8 quadrants are siblings in Morton ordering, array version\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_familypv\fP (\fBp8est_quadrant_t\fP *q[])"
+.br
+.RI "Test if 8 quadrants are siblings in Morton ordering, array version\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_parent\fP (const \fBp8est_quadrant_t\fP *q, const \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Test if a quadrant is the parent of another quadrant\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_parent_D\fP (const \fBp8est_quadrant_t\fP *q, const \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Test if a quadrant is the parent of another quadrant\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_ancestor\fP (const \fBp8est_quadrant_t\fP *q, const \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Test if a quadrant is an ancestor of another quadrant\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_ancestor_D\fP (const \fBp8est_quadrant_t\fP *q, const \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Test if a quadrant is an ancestor of another quadrant\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_next\fP (const \fBp8est_quadrant_t\fP *q, const \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Test if two quadrants follow each other in the tree with no holes\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_next_D\fP (const \fBp8est_quadrant_t\fP *q, const \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Test if two quadrants follow each other in the tree with no holes\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_overlaps_tree\fP (\fBp8est_tree_t\fP *tree, const \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Test if a quadrant has at least partial overlap with a tree\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_inside_tree\fP (\fBp8est_tree_t\fP *tree, const \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Test if a quadrant is completely contained within a tree\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_first_last\fP (const \fBp8est_quadrant_t\fP *f, const \fBp8est_quadrant_t\fP *l, const \fBp8est_quadrant_t\fP *a)"
+.br
+.RI "Whether two descendants of a quadrant are first and last, up to size\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_enlarge_first\fP (const \fBp8est_quadrant_t\fP *a, \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Enlarge a quadrant as long as its first corner stays the same\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_enlarge_last\fP (const \fBp8est_quadrant_t\fP *a, \fBp8est_quadrant_t\fP *q)"
+.br
+.RI "Enlarge a quadrant as long as its last corner stays the same\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_root\fP (\fBp8est_quadrant_t\fP *root)"
+.br
+.RI "Generate the root quadrant of any tree\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_ancestor\fP (const \fBp8est_quadrant_t\fP *q, int level, \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Compute the ancestor of a quadrant at a given level\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_parent\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Compute the parent of a quadrant\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_sibling\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *r, int sibling_id)"
+.br
+.RI "Compute a specific sibling of a quadrant\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_volume_coordinates\fP (const \fBp8est_quadrant_t\fP *q, \fBp4est_qcoord_t\fP coords[])"
+.br
+.RI "Compute the coordinates of a quadrant's midpoint\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_face_neighbor\fP (const \fBp8est_quadrant_t\fP *q, int face, \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Compute the face neighbor of a quadrant\&. "
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBp8est_quadrant_face_neighbor_extra\fP (const \fBp8est_quadrant_t\fP *q, \fBp4est_topidx_t\fP t, int face, \fBp8est_quadrant_t\fP *r, int *nface, \fBp8est_connectivity_t\fP *conn)"
+.br
+.RI "Compute the face neighbor of a quadrant, transforming across tree boundaries if necessary\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_half_face_neighbors\fP (const \fBp8est_quadrant_t\fP *q, int face, \fBp8est_quadrant_t\fP n[4], \fBp8est_quadrant_t\fP nur[4])"
+.br
+.RI "Get the smaller face neighbors of \fIq\fP\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_all_face_neighbors\fP (const \fBp8est_quadrant_t\fP *q, int face, \fBp8est_quadrant_t\fP n[6])"
+.br
+.RI "Create all possible face neighbors of \fIq\fP\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_face_coordinates\fP (const \fBp8est_quadrant_t\fP *q, int face, \fBp4est_qcoord_t\fP coords[])"
+.br
+.RI "Compute the coordinates of a specific quadrant face's midpoint\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_edge_neighbor\fP (const \fBp8est_quadrant_t\fP *q, int edge, \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Compute the edge neighbor of a quadrant\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_edge_neighbor_extra\fP (const \fBp8est_quadrant_t\fP *q, \fBp4est_locidx_t\fP t, int edge, sc_array_t *quads, sc_array_t *treeids, sc_array_t *nedges, \fBp8est_connectivity_t\fP *conn)"
+.br
+.RI "Compute the edge neighbors of a quadrant, transforming across tree boundaries if necessary\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_edge_coordinates\fP (const \fBp8est_quadrant_t\fP *q, int edge, \fBp4est_qcoord_t\fP coords[])"
+.br
+.RI "Compute the coordinates of a specific quadrant edge's midpoint\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_corner_neighbor\fP (const \fBp8est_quadrant_t\fP *q, int corner, \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Compute the corner neighbor of a quadrant\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_corner_neighbor_extra\fP (const \fBp8est_quadrant_t\fP *q, \fBp4est_locidx_t\fP t, int corner, sc_array_t *quads, sc_array_t *treeids, sc_array_t *ncorners, \fBp8est_connectivity_t\fP *conn)"
+.br
+.RI "Compute the corner neighbors of a quadrant, transforming across tree boundaries if necessary\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_half_corner_neighbor\fP (const \fBp8est_quadrant_t\fP *q, int corner, \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Compute the half size corner neighbor of a quadrant\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_corner_node\fP (const \fBp8est_quadrant_t\fP *q, int corner, \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Compute a corner node of a quadrant\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_corner_coordinates\fP (const \fBp8est_quadrant_t\fP *q, int corner, \fBp4est_qcoord_t\fP coords[])"
+.br
+.RI "Compute the coordinates of a specific quadrant corner\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_children\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *c0, \fBp8est_quadrant_t\fP *c1, \fBp8est_quadrant_t\fP *c2, \fBp8est_quadrant_t\fP *c3, \fBp8est_quadrant_t\fP *c4, \fBp8est_quadrant_t\fP *c5, \fBp8est_quadrant_t\fP *c6, \fBp8est_quadrant_t\fP *c7)"
+.br
+.RI "Compute the 8 children of a quadrant\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_childrenv\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP c[])"
+.br
+.RI "Compute the 8 children of a quadrant, array version\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_childrenpv\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *c[])"
+.br
+.RI "Compute the 8 children of a quadrant, array version\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_first_descendant\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *fd, int level)"
+.br
+.RI "Compute the first descendant of a quadrant on a given level\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_last_descendant\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *ld, int level)"
+.br
+.RI "Compute the last descendant of a quadrant on a given level\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_corner_descendant\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *r, int c, int level)"
+.br
+.RI "Compute the descendant of a quadrant touching a given corner\&. "
+.ti -1c
+.RI "void \fBp8est_nearest_common_ancestor\fP (const \fBp8est_quadrant_t\fP *q1, const \fBp8est_quadrant_t\fP *q2, \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Computes the nearest common ancestor of two quadrants in the same tree\&. "
+.ti -1c
+.RI "void \fBp8est_nearest_common_ancestor_D\fP (const \fBp8est_quadrant_t\fP *q1, const \fBp8est_quadrant_t\fP *q2, \fBp8est_quadrant_t\fP *r)"
+.br
+.RI "Computes the nearest common ancestor of two quadrants in the same tree\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_transform_face\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *r, const int ftransform[])"
+.br
+.RI "Transforms a quadrant/node across a face between trees\&. "
+.ti -1c
+.RI "void \fBp8est_coordinates_transform_face\fP (const \fBp4est_qcoord_t\fP coords_in[], \fBp4est_qcoord_t\fP coords_out[], const int ftransform[])"
+.br
+.RI "Transforms coordinates across a face between trees\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_touches_edge\fP (const \fBp8est_quadrant_t\fP *q, int edge, int inside)"
+.br
+.RI "Checks if a quadrant touches an edge (diagonally inside or outside)\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_transform_edge\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *r, const \fBp8est_edge_info_t\fP *ei, const \fBp8est_edge_transform_t\fP *et, int inside)"
+.br
+.RI "Transforms a quadrant across an edge between trees\&. "
+.ti -1c
+.RI "void \fBp8est_coordinates_transform_edge\fP (const \fBp4est_qcoord_t\fP coords_in[], \fBp4est_qcoord_t\fP coords_out[], const \fBp8est_edge_info_t\fP *ei, const \fBp8est_edge_transform_t\fP *et)"
+.br
+.RI "Transforms coordinates on an edge between trees\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_shift_edge\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *r, \fBp8est_quadrant_t\fP *rup, \fBp8est_quadrant_t\fP *rdown, int edge)"
+.br
+.RI "Shifts a quadrant until it touches the specified edge from the inside\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_touches_corner\fP (const \fBp8est_quadrant_t\fP *q, int corner, int inside)"
+.br
+.RI "Checks if a quadrant touches a corner (diagonally inside or outside)\&. "
+.ti -1c
+.RI "void \fBp8est_coordinates_transform_corner\fP (\fBp4est_qcoord_t\fP coords[], int corner)"
+.br
+.RI "Set a coordinate location to a given tree (root quadrant) corner\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_transform_corner\fP (\fBp8est_quadrant_t\fP *q, int corner, int inside)"
+.br
+.RI "Move a quadrant inside or diagonally outside a corner position\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_shift_corner\fP (const \fBp8est_quadrant_t\fP *q, \fBp8est_quadrant_t\fP *r, int corner)"
+.br
+.RI "Shifts a quadrant until it touches the specified corner from the inside\&. "
+.ti -1c
+.RI "uint64_t \fBp8est_quadrant_linear_id\fP (const \fBp8est_quadrant_t\fP *quadrant, int level)"
+.br
+.RI "Computes the linear position of a quadrant in a uniform grid\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_set_morton\fP (\fBp8est_quadrant_t\fP *quadrant, int level, uint64_t id)"
+.br
+.RI "Set quadrant Morton indices based on linear position in uniform grid\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_successor\fP (const \fBp8est_quadrant_t\fP *quadrant, \fBp8est_quadrant_t\fP *result)"
+.br
+.RI "Compute the successor according to the Morton index in a uniform mesh\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_predecessor\fP (const \fBp8est_quadrant_t\fP *quadrant, \fBp8est_quadrant_t\fP *result)"
+.br
+.RI "Compute the predecessor according to the Morton index in a uniform mesh\&. "
+.ti -1c
+.RI "void \fBp8est_quadrant_srand\fP (const \fBp8est_quadrant_t\fP *q, sc_rand_state_t *rstate)"
+.br
+.RI "Initialize a random number generator by quadrant coordinates\&. "
+.ti -1c
+.RI "void \fBp8est_neighbor_transform_quadrant\fP (const \fBp8est_neighbor_transform_t\fP *nt, const \fBp8est_quadrant_t\fP *self_quad, \fBp8est_quadrant_t\fP *neigh_quad)"
+.br
+.RI "Transform a quadrant from self's coordinate system to neighbor's coordinate system\&. "
+.ti -1c
+.RI "void \fBp8est_neighbor_transform_quadrant_reverse\fP (const \fBp8est_neighbor_transform_t\fP *nt, const \fBp8est_quadrant_t\fP *neigh_quad, \fBp8est_quadrant_t\fP *self_quad)"
+.br
+.RI "Transform a quadrant from a neighbors's coordinate system to self's coordinate system\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_ancestor_face\fP (const \fBp8est_quadrant_t\fP *descendant, const \fBp8est_quadrant_t\fP *ancestor, int face)"
+.br
+.RI "Check if a descendant shares a face with a (strict) ancestor\&. "
+.ti -1c
+.RI "int \fBp8est_quadrant_is_ancestor_corner\fP (const \fBp8est_quadrant_t\fP *descendant, const \fBp8est_quadrant_t\fP *ancestor, int corner)"
+.br
+.RI "Check if a descendant shares a corner with a (strict) ancestor\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Routines for manipulating quadrants (neighbors, parents, children, etc\&.) 
+
+
+.SH "Function Documentation"
+.PP 
+.SS "int p8est_coordinates_compare (const \fBp4est_qcoord_t\fP v1[], const \fBp4est_qcoord_t\fP v2[])"
+
+.PP
+Compare two sets of coordinates in their Morton ordering\&. Coordinates are signed, but the sorted order will treat them as unsigned, with negative coordinates being greater than positive coordinates because of their representation in twos-complement\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIv1,v2\fP Two sets of 3d coordinates\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns < 0 if \fIv1\fP < \fIv2\fP, 0 if \fIv1\fP == \fIv2\fP, > 0 if \fIv1\fP > \fIv2\fP 
+.RE
+.PP
+
+.SS "int p8est_coordinates_is_inside_root (const \fBp4est_qcoord_t\fP coord[])"
+
+.PP
+Test if Morton indices are inside the unit tree or on its boundary\&. For this function, coordinate values of \fBP8EST_ROOT_LEN\fP are legal\&. It is like \fBp8est_quadrant_is_inside_root\fP with infinite level\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcoord\fP 3d coordinates\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if \fI\fP(coord[0],coord[1],coord[2]) is inside the unit tree\&. 
+.RE
+.PP
+
+.SS "int p8est_coordinates_is_valid (const \fBp4est_qcoord_t\fP coord[], int level)"
+
+.PP
+Test if Morton indices are valid and inside the unit tree\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcoord\fP 3d coordinates may validly lie on any tree boundary\&. 
+.br
+\fIlevel\fP A level between 0 and \fBP8EST_MAXLEVEL\fP included\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if \fI\fP(coord[0],coord[1],coord[2],level) is valid\&. 
+.RE
+.PP
+
+.SS "void p8est_coordinates_transform_corner (\fBp4est_qcoord_t\fP coords[], int corner)"
+
+.PP
+Set a coordinate location to a given tree (root quadrant) corner\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcoords\fP Output coordinates filled depending on \fIcorner\fP\&. 
+.br
+\fIcorner\fP Number of the corner in 0\&.\&.7\&. 
+.RE
+.PP
+
+.SS "void p8est_coordinates_transform_edge (const \fBp4est_qcoord_t\fP coords_in[], \fBp4est_qcoord_t\fP coords_out[], const \fBp8est_edge_info_t\fP * ei, const \fBp8est_edge_transform_t\fP * et)"
+
+.PP
+Transforms coordinates on an edge between trees\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcoords_in\fP Input coordinates\&. 
+.br
+\fIcoords_out\fP Output coordinates\&. 
+.br
+\fIei\fP Edge info from \fBp8est_find_edge_transform()\fP\&. 
+.br
+\fIet\fP One of ei's transformations\&. 
+.RE
+.PP
+
+.SS "void p8est_coordinates_transform_face (const \fBp4est_qcoord_t\fP coords_in[], \fBp4est_qcoord_t\fP coords_out[], const int ftransform[])"
+
+.PP
+Transforms coordinates across a face between trees\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcoords_in\fP Input coordinates\&. 
+.br
+\fIcoords_out\fP Output coordinates\&. 
+.br
+\fIftransform\fP This array holds 9 integers\&. [0]\&.\&.[2] The coordinate axis sequence of the origin face\&. [3]\&.\&.[5] The coordinate axis sequence of the target face\&. [6]\&.\&.[8] Edge reverse flag for axes 0, 1; face code for 2\&. 
+.RE
+.PP
+
+.SS "void p8est_nearest_common_ancestor (const \fBp8est_quadrant_t\fP * q1, const \fBp8est_quadrant_t\fP * q2, \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Computes the nearest common ancestor of two quadrants in the same tree\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq1\fP First input quadrant\&. 
+.br
+\fIq2\fP Second input quadrant\&. 
+.br
+\fIr\fP Existing quadrant whose Morton index will be filled\&. Its user_data will be untouched\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+\fIq1\fP, \fIq2\fP, \fIr\fP may point to the same quadrant\&. The user_data of \fIr\fP is never modified\&. 
+.RE
+.PP
+
+.SS "void p8est_nearest_common_ancestor_D (const \fBp8est_quadrant_t\fP * q1, const \fBp8est_quadrant_t\fP * q2, \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Computes the nearest common ancestor of two quadrants in the same tree\&. Descriptive, slower version of \fIp8est_nearest_common_ancestor\fP\&. For debugging and educationial purposes only\&. 
+.SS "void p8est_neighbor_transform_quadrant (const \fBp8est_neighbor_transform_t\fP * nt, const \fBp8est_quadrant_t\fP * self_quad, \fBp8est_quadrant_t\fP * neigh_quad)"
+
+.PP
+Transform a quadrant from self's coordinate system to neighbor's coordinate system\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInt\fP A neighbor transform\&. 
+.br
+\fIself_quad\fP Input quadrant in self coordinates\&. 
+.br
+\fIneigh_quad\fP Quad transformed into neighbor coordinates\&.
+.RE
+.PP
+\fBNote\fP
+.RS 4
+This transform gives meaningful results when \fIself_quad\fP is inside the tree root or touches the interface between the two trees in the transform\&. 
+.RE
+.PP
+
+.SS "void p8est_neighbor_transform_quadrant_reverse (const \fBp8est_neighbor_transform_t\fP * nt, const \fBp8est_quadrant_t\fP * neigh_quad, \fBp8est_quadrant_t\fP * self_quad)"
+
+.PP
+Transform a quadrant from a neighbors's coordinate system to self's coordinate system\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fInt\fP A neighbor transform\&. 
+.br
+\fIneigh_quad\fP Input quadrant in neighbor coordinates\&. 
+.br
+\fIself_quad\fP Quad transformed into self coordinates\&.
+.RE
+.PP
+\fBNote\fP
+.RS 4
+This transform gives meaningful results when \fIneigh_quad\fP is inside the tree root or touches the interface between the two trees in the transform\&. 
+.RE
+.PP
+
+.SS "void p8est_node_clamp_inside (const \fBp8est_quadrant_t\fP * n, \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Clamp a node inside the unit tree if it sits on a high border\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIn\fP Node to be clamped\&. Must not yet be clamped\&. 
+.br
+\fIr\fP Existing node overwritten by the clamped result\&. 
+.RE
+.PP
+
+.SS "int p8est_node_equal_piggy_fn (const void * v1, const void * v2, const void * u)"
+
+.PP
+Test if two nodes are in the same tree and have equal Morton indices\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIv1\fP Pointer to a clamped or unclamped node, depending on u\&. 
+.br
+\fIv2\fP Pointer to a clamped or unclamped node, depending on u\&. 
+.br
+\fIu\fP User data, points to an int holding the clamped-flag\&. 
+.RE
+.PP
+
+.SS "unsigned p8est_node_hash_piggy_fn (const void * v, const void * u)"
+
+.PP
+Compute hash value of a node based on its tree and Morton index\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIv\fP Pointer to a clamped or unclamped node, depending on u\&. 
+.br
+\fIu\fP User data, points to an int holding the clamped-flag\&. 
+.RE
+.PP
+
+.SS "void p8est_node_to_quadrant (const \fBp8est_quadrant_t\fP * n, int level, \fBp8est_quadrant_t\fP * q)"
+
+.PP
+Find the enclosing quadrant of a given node at a given level\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIn\fP Clamped node\&. 
+.br
+\fIlevel\fP Level of the quadrant to be created\&. 
+.br
+\fIq\fP Output quadrant, n == q is permitted\&. 
+.RE
+.PP
+
+.SS "void p8est_node_unclamp (\fBp8est_quadrant_t\fP * n)"
+
+.PP
+Move a clamped node out on the border\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIn\fP Node to be unclamped in-place\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_all_face_neighbors (const \fBp8est_quadrant_t\fP * q, int face, \fBp8est_quadrant_t\fP n[6])"
+
+.PP
+Create all possible face neighbors of \fIq\fP\&. Gets the face neighbors, possible assuming the 2-1 constraint\&. If the larger or smaller quadrants do not exist than they are returned as initialized by P4EST_QUADRANT_INIT\&.
+.PP
+The order of \fIn\fP[0] through \fIn\fP[3] are given in Morton ordering\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP The quadrant whose face neighbors will be constructed\&. 
+.br
+\fIface\fP The face across which to generate the neighbors\&. 
+.br
+\fIn\fP Positions 0\&.\&.3 filled with the smaller possible face neighbors, which are half of the size if they exist or initialized to P4EST_QUADRANT_INIT\&. Position 4 filled with the face neighbor, which is the same size\&. Position 5 filled with the face neighbor, which is twice the size if it exists or initialized to P4EST_QUADRANT_INIT\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_ancestor (const \fBp8est_quadrant_t\fP * q, int level, \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Compute the ancestor of a quadrant at a given level\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant\&. 
+.br
+\fIlevel\fP A smaller level than q\&. 
+.br
+\fIr\fP Existing quadrant whose Morton index will be filled with the ancestor of q at the given level\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+The quadrant q may point to the same quadrant as r\&. The user_data of r are never modified\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_ancestor_id (const \fBp8est_quadrant_t\fP * q, int level)"
+
+.PP
+Compute the position of the ancestor of this child at level \fIlevel\fP within its siblings\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns its child id in 0\&.\&.7 
+.RE
+.PP
+
+.SS "void p8est_quadrant_child (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * r, int child_id)"
+
+.PP
+Compute a specific child of a quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant\&. 
+.br
+\fIr\fP Existing quadrant whose Morton index will be filled with the coordinates of its child no\&. \fBchild_id\fP\&. 
+.br
+\fIchild_id\fP The id of the child computed, 0\&.\&.7\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_child_id (const \fBp8est_quadrant_t\fP * q)"
+
+.PP
+Compute the position of this child within its siblings\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns its child id in 0\&.\&.7 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP\&.
+.SS "void p8est_quadrant_children (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * c0, \fBp8est_quadrant_t\fP * c1, \fBp8est_quadrant_t\fP * c2, \fBp8est_quadrant_t\fP * c3, \fBp8est_quadrant_t\fP * c4, \fBp8est_quadrant_t\fP * c5, \fBp8est_quadrant_t\fP * c6, \fBp8est_quadrant_t\fP * c7)"
+
+.PP
+Compute the 8 children of a quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant\&. 
+.br
+\fIc0\fP First computed child\&. \fIq\fP may point to the same quadrant as \fIc0\fP\&. 
+.br
+\fIc1\fP Second computed child\&. 
+.br
+\fIc2\fP Third computed child\&. 
+.br
+\fIc3\fP Fourth computed child\&. 
+.br
+\fIc4\fP Fifth computed child\&. 
+.br
+\fIc5\fP Sixth computed child\&. 
+.br
+\fIc6\fP Seventh computed child\&. 
+.br
+\fIc7\fP Eighth computed child\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+The user_data of \fIc0\fP, c1, c2, c3, c4, c5, c6, c7 is never modified\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_childrenpv (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * c[])"
+
+.PP
+Compute the 8 children of a quadrant, array version\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant\&. 
+.br
+\fIc\fP Pointers to the 8 computed children in z-order\&. q may point to the same quadrant as c[0]\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+The user_data of c[i] is never modified\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_childrenv (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP c[])"
+
+.PP
+Compute the 8 children of a quadrant, array version\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant\&. 
+.br
+\fIc\fP The 8 computed children in z-order\&. q may point to the same quadrant as c[0]\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+The user_data of c[i] is never modified\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_compare (const void * v1, const void * v2)"
+
+.PP
+Compare two quadrants in their Morton ordering\&. Both quadrants must be valid\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns < 0 if \fIv1\fP < \fIv2\fP, 0 if \fIv1\fP == \fIv2\fP, > 0 if \fIv1\fP > \fIv2\fP 
+.RE
+.PP
+
+.SS "int p8est_quadrant_compare_local_num (const void * v1, const void * v2)"
+
+.PP
+Compare two quadrants with respect to their local_num in the piggy3 member\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns < 0 if \fIv1\fP < \fIv2\fP, 0 if \fIv1\fP == \fIv2\fP, > 0 if \fIv1\fP > \fIv2\fP 
+.RE
+.PP
+
+.SS "int p8est_quadrant_compare_piggy (const void * v1, const void * v2)"
+
+.PP
+Compare two quadrants in their Morton ordering and the which_tree member\&. Both quadrants must be extended (superset of valid, see below)\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns < 0 if \fIv1\fP < \fIv2\fP, 0 if \fIv1\fP == \fIv2\fP, > 0 if \fIv1\fP > \fIv2\fP 
+.RE
+.PP
+
+.SS "int p8est_quadrant_contains_node (const \fBp8est_quadrant_t\fP * q, const \fBp8est_quadrant_t\fP * n)"
+
+.PP
+Decide if a node is completely contained within a quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Valid quadrant\&. 
+.br
+\fIn\fP Clamped node\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_copy (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * copy)"
+
+.PP
+Copy the Morton indices of the quadrant \fIq\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP An extended quadrant\&. 
+.br
+\fIcopy\fP An existing quadrant that Morton indices will be set to the Morton indices of \fIq\fP\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_corner_coordinates (const \fBp8est_quadrant_t\fP * q, int corner, \fBp4est_qcoord_t\fP coords[])"
+
+.PP
+Compute the coordinates of a specific quadrant corner\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant, must be valid\&. 
+.br
+\fIcorner\fP The corner for which the coordinates are computed\&. 
+.br
+\fIcoords\fP 3D corner coordinates are in/on the unit tree\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_corner_descendant (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * r, int c, int level)"
+
+.PP
+Compute the descendant of a quadrant touching a given corner\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant\&. 
+.br
+\fIr\fP Existing quadrant whose Morton index will be filled\&. Its user_data will be untouched\&. 
+.br
+\fIc\fP The corner of \fIq\fP that \fIr\fP touches\&. 
+.br
+\fIlevel\fP The size of \fIr\fP\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_corner_neighbor (const \fBp8est_quadrant_t\fP * q, int corner, \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Compute the corner neighbor of a quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant, must be valid\&. 
+.br
+\fIcorner\fP The corner across which to generate the neighbor\&. 
+.br
+\fIr\fP Existing quadrant whose Morton index will be filled\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+\fIq\fP may point to the same quadrant as \fIr\fP\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_corner_neighbor_extra (const \fBp8est_quadrant_t\fP * q, \fBp4est_locidx_t\fP t, int corner, sc_array_t * quads, sc_array_t * treeids, sc_array_t * ncorners, \fBp8est_connectivity_t\fP * conn)"
+
+.PP
+Compute the corner neighbors of a quadrant, transforming across tree boundaries if necessary\&. Only computes neighbors that are not face or edge neighbors\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant, must be valid\&. 
+.br
+\fIt\fP Tree that contains \fIq\fP\&. 
+.br
+\fIcorner\fP The corner across which to generate the neighbor\&. 
+.br
+\fIquads\fP An initialized but empty array where the corner neighbors will be placed\&. 
+.br
+\fItreeids\fP An initialized but empty array where the ids of the trees containing the corner neighbors will be placed\&. 
+.br
+\fIncorners\fP if not NULL, filled with the corners of \fIquads\fP that neighbor \fIq\fP\&. 
+.br
+\fIconn\fP The connectivity structure for the forest\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_corner_node (const \fBp8est_quadrant_t\fP * q, int corner, \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Compute a corner node of a quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant, must be valid\&. 
+.br
+\fIcorner\fP The corner across which to generate the neighbor\&. 
+.br
+\fIr\fP Node that will not be clamped inside\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+\fIq\fP may point to the same quadrant as \fIr\fP\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_disjoint (const void * v1, const void * v2)"
+
+.PP
+Compare two quadrants in their Morton ordering, with equivalence if the two quadrants overlap\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns < 0 if \fIv1\fP < \fIv2\fP and \fIv1\fP and \fIv2\fP do not overlap, 0 if \fIv1\fP and \fIv2\fP overlap, > 0 if \fIv1\fP > \fIv2\fP and \fIv1\fP and \fIv2\fP do not overlap\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_edge_coordinates (const \fBp8est_quadrant_t\fP * q, int edge, \fBp4est_qcoord_t\fP coords[])"
+
+.PP
+Compute the coordinates of a specific quadrant edge's midpoint\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant, must be valid\&. 
+.br
+\fIedge\fP The edge of which the midpoint coordinates are computed\&. 
+.br
+\fIcoords\fP 3D mid-edge coordinates are in/on the unit tree\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBtest_coordinates2\&.c\fP\&.
+.SS "void p8est_quadrant_edge_neighbor (const \fBp8est_quadrant_t\fP * q, int edge, \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Compute the edge neighbor of a quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant, must be valid\&. 
+.br
+\fIedge\fP The edge across which to generate the neighbor\&. 
+.br
+\fIr\fP Existing quadrant whose Morton index will be filled\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+\fIq\fP may point to the same quadrant as \fIr\fP\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_edge_neighbor_extra (const \fBp8est_quadrant_t\fP * q, \fBp4est_locidx_t\fP t, int edge, sc_array_t * quads, sc_array_t * treeids, sc_array_t * nedges, \fBp8est_connectivity_t\fP * conn)"
+
+.PP
+Compute the edge neighbors of a quadrant, transforming across tree boundaries if necessary\&. Only computes neighbors that are not face neighbors\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant, must be valid\&. 
+.br
+\fIt\fP Tree that contains \fIq\fP\&. 
+.br
+\fIedge\fP The edge across which to generate the neighbor\&. 
+.br
+\fIquads\fP An initialized but empty array where the edge neighbors will be placed\&. 
+.br
+\fItreeids\fP An initialized but empty array where the ids of the trees containing the edge neighbors will be placed\&. 
+.br
+\fInedges\fP if not NULL, filled with the edges of \fIquads\fP that neighbor \fIq\fP\&. the ints in \fInedges\fP are encoded with orientation information like the edge_to_edge array in the p8est_connectivity_t struct 
+.br
+\fIconn\fP The connectivity structure for the forest\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_enlarge_first (const \fBp8est_quadrant_t\fP * a, \fBp8est_quadrant_t\fP * q)"
+
+.PP
+Enlarge a quadrant as long as its first corner stays the same\&. We limit the enlargement by containing it in an ancestor quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIa\fP Extended quadrant\&. On input and output, equal to or strict ancestor of the quadrant \fBq\fP to be modified\&. 
+.br
+\fIq\fP On input and output, an extended quadrant and also equal or a strict descendant of \fBa\fP\&. Possibly enlarged by this function\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_enlarge_last (const \fBp8est_quadrant_t\fP * a, \fBp8est_quadrant_t\fP * q)"
+
+.PP
+Enlarge a quadrant as long as its last corner stays the same\&. We limit the enlargement by containing it in an ancestor quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIa\fP Extended quadrant\&. On input and output, equal to or strict ancestor of the quadrant \fBq\fP to be modified\&. 
+.br
+\fIq\fP On input and output, an extended quadrant and also equal or a strict descendant of \fBa\fP\&. Possibly enlarged by this function\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_equal_fn (const void * v1, const void * v2, const void * u)"
+
+.PP
+Test if two quadrants have equal Morton indices, callback version\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true if \fIv1\fP describes the same quadrant as \fIv2\fP\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_face_coordinates (const \fBp8est_quadrant_t\fP * q, int face, \fBp4est_qcoord_t\fP coords[])"
+
+.PP
+Compute the coordinates of a specific quadrant face's midpoint\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant, must be valid\&. 
+.br
+\fIface\fP The face of which the midpoint coordinates are computed\&. 
+.br
+\fIcoords\fP 3D mid-face coordinates are in/on the unit tree\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP\&.
+.SS "void p8est_quadrant_face_neighbor (const \fBp8est_quadrant_t\fP * q, int face, \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Compute the face neighbor of a quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant, must be valid\&. 
+.br
+\fIface\fP The face across which to generate the neighbor\&. 
+.br
+\fIr\fP Existing quadrant whose Morton index will be filled\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+\fIq\fP may point to the same quadrant as \fIr\fP\&. 
+.RE
+.PP
+
+.SS "\fBp4est_locidx_t\fP p8est_quadrant_face_neighbor_extra (const \fBp8est_quadrant_t\fP * q, \fBp4est_topidx_t\fP t, int face, \fBp8est_quadrant_t\fP * r, int * nface, \fBp8est_connectivity_t\fP * conn)"
+
+.PP
+Compute the face neighbor of a quadrant, transforming across tree boundaries if necessary\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant, must be valid\&. 
+.br
+\fIt\fP Tree that contains \fIq\fP\&. 
+.br
+\fIface\fP The face across which to generate the neighbor\&. 
+.br
+\fIr\fP Existing quadrant whose Morton index will be filled\&. By convention, if there is no tree across \fIface\fP, \fIr\fP has the same Morton index as \fIq\fP\&. 
+.br
+\fInface\fP if not NULL, set to the face of \fIr\fP that neighbors \fIq\fP\&. nface is encoded with orientation information in the same manner as the tree_to_face array in the p8est_connectivity_t struct\&. 
+.br
+\fIconn\fP The connectivity structure for the forest\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the tree that contains \fIr\fP\&. By convention, if there is no tree across \fIface\fP, then -1 is returned\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_first_descendant (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * fd, int level)"
+
+.PP
+Compute the first descendant of a quadrant on a given level\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant\&. 
+.br
+\fIfd\fP First descendant of \fIq\fP on level \fIlevel\fP\&. 
+.br
+\fIlevel\fP Level must be greater equal than q's level\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_half_corner_neighbor (const \fBp8est_quadrant_t\fP * q, int corner, \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Compute the half size corner neighbor of a quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP The quadrant whose corner neighbor will be constructed\&. 
+.br
+\fIcorner\fP The corner across which to generate the neighbor\&. 
+.br
+\fIr\fP Morton index filled with the half size corner neighbor\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_half_face_neighbors (const \fBp8est_quadrant_t\fP * q, int face, \fBp8est_quadrant_t\fP n[4], \fBp8est_quadrant_t\fP nur[4])"
+
+.PP
+Get the smaller face neighbors of \fIq\fP\&. Gets the smaller face neighbors, which are half of the size assuming the 2-1 constant\&.
+.PP
+The order of the \fIn\fP[i] is given in the Morton ordering\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP The quadrant whose face neighbors will be constructed\&. 
+.br
+\fIface\fP The face across which to generate the neighbors\&. 
+.br
+\fIn\fP Array filled with four smaller face neighbors\&. 
+.br
+\fInur\fP If not NULL, filled with four smallest quadrants that fit in the upper right corners of \fIn\fP\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_ancestor (const \fBp8est_quadrant_t\fP * q, const \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Test if a quadrant is an ancestor of another quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Quadrant to be tested\&. 
+.br
+\fIr\fP Descendent quadrant\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if \fIq\fP is unequal to and an ancestor of \fIr\fP\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_ancestor_corner (const \fBp8est_quadrant_t\fP * descendant, const \fBp8est_quadrant_t\fP * ancestor, int corner)"
+
+.PP
+Check if a descendant shares a corner with a (strict) ancestor\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdescendant\fP The descendant in question\&. 
+.br
+\fIancestor\fP The ancestor must not be equal to the descendant\&. 
+.br
+\fIcorner\fP The corner of the descendant\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if descendant face touches ancestor corner, false otherwise\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_ancestor_D (const \fBp8est_quadrant_t\fP * q, const \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Test if a quadrant is an ancestor of another quadrant\&. Descriptive, slower version of \fIp8est_quadrant_is_ancestor\fP\&. Contrary to \fIp8est_quadrant_is_ancestor\fP, it aborts for inter-tree q, r\&. For debugging and educational purposes only\&. 
+.SS "int p8est_quadrant_is_ancestor_face (const \fBp8est_quadrant_t\fP * descendant, const \fBp8est_quadrant_t\fP * ancestor, int face)"
+
+.PP
+Check if a descendant shares a face with a (strict) ancestor\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIdescendant\fP The descendant in question\&. 
+.br
+\fIancestor\fP The ancestor must not be equal to the descendant\&. 
+.br
+\fIface\fP The face of the descendant\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if descendant face touches ancestor face, false otherwise\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_equal (const \fBp8est_quadrant_t\fP * q1, const \fBp8est_quadrant_t\fP * q2)"
+
+.PP
+Test if two quadrants have equal Morton indices\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true if \fIq1\fP describes the same quadrant as \fIq2\fP\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_equal_piggy (const \fBp8est_quadrant_t\fP * q1, const \fBp8est_quadrant_t\fP * q2)"
+
+.PP
+Test if two quadrants have equal Morton indices and the same tree id\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true if \fIq1\fP describes the same quadrant as \fIq2\fP and the p\&.which_tree fields are equal\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_extended (const \fBp8est_quadrant_t\fP * q)"
+
+.PP
+Test if a quadrant has valid Morton indices in the 3x3 box around root\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Quadrant to be tested\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if \fIq\fP is extended\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_familypv (\fBp8est_quadrant_t\fP * q[])"
+
+.PP
+Test if 8 quadrants are siblings in Morton ordering, array version\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Array of 8 pointers to quadrants\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_familyv (const \fBp8est_quadrant_t\fP q[])"
+
+.PP
+Test if 8 quadrants are siblings in Morton ordering, array version\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Array of 8 quadrants\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_first_last (const \fBp8est_quadrant_t\fP * f, const \fBp8est_quadrant_t\fP * l, const \fBp8est_quadrant_t\fP * a)"
+
+.PP
+Whether two descendants of a quadrant are first and last, up to size\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIf\fP An extended quadrant, need not be of maximum level\&. 
+.br
+\fIl\fP An extended quadrant, need not be of maximum level\&. It must be greater equal \fBf\fP in the space filling curve\&. 
+.br
+\fIa\fP An extended quadrant, equal to or ancestor of \fBf\fP, and likewise to/of \fBl\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Whether the first corner of \fBf\fP equals that of \fBa\fP and the last corner of \fBl\fP equals that of \fBa\fP\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_inside_3x3 (const \fBp8est_quadrant_t\fP * q)"
+
+.PP
+Test if a quadrant is inside the 3x3 box around the root tree\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Quadrant to be tested\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if \fIq\fP is inside the unit tree\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_inside_root (const \fBp8est_quadrant_t\fP * q)"
+
+.PP
+Test if a quadrant is inside the unit tree\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Quadrant (not necessarily valid) to be tested\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if \fIq\fP is inside the unit tree\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_next (const \fBp8est_quadrant_t\fP * q, const \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Test if two quadrants follow each other in the tree with no holes\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP A quadrant 
+.br
+\fIr\fP Another quadrant 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if \fIq\fP is immediately before \fIr\fP in the tree\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+for every \fIq\fP there are between 0 and P8EST_MAXLEVEL+1 possible nexts\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_next_D (const \fBp8est_quadrant_t\fP * q, const \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Test if two quadrants follow each other in the tree with no holes\&. Descriptive, slower version of \fIp8est_quadrant_is_next\fP\&. For debugging and educational purposes only\&. 
+.SS "int p8est_quadrant_is_node (const \fBp8est_quadrant_t\fP * q, int inside)"
+
+.PP
+Test if a quadrant is used to represent a mesh node\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Quadrant to be tested\&. 
+.br
+\fIinside\fP If true, boundary nodes must be clamped inside\&. If false, nodes must align with the quadrant grid\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if \fIq\fP is a node\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_outside_corner (const \fBp8est_quadrant_t\fP * q)"
+
+.PP
+Test if a quadrant is outside a tree corner boundary\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Quadrant to be tested\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if \fIq\fP is outside across a unit tree corner\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_outside_edge (const \fBp8est_quadrant_t\fP * q)"
+
+.PP
+Test if a quadrant is outside a tree edge boundary (no corner)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Quadrant to be tested\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if \fIq\fP is outside across a unit tree edge\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_outside_edge_extra (const \fBp8est_quadrant_t\fP * q, int * edge)"
+
+.PP
+Test if a quadrant is outside a tree edge boundary (no corner)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Quadrant to be tested\&. 
+.br
+\fIedge\fP The tree edge number is computed if outside edge\&. This pointer may be NULL\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if \fIq\fP is outside across a unit tree edge\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_outside_face (const \fBp8est_quadrant_t\fP * q)"
+
+.PP
+Test if a quadrant is outside a tree face boundary (no edge or corner)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Quadrant to be tested\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if \fIq\fP is outside across a unit tree face\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_parent (const \fBp8est_quadrant_t\fP * q, const \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Test if a quadrant is the parent of another quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Quadrant to be tested\&. 
+.br
+\fIr\fP Possible child quadrant\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if \fIq\fP is the parent of \fIr\fP\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_parent_D (const \fBp8est_quadrant_t\fP * q, const \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Test if a quadrant is the parent of another quadrant\&. Descriptive, slower version of \fIp8est_quadrant_is_parent\fP\&. For debugging and educational purposes only\&. 
+.SS "int p8est_quadrant_is_sibling (const \fBp8est_quadrant_t\fP * q1, const \fBp8est_quadrant_t\fP * q2)"
+
+.PP
+Test if two quadrants are siblings\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq1\fP First quadrant to be tested\&. 
+.br
+\fIq2\fP Second quadrant to be tested\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if \fIq1\fP is unequal to and a sibling of \fIq2\fP\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_is_sibling_D (const \fBp8est_quadrant_t\fP * q1, const \fBp8est_quadrant_t\fP * q2)"
+
+.PP
+Test if two quadrants are siblings\&. Descriptive, slower version of \fIp8est_quadrant_is_sibling\fP\&. For debugging and educational purposes only\&. 
+.SS "int p8est_quadrant_is_valid (const \fBp8est_quadrant_t\fP * q)"
+
+.PP
+Test if a quadrant has valid Morton indices and is inside the unit tree\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Quadrant to be tested\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if \fIq\fP is valid\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_last_descendant (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * ld, int level)"
+
+.PP
+Compute the last descendant of a quadrant on a given level\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant\&. 
+.br
+\fIld\fP Last descendant of \fIq\fP on level \fIlevel\fP\&. 
+.br
+\fIlevel\fP Level must be greater equal than q's level\&. 
+.RE
+.PP
+
+.SS "uint64_t p8est_quadrant_linear_id (const \fBp8est_quadrant_t\fP * quadrant, int level)"
+
+.PP
+Computes the linear position of a quadrant in a uniform grid\&. The grid and quadrant levels need not coincide\&. If they do, this is the inverse of \fBp8est_quadrant_set_morton\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIquadrant\fP Quadrant whose linear index will be computed\&. If the quadrant is smaller than the grid (has a higher quadrant->level), the result is computed from its ancestor at the grid's level\&. If the quadrant has a smaller level than the grid (it is bigger than a grid cell), the grid cell sharing its lower left corner is used as reference\&. 
+.br
+\fIlevel\fP The level of the regular grid compared to which the linear position is to be computed\&. The level must be less equal P8EST_OLD_MAXLEVEL since this is a legacy function restricted to 64 bits\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the linear position of this quadrant on a grid\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+The user_data of \fIquadrant\fP is never modified\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_overlaps (const \fBp8est_quadrant_t\fP * q1, const \fBp8est_quadrant_t\fP * q2)"
+
+.PP
+Test if two quadrants overlap\&. 
+.PP
+\fBReturns\fP
+.RS 4
+true if \fIq1\fP and \fIq2\fP are equal or one is the ancestor of the other\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_pad (\fBp8est_quadrant_t\fP * q)"
+
+.PP
+Write -1 into the pad8 and pad16 members of a quadrant\&. This helps with valgrind cleanliness if a quadrant is sent over MPI\&. 
+.SS "void p8est_quadrant_parent (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * r)"
+
+.PP
+Compute the parent of a quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant\&. 
+.br
+\fIr\fP Existing quadrant whose Morton index will be filled with the Morton index of the parent of \fIq\fP\&. Its user_data will be untouched\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+\fIq\fP may point to the same quadrant as \fIr\fP\&. The user_data of \fIr\fP is never modified\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_predecessor (const \fBp8est_quadrant_t\fP * quadrant, \fBp8est_quadrant_t\fP * result)"
+
+.PP
+Compute the predecessor according to the Morton index in a uniform mesh\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIquadrant\fP Quadrant whose Morton predecessor will be computed\&. Must not be the first (bottom left) quadrant in the tree\&. 
+.br
+\fIresult\fP The coordinates and level of the predecessor of \fBquadrant\fP will be saved in result\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_print (int log_priority, const \fBp8est_quadrant_t\fP * q)"
+
+.PP
+Prints one line with quadrant's x, y, z and level\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIlog_priority\fP see the log_priorities in sc\&.h for the meanings of numerical priority values 
+.br
+\fIq\fP quadrant to print 
+.RE
+.PP
+
+.SS "void p8est_quadrant_root (\fBp8est_quadrant_t\fP * root)"
+
+.PP
+Generate the root quadrant of any tree\&. Equivalent to \fBp8est_quadrant_set_morton\fP with all-zero parameters\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIroot\fP Quadrant structure's coordinates and level are set\&. As with all other functions that generate or modify quadrants, the other bits of the structured data type are not touched at all\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_set_morton (\fBp8est_quadrant_t\fP * quadrant, int level, uint64_t id)"
+
+.PP
+Set quadrant Morton indices based on linear position in uniform grid\&. This is the inverse operation of \fBp8est_quadrant_linear_id\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIquadrant\fP Quadrant whose Morton indices will be set\&. 
+.br
+\fIlevel\fP Level of the grid and of the resulting quadrant\&. 
+.br
+\fIid\fP Linear index of the quadrant on a uniform grid\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+The user_data of \fIquadrant\fP is never modified\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_shift_corner (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * r, int corner)"
+
+.PP
+Shifts a quadrant until it touches the specified corner from the inside\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Valid input quadrant\&. 
+.br
+\fIr\fP Quadrant whose Morton index will be filled\&. 
+.br
+\fIcorner\fP Corner index\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_shift_edge (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * r, \fBp8est_quadrant_t\fP * rup, \fBp8est_quadrant_t\fP * rdown, int edge)"
+
+.PP
+Shifts a quadrant until it touches the specified edge from the inside\&. If this shift is meant to recreate the effects of \fIq\fP on balancing across the edge, then \fIr\fP, \fIrup\fP, and \fIrdown\fP may all be necessary for that recreation\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Valid input quadrant\&. 
+.br
+\fIr\fP Quadrant whose Morton index will be filled\&. This quadrant results from shifting \fIq\fP laterally towards the edge\&. 
+.br
+\fIrup\fP Quadrant whose Morton index will be filled (may be NULL)\&. This quadrant results from shifting \fIq\fP diagonally towards \fIedge's\fP higher corner\&. 
+.br
+\fIrdown\fP Quadrant whose Morton index will be filled (may be NULL)\&. This quadrant results from shifting \fIq\fP diagonally towards \fIedge's\fP lower corner\&. 
+.br
+\fIedge\fP Edge index\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_sibling (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * r, int sibling_id)"
+
+.PP
+Compute a specific sibling of a quadrant\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant\&. 
+.br
+\fIr\fP Existing quadrant whose Morton index will be filled with the coordinates of sibling no\&. sibling_id of q\&. 
+.br
+\fIsibling_id\fP The id of the sibling computed, 0\&.\&.3\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_srand (const \fBp8est_quadrant_t\fP * q, sc_rand_state_t * rstate)"
+
+.PP
+Initialize a random number generator by quadrant coordinates\&. This serves to generate partition-independent and reproducible samples\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Valid quadrant\&. 
+.br
+\fIrstate\fP New state of random number generator\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_successor (const \fBp8est_quadrant_t\fP * quadrant, \fBp8est_quadrant_t\fP * result)"
+
+.PP
+Compute the successor according to the Morton index in a uniform mesh\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIquadrant\fP Quadrant whose Morton successor will be computed\&. Must not be the last (top right) quadrant in the tree\&. 
+.br
+\fIresult\fP The coordinates and level of the successor of \fBquadrant\fP will be saved in \fBresult\fP\&. 
+.RE
+.PP
+
+.SS "int p8est_quadrant_touches_corner (const \fBp8est_quadrant_t\fP * q, int corner, int inside)"
+
+.PP
+Checks if a quadrant touches a corner (diagonally inside or outside)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP This quadrant must be valid (if \fIinside\fP is true) or at least extended (if \fIinside\fP is false)\&. It may also be a node respecting the \fIinside\fP argument\&. 
+.br
+\fIcorner\fP Valid corner index from 0 to 7\&. 
+.br
+\fIinside\fP Boolean to clarify whether the input \fIq\fP is inside or outside a unit tree (or root quadrant)\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_transform_corner (\fBp8est_quadrant_t\fP * q, int corner, int inside)"
+
+.PP
+Move a quadrant inside or diagonally outside a corner position\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP This quadrant only requires a valid level\&. 
+.br
+\fIcorner\fP Number of the corner in 0\&.\&.7\&. 
+.br
+\fIinside\fP Boolean flag for inside or diagonally outside\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_transform_edge (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * r, const \fBp8est_edge_info_t\fP * ei, const \fBp8est_edge_transform_t\fP * et, int inside)"
+
+.PP
+Transforms a quadrant across an edge between trees\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant\&. 
+.br
+\fIr\fP Quadrant whose Morton index will be filled\&. 
+.br
+\fIei\fP Edge info from \fBp8est_find_edge_transform()\fP\&. 
+.br
+\fIet\fP One of ei's transformations\&. 
+.br
+\fIinside\fP The quadrant will be placed inside or outside\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_transform_face (const \fBp8est_quadrant_t\fP * q, \fBp8est_quadrant_t\fP * r, const int ftransform[])"
+
+.PP
+Transforms a quadrant/node across a face between trees\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant/non-clamped node\&. 
+.br
+\fIr\fP Quadrant/node whose Morton index will be filled\&. 
+.br
+\fIftransform\fP This array holds 9 integers\&. [0]\&.\&.[2] The coordinate axis sequence of the origin face\&. [3]\&.\&.[5] The coordinate axis sequence of the target face\&. [6]\&.\&.[8] Edge reverse flag for axes 0, 1; face code for 2\&. 
+.RE
+.PP
+\fBNote\fP
+.RS 4
+\fIq\fP and \fIr\fP may NOT point to the same quadrant structure\&. 
+.RE
+.PP
+
+.SS "void p8est_quadrant_volume_coordinates (const \fBp8est_quadrant_t\fP * q, \fBp4est_qcoord_t\fP coords[])"
+
+.PP
+Compute the coordinates of a quadrant's midpoint\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIq\fP Input quadrant, must be valid\&. 
+.br
+\fIcoords\fP 3D coordinates are strictly inside the unit tree\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsimple/simple3\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

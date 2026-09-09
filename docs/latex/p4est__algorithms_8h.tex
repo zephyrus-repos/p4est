@@ -1,0 +1,580 @@
+\hypertarget{p4est__algorithms_8h}{}\doxysection{src/p4est\+\_\+algorithms.h File Reference}
+\label{p4est__algorithms_8h}\index{src/p4est\_algorithms.h@{src/p4est\_algorithms.h}}
+
+
+Routines for managing quadrants as elements of trees and subtrees.  
+
+
+{\ttfamily \#include $<$p4est\+\_\+extended.\+h$>$}\newline
+Include dependency graph for p4est\+\_\+algorithms.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p4est__algorithms_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+sc\+\_\+mempool\+\_\+t $\ast$ \mbox{\hyperlink{p4est__algorithms_8h_ae94de1b48729a97f7294ad0dc7b74979}{p4est\+\_\+quadrant\+\_\+mempool\+\_\+new}} (void)
+\begin{DoxyCompactList}\small\item\em Create a memory pool for quadrants that initializes compiler padding. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__algorithms_8h_a676f6c46832315298db16389d26783e2}{p4est\+\_\+quadrant\+\_\+init\+\_\+data}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$quad, \mbox{\hyperlink{p4est_8h_a33d436b39a1f58fa87c265a60d2d2be3}{p4est\+\_\+init\+\_\+t}} init\+\_\+fn)
+\begin{DoxyCompactList}\small\item\em Alloc and initialize the user data of a valid quadrant. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__algorithms_8h_aada8ef40a0ca4aa82e7b10ac520e58e6}{p4est\+\_\+quadrant\+\_\+free\+\_\+data}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$quad)
+\begin{DoxyCompactList}\small\item\em Free the user data of a valid quadrant. \end{DoxyCompactList}\item 
+unsigned \mbox{\hyperlink{p4est__algorithms_8h_a4928e8bf3b9577f52800a39f52bd5d58}{p4est\+\_\+quadrant\+\_\+checksum}} (sc\+\_\+array\+\_\+t $\ast$quadrants, sc\+\_\+array\+\_\+t $\ast$checkarray, size\+\_\+t first\+\_\+quadrant)
+\begin{DoxyCompactList}\small\item\em Computes a machine-\/independent checksum of a list of quadrants. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__algorithms_8h_a14bfe24e2e440202d44c20a802d6acdf}{p4est\+\_\+quadrant\+\_\+in\+\_\+range}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$fd, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$ld, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$quadrant)
+\begin{DoxyCompactList}\small\item\em Report whether a quadrant fits into the limits of a quadrant range. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__algorithms_8h_aa46180f50aef51d7b66393fc067aabc3}{p4est\+\_\+tree\+\_\+is\+\_\+sorted}} (\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$tree)
+\begin{DoxyCompactList}\small\item\em Test if a tree is sorted in Morton ordering. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__algorithms_8h_a5497d83ec9cf844aba37d43f4ff69913}{p4est\+\_\+tree\+\_\+is\+\_\+linear}} (\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$tree)
+\begin{DoxyCompactList}\small\item\em Test if a tree is sorted in Morton ordering and linear. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__algorithms_8h_ad45e6a0d8ecf8984cbb6a16bbb8f7426}{p4est\+\_\+tree\+\_\+is\+\_\+complete}} (\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$tree)
+\begin{DoxyCompactList}\small\item\em Test if a tree is sorted in Morton ordering and complete. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__algorithms_8h_a54ba5ae237da81552713748a5540b8fc}{p4est\+\_\+tree\+\_\+is\+\_\+almost\+\_\+sorted}} (\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$tree, int check\+\_\+linearity)
+\begin{DoxyCompactList}\small\item\em Check if a tree is sorted/linear except for diagonally outside corners. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__algorithms_8h_a24f1fac9437c20e099988b83f3c82479}{p4est\+\_\+tree\+\_\+print}} (int log\+\_\+priority, \mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$tree)
+\begin{DoxyCompactList}\small\item\em Print the quadrants in a tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__algorithms_8h_a26609a5b5e9920497f704851d6551401}{p4est\+\_\+is\+\_\+equal}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$p4est1, \mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$p4est2, int compare\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Locally check forest/connectivity structures for equality. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__algorithms_8h_a1f8490aec3259f0f537cdf6b0473cf8c}{p4est\+\_\+is\+\_\+valid}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}})
+\begin{DoxyCompactList}\small\item\em Check a forest for validity and allreduce the result. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__algorithms_8h_ae72af53f701a4cabc21b1e383de28022}{p4est\+\_\+tree\+\_\+compute\+\_\+overlap}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, sc\+\_\+array\+\_\+t $\ast$in, sc\+\_\+array\+\_\+t $\ast$out, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}} balance, sc\+\_\+array\+\_\+t $\ast$borders, sc\+\_\+array\+\_\+t $\ast$inseeds)
+\begin{DoxyCompactList}\small\item\em Compute the overlap of a number of insulation layers with a tree. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__algorithms_8h_a55a873dd77bfa196c61f59b484315ec4}{p4est\+\_\+tree\+\_\+uniqify\+\_\+overlap}} (sc\+\_\+array\+\_\+t $\ast$out)
+\begin{DoxyCompactList}\small\item\em Gets the reduced representation of the overlap that results from using p4est\+\_\+tree\+\_\+compute\+\_\+overlap\+\_\+new. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{p4est__algorithms_8h_af13051544ee47e09df1d157684ba99f3}{p4est\+\_\+tree\+\_\+remove\+\_\+nonowned}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree)
+\begin{DoxyCompactList}\small\item\em Removes quadrants that are outside the owned tree boundaries from a tree. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__algorithms_8h_a72505b01dac28fd956de06010b01c569}{p4est\+\_\+complete\+\_\+region}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q1, int include\+\_\+q1, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q2, int include\+\_\+q2, \mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$tree, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p4est_8h_a33d436b39a1f58fa87c265a60d2d2be3}{p4est\+\_\+init\+\_\+t}} init\+\_\+fn)
+\begin{DoxyCompactList}\small\item\em Constructs a minimal linear octree between two octants. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__algorithms_8h_afb52307e6065a8c216da6a95262661ae}{p4est\+\_\+complete\+\_\+subtree}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p4est_8h_a33d436b39a1f58fa87c265a60d2d2be3}{p4est\+\_\+init\+\_\+t}} init\+\_\+fn)
+\begin{DoxyCompactList}\small\item\em Completes a sorted tree within a \mbox{\hyperlink{structp4est}{p4est}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__algorithms_8h_ac30f23d1167c91106f3a7641462101b8}{p4est\+\_\+balance\+\_\+subtree}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}} btype, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p4est_8h_a33d436b39a1f58fa87c265a60d2d2be3}{p4est\+\_\+init\+\_\+t}} init\+\_\+fn)
+\begin{DoxyCompactList}\small\item\em Balances a sorted tree within a \mbox{\hyperlink{structp4est}{p4est}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__algorithms_8h_a0dd58e30f854b5d7f555a282ca37f990}\label{p4est__algorithms_8h_a0dd58e30f854b5d7f555a282ca37f990}} 
+void {\bfseries p4est\+\_\+balance\+\_\+border} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}} btype, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p4est_8h_a33d436b39a1f58fa87c265a60d2d2be3}{p4est\+\_\+init\+\_\+t}} init\+\_\+fn, \mbox{\hyperlink{p4est__extended_8h_a3183ffccd96efb695bc0b58ce6010ebd}{p4est\+\_\+replace\+\_\+t}} replace\+\_\+fn, sc\+\_\+array\+\_\+t $\ast$borders)
+\item 
+size\+\_\+t \mbox{\hyperlink{p4est__algorithms_8h_a15bbbd406aad72380f47ac4ef5862fe0}{p4est\+\_\+linearize\+\_\+tree}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$tree)
+\begin{DoxyCompactList}\small\item\em Remove overlaps from a sorted list of quadrants. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} \mbox{\hyperlink{p4est__algorithms_8h_aa550de39569e06cb6e9b6804020b78db}{p4est\+\_\+partition\+\_\+correction}} (\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$partition, int num\+\_\+procs, int rank, \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} min\+\_\+quadrant\+\_\+id, \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} max\+\_\+quadrant\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Compute correction of partition for a process. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} \mbox{\hyperlink{p4est__algorithms_8h_ad5c73a218e322d6f7aba814aa3e8f9c9}{p4est\+\_\+partition\+\_\+for\+\_\+coarsening}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$num\+\_\+quadrants\+\_\+in\+\_\+proc)
+\begin{DoxyCompactList}\small\item\em Correct partition counters to allow one level of coarsening. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__algorithms_8h_a5522bdf647d47e3236a79d6eefcf4998}{p4est\+\_\+next\+\_\+nonempty\+\_\+process}} (int rank, int num\+\_\+procs, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$num\+\_\+quadrants\+\_\+in\+\_\+proc)
+\begin{DoxyCompactList}\small\item\em Find next non-\/empty process. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} \mbox{\hyperlink{p4est__algorithms_8h_a85ebc40fdba570a0e97c982b490e0858}{p4est\+\_\+partition\+\_\+given}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, const \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$num\+\_\+quadrants\+\_\+in\+\_\+proc)
+\begin{DoxyCompactList}\small\item\em Partition {\itshape \mbox{\hyperlink{structp4est}{p4est}}} given the number of quadrants per proc. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__algorithms_8h_affe59220ee4ae4eca5d10096050cf372}{p4est\+\_\+quadrant\+\_\+on\+\_\+face\+\_\+boundary}} (\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} treeid, int face, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Checks if a quadrant\textquotesingle{}s face is on the boundary of the forest. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Routines for managing quadrants as elements of trees and subtrees. 
+
+In addition, some high level algorithms such as \mbox{\hyperlink{p4est__algorithms_8h_a85ebc40fdba570a0e97c982b490e0858}{p4est\+\_\+partition\+\_\+given}}. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p4est__algorithms_8h_ac30f23d1167c91106f3a7641462101b8}\label{p4est__algorithms_8h_ac30f23d1167c91106f3a7641462101b8}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_balance\_subtree@{p4est\_balance\_subtree}}
+\index{p4est\_balance\_subtree@{p4est\_balance\_subtree}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_balance\_subtree()}{p4est\_balance\_subtree()}}
+{\footnotesize\ttfamily void p4est\+\_\+balance\+\_\+subtree (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}}}]{btype,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{\mbox{\hyperlink{p4est_8h_a33d436b39a1f58fa87c265a60d2d2be3}{p4est\+\_\+init\+\_\+t}}}]{init\+\_\+fn }\end{DoxyParamCaption})}
+
+
+
+Balances a sorted tree within a \mbox{\hyperlink{structp4est}{p4est}}. 
+
+It may have exterior quadrants. The completed tree will have only owned quadrants and no overlap. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The \mbox{\hyperlink{structp4est}{p4est}} to work on. \\
+\hline
+\mbox{\texttt{ in}}  & {\em btype} & The balance type (face or corner). \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & The 0-\/based index of the subtree to balance. \\
+\hline
+\mbox{\texttt{ in}}  & {\em init\+\_\+fn} & Callback function to initialize the user\+\_\+data which is already allocated automatically. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__algorithms_8h_a72505b01dac28fd956de06010b01c569}\label{p4est__algorithms_8h_a72505b01dac28fd956de06010b01c569}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_complete\_region@{p4est\_complete\_region}}
+\index{p4est\_complete\_region@{p4est\_complete\_region}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_complete\_region()}{p4est\_complete\_region()}}
+{\footnotesize\ttfamily void p4est\+\_\+complete\+\_\+region (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q1,  }\item[{int}]{include\+\_\+q1,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q2,  }\item[{int}]{include\+\_\+q2,  }\item[{\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$}]{tree,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{\mbox{\hyperlink{p4est_8h_a33d436b39a1f58fa87c265a60d2d2be3}{p4est\+\_\+init\+\_\+t}}}]{init\+\_\+fn }\end{DoxyParamCaption})}
+
+
+
+Constructs a minimal linear octree between two octants. 
+
+This is algorithm 2 from H. Sundar, R.\+S. Sampath and G. Biros with the additional improvements that we do not require sorting and the runtime is O(\+N).
+
+\begin{DoxyPrecond}{Precondition}
+{\itshape q1} $<$ {\itshape q2} in the Morton ordering.
+\end{DoxyPrecond}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & Used for the memory pools and quadrant init. \\
+\hline
+\mbox{\texttt{ in}}  & {\em q1} & First input quadrant. Data init\textquotesingle{}ed if included. \\
+\hline
+\mbox{\texttt{ in}}  & {\em include\+\_\+q1} & Flag to specify whether q1 is included. \\
+\hline
+\mbox{\texttt{ in}}  & {\em q2} & Second input quadrant. Data init\textquotesingle{}ed if included. \\
+\hline
+\mbox{\texttt{ in}}  & {\em include\+\_\+q2} & Flag to specify whether q2 is included. \\
+\hline
+\mbox{\texttt{ out}}  & {\em tree} & Initialized tree with zero elements. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & The 0-\/based index of {\itshape tree} which is needed for the {\ttfamily p4est\+\_\+quadrant\+\_\+init\+\_\+data} routine. \\
+\hline
+\mbox{\texttt{ in}}  & {\em init\+\_\+fn} & Callback function to initialize the user\+\_\+data which is already allocated automatically. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__algorithms_8h_afb52307e6065a8c216da6a95262661ae}\label{p4est__algorithms_8h_afb52307e6065a8c216da6a95262661ae}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_complete\_subtree@{p4est\_complete\_subtree}}
+\index{p4est\_complete\_subtree@{p4est\_complete\_subtree}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_complete\_subtree()}{p4est\_complete\_subtree()}}
+{\footnotesize\ttfamily void p4est\+\_\+complete\+\_\+subtree (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{\mbox{\hyperlink{p4est_8h_a33d436b39a1f58fa87c265a60d2d2be3}{p4est\+\_\+init\+\_\+t}}}]{init\+\_\+fn }\end{DoxyParamCaption})}
+
+
+
+Completes a sorted tree within a \mbox{\hyperlink{structp4est}{p4est}}. 
+
+It may have exterior quadrants. The completed tree will have only owned quadrants and no overlap. Note that the tree\textquotesingle{}s counters ({\itshape quadrants\+\_\+per\+\_\+level}, {\itshape maxlevel}) must be correct for the quadrants in the incoming tree.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The \mbox{\hyperlink{structp4est}{p4est}} to work on. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & The 0-\/based index of the subtree to complete. \\
+\hline
+\mbox{\texttt{ in}}  & {\em init\+\_\+fn} & Callback function to initialize the user\+\_\+data which is already allocated automatically. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__algorithms_8h_a26609a5b5e9920497f704851d6551401}\label{p4est__algorithms_8h_a26609a5b5e9920497f704851d6551401}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_is\_equal@{p4est\_is\_equal}}
+\index{p4est\_is\_equal@{p4est\_is\_equal}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_is\_equal()}{p4est\_is\_equal()}}
+{\footnotesize\ttfamily int p4est\+\_\+is\+\_\+equal (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est1,  }\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est2,  }\item[{int}]{compare\+\_\+data }\end{DoxyParamCaption})}
+
+
+
+Locally check forest/connectivity structures for equality. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em p4est1} & The first forest to be compared. \\
+\hline
+\mbox{\texttt{ in}}  & {\em p4est2} & The second forest to be compared. \\
+\hline
+\mbox{\texttt{ in}}  & {\em compare\+\_\+data} & Also check if quadrant data are identical. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if forests and their connectivities are equal. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__algorithms_8h_a1f8490aec3259f0f537cdf6b0473cf8c}\label{p4est__algorithms_8h_a1f8490aec3259f0f537cdf6b0473cf8c}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_is\_valid@{p4est\_is\_valid}}
+\index{p4est\_is\_valid@{p4est\_is\_valid}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_is\_valid()}{p4est\_is\_valid()}}
+{\footnotesize\ttfamily int p4est\+\_\+is\+\_\+valid (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est }\end{DoxyParamCaption})}
+
+
+
+Check a forest for validity and allreduce the result. 
+
+Some properties of a valid forest are\+: the quadrant counters are consistent all trees are complete all non-\/local trees are empty This function is collective! It is also relatively expensive, so its use in production should be limited. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The forest to be tested. Itself and its connectivity must be non-\/\+NULL. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if valid, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__algorithms_8h_a15bbbd406aad72380f47ac4ef5862fe0}\label{p4est__algorithms_8h_a15bbbd406aad72380f47ac4ef5862fe0}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_linearize\_tree@{p4est\_linearize\_tree}}
+\index{p4est\_linearize\_tree@{p4est\_linearize\_tree}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_linearize\_tree()}{p4est\_linearize\_tree()}}
+{\footnotesize\ttfamily size\+\_\+t p4est\+\_\+linearize\+\_\+tree (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$}]{tree }\end{DoxyParamCaption})}
+
+
+
+Remove overlaps from a sorted list of quadrants. 
+
+This is algorithm 8 from H. Sundar, R.\+S. Sampath and G. Biros with the additional improvement that it works in-\/place.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & used for the memory pool and quadrant free. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em tree} & A sorted tree to be linearized in-\/place. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the number of removed quadrants. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__algorithms_8h_a5522bdf647d47e3236a79d6eefcf4998}\label{p4est__algorithms_8h_a5522bdf647d47e3236a79d6eefcf4998}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_next\_nonempty\_process@{p4est\_next\_nonempty\_process}}
+\index{p4est\_next\_nonempty\_process@{p4est\_next\_nonempty\_process}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_next\_nonempty\_process()}{p4est\_next\_nonempty\_process()}}
+{\footnotesize\ttfamily int p4est\+\_\+next\+\_\+nonempty\+\_\+process (\begin{DoxyParamCaption}\item[{int}]{rank,  }\item[{int}]{num\+\_\+procs,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$}]{num\+\_\+quadrants\+\_\+in\+\_\+proc }\end{DoxyParamCaption})}
+
+
+
+Find next non-\/empty process. 
+
+Finds the next process id $>$= {\itshape rank} which is not empty according to {\itshape num\+\_\+quadrants\+\_\+in\+\_\+proc}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em rank} & process id where search starts \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+procs} & number of processes \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+quadrants\+\_\+in\+\_\+proc} & number of quadrants for each process \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+process id of a non empty process 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__algorithms_8h_aa550de39569e06cb6e9b6804020b78db}\label{p4est__algorithms_8h_aa550de39569e06cb6e9b6804020b78db}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_partition\_correction@{p4est\_partition\_correction}}
+\index{p4est\_partition\_correction@{p4est\_partition\_correction}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_partition\_correction()}{p4est\_partition\_correction()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} p4est\+\_\+partition\+\_\+correction (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} $\ast$}]{partition,  }\item[{int}]{num\+\_\+procs,  }\item[{int}]{rank,  }\item[{\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}}}]{min\+\_\+quadrant\+\_\+id,  }\item[{\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}}}]{max\+\_\+quadrant\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Compute correction of partition for a process. 
+
+The correction denotes how many quadrants the process with id {\itshape rank} takes from (if correction positive) or gives to (if correction negative) the previous process with id {\itshape rank-\/1} in order to assign a family of quadrants to one process. The process with the highest number of quadrants of a family gets all quadrants belonging to this family from other processes. If this applies to several processes, then the process with the lowest id gets the quadrants. A process can give more quadrants than it owns, if it passes quadrants from other processes.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em partition} & first global quadrant index for each process (+1) \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+procs} & number of processes \\
+\hline
+\mbox{\texttt{ in}}  & {\em rank} & process id for which correction is computed \\
+\hline
+\mbox{\texttt{ in}}  & {\em min\+\_\+quadrant\+\_\+id} & minimal global quadrant index of family \\
+\hline
+\mbox{\texttt{ in}}  & {\em max\+\_\+quadrant\+\_\+id} & maximal global quadrant index of family \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+correction for process {\itshape rank} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__algorithms_8h_ad5c73a218e322d6f7aba814aa3e8f9c9}\label{p4est__algorithms_8h_ad5c73a218e322d6f7aba814aa3e8f9c9}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_partition\_for\_coarsening@{p4est\_partition\_for\_coarsening}}
+\index{p4est\_partition\_for\_coarsening@{p4est\_partition\_for\_coarsening}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_partition\_for\_coarsening()}{p4est\_partition\_for\_coarsening()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} p4est\+\_\+partition\+\_\+for\+\_\+coarsening (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$}]{num\+\_\+quadrants\+\_\+in\+\_\+proc }\end{DoxyParamCaption})}
+
+
+
+Correct partition counters to allow one level of coarsening. 
+
+No quadrants are actually shipped, just the desired number is updated. This function guarantees that empty processors remain empty. This function is collective and acts as a synchronization point.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & forest whose partition is corrected \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em num\+\_\+quadrants\+\_\+in\+\_\+proc} & partition that will be corrected \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+total absolute number of moved quadrants. In practice, at most a small number per processor. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__algorithms_8h_a85ebc40fdba570a0e97c982b490e0858}\label{p4est__algorithms_8h_a85ebc40fdba570a0e97c982b490e0858}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_partition\_given@{p4est\_partition\_given}}
+\index{p4est\_partition\_given@{p4est\_partition\_given}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_partition\_given()}{p4est\_partition\_given()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} p4est\+\_\+partition\+\_\+given (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{const \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$}]{num\+\_\+quadrants\+\_\+in\+\_\+proc }\end{DoxyParamCaption})}
+
+
+
+Partition {\itshape \mbox{\hyperlink{structp4est}{p4est}}} given the number of quadrants per proc. 
+
+Given the desired number of quadrants per proc {\itshape num\+\_\+quadrants\+\_\+in\+\_\+proc} the forest {\itshape \mbox{\hyperlink{structp4est}{p4est}}} is partitioned.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & the forest that is partitioned. \\
+\hline
+\mbox{\texttt{ in}}  & {\em num\+\_\+quadrants\+\_\+in\+\_\+proc} & an integer array of the number of quadrants desired per processor. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the global count of shipped quadrants. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__algorithms_8h_a4928e8bf3b9577f52800a39f52bd5d58}\label{p4est__algorithms_8h_a4928e8bf3b9577f52800a39f52bd5d58}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_quadrant\_checksum@{p4est\_quadrant\_checksum}}
+\index{p4est\_quadrant\_checksum@{p4est\_quadrant\_checksum}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_checksum()}{p4est\_quadrant\_checksum()}}
+{\footnotesize\ttfamily unsigned p4est\+\_\+quadrant\+\_\+checksum (\begin{DoxyParamCaption}\item[{sc\+\_\+array\+\_\+t $\ast$}]{quadrants,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{checkarray,  }\item[{size\+\_\+t}]{first\+\_\+quadrant }\end{DoxyParamCaption})}
+
+
+
+Computes a machine-\/independent checksum of a list of quadrants. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em quadrants} & Array of quadrants. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em checkarray} & Temporary array of elem\+\_\+size 4. Will be resized to quadrants-\/$>$elem\+\_\+count $\ast$ 3. If it is NULL, will be allocated internally. \\
+\hline
+\mbox{\texttt{ in}}  & {\em first\+\_\+quadrant} & Index of the quadrant to start with. Can be between 0 and elem\+\_\+count (inclusive). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__algorithms_8h_aada8ef40a0ca4aa82e7b10ac520e58e6}\label{p4est__algorithms_8h_aada8ef40a0ca4aa82e7b10ac520e58e6}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_quadrant\_free\_data@{p4est\_quadrant\_free\_data}}
+\index{p4est\_quadrant\_free\_data@{p4est\_quadrant\_free\_data}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_free\_data()}{p4est\_quadrant\_free\_data()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+free\+\_\+data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{quad }\end{DoxyParamCaption})}
+
+
+
+Free the user data of a valid quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & Forest for accessing the memory pool. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em quad} & The quadrant whose data shall be freed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__algorithms_8h_a14bfe24e2e440202d44c20a802d6acdf}\label{p4est__algorithms_8h_a14bfe24e2e440202d44c20a802d6acdf}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_quadrant\_in\_range@{p4est\_quadrant\_in\_range}}
+\index{p4est\_quadrant\_in\_range@{p4est\_quadrant\_in\_range}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_in\_range()}{p4est\_quadrant\_in\_range()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+in\+\_\+range (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{fd,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{ld,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{quadrant }\end{DoxyParamCaption})}
+
+
+
+Report whether a quadrant fits into the limits of a quadrant range. 
+
+The range\textquotesingle{}s boundaries are determined by its first and last descendant. Such descendants are for example stored in each tree of a p4est\+\_\+t. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em fd} & First descendant quadrant of a range. Thus its level must be P4\+EST\+\_\+\+QMAXLEVEL. Must be valid, its data is ignored. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ld} & Last descendant quadrant of a range. Thus it must not be smaller than {\itshape fd} and its level must be P4\+EST\+\_\+\+QMAXLEVEL. Must be valid, its data is ignored. \\
+\hline
+\mbox{\texttt{ in}}  & {\em quadrant} & Quadrant checked to be fully inside the range. Must at least be extended, its data is ignored. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if and only if quadrant is contained in range. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{p4est__bits_8h_af09c9f3d67c4983b6981d7482f275275}{p4est\+\_\+quadrant\+\_\+is\+\_\+extended}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{p4est__algorithms_8h_a676f6c46832315298db16389d26783e2}\label{p4est__algorithms_8h_a676f6c46832315298db16389d26783e2}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_quadrant\_init\_data@{p4est\_quadrant\_init\_data}}
+\index{p4est\_quadrant\_init\_data@{p4est\_quadrant\_init\_data}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_init\_data()}{p4est\_quadrant\_init\_data()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+init\+\_\+data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{quad,  }\item[{\mbox{\hyperlink{p4est_8h_a33d436b39a1f58fa87c265a60d2d2be3}{p4est\+\_\+init\+\_\+t}}}]{init\+\_\+fn }\end{DoxyParamCaption})}
+
+
+
+Alloc and initialize the user data of a valid quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & Forest for accessing the memory pool. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & 0-\/based index of this quadrant\textquotesingle{}s tree. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em quad} & The quadrant to be initialized. \\
+\hline
+\mbox{\texttt{ in}}  & {\em init\+\_\+fn} & User-\/supplied callback function to init data. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__algorithms_8h_ae94de1b48729a97f7294ad0dc7b74979}\label{p4est__algorithms_8h_ae94de1b48729a97f7294ad0dc7b74979}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_quadrant\_mempool\_new@{p4est\_quadrant\_mempool\_new}}
+\index{p4est\_quadrant\_mempool\_new@{p4est\_quadrant\_mempool\_new}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_mempool\_new()}{p4est\_quadrant\_mempool\_new()}}
+{\footnotesize\ttfamily sc\+\_\+mempool\+\_\+t$\ast$ p4est\+\_\+quadrant\+\_\+mempool\+\_\+new (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Create a memory pool for quadrants that initializes compiler padding. 
+
+\begin{DoxyReturn}{Returns}
+Initialized mempool with zero\+\_\+and\+\_\+persist setting. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__algorithms_8h_affe59220ee4ae4eca5d10096050cf372}\label{p4est__algorithms_8h_affe59220ee4ae4eca5d10096050cf372}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_quadrant\_on\_face\_boundary@{p4est\_quadrant\_on\_face\_boundary}}
+\index{p4est\_quadrant\_on\_face\_boundary@{p4est\_quadrant\_on\_face\_boundary}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_on\_face\_boundary()}{p4est\_quadrant\_on\_face\_boundary()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+on\+\_\+face\+\_\+boundary (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{treeid,  }\item[{int}]{face,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Checks if a quadrant\textquotesingle{}s face is on the boundary of the forest. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The forest in which to search for {\itshape q} \\
+\hline
+\mbox{\texttt{ in}}  & {\em treeid} & The tree to which {\itshape q} belongs. \\
+\hline
+\mbox{\texttt{ in}}  & {\em q} & The quadrant that is in question. \\
+\hline
+\mbox{\texttt{ in}}  & {\em face} & The face of the quadrant that is in question.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the quadrant\textquotesingle{}s face is on the boundary of the forest and false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__algorithms_8h_ae72af53f701a4cabc21b1e383de28022}\label{p4est__algorithms_8h_ae72af53f701a4cabc21b1e383de28022}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_tree\_compute\_overlap@{p4est\_tree\_compute\_overlap}}
+\index{p4est\_tree\_compute\_overlap@{p4est\_tree\_compute\_overlap}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_tree\_compute\_overlap()}{p4est\_tree\_compute\_overlap()}}
+{\footnotesize\ttfamily void p4est\+\_\+tree\+\_\+compute\+\_\+overlap (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{in,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{out,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}}}]{balance,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{borders,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{inseeds }\end{DoxyParamCaption})}
+
+
+
+Compute the overlap of a number of insulation layers with a tree. 
+
+Every quadrant out of the insulation layer of the quadrants in {\itshape in} except the quadrant itself is checked for overlap of quadrants from all trees that are smaller by at least two levels and thus can cause a split. Those elements that cause a split (as determined by the p4est\+\_\+balance\+\_\+$\ast$\+\_\+test routines) create quadrants in {\itshape out} that will reproduce those splits when {\itshape in} is balanced. Note\+: Use this version if you are using less than full balance.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The \mbox{\hyperlink{structp4est}{p4est}} to work on. \\
+\hline
+\mbox{\texttt{ in}}  & {\em in} & A piggy-\/sorted linear list of quadrants. The piggy2-\/$>$from\+\_\+tree member must be set. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em out} & A piggy-\/sorted subset of tree-\/$>$quadrants. \\
+\hline
+\mbox{\texttt{ in}}  & {\em balance} & The type of balance condition that should be enforced. \\
+\hline
+\mbox{\texttt{ in}}  & {\em borders} & Array of arrays of tree border elements\+: if not NULL, this will be used to fill {\itshape out}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em inseeds} & The seeds that {\itshape in} generates locally. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__algorithms_8h_a54ba5ae237da81552713748a5540b8fc}\label{p4est__algorithms_8h_a54ba5ae237da81552713748a5540b8fc}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_tree\_is\_almost\_sorted@{p4est\_tree\_is\_almost\_sorted}}
+\index{p4est\_tree\_is\_almost\_sorted@{p4est\_tree\_is\_almost\_sorted}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_tree\_is\_almost\_sorted()}{p4est\_tree\_is\_almost\_sorted()}}
+{\footnotesize\ttfamily int p4est\+\_\+tree\+\_\+is\+\_\+almost\+\_\+sorted (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$}]{tree,  }\item[{int}]{check\+\_\+linearity }\end{DoxyParamCaption})}
+
+
+
+Check if a tree is sorted/linear except for diagonally outside corners. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tree} & Tree data structure of a forest. \\
+\hline
+\mbox{\texttt{ in}}  & {\em check\+\_\+linearity} & Boolean for additional check for linearity. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if almost sorted/linear, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__algorithms_8h_ad45e6a0d8ecf8984cbb6a16bbb8f7426}\label{p4est__algorithms_8h_ad45e6a0d8ecf8984cbb6a16bbb8f7426}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_tree\_is\_complete@{p4est\_tree\_is\_complete}}
+\index{p4est\_tree\_is\_complete@{p4est\_tree\_is\_complete}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_tree\_is\_complete()}{p4est\_tree\_is\_complete()}}
+{\footnotesize\ttfamily int p4est\+\_\+tree\+\_\+is\+\_\+complete (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$}]{tree }\end{DoxyParamCaption})}
+
+
+
+Test if a tree is sorted in Morton ordering and complete. 
+
+\begin{DoxyReturn}{Returns}
+Returns true if complete, false otherwise. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Complete means that the tree has no holes and no overlaps. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__algorithms_8h_a5497d83ec9cf844aba37d43f4ff69913}\label{p4est__algorithms_8h_a5497d83ec9cf844aba37d43f4ff69913}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_tree\_is\_linear@{p4est\_tree\_is\_linear}}
+\index{p4est\_tree\_is\_linear@{p4est\_tree\_is\_linear}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_tree\_is\_linear()}{p4est\_tree\_is\_linear()}}
+{\footnotesize\ttfamily int p4est\+\_\+tree\+\_\+is\+\_\+linear (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$}]{tree }\end{DoxyParamCaption})}
+
+
+
+Test if a tree is sorted in Morton ordering and linear. 
+
+\begin{DoxyReturn}{Returns}
+Returns true if linear, false otherwise. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Linear means that the tree has no overlaps. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__algorithms_8h_aa46180f50aef51d7b66393fc067aabc3}\label{p4est__algorithms_8h_aa46180f50aef51d7b66393fc067aabc3}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_tree\_is\_sorted@{p4est\_tree\_is\_sorted}}
+\index{p4est\_tree\_is\_sorted@{p4est\_tree\_is\_sorted}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_tree\_is\_sorted()}{p4est\_tree\_is\_sorted()}}
+{\footnotesize\ttfamily int p4est\+\_\+tree\+\_\+is\+\_\+sorted (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$}]{tree }\end{DoxyParamCaption})}
+
+
+
+Test if a tree is sorted in Morton ordering. 
+
+\begin{DoxyReturn}{Returns}
+Returns true if sorted, false otherwise. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Duplicate quadrants are not allowed. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__algorithms_8h_a24f1fac9437c20e099988b83f3c82479}\label{p4est__algorithms_8h_a24f1fac9437c20e099988b83f3c82479}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_tree\_print@{p4est\_tree\_print}}
+\index{p4est\_tree\_print@{p4est\_tree\_print}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_tree\_print()}{p4est\_tree\_print()}}
+{\footnotesize\ttfamily void p4est\+\_\+tree\+\_\+print (\begin{DoxyParamCaption}\item[{int}]{log\+\_\+priority,  }\item[{\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$}]{tree }\end{DoxyParamCaption})}
+
+
+
+Print the quadrants in a tree. 
+
+Prints one line per quadrant with x, y, level and a string. The string denotes the relation to the previous quadrant and can be\+: Fn for the first quadrant in the tree with child id n I for identical quadrants R for a quadrant that with smaller Morton index Cn for child id n Sn for sibling with child id n D for a descendant Nn for a next quadrant in the tree with no holes in between and child id n qn for a general quadrant whose child id is n 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em log\+\_\+priority} & Priority for log message (see sc.\+h). \\
+\hline
+\mbox{\texttt{ in}}  & {\em tree} & Any (possibly incomplete, unsorted) tree to be printed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__algorithms_8h_af13051544ee47e09df1d157684ba99f3}\label{p4est__algorithms_8h_af13051544ee47e09df1d157684ba99f3}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_tree\_remove\_nonowned@{p4est\_tree\_remove\_nonowned}}
+\index{p4est\_tree\_remove\_nonowned@{p4est\_tree\_remove\_nonowned}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_tree\_remove\_nonowned()}{p4est\_tree\_remove\_nonowned()}}
+{\footnotesize\ttfamily size\+\_\+t p4est\+\_\+tree\+\_\+remove\+\_\+nonowned (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{which\+\_\+tree }\end{DoxyParamCaption})}
+
+
+
+Removes quadrants that are outside the owned tree boundaries from a tree. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The \mbox{\hyperlink{structp4est}{p4est}} to work on. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & Index to a sorted owned tree in the \mbox{\hyperlink{structp4est}{p4est}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the number of removed quadrants. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__algorithms_8h_a55a873dd77bfa196c61f59b484315ec4}\label{p4est__algorithms_8h_a55a873dd77bfa196c61f59b484315ec4}} 
+\index{p4est\_algorithms.h@{p4est\_algorithms.h}!p4est\_tree\_uniqify\_overlap@{p4est\_tree\_uniqify\_overlap}}
+\index{p4est\_tree\_uniqify\_overlap@{p4est\_tree\_uniqify\_overlap}!p4est\_algorithms.h@{p4est\_algorithms.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_tree\_uniqify\_overlap()}{p4est\_tree\_uniqify\_overlap()}}
+{\footnotesize\ttfamily void p4est\+\_\+tree\+\_\+uniqify\+\_\+overlap (\begin{DoxyParamCaption}\item[{sc\+\_\+array\+\_\+t $\ast$}]{out }\end{DoxyParamCaption})}
+
+
+
+Gets the reduced representation of the overlap that results from using p4est\+\_\+tree\+\_\+compute\+\_\+overlap\+\_\+new. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em out} & A piggy-\/sorted subset of tree-\/$>$quadrants. \\
+\hline
+\end{DoxyParams}

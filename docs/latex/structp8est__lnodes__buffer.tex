@@ -1,0 +1,35 @@
+\hypertarget{structp8est__lnodes__buffer}{}\doxysection{p8est\+\_\+lnodes\+\_\+buffer Struct Reference}
+\label{structp8est__lnodes__buffer}\index{p8est\_lnodes\_buffer@{p8est\_lnodes\_buffer}}
+
+
+p8est\+\_\+lnodes\+\_\+buffer\+\_\+t handles the communication of data associated with nodes.  
+
+
+
+
+{\ttfamily \#include $<$p8est\+\_\+lnodes.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp8est__lnodes__buffer_a5e4dfd2303282df7e900212389c3e9f2}\label{structp8est__lnodes__buffer_a5e4dfd2303282df7e900212389c3e9f2}} 
+sc\+\_\+array\+\_\+t $\ast$ {\bfseries requests}
+\item 
+\mbox{\Hypertarget{structp8est__lnodes__buffer_a6421416f0bd871b75ff83308a9df02c2}\label{structp8est__lnodes__buffer_a6421416f0bd871b75ff83308a9df02c2}} 
+sc\+\_\+array\+\_\+t $\ast$ {\bfseries send\+\_\+buffers}
+\item 
+\mbox{\Hypertarget{structp8est__lnodes__buffer_a73b938ef9f5d69da10dd447a2c743bdf}\label{structp8est__lnodes__buffer_a73b938ef9f5d69da10dd447a2c743bdf}} 
+sc\+\_\+array\+\_\+t $\ast$ {\bfseries recv\+\_\+buffers}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+p8est\+\_\+lnodes\+\_\+buffer\+\_\+t handles the communication of data associated with nodes. 
+
+{\itshape send\+\_\+buffers} is an array of arrays\+: one buffer for each process to which the current process sends node-\/data. It should not be altered between a shared\+\_\+$\ast$\+\_\+begin and a shared\+\_\+$\ast$\+\_\+end call.
+
+{\itshape recv\+\_\+buffers} is an array of arrays that is used in lnodes\+\_\+share\+\_\+all\+\_\+$\ast$. {\itshape recv\+\_\+buffers}\mbox{[}j\mbox{]} corresponds with lnodes-\/$>$sharers\mbox{[}j\mbox{]}\+: it is the same length as {\itshape lnodes-\/$>$sharers}\mbox{[}j\mbox{]}-\/$>$shared\+\_\+nodes. At the completion of lnodes\+\_\+share\+\_\+all or lnodes\+\_\+share\+\_\+all\+\_\+end, recv\+\_\+buffers\mbox{[}j\mbox{]} contains the node-\/data from the process lnodes-\/$>$sharers\mbox{[}j\mbox{]}-\/$>$rank (unless j is the current rank, in which case recv\+\_\+buffers\mbox{[}j\mbox{]} is empty). 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p8est__lnodes_8h}{p8est\+\_\+lnodes.\+h}}\end{DoxyCompactItemize}

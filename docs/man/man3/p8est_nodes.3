@@ -1,0 +1,66 @@
+.TH "p8est_nodes" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p8est_nodes \- This structure holds complete parallel node information\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p8est_nodes\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBnum_local_quadrants\fP"
+.br
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBnum_owned_indeps\fP"
+.br
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBnum_owned_shared\fP"
+.br
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBoffset_owned_indeps\fP"
+.br
+.ti -1c
+.RI "sc_array_t \fBindep_nodes\fP"
+.br
+.ti -1c
+.RI "sc_array_t \fBface_hangings\fP"
+.br
+.ti -1c
+.RI "sc_array_t \fBedge_hangings\fP"
+.br
+.ti -1c
+.RI "\fBp4est_locidx_t\fP * \fBlocal_nodes\fP"
+.br
+.ti -1c
+.RI "sc_array_t \fBshared_indeps\fP"
+.br
+.ti -1c
+.RI "\fBp4est_locidx_t\fP * \fBshared_offsets\fP"
+.br
+.ti -1c
+.RI "int * \fBnonlocal_ranks\fP"
+.br
+.ti -1c
+.RI "\fBp4est_locidx_t\fP * \fBglobal_owned_indeps\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This structure holds complete parallel node information\&. 
+
+Nodes are unique and either independent, face or edge hanging\&. Independent nodes store their owner's tree id in piggy3\&.which_tree\&. The index in their owner's ordering is stored in piggy3\&.local_num\&. Hanging nodes store their owner's tree id in piggy\&.which_tree\&. The numbers of their associated independent nodes are in piggy\&.depends[]\&.
+.PP
+The local_nodes table is of dimension 8 * num_local_quadrants and encodes the node indexes for all corners of all quadrants\&. Let ni := indep_nodes\&.elem_count, fi := face_hangings\&.elem_count, ei := edge_hangings\&.elem_count\&. If for l := local_nodes[k] l >= 0 && l < ni: l indexes into indep_nodes\&. l >= ni && l < ni + fi: l - ni indexes into face_hangings\&. l >= ni + fi && l < ni + fi + ei: l - ni - fi indexes into edge_hangings\&. No other values for l are permitted\&.
+.PP
+The array shared_indeps holds lists of node sharers (not including rank)\&. The entry shared_indeps[i] is of type sc_recycle_array_t and holds the list of nodes with i + 1 sharers\&. For each independent node, its member pad8 holds the number of sharers and its member pad16 holds the position in the assigned recycle array if this number fits into an int16_t\&. If this limit is exceeded, the array shared_offsets is filled with these positions as one p4est_locidx_t per independent node, and all pad16 members are set to -1\&. To recognize the latter situation you can check for shared_offsets != NULL\&.
+.PP
+Each processor owns num_owned_indeps of the stored independent nodes\&. The first independent owned node is at index offset_owned_indeps\&. The table nonlocal_ranks contains the ranks of all stored non-owned nodes\&. The table global_owned_indeps holds the number of owned nodes for each rank\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

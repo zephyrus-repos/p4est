@@ -1,0 +1,249 @@
+\hypertarget{p6est__ghost_8h}{}\doxysection{src/p6est\+\_\+ghost.h File Reference}
+\label{p6est__ghost_8h}\index{src/p6est\_ghost.h@{src/p6est\_ghost.h}}
+
+
+passing columns of layers and data to neighboring processes  
+
+
+{\ttfamily \#include $<$p6est.\+h$>$}\newline
+{\ttfamily \#include $<$p4est\+\_\+ghost.\+h$>$}\newline
+Include dependency graph for p6est\+\_\+ghost.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p6est__ghost_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=187pt]{p6est__ghost_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structp6est__ghost}{p6est\+\_\+ghost}}
+\begin{DoxyCompactList}\small\item\em columns of layers that neighbor the local domain \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}\label{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}} 
+typedef struct \mbox{\hyperlink{structp6est__ghost}{p6est\+\_\+ghost}} \mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em columns of layers that neighbor the local domain \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{p6est__ghost_8h_aa580c1c8ad553065ad6603ea19e534d7}{p6est\+\_\+ghost\+\_\+memory\+\_\+used}} (\mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$ghost)
+\begin{DoxyCompactList}\small\item\em Calculate the memory usage of the ghost layer. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$ \mbox{\hyperlink{p6est__ghost_8h_a9995936a24b3469f5c7cb5778ad5269b}{p6est\+\_\+ghost\+\_\+new}} (\mbox{\hyperlink{p6est_8h_a283f575657cdccd543fa9fd09f8a7cba}{p6est\+\_\+t}} $\ast$\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}} btype)
+\begin{DoxyCompactList}\small\item\em Builds the ghost layer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p6est__ghost_8h_a63868e3f93189dd2dc5de53577be0415}{p6est\+\_\+ghost\+\_\+expand}} (\mbox{\hyperlink{p6est_8h_a283f575657cdccd543fa9fd09f8a7cba}{p6est\+\_\+t}} $\ast$\mbox{\hyperlink{structp6est}{p6est}}, \mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$ghost)
+\begin{DoxyCompactList}\small\item\em Expand the size of the ghost layer and mirrors by one additional layer of adjacency. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p6est__ghost_8h_a968a4d2b4d3b590e0f708c0ffbbad69c}\label{p6est__ghost_8h_a968a4d2b4d3b590e0f708c0ffbbad69c}} 
+void \mbox{\hyperlink{p6est__ghost_8h_a968a4d2b4d3b590e0f708c0ffbbad69c}{p6est\+\_\+ghost\+\_\+destroy}} (\mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$ghost)
+\begin{DoxyCompactList}\small\item\em Frees all memory used for the ghost layer. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{p6est__ghost_8h_a3f40888e4d78d7e199e695b156c9ba4d}{p6est\+\_\+ghost\+\_\+bsearch}} (\mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$ghost, int which\+\_\+proc, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$column, const \mbox{\hyperlink{p6est_8h_a1ed0689fce16320871f78d084b6ec3b5}{p2est\+\_\+quadrant\+\_\+t}} $\ast$layer)
+\begin{DoxyCompactList}\small\item\em Conduct binary search for exact match on a range of the ghost layer. \end{DoxyCompactList}\item 
+ssize\+\_\+t \mbox{\hyperlink{p6est__ghost_8h_ae5fa1bba8bdeeead5de2890257cad984}{p6est\+\_\+ghost\+\_\+contains}} (\mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$ghost, int which\+\_\+proc, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$column, const \mbox{\hyperlink{p6est_8h_a1ed0689fce16320871f78d084b6ec3b5}{p2est\+\_\+quadrant\+\_\+t}} $\ast$layer)
+\begin{DoxyCompactList}\small\item\em Conduct binary search for ancestor on range of the ghost layer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p6est__ghost_8h_a1320c24b413e3fa89c5a3b5f95ba686a}{p6est\+\_\+layer\+\_\+exists}} (\mbox{\hyperlink{p6est_8h_a283f575657cdccd543fa9fd09f8a7cba}{p6est\+\_\+t}} $\ast$\mbox{\hyperlink{structp6est}{p6est}}, \mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$ghost, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} treeid, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$column, const \mbox{\hyperlink{p6est_8h_a1ed0689fce16320871f78d084b6ec3b5}{p2est\+\_\+quadrant\+\_\+t}} $\ast$layer, sc\+\_\+array\+\_\+t $\ast$exists\+\_\+arr, sc\+\_\+array\+\_\+t $\ast$rproc\+\_\+arr, sc\+\_\+array\+\_\+t $\ast$rquad\+\_\+arr)
+\begin{DoxyCompactList}\small\item\em Checks if layer exists in the local forest or the ghost layer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p6est__ghost_8h_a44ef8b750f2537e8dfbce4d3190408b3}{p6est\+\_\+is\+\_\+balanced}} (\mbox{\hyperlink{p6est_8h_a283f575657cdccd543fa9fd09f8a7cba}{p6est\+\_\+t}} $\ast$\mbox{\hyperlink{structp6est}{p6est}}, \mbox{\hyperlink{p8est__connectivity_8h_aaa5a9d47d1b169507e1095783ab89be1}{p8est\+\_\+connect\+\_\+type\+\_\+t}} btype)
+\begin{DoxyCompactList}\small\item\em Check a forest to see if it is balanced. \end{DoxyCompactList}\item 
+unsigned \mbox{\hyperlink{p6est__ghost_8h_a90441068213f67e31e34d55614e88c65}{p6est\+\_\+ghost\+\_\+checksum}} (\mbox{\hyperlink{p6est_8h_a283f575657cdccd543fa9fd09f8a7cba}{p6est\+\_\+t}} $\ast$\mbox{\hyperlink{structp6est}{p6est}}, \mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$ghost)
+\begin{DoxyCompactList}\small\item\em Compute the parallel checksum of a ghost layer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+passing columns of layers and data to neighboring processes 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p6est__ghost_8h_a3f40888e4d78d7e199e695b156c9ba4d}\label{p6est__ghost_8h_a3f40888e4d78d7e199e695b156c9ba4d}} 
+\index{p6est\_ghost.h@{p6est\_ghost.h}!p6est\_ghost\_bsearch@{p6est\_ghost\_bsearch}}
+\index{p6est\_ghost\_bsearch@{p6est\_ghost\_bsearch}!p6est\_ghost.h@{p6est\_ghost.h}}
+\doxysubsubsection{\texorpdfstring{p6est\_ghost\_bsearch()}{p6est\_ghost\_bsearch()}}
+{\footnotesize\ttfamily ssize\+\_\+t p6est\+\_\+ghost\+\_\+bsearch (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$}]{ghost,  }\item[{int}]{which\+\_\+proc,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{column,  }\item[{const \mbox{\hyperlink{p6est_8h_a1ed0689fce16320871f78d084b6ec3b5}{p2est\+\_\+quadrant\+\_\+t}} $\ast$}]{layer }\end{DoxyParamCaption})}
+
+
+
+Conduct binary search for exact match on a range of the ghost layer. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em ghost} & The ghost layer. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+proc} & The owner of the searched quadrant. Can be -\/1. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & The tree of the searched quadrant. Can be -\/1. \\
+\hline
+\mbox{\texttt{ in}}  & {\em column} & The column that is being searched for. \\
+\hline
+\mbox{\texttt{ in}}  & {\em layer} & The layer that is being searched for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Offset in the ghost layer, or -\/1 if not found. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p6est__ghost_8h_a90441068213f67e31e34d55614e88c65}\label{p6est__ghost_8h_a90441068213f67e31e34d55614e88c65}} 
+\index{p6est\_ghost.h@{p6est\_ghost.h}!p6est\_ghost\_checksum@{p6est\_ghost\_checksum}}
+\index{p6est\_ghost\_checksum@{p6est\_ghost\_checksum}!p6est\_ghost.h@{p6est\_ghost.h}}
+\doxysubsubsection{\texorpdfstring{p6est\_ghost\_checksum()}{p6est\_ghost\_checksum()}}
+{\footnotesize\ttfamily unsigned p6est\+\_\+ghost\+\_\+checksum (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p6est_8h_a283f575657cdccd543fa9fd09f8a7cba}{p6est\+\_\+t}} $\ast$}]{p6est,  }\item[{\mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$}]{ghost }\end{DoxyParamCaption})}
+
+
+
+Compute the parallel checksum of a ghost layer. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The MPI information of this \mbox{\hyperlink{structp4est}{p4est}} will be used. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ghost} & A ghost layer obtained from the \mbox{\hyperlink{structp4est}{p4est}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Parallel checksum on rank 0, 0 otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p6est__ghost_8h_ae5fa1bba8bdeeead5de2890257cad984}\label{p6est__ghost_8h_ae5fa1bba8bdeeead5de2890257cad984}} 
+\index{p6est\_ghost.h@{p6est\_ghost.h}!p6est\_ghost\_contains@{p6est\_ghost\_contains}}
+\index{p6est\_ghost\_contains@{p6est\_ghost\_contains}!p6est\_ghost.h@{p6est\_ghost.h}}
+\doxysubsubsection{\texorpdfstring{p6est\_ghost\_contains()}{p6est\_ghost\_contains()}}
+{\footnotesize\ttfamily ssize\+\_\+t p6est\+\_\+ghost\+\_\+contains (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$}]{ghost,  }\item[{int}]{which\+\_\+proc,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{column,  }\item[{const \mbox{\hyperlink{p6est_8h_a1ed0689fce16320871f78d084b6ec3b5}{p2est\+\_\+quadrant\+\_\+t}} $\ast$}]{layer }\end{DoxyParamCaption})}
+
+
+
+Conduct binary search for ancestor on range of the ghost layer. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em ghost} & The ghost layer. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+proc} & The owner of the searched quadrant. Can be -\/1. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & The tree of the searched quadrant. Can be -\/1. \\
+\hline
+\mbox{\texttt{ in}}  & {\em column} & The column that is being searched for. \\
+\hline
+\mbox{\texttt{ in}}  & {\em layer} & The layer that is being searched for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Offset in the ghost layer, or -\/1 if not found. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p6est__ghost_8h_a63868e3f93189dd2dc5de53577be0415}\label{p6est__ghost_8h_a63868e3f93189dd2dc5de53577be0415}} 
+\index{p6est\_ghost.h@{p6est\_ghost.h}!p6est\_ghost\_expand@{p6est\_ghost\_expand}}
+\index{p6est\_ghost\_expand@{p6est\_ghost\_expand}!p6est\_ghost.h@{p6est\_ghost.h}}
+\doxysubsubsection{\texorpdfstring{p6est\_ghost\_expand()}{p6est\_ghost\_expand()}}
+{\footnotesize\ttfamily void p6est\+\_\+ghost\+\_\+expand (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p6est_8h_a283f575657cdccd543fa9fd09f8a7cba}{p6est\+\_\+t}} $\ast$}]{p6est,  }\item[{\mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$}]{ghost }\end{DoxyParamCaption})}
+
+
+
+Expand the size of the ghost layer and mirrors by one additional layer of adjacency. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp6est}{p6est}}} & The forest from which the ghost layer was generated. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em ghost} & The ghost layer to be expanded. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p6est__ghost_8h_aa580c1c8ad553065ad6603ea19e534d7}\label{p6est__ghost_8h_aa580c1c8ad553065ad6603ea19e534d7}} 
+\index{p6est\_ghost.h@{p6est\_ghost.h}!p6est\_ghost\_memory\_used@{p6est\_ghost\_memory\_used}}
+\index{p6est\_ghost\_memory\_used@{p6est\_ghost\_memory\_used}!p6est\_ghost.h@{p6est\_ghost.h}}
+\doxysubsubsection{\texorpdfstring{p6est\_ghost\_memory\_used()}{p6est\_ghost\_memory\_used()}}
+{\footnotesize\ttfamily size\+\_\+t p6est\+\_\+ghost\+\_\+memory\+\_\+used (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$}]{ghost }\end{DoxyParamCaption})}
+
+
+
+Calculate the memory usage of the ghost layer. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em ghost} & Ghost layer structure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Memory used in bytes. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p6est__ghost_8h_a9995936a24b3469f5c7cb5778ad5269b}\label{p6est__ghost_8h_a9995936a24b3469f5c7cb5778ad5269b}} 
+\index{p6est\_ghost.h@{p6est\_ghost.h}!p6est\_ghost\_new@{p6est\_ghost\_new}}
+\index{p6est\_ghost\_new@{p6est\_ghost\_new}!p6est\_ghost.h@{p6est\_ghost.h}}
+\doxysubsubsection{\texorpdfstring{p6est\_ghost\_new()}{p6est\_ghost\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}}$\ast$ p6est\+\_\+ghost\+\_\+new (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p6est_8h_a283f575657cdccd543fa9fd09f8a7cba}{p6est\+\_\+t}} $\ast$}]{p4est,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552ca}{p4est\+\_\+connect\+\_\+type\+\_\+t}}}]{btype }\end{DoxyParamCaption})}
+
+
+
+Builds the ghost layer. 
+
+This will gather the quadrants from each neighboring proc to build one layer of face and corner based ghost elements around the ones they own.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The forest for which the ghost layer will be generated. \\
+\hline
+\mbox{\texttt{ in}}  & {\em btype} & Which ghosts to include (across face, corner or default, full). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A fully initialized ghost layer. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p6est__ghost_8h_a44ef8b750f2537e8dfbce4d3190408b3}\label{p6est__ghost_8h_a44ef8b750f2537e8dfbce4d3190408b3}} 
+\index{p6est\_ghost.h@{p6est\_ghost.h}!p6est\_is\_balanced@{p6est\_is\_balanced}}
+\index{p6est\_is\_balanced@{p6est\_is\_balanced}!p6est\_ghost.h@{p6est\_ghost.h}}
+\doxysubsubsection{\texorpdfstring{p6est\_is\_balanced()}{p6est\_is\_balanced()}}
+{\footnotesize\ttfamily int p6est\+\_\+is\+\_\+balanced (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p6est_8h_a283f575657cdccd543fa9fd09f8a7cba}{p6est\+\_\+t}} $\ast$}]{p6est,  }\item[{\mbox{\hyperlink{p8est__connectivity_8h_aaa5a9d47d1b169507e1095783ab89be1}{p8est\+\_\+connect\+\_\+type\+\_\+t}}}]{btype }\end{DoxyParamCaption})}
+
+
+
+Check a forest to see if it is balanced. 
+
+This function builds the ghost layer and discards it when done.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The \mbox{\hyperlink{structp4est}{p4est}} to be tested. \\
+\hline
+\mbox{\texttt{ in}}  & {\em btype} & Balance type (face, corner or default, full). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if balanced, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p6est__ghost_8h_a1320c24b413e3fa89c5a3b5f95ba686a}\label{p6est__ghost_8h_a1320c24b413e3fa89c5a3b5f95ba686a}} 
+\index{p6est\_ghost.h@{p6est\_ghost.h}!p6est\_layer\_exists@{p6est\_layer\_exists}}
+\index{p6est\_layer\_exists@{p6est\_layer\_exists}!p6est\_ghost.h@{p6est\_ghost.h}}
+\doxysubsubsection{\texorpdfstring{p6est\_layer\_exists()}{p6est\_layer\_exists()}}
+{\footnotesize\ttfamily int p6est\+\_\+layer\+\_\+exists (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p6est_8h_a283f575657cdccd543fa9fd09f8a7cba}{p6est\+\_\+t}} $\ast$}]{p6est,  }\item[{\mbox{\hyperlink{p6est__ghost_8h_af98c2998f90fc18574b0c0ed093a8569}{p6est\+\_\+ghost\+\_\+t}} $\ast$}]{ghost,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{treeid,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{column,  }\item[{const \mbox{\hyperlink{p6est_8h_a1ed0689fce16320871f78d084b6ec3b5}{p2est\+\_\+quadrant\+\_\+t}} $\ast$}]{layer,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{exists\+\_\+arr,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{rproc\+\_\+arr,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{rquad\+\_\+arr }\end{DoxyParamCaption})}
+
+
+
+Checks if layer exists in the local forest or the ghost layer. 
+
+For quadrants across tree corners it checks if the quadrant exists in any of the corner neighbors, thus it can execute multiple queries.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em \mbox{\hyperlink{structp4est}{p4est}}} & The forest in which to search for {\itshape q} \\
+\hline
+\mbox{\texttt{ in}}  & {\em ghost} & The ghost layer in which to search for {\itshape q} \\
+\hline
+\mbox{\texttt{ in}}  & {\em treeid} & The tree to which {\itshape q} belongs (can be extended). \\
+\hline
+\mbox{\texttt{ in}}  & {\em column} & The column that is being searched for. \\
+\hline
+\mbox{\texttt{ in}}  & {\em layer} & The layer that is being searched for. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em exists\+\_\+arr} & Must exist and be of of elem\+\_\+size = sizeof (int) for inter-\/tree corner cases. Is resized by this function to one entry for each corner search and set to true/false depending on its existence in the local forest or ghost\+\_\+layer. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em rproc\+\_\+arr} & If not NULL is filled with one rank per query. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em rquad\+\_\+arr} & If not NULL is filled with one quadrant per query. Its piggy3 member is defined as well.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the quadrant exists in the local forest or in the ghost\+\_\+layer, and false if doesn\textquotesingle{}t exist in either. 
+\end{DoxyReturn}

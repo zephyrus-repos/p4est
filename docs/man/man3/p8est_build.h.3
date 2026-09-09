@@ -1,0 +1,127 @@
+.TH "src/p8est_build.h" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/p8est_build.h \- Create a new \fBp8est\fP object by adding individual quadrants in order\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <p8est\&.h>\fP
+.br
+
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct p8est_build \fBp8est_build_t\fP"
+.br
+.RI "Context object for building a new \fBp4est\fP from individual quadrants\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBp8est_build_t\fP * \fBp8est_build_new\fP (\fBp8est_t\fP *from, size_t data_size, \fBp8est_init_t\fP init_fn, void *user_pointer)"
+.br
+.RI "Allocate a context for building a new forest\&. "
+.ti -1c
+.RI "void \fBp8est_build_init_add\fP (\fBp8est_build_t\fP *build, \fBp8est_init_t\fP add_init_fn)"
+.br
+.RI "Set a dedicated initialization callback for manually added quadrants\&. "
+.ti -1c
+.RI "int \fBp8est_build_add\fP (\fBp8est_build_t\fP *build, \fBp4est_topidx_t\fP which_tree, \fBp8est_quadrant_t\fP *quadrant)"
+.br
+.RI "This function is usable from a \fBp8est_search_local_t\fP callback\&. "
+.ti -1c
+.RI "\fBp8est_t\fP * \fBp8est_build_complete\fP (\fBp8est_build_t\fP *build)"
+.br
+.RI "Finalize the construction of the new forest after adding quadrants\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Create a new \fBp8est\fP object by adding individual quadrants in order\&. 
+
+This can for example be driven by running \fBp8est_search_local\fP\&. This allows to create a heavily coarsened forest in one pass\&. It is also legal to add more highly refined quadrants\&.
+.PP
+The only rules are to respect the original partition boundary and to add non-overlapping quadrants in Morton order\&. 
+.SH "Function Documentation"
+.PP 
+.SS "int p8est_build_add (\fBp8est_build_t\fP * build, \fBp4est_topidx_t\fP which_tree, \fBp8est_quadrant_t\fP * quadrant)"
+
+.PP
+This function is usable from a \fBp8est_search_local_t\fP callback\&. It can also be used outside of a search context using proper care\&.
+.PP
+It may be called multiple times in order of trees and then quadrants\&. The quadrant added in each call must fit entirely into the current tree\&. This means that inner nodes of the tree may not be legal to pass in here\&. It is safest to call this function only on leaves of the original tree\&. However, other calls are possible if subsequent quadrants do not overlap\&.
+.PP
+It is legal to call this function twice with the same quadrant\&. In this case the second call does nothing\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIbuild\fP The building context must be passed through\&. 
+.br
+\fIwhich_tree\fP The tree number is passed from the search callback\&. 
+.br
+\fIquadrant\fP The quadrant is passed from the search callback\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if the quadrant was added, false if it was identical to the previous one and thus not added\&. 
+.RE
+.PP
+
+.SS "\fBp8est_t\fP* p8est_build_complete (\fBp8est_build_t\fP * build)"
+
+.PP
+Finalize the construction of the new forest after adding quadrants\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIbuild\fP The building context will be deallocated inside\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A valid forest object\&. Its revision number is set to zero\&. 
+.RE
+.PP
+
+.SS "void p8est_build_init_add (\fBp8est_build_t\fP * build, \fBp8est_init_t\fP add_init_fn)"
+
+.PP
+Set a dedicated initialization callback for manually added quadrants\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIbuild\fP The building context at any stage\&. 
+.br
+\fIadd_init_fn\fP Henceforth used for quadrants added by \fBp8est_build_add\fP\&. NULL leaves the quadrant data uninitialized\&. 
+.RE
+.PP
+
+.SS "\fBp8est_build_t\fP* p8est_build_new (\fBp8est_t\fP * from, size_t data_size, \fBp8est_init_t\fP init_fn, void * user_pointer)"
+
+.PP
+Allocate a context for building a new forest\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfrom\fP This forest is used as a template for creation\&. 
+.br
+\fIdata_size\fP Data size of the created forest, may be zero\&. 
+.br
+\fIinit_fn\fP This functions is called for created quadrants, added manually by \fBp8est_build_add\fP or by the internal completion of the subtrees\&. It may be overridden for added quadrants by \fBp8est_build_init_add\fP\&. NULL leaves the quadrant data uninitialized\&. 
+.br
+\fIuser_pointer\fP Registered into the newly built forest\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A context that needs to be processed further\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

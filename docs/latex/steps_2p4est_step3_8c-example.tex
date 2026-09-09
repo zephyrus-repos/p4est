@@ -1,0 +1,1270 @@
+\hypertarget{steps_2p4est_step3_8c-example}{}\doxysection{steps/p4est\+\_\+step3.\+c}
+This 2D example program (3D counterpart\+: \mbox{\hyperlink{steps_2p8est_step3_8c-example}{steps/p8est\+\_\+step3.\+c}}) uses \mbox{\hyperlink{structp4est}{p4est}} to solve a simple advection problem.\+It is numerically very simple, and intended to demonstrate several methods of interacting with the \mbox{\hyperlink{structp4est}{p4est}} data after it has been refined and partitioned. It demonstrates the construction of \mbox{\hyperlink{ghost}{ghost}} layers (cf. also \mbox{\hyperlink{p4est__ghost_8h}{p4est\+\_\+ghost.\+h}}) and communication of ghost-\/layer data, and it demonstrates interacting with the quadrants and quadrant boundaries through the \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\+\_\+iterate}} routine (cf. \mbox{\hyperlink{p4est__iterate_8h}{p4est\+\_\+iterate.\+h}}).
+
+Usage\+: \begin{quote}
+{\ttfamily p4est\+\_\+step3} \end{quote}
+
+
+
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{  This file is part of p4est.}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is a C library to manage a collection (a forest) of multiple}}
+\DoxyCodeLine{\textcolor{comment}{  connected adaptive quadtrees or octrees in parallel.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  Copyright (C) 2010 The University of Texas System}}
+\DoxyCodeLine{\textcolor{comment}{  Additional copyright (C) 2011 individual authors}}
+\DoxyCodeLine{\textcolor{comment}{  Written by Carsten Burstedde, Lucas C. Wilcox, and Tobin Isaac}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is free software; you can redistribute it and/or modify}}
+\DoxyCodeLine{\textcolor{comment}{  it under the terms of the GNU General Public License as published by}}
+\DoxyCodeLine{\textcolor{comment}{  the Free Software Foundation; either version 2 of the License, or}}
+\DoxyCodeLine{\textcolor{comment}{  (at your option) any later version.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is distributed in the hope that it will be useful,}}
+\DoxyCodeLine{\textcolor{comment}{  but WITHOUT ANY WARRANTY; without even the implied warranty of}}
+\DoxyCodeLine{\textcolor{comment}{  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the}}
+\DoxyCodeLine{\textcolor{comment}{  GNU General Public License for more details.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  You should have received a copy of the GNU General Public License}}
+\DoxyCodeLine{\textcolor{comment}{  along with p4est; if not, write to the Free Software Foundation, Inc.,}}
+\DoxyCodeLine{\textcolor{comment}{  51 Franklin Street, Fifth Floor, Boston, MA 02110-\/1301, USA.}}
+\DoxyCodeLine{\textcolor{comment}{*/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* p4est has two separate interfaces for 2D and 3D, p4est*.h and p8est*.h.}}
+\DoxyCodeLine{\textcolor{comment}{ * Most API functions are available for both dimensions.  The header file}}
+\DoxyCodeLine{\textcolor{comment}{ * p4est\_to\_p8est.h \#define's the 2D names to the 3D names such that most code}}
+\DoxyCodeLine{\textcolor{comment}{ * only needs to be written once.  In this example, we rely on this. */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__vtk_8h}{p4est\_vtk.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__bits_8h}{p4est\_bits.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__extended_8h}{p4est\_extended.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__iterate_8h}{p4est\_iterate.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__io_8h}{p4est\_io.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__communication_8h}{p4est\_communication.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__vtk_8h}{p8est\_vtk.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__bits_8h}{p8est\_bits.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__extended_8h}{p8est\_extended.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__iterate_8h}{p8est\_iterate.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__io_8h}{p8est\_io.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__communication_8h}{p8est\_communication.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <sc\_options.h>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* The file format and API for checkpoint load/save will change */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_FILE\_DEPRECATED}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define P4EST\_DATA\_FILE\_EXT "{}p4d"{}} }
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define P4EST\_DATA\_FILE\_EXT               P8EST\_DATA\_FILE\_EXT}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define P8EST\_DATA\_FILE\_EXT "{}p8d"{}} }
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define STEP3\_BLOCK\_SIZE (sizeof (step3\_ctx\_t)) }}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define STEP3\_ENDIAN\_CHECK 0x30415062   }\textcolor{comment}{/* check endian; bPA0 in ASCII */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif }\textcolor{comment}{/* P4EST\_ENABLE\_FILE\_DEPRECATED */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} step3\_invalid = -\/1.;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_FILE\_DEPRECATED}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}          step3\_checkpoint = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif }\textcolor{comment}{/* P4EST\_ENABLE\_FILE\_DEPRECATED */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* In this example we store data with each quadrant/octant. */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct }step3\_data}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              u;             }
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              du[\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}]; }
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              dudt;          }
+\DoxyCodeLine{\}}
+\DoxyCodeLine{step3\_data\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct }step3\_ctx}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              center[\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}];  }
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              bump\_width;         }
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              max\_err;            }
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              v[\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}];       }
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 refine\_period;      }
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 repartition\_period; }
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 write\_period;       }
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              current\_time;       }
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 time\_step;          }
+\DoxyCodeLine{\}}
+\DoxyCodeLine{step3\_ctx\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{double}}
+\DoxyCodeLine{step3\_initial\_condition (\textcolor{keywordtype}{double} x[], \textcolor{keywordtype}{double} du[], step3\_ctx\_t * ctx)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}             *c = ctx-\/>center;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              bump\_width = ctx-\/>bump\_width;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              r2, d[\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}];}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              arg, retval;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  r2 = 0.;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; i++) \{}
+\DoxyCodeLine{    d[i] = x[i] -\/ c[i];}
+\DoxyCodeLine{    r2 += d[i] * d[i];}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  arg = -\/(1. / 2.) * r2 / bump\_width / bump\_width;}
+\DoxyCodeLine{  retval = exp (arg);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (du) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; i++) \{}
+\DoxyCodeLine{      du[i] = -\/(1. / bump\_width / bump\_width) * d[i] * retval;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} retval;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_get\_midpoint (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                    \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * q, \textcolor{keywordtype}{double} xyz[3])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\_qcoord\_t}}      half\_length = \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (q-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) / 2;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a90acb1ef22be84e31afdec64aab60567}{p4est\_qcoord\_to\_vertex}} (\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a2ca31d19479e82d49a7dd3a4f2d48011}{connectivity}}, which\_tree,}
+\DoxyCodeLine{                          q-\/>x + half\_length, q-\/>\mbox{\hyperlink{structp4est__quadrant_ad226034132b973fe7955ef797938dea0}{y}} + half\_length,}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{                          q-\/>z + half\_length,}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{                          xyz);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_init\_initial\_condition (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                              \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * q)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{comment}{/* the data associated with a forest is accessible by user\_pointer */}}
+\DoxyCodeLine{  step3\_ctx\_t        *ctx = (step3\_ctx\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{  \textcolor{comment}{/* the data associated with a quadrant is accessible by p.user\_data */}}
+\DoxyCodeLine{  step3\_data\_t       *data = (step3\_data\_t *) q-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              midpoint[3];}
+\DoxyCodeLine{}
+\DoxyCodeLine{  step3\_get\_midpoint (\mbox{\hyperlink{structp4est}{p4est}}, which\_tree, q, midpoint);}
+\DoxyCodeLine{  \textcolor{comment}{/* initialize the data */}}
+\DoxyCodeLine{  data-\/>u = step3\_initial\_condition (midpoint, data-\/>du, ctx);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{double}}
+\DoxyCodeLine{step3\_error\_sqr\_estimate (\mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * q)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  step3\_data\_t       *data = (step3\_data\_t *) q-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              diff2;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}             *du = data-\/>du;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              h =}
+\DoxyCodeLine{    (\textcolor{keywordtype}{double}) \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (q-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) / (double) \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4EST\_ROOT\_LEN}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              vol;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{  vol = h * h * h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  vol = h * h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  diff2 = 0.;}
+\DoxyCodeLine{  \textcolor{comment}{/* use the approximate derivative to estimate the L2 error */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; i++) \{}
+\DoxyCodeLine{    diff2 += du[i] * du[i] * (1. / 12.) * h * h * vol;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} diff2;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{step3\_refine\_err\_estimate (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                           \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * q)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  step3\_ctx\_t        *ctx = (step3\_ctx\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              global\_err = ctx-\/>max\_err;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              global\_err2 = global\_err * global\_err;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              h =}
+\DoxyCodeLine{    (\textcolor{keywordtype}{double}) \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (q-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) / (double) \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4EST\_ROOT\_LEN}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              vol, err2;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* the quadrant's volume is also its volume fraction */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{  vol = h * h * h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  vol = h * h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  err2 = step3\_error\_sqr\_estimate (q);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (err2 > global\_err2 * vol) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{step3\_coarsen\_initial\_condition (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}},}
+\DoxyCodeLine{                                 \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                                 \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * children[])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}    parent;}
+\DoxyCodeLine{  step3\_ctx\_t        *ctx = (step3\_ctx\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              global\_err = ctx-\/>max\_err;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              global\_err2 = global\_err * global\_err;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              h;}
+\DoxyCodeLine{  step3\_data\_t        parentdata;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              parentmidpoint[3];}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              vol, err2;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* get the parent of the first child (the parent of all children) */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__bits_8h_abf3fcf47f480c00a590f005807c71b9b}{p4est\_quadrant\_parent}} (children[0], \&parent);}
+\DoxyCodeLine{  step3\_get\_midpoint (\mbox{\hyperlink{structp4est}{p4est}}, which\_tree, \&parent, parentmidpoint);}
+\DoxyCodeLine{  parentdata.u = step3\_initial\_condition (parentmidpoint, parentdata.du, ctx);}
+\DoxyCodeLine{  h = (double) \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (parent.\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) / (double) \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4EST\_ROOT\_LEN}};}
+\DoxyCodeLine{  \textcolor{comment}{/* the quadrant's volume is also its volume fraction */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{  vol = h * h * h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  vol = h * h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  parent.\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}} = (\textcolor{keywordtype}{void} *) (\&parentdata);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  err2 = step3\_error\_sqr\_estimate (\&parent);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (err2 < global\_err2 * vol) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{step3\_coarsen\_err\_estimate (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}},}
+\DoxyCodeLine{                            \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                            \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * children[])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  step3\_ctx\_t        *ctx = (step3\_ctx\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              global\_err = ctx-\/>max\_err;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              global\_err2 = global\_err * global\_err;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              h;}
+\DoxyCodeLine{  step3\_data\_t       *data;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              vol, err2, childerr2;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              parentu;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              diff;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  h =}
+\DoxyCodeLine{    (\textcolor{keywordtype}{double}) \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (children[0]-\/>level) /}
+\DoxyCodeLine{    (double) \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4EST\_ROOT\_LEN}};}
+\DoxyCodeLine{  \textcolor{comment}{/* the quadrant's volume is also its volume fraction */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{  vol = h * h * h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  vol = h * h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* compute the average */}}
+\DoxyCodeLine{  parentu = 0.;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}; i++) \{}
+\DoxyCodeLine{    data = (step3\_data\_t *) children[i]-\/>p.user\_data;}
+\DoxyCodeLine{    parentu += data-\/>u / \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  err2 = 0.;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}; i++) \{}
+\DoxyCodeLine{    childerr2 = step3\_error\_sqr\_estimate (children[i]);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (childerr2 > global\_err2 * vol) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    err2 += step3\_error\_sqr\_estimate (children[i]);}
+\DoxyCodeLine{    diff = (parentu -\/ data-\/>u) * (parentu -\/ data-\/>u);}
+\DoxyCodeLine{    err2 += diff * vol;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (err2 < global\_err2 * (vol * \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}})) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_replace\_quads (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                     \textcolor{keywordtype}{int} num\_outgoing,}
+\DoxyCodeLine{                     \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * outgoing[],}
+\DoxyCodeLine{                     \textcolor{keywordtype}{int} num\_incoming, \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * incoming[])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  step3\_data\_t       *parent\_data, *child\_data;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i, j;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              h;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              du\_old, du\_est;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (num\_outgoing > 1) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* this is coarsening */}}
+\DoxyCodeLine{    parent\_data = (step3\_data\_t *) incoming[0]-\/>p.user\_data;}
+\DoxyCodeLine{    parent\_data-\/>u = 0.;}
+\DoxyCodeLine{    for (j = 0; j < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; j++) \{}
+\DoxyCodeLine{      parent\_data-\/>du[j] = step3\_invalid;}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}; i++) \{}
+\DoxyCodeLine{      child\_data = (step3\_data\_t *) outgoing[i]-\/>p.user\_data;}
+\DoxyCodeLine{      parent\_data-\/>u += child\_data-\/>u / \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}};}
+\DoxyCodeLine{      for (j = 0; j < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; j++) \{}
+\DoxyCodeLine{        du\_old = parent\_data-\/>du[j];}
+\DoxyCodeLine{        du\_est = child\_data-\/>du[j];}
+\DoxyCodeLine{}
+\DoxyCodeLine{        \textcolor{keywordflow}{if} (du\_old == du\_old) \{}
+\DoxyCodeLine{          \textcolor{keywordflow}{if} (du\_est * du\_old >= 0.) \{}
+\DoxyCodeLine{            \textcolor{keywordflow}{if} (fabs (du\_est) < fabs (du\_old)) \{}
+\DoxyCodeLine{              parent\_data-\/>du[j] = du\_est;}
+\DoxyCodeLine{            \}}
+\DoxyCodeLine{          \}}
+\DoxyCodeLine{          \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{            parent\_data-\/>du[j] = 0.;}
+\DoxyCodeLine{          \}}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{        \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{          parent\_data-\/>du[j] = du\_est;}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{comment}{/* this is refinement */}}
+\DoxyCodeLine{    parent\_data = (step3\_data\_t *) outgoing[0]-\/>p.user\_data;}
+\DoxyCodeLine{    h =}
+\DoxyCodeLine{      (\textcolor{keywordtype}{double}) \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (outgoing[0]-\/>level) /}
+\DoxyCodeLine{      (double) \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4EST\_ROOT\_LEN}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}; i++) \{}
+\DoxyCodeLine{      child\_data = (step3\_data\_t *) incoming[i]-\/>p.user\_data;}
+\DoxyCodeLine{      child\_data-\/>u = parent\_data-\/>u;}
+\DoxyCodeLine{      for (j = 0; j < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; j++) \{}
+\DoxyCodeLine{        child\_data-\/>du[j] = parent\_data-\/>du[j];}
+\DoxyCodeLine{        child\_data-\/>u +=}
+\DoxyCodeLine{          (h / 4.) * parent\_data-\/>du[j] * ((i \& (1 << j)) ? 1. : -\/1);}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_interpolate\_solution (\mbox{\hyperlink{structp4est__iter__volume__info}{p4est\_iter\_volume\_info\_t}} * info, \textcolor{keywordtype}{void} *user\_data)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  sc\_array\_t         *u\_interp = (sc\_array\_t *) user\_data;      \textcolor{comment}{/* we passed the array of values to fill as the user\_data in the call to p4est\_iterate */}}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est\_t}}            *\mbox{\hyperlink{structp4est}{p4est}} = info-\/>p4est;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *q = info-\/>\mbox{\hyperlink{structp4est__iter__volume__info_a1e9040be1cad1838d0407c1cc01e5122}{quad}};}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}}      which\_tree = info-\/>\mbox{\hyperlink{structp4est__iter__volume__info_aa9203b989bb29cc3ff536dd224727ab4}{treeid}};}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      local\_id = info-\/>\mbox{\hyperlink{structp4est__iter__volume__info_a47f7123c64fa71ba536b971525d9678e}{quadid}};  \textcolor{comment}{/* this is the index of q *within its tree's numbering*.  We want to convert it its index for all the quadrants on this process, which we do below */}}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__tree}{p4est\_tree\_t}}       *tree;}
+\DoxyCodeLine{  step3\_data\_t       *data = (step3\_data\_t *) q-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              h;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      arrayoffset;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              this\_u;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}             *this\_u\_ptr;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i, j;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  tree = p4est\_tree\_array\_index (\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a6158d35a403f1dbec23833746c5b4a8b}{trees}}, which\_tree);}
+\DoxyCodeLine{  local\_id += tree-\/>\mbox{\hyperlink{structp4est__tree_ab0248e174f0d63c76bbe1ba955f732be}{quadrants\_offset}};   \textcolor{comment}{/* now the id is relative to the MPI process */}}
+\DoxyCodeLine{  arrayoffset = \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}} * local\_id;      \textcolor{comment}{/* each local quadrant has 2\string^d (P4EST\_CHILDREN) values in u\_interp */}}
+\DoxyCodeLine{  h = (double) \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (q-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) / (double) \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4EST\_ROOT\_LEN}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}; i++) \{}
+\DoxyCodeLine{    this\_u = data-\/>u;}
+\DoxyCodeLine{    \textcolor{comment}{/* loop over the derivative components and linearly interpolate from the}}
+\DoxyCodeLine{\textcolor{comment}{     * midpoint to the corners */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (j = 0; j < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; j++) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* In order to know whether the direction from the midpoint to the corner is}}
+\DoxyCodeLine{\textcolor{comment}{       * negative or positive, we take advantage of the fact that the corners}}
+\DoxyCodeLine{\textcolor{comment}{       * are in z-\/order.  If i is an odd number, it is on the +x side; if it}}
+\DoxyCodeLine{\textcolor{comment}{       * is even, it is on the -\/x side.  If (i / 2) is an odd number, it is on}}
+\DoxyCodeLine{\textcolor{comment}{       * the +y side, etc. */}}
+\DoxyCodeLine{      this\_u += (h / 2) * data-\/>du[j] * ((i \& (1 << j)) ? 1. : -\/1.);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    this\_u\_ptr = (\textcolor{keywordtype}{double} *) sc\_array\_index (u\_interp, arrayoffset + i);}
+\DoxyCodeLine{    this\_u\_ptr[0] = this\_u;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_write\_solution (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \textcolor{keywordtype}{int} timestep)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{char}                filename[BUFSIZ] = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 retval;}
+\DoxyCodeLine{  sc\_array\_t         *u\_interp;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      numquads;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__vtk_8h_aec7e360e192839f06f58cbfc7afb6d6c}{p4est\_vtk\_context\_t}} *context;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  snprintf (filename, BUFSIZ, \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_step3\_\%04d"{}}, timestep);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  numquads = \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a40324cbcc175d48f887735afd5c4239f}{local\_num\_quadrants}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* create a vector with one value for the corner of every local quadrant}}
+\DoxyCodeLine{\textcolor{comment}{   * (the number of children is always the same as the number of corners) */}}
+\DoxyCodeLine{  u\_interp = sc\_array\_new\_size (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{double}), numquads * \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Use the iterator to visit every cell and fill in the solution values.}}
+\DoxyCodeLine{\textcolor{comment}{   * Using the iterator is not absolutely necessary in this case: we could}}
+\DoxyCodeLine{\textcolor{comment}{   * also loop over every tree (there is only one tree in this case) and loop}}
+\DoxyCodeLine{\textcolor{comment}{   * over every quadrant within every tree, but we are trying to demonstrate}}
+\DoxyCodeLine{\textcolor{comment}{   * the usage of p4est\_iterate in this example */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\_iterate}} (\mbox{\hyperlink{structp4est}{p4est}}, NULL,   \textcolor{comment}{/* we don't need any ghost quadrants for this loop */}}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{void} *) u\_interp,     \textcolor{comment}{/* pass in u\_interp so that we can fill it */}}
+\DoxyCodeLine{                 step3\_interpolate\_solution,    \textcolor{comment}{/* callback function that interpolates from the cell center to the cell corners, defined above */}}
+\DoxyCodeLine{                 NULL,          \textcolor{comment}{/* there is no callback for the faces between quadrants */}}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{                 NULL,          \textcolor{comment}{/* there is no callback for the edges between quadrants */}}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{                 NULL);         \textcolor{comment}{/* there is no callback for the corners between quadrants */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* create VTK output context and set its parameters */}}
+\DoxyCodeLine{  context = \mbox{\hyperlink{p4est__vtk_8h_a34dbafa8dbc61172ead1a4da4c7103ca}{p4est\_vtk\_context\_new}} (\mbox{\hyperlink{structp4est}{p4est}}, filename);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__vtk_8h_aa6d374056a42e8bf6245cf0789e117c0}{p4est\_vtk\_context\_set\_scale}} (context, 0.99);  \textcolor{comment}{/* quadrant at almost full scale */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* begin writing the output files */}}
+\DoxyCodeLine{  context = \mbox{\hyperlink{p4est__vtk_8h_a17ce523f11f580944630c6c604a070da}{p4est\_vtk\_write\_header}} (context);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (context != NULL,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_vtk: Error writing vtk header"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* do not write the tree id's of each quadrant}}
+\DoxyCodeLine{\textcolor{comment}{   * (there is only one tree in this example) */}}
+\DoxyCodeLine{  context = \mbox{\hyperlink{p4est__vtk_8h_a7120e8be889eed8a43a781db9f12f00a}{p4est\_vtk\_write\_cell\_dataf}} (context, 0, 1,  \textcolor{comment}{/* do write the refinement level of each quadrant */}}
+\DoxyCodeLine{                                        1,      \textcolor{comment}{/* do write the mpi process id of each quadrant */}}
+\DoxyCodeLine{                                        0,      \textcolor{comment}{/* do not wrap the mpi rank (if this were > 0, the modulus of the rank relative to this number would be written instead of the rank) */}}
+\DoxyCodeLine{                                        0,      \textcolor{comment}{/* there is no custom cell scalar data. */}}
+\DoxyCodeLine{                                        0,      \textcolor{comment}{/* there is no custom cell vector data. */}}
+\DoxyCodeLine{                                        context);       \textcolor{comment}{/* mark the end of the variable cell data. */}}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (context != NULL,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_vtk: Error writing cell data"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* write one scalar field: the solution value */}}
+\DoxyCodeLine{  context = \mbox{\hyperlink{p4est__vtk_8h_a16f7a68833130a721eea8dab489cd69f}{p4est\_vtk\_write\_point\_dataf}} (context, 1, 0, \textcolor{comment}{/* write no vector fields */}}
+\DoxyCodeLine{                                         \textcolor{stringliteral}{"{}solution"{}}, u\_interp, context);        \textcolor{comment}{/* mark the end of the variable cell data. */}}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (context != NULL,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_vtk: Error writing cell data"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  retval = \mbox{\hyperlink{p4est__vtk_8h_a23950ebd8b9b99877fa152752b5150d4}{p4est\_vtk\_write\_footer}} (context);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (!retval, \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_vtk: Error writing footer"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_array\_destroy (u\_interp);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_FILE\_DEPRECATED}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_write\_checkpoint (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \textcolor{keywordtype}{int} timestep)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{char}                filename[BUFSIZ] = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{char}                user\_string[P4EST\_FILE\_USER\_STRING\_BYTES] = \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{char}                quad\_data\_user\_string[P4EST\_FILE\_USER\_STRING\_BYTES] =}
+\DoxyCodeLine{    \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 errcode;}
+\DoxyCodeLine{  p4est\_file\_context\_t *fc;}
+\DoxyCodeLine{  uint32\_t            check\_endianness = STEP3\_ENDIAN\_CHECK;}
+\DoxyCodeLine{  sc\_array\_t          block\_arr;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  snprintf (filename, BUFSIZ,}
+\DoxyCodeLine{            \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_step3\_checkpoint\%04d."{}} P4EST\_DATA\_FILE\_EXT,}
+\DoxyCodeLine{            timestep);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  fc = p4est\_file\_open\_create (\mbox{\hyperlink{structp4est}{p4est}}, filename, \textcolor{stringliteral}{"{}Checkpoint file"{}}, \&errcode);}
+\DoxyCodeLine{  \textcolor{comment}{/* One could use the error codes in \(\backslash\)ref p4est\_io.h and \(\backslash\)ref p4est\_file\_error\_string}}
+\DoxyCodeLine{\textcolor{comment}{   * for more sophisticated error handling.}}
+\DoxyCodeLine{\textcolor{comment}{   */}}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (fc != NULL}
+\DoxyCodeLine{                  \&\& errcode == P4EST\_FILE\_ERR\_SUCCESS,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_file\_open\_create: Error creating file"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  snprintf (user\_string, P4EST\_FILE\_USER\_STRING\_BYTES, \textcolor{stringliteral}{"{}\%s"{}}, \textcolor{stringliteral}{"{}Endianness"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_array\_init\_data (\&block\_arr, \&check\_endianness, \textcolor{keyword}{sizeof} (uint32\_t), 1);}
+\DoxyCodeLine{  \textcolor{comment}{/* write data to check endianness */}}
+\DoxyCodeLine{  fc =}
+\DoxyCodeLine{    p4est\_file\_write\_block (fc, \textcolor{keyword}{sizeof} (uint32\_t), \&block\_arr,}
+\DoxyCodeLine{                            user\_string, \&errcode);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (fc != NULL}
+\DoxyCodeLine{                  \&\& errcode == P4EST\_FILE\_ERR\_SUCCESS,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_file\_write\_block: Error writing endianness"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  snprintf (user\_string, P4EST\_FILE\_USER\_STRING\_BYTES, \textcolor{stringliteral}{"{}\%s"{}},}
+\DoxyCodeLine{            \textcolor{stringliteral}{"{}Simulation context"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_array\_init\_data (\&block\_arr, \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}}, STEP3\_BLOCK\_SIZE, 1);}
+\DoxyCodeLine{  \textcolor{comment}{/* write the simulation context */}}
+\DoxyCodeLine{  fc =}
+\DoxyCodeLine{    p4est\_file\_write\_block (fc, STEP3\_BLOCK\_SIZE, \&block\_arr,}
+\DoxyCodeLine{                            user\_string, \&errcode);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (fc != NULL}
+\DoxyCodeLine{                  \&\& errcode == P4EST\_FILE\_ERR\_SUCCESS,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"{}\_file\_write\_block: Error writing simulation context"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  snprintf (user\_string, P4EST\_FILE\_USER\_STRING\_BYTES,}
+\DoxyCodeLine{            \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{} connecitivity"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* write connectivity of the p4est */}}
+\DoxyCodeLine{  fc =}
+\DoxyCodeLine{    p4est\_file\_write\_connectivity (fc, \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a2ca31d19479e82d49a7dd3a4f2d48011}{connectivity}}, user\_string,}
+\DoxyCodeLine{                                   \&errcode);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (fc != NULL}
+\DoxyCodeLine{                  \&\& errcode == P4EST\_FILE\_ERR\_SUCCESS,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"{}\_file\_write\_connectivity: Error writing connectivity"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  snprintf (user\_string, P4EST\_FILE\_USER\_STRING\_BYTES,}
+\DoxyCodeLine{            \textcolor{stringliteral}{"{}Quadrants of time step \%04d."{}}, timestep);}
+\DoxyCodeLine{  snprintf (quad\_data\_user\_string, P4EST\_FILE\_USER\_STRING\_BYTES,}
+\DoxyCodeLine{            \textcolor{stringliteral}{"{}Quadrant data of time step \%04d."{}}, timestep);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  fc = p4est\_file\_write\_p4est (fc, \mbox{\hyperlink{structp4est}{p4est}},}
+\DoxyCodeLine{                               user\_string, quad\_data\_user\_string, \&errcode);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (fc != NULL}
+\DoxyCodeLine{                  \&\& errcode == P4EST\_FILE\_ERR\_SUCCESS,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_file\_write\_field: Error writing p4est"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  p4est\_file\_close (fc, \&errcode);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (errcode == P4EST\_FILE\_ERR\_SUCCESS,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_file\_close: Error closing file"{}});}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif }\textcolor{comment}{/* P4EST\_ENABLE\_FILE\_DEPRECATED */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}         step3\_timestep (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \textcolor{keywordtype}{double} start\_time,}
+\DoxyCodeLine{                                    \textcolor{keywordtype}{double} end\_time);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}         step3\_run (sc\_MPI\_Comm mpicomm);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_restart (\textcolor{keyword}{const} \textcolor{keywordtype}{char} *filename, sc\_MPI\_Comm mpicomm, \textcolor{keywordtype}{double} time\_inc)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_FILE\_DEPRECATED}}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 errcode;}
+\DoxyCodeLine{  \textcolor{keywordtype}{char}                user\_string[P4EST\_FILE\_USER\_STRING\_BYTES],}
+\DoxyCodeLine{    quad\_string[P4EST\_FILE\_USER\_STRING\_BYTES],}
+\DoxyCodeLine{    quad\_data\_string[P4EST\_FILE\_USER\_STRING\_BYTES];}
+\DoxyCodeLine{  step3\_ctx\_t         ctx;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}      global\_num\_quadrants;}
+\DoxyCodeLine{  p4est\_file\_context\_t *fc;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est\_t}}            *loaded\_p4est;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__connectivity}{p4est\_connectivity\_t}} *conn;}
+\DoxyCodeLine{  uint32\_t            check\_endianness = STEP3\_ENDIAN\_CHECK;}
+\DoxyCodeLine{  int32\_t             read\_check\_endianness;}
+\DoxyCodeLine{  sc\_array\_t          block\_arr;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif }\textcolor{comment}{/* P4EST\_ENABLE\_FILE\_DEPRECATED */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (filename == NULL) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* we do not restart */}}
+\DoxyCodeLine{    step3\_run (mpicomm);}
+\DoxyCodeLine{    \textcolor{keywordflow}{return};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4EST\_ENABLE\_FILE\_DEPRECATED}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    SC\_ABORT\_NOT\_REACHED ();}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  \textcolor{comment}{/* we use file I/O to load a checkpoint.  API will change */}}
+\DoxyCodeLine{  fc =}
+\DoxyCodeLine{    p4est\_file\_open\_read\_ext (mpicomm, filename, user\_string,}
+\DoxyCodeLine{                              \&global\_num\_quadrants, \&errcode);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (fc != NULL}
+\DoxyCodeLine{                  \&\& errcode == P4EST\_FILE\_ERR\_SUCCESS,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_file\_open\_read: Error opening file"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_array\_init\_data (\&block\_arr, \&read\_check\_endianness, \textcolor{keyword}{sizeof} (uint32\_t),}
+\DoxyCodeLine{                      1);}
+\DoxyCodeLine{  \textcolor{comment}{/* read data endianness */}}
+\DoxyCodeLine{  fc =}
+\DoxyCodeLine{    p4est\_file\_read\_block (fc, \textcolor{keyword}{sizeof} (uint32\_t), \&block\_arr,}
+\DoxyCodeLine{                           user\_string, \&errcode);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (fc != NULL}
+\DoxyCodeLine{                  \&\& errcode == P4EST\_FILE\_ERR\_SUCCESS,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"{}\_file\_read\_block: Error reading data endianness"{}});}
+\DoxyCodeLine{  P4EST\_GLOBAL\_PRODUCTIONF (\textcolor{stringliteral}{"{}Read data with user string: \%s\(\backslash\)n"{}}, user\_string);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Instead of handling the wrong endianness, we just abort on it.}}
+\DoxyCodeLine{\textcolor{comment}{   * In a more sophisticated application the data should be converted.}}
+\DoxyCodeLine{\textcolor{comment}{   */}}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (memcmp}
+\DoxyCodeLine{                  (\&read\_check\_endianness, \&check\_endianness,}
+\DoxyCodeLine{                   \textcolor{keyword}{sizeof} (uint32\_t)) == 0, \textcolor{stringliteral}{"{}Wrong endianness"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_array\_init\_data (\&block\_arr, \&ctx, STEP3\_BLOCK\_SIZE, 1);}
+\DoxyCodeLine{  \textcolor{comment}{/* read the simulation context */}}
+\DoxyCodeLine{  fc =}
+\DoxyCodeLine{    p4est\_file\_read\_block (fc, STEP3\_BLOCK\_SIZE, \&block\_arr, user\_string,}
+\DoxyCodeLine{                           \&errcode);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (fc != NULL}
+\DoxyCodeLine{                  \&\& errcode == P4EST\_FILE\_ERR\_SUCCESS,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"{}\_file\_read\_block: Error reading simulation context"{}});}
+\DoxyCodeLine{  P4EST\_GLOBAL\_PRODUCTIONF (\textcolor{stringliteral}{"{}Read data with user string: \%s\(\backslash\)n"{}}, user\_string);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* read the connectivity */}}
+\DoxyCodeLine{  fc = p4est\_file\_read\_connectivity (fc, \&conn, user\_string, \&errcode);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (fc != NULL}
+\DoxyCodeLine{                  \&\& errcode == P4EST\_FILE\_ERR\_SUCCESS,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}}}
+\DoxyCodeLine{                  \textcolor{stringliteral}{"{}\_file\_read\_connectivity: Error reading connectivity"{}});}
+\DoxyCodeLine{  P4EST\_ASSERT (conn != NULL);}
+\DoxyCodeLine{  P4EST\_GLOBAL\_PRODUCTIONF (\textcolor{stringliteral}{"{}Read data with user string: \%s\(\backslash\)n"{}}, user\_string);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  fc = p4est\_file\_read\_p4est (fc, conn,}
+\DoxyCodeLine{                              \textcolor{keyword}{sizeof} (step3\_data\_t),}
+\DoxyCodeLine{                              \&loaded\_p4est, quad\_string, quad\_data\_string,}
+\DoxyCodeLine{                              \&errcode);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (fc != NULL}
+\DoxyCodeLine{                  \&\& errcode == P4EST\_FILE\_ERR\_SUCCESS,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_file\_read\_field\_ext: Error reading p4est"{}});}
+\DoxyCodeLine{  P4EST\_GLOBAL\_PRODUCTIONF (\textcolor{stringliteral}{"{}Read quadrants with user string: \%s\(\backslash\)n"{}},}
+\DoxyCodeLine{                            quad\_string);}
+\DoxyCodeLine{  P4EST\_GLOBAL\_PRODUCTIONF (\textcolor{stringliteral}{"{}Read quadrant data with user string: \%s\(\backslash\)n"{}},}
+\DoxyCodeLine{                            quad\_data\_string);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* assign simulation context pointer */}}
+\DoxyCodeLine{  loaded\_p4est-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}} = (\textcolor{keywordtype}{void} *) block\_arr.array;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* close the file */}}
+\DoxyCodeLine{  p4est\_file\_close (fc, \&errcode);}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (errcode == P4EST\_FILE\_ERR\_SUCCESS,}
+\DoxyCodeLine{                  \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_file\_close: Error closing file"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  step3\_timestep (loaded\_p4est, ctx.current\_time,}
+\DoxyCodeLine{                  ctx.current\_time + time\_inc);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* clean up */}}
+\DoxyCodeLine{  conn = loaded\_p4est-\/>\mbox{\hyperlink{structp4est_a2ca31d19479e82d49a7dd3a4f2d48011}{connectivity}};}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a1e78f347378fe8b097ef019214f2338e}{p4est\_destroy}} (loaded\_p4est);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__connectivity_8h_a208e613cae5e1bd3baffb587387b672c}{p4est\_connectivity\_destroy}} (conn);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif }\textcolor{comment}{/* P4EST\_ENABLE\_FILE\_DEPRECATED */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_quad\_divergence (\mbox{\hyperlink{structp4est__iter__volume__info}{p4est\_iter\_volume\_info\_t}} * info, \textcolor{keywordtype}{void} *user\_data)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *q = info-\/>\mbox{\hyperlink{structp4est__iter__volume__info_a1e9040be1cad1838d0407c1cc01e5122}{quad}};}
+\DoxyCodeLine{  step3\_data\_t       *data = (step3\_data\_t *) q-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  data-\/>dudt = 0.;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_upwind\_flux (\mbox{\hyperlink{structp4est__iter__face__info}{p4est\_iter\_face\_info\_t}} * info, \textcolor{keywordtype}{void} *user\_data)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i, j;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est\_t}}            *\mbox{\hyperlink{structp4est}{p4est}} = info-\/>p4est;}
+\DoxyCodeLine{  step3\_ctx\_t        *ctx = (step3\_ctx\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{  step3\_data\_t       *ghost\_data = (step3\_data\_t *) user\_data;}
+\DoxyCodeLine{  step3\_data\_t       *udata;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *quad;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              vdotn = 0.;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              uavg;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              q;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              h, facearea;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 which\_face;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 upwindside;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__iter__face__side}{p4est\_iter\_face\_side\_t}} *side[2];}
+\DoxyCodeLine{  sc\_array\_t         *sides = \&(info-\/>sides);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* because there are no boundaries, every face has two sides */}}
+\DoxyCodeLine{  P4EST\_ASSERT (sides-\/>elem\_count == 2);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  side[0] = p4est\_iter\_fside\_array\_index\_int (sides, 0);}
+\DoxyCodeLine{  side[1] = p4est\_iter\_fside\_array\_index\_int (sides, 1);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* which of the quadrant's faces the interface touches */}}
+\DoxyCodeLine{  which\_face = side[0]-\/>\mbox{\hyperlink{structp4est__iter__face__side_a437fc601ac99c21e9a2d541b904042b7}{face}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{switch} (which\_face) \{}
+\DoxyCodeLine{  \textcolor{keywordflow}{case} 0:                      \textcolor{comment}{/* -\/x side */}}
+\DoxyCodeLine{    vdotn = -\/ctx-\/>v[0];}
+\DoxyCodeLine{    \textcolor{keywordflow}{break};}
+\DoxyCodeLine{  \textcolor{keywordflow}{case} 1:                      \textcolor{comment}{/* +x side */}}
+\DoxyCodeLine{    vdotn = ctx-\/>v[0];}
+\DoxyCodeLine{    \textcolor{keywordflow}{break};}
+\DoxyCodeLine{  \textcolor{keywordflow}{case} 2:                      \textcolor{comment}{/* -\/y side */}}
+\DoxyCodeLine{    vdotn = -\/ctx-\/>v[1];}
+\DoxyCodeLine{    \textcolor{keywordflow}{break};}
+\DoxyCodeLine{  \textcolor{keywordflow}{case} 3:                      \textcolor{comment}{/* +y side */}}
+\DoxyCodeLine{    vdotn = ctx-\/>v[1];}
+\DoxyCodeLine{    \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{  \textcolor{keywordflow}{case} 4:                      \textcolor{comment}{/* -\/z side */}}
+\DoxyCodeLine{    vdotn = -\/ctx-\/>v[2];}
+\DoxyCodeLine{    \textcolor{keywordflow}{break};}
+\DoxyCodeLine{  \textcolor{keywordflow}{case} 5:                      \textcolor{comment}{/* +z side */}}
+\DoxyCodeLine{    vdotn = ctx-\/>v[2];}
+\DoxyCodeLine{    \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  upwindside = vdotn >= 0. ? 0 : 1;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Because we have non-\/conforming boundaries, one side of an interface can}}
+\DoxyCodeLine{\textcolor{comment}{   * either have one large ("{}full"{}) quadrant or 2\string^(d-\/1) small ("{}hanging"{})}}
+\DoxyCodeLine{\textcolor{comment}{   * quadrants: we have to compute the average differently in each case.  The}}
+\DoxyCodeLine{\textcolor{comment}{   * info populated by p4est\_iterate() gives us the context we need to}}
+\DoxyCodeLine{\textcolor{comment}{   * proceed. */}}
+\DoxyCodeLine{  uavg = 0;}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (side[upwindside]-\/>is\_hanging) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* there are 2\string^(d-\/1) (P4EST\_HALF) subfaces */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (j = 0; j < \mbox{\hyperlink{p4est__connectivity_8h_a23079dfa254ae5df731633a54a8382f0}{P4EST\_HALF}}; j++) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (side[upwindside]-\/>is.hanging.is\_ghost[j]) \{}
+\DoxyCodeLine{        \textcolor{comment}{/* *INDENT-\/OFF* */}}
+\DoxyCodeLine{        udata =}
+\DoxyCodeLine{          (step3\_data\_t *) \&ghost\_data[side[upwindside]-\/>is.hanging.quadid[j]];}
+\DoxyCodeLine{        \textcolor{comment}{/* *INDENT-\/ON* */}}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{        udata =}
+\DoxyCodeLine{          (step3\_data\_t *) side[upwindside]-\/>is.hanging.quad[j]-\/>p.user\_data;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      uavg += udata-\/>u;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    uavg /= \mbox{\hyperlink{p4est__connectivity_8h_a23079dfa254ae5df731633a54a8382f0}{P4EST\_HALF}};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (side[upwindside]-\/>is.full.is\_ghost) \{}
+\DoxyCodeLine{      udata = (step3\_data\_t *) \& ghost\_data[side[upwindside]-\/>is.full.quadid];}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      udata = (step3\_data\_t *) side[upwindside]-\/>is.full.quad-\/>p.user\_data;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    uavg = udata-\/>u;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{comment}{/* flux from side 0 to side 1 */}}
+\DoxyCodeLine{  q = vdotn * uavg;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < 2; i++) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (side[i]-\/>is\_hanging) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* there are 2\string^(d-\/1) (P4EST\_HALF) subfaces */}}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (j = 0; j < \mbox{\hyperlink{p4est__connectivity_8h_a23079dfa254ae5df731633a54a8382f0}{P4EST\_HALF}}; j++) \{}
+\DoxyCodeLine{        quad = side[i]-\/>is.\mbox{\hyperlink{unionp4est__iter__face__side_1_1p4est__iter__face__side__data_aab4d82c9073b31abd091d5383a69b63c}{hanging}}.\mbox{\hyperlink{structp4est__iter__face__side__hanging_a16fc5a7f97d0b39657797658d5afab3e}{quad}}[j];}
+\DoxyCodeLine{        h =}
+\DoxyCodeLine{          (double) \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (quad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) / (double) \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4EST\_ROOT\_LEN}};}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{        facearea = h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{        facearea = h * h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{        \textcolor{keywordflow}{if} (!side[i]-\/>is.hanging.is\_ghost[j]) \{}
+\DoxyCodeLine{          udata = (step3\_data\_t *) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{          if (i == upwindside) \{}
+\DoxyCodeLine{            udata-\/>dudt += vdotn * udata-\/>u * facearea * (i ? 1. : -\/1.);}
+\DoxyCodeLine{          \}}
+\DoxyCodeLine{          \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{            udata-\/>dudt += q * facearea * (i ? 1. : -\/1.);}
+\DoxyCodeLine{          \}}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      quad = side[i]-\/>is.\mbox{\hyperlink{unionp4est__iter__face__side_1_1p4est__iter__face__side__data_abb2075c4a1ed0a326779d6c1462fefe2}{full}}.\mbox{\hyperlink{structp4est__iter__face__side__full_a89f38f0bf009c7448bdf7d97884ce2d3}{quad}};}
+\DoxyCodeLine{      h = (double) \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (quad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) / (double) \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4EST\_ROOT\_LEN}};}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{      facearea = h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{      facearea = h * h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (!side[i]-\/>is.full.is\_ghost) \{}
+\DoxyCodeLine{        udata = (step3\_data\_t *) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{        udata-\/>dudt += q * facearea * (i ? 1. : -\/1.);}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_timestep\_update (\mbox{\hyperlink{structp4est__iter__volume__info}{p4est\_iter\_volume\_info\_t}} * info, \textcolor{keywordtype}{void} *user\_data)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *q = info-\/>\mbox{\hyperlink{structp4est__iter__volume__info_a1e9040be1cad1838d0407c1cc01e5122}{quad}};}
+\DoxyCodeLine{  step3\_data\_t       *data = (step3\_data\_t *) q-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              dt = *((\textcolor{keywordtype}{double} *) user\_data);}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              vol;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              h =}
+\DoxyCodeLine{    (double) \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (q-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) / (double) \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4EST\_ROOT\_LEN}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{  vol = h * h * h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  vol = h * h;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  data-\/>u += dt * data-\/>dudt / vol;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_reset\_derivatives (\mbox{\hyperlink{structp4est__iter__volume__info}{p4est\_iter\_volume\_info\_t}} * info, \textcolor{keywordtype}{void} *user\_data)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *q = info-\/>\mbox{\hyperlink{structp4est__iter__volume__info_a1e9040be1cad1838d0407c1cc01e5122}{quad}};}
+\DoxyCodeLine{  step3\_data\_t       *data = (step3\_data\_t *) q-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 j;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  for (j = 0; j < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; j++) \{}
+\DoxyCodeLine{    data-\/>du[j] = step3\_invalid;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_minmod\_estimate (\mbox{\hyperlink{structp4est__iter__face__info}{p4est\_iter\_face\_info\_t}} * info, \textcolor{keywordtype}{void} *user\_data)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i, j;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__iter__face__side}{p4est\_iter\_face\_side\_t}} *side[2];}
+\DoxyCodeLine{  sc\_array\_t         *sides = \&(info-\/>sides);}
+\DoxyCodeLine{  step3\_data\_t       *ghost\_data = (step3\_data\_t *) user\_data;}
+\DoxyCodeLine{  step3\_data\_t       *udata;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *quad;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              uavg[2];}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              h[2];}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              du\_est, du\_old;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 which\_dir;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* because there are no boundaries, every face has two sides */}}
+\DoxyCodeLine{  P4EST\_ASSERT (sides-\/>elem\_count == 2);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  side[0] = p4est\_iter\_fside\_array\_index\_int (sides, 0);}
+\DoxyCodeLine{  side[1] = p4est\_iter\_fside\_array\_index\_int (sides, 1);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  which\_dir = side[0]-\/>\mbox{\hyperlink{structp4est__iter__face__side_a437fc601ac99c21e9a2d541b904042b7}{face}} / 2;        \textcolor{comment}{/* 0 == x, 1 == y, 2 == z */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < 2; i++) \{}
+\DoxyCodeLine{    uavg[i] = 0;}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (side[i]-\/>is\_hanging) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* there are 2\string^(d-\/1) (P4EST\_HALF) subfaces */}}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (j = 0; j < \mbox{\hyperlink{p4est__connectivity_8h_a23079dfa254ae5df731633a54a8382f0}{P4EST\_HALF}}; j++) \{}
+\DoxyCodeLine{        quad = side[i]-\/>is.\mbox{\hyperlink{unionp4est__iter__face__side_1_1p4est__iter__face__side__data_aab4d82c9073b31abd091d5383a69b63c}{hanging}}.\mbox{\hyperlink{structp4est__iter__face__side__hanging_a16fc5a7f97d0b39657797658d5afab3e}{quad}}[j];}
+\DoxyCodeLine{        h[i] =}
+\DoxyCodeLine{          (double) \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (quad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) / (double) \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4EST\_ROOT\_LEN}};}
+\DoxyCodeLine{        \textcolor{keywordflow}{if} (side[i]-\/>is.hanging.is\_ghost[j]) \{}
+\DoxyCodeLine{          udata = \&ghost\_data[side[i]-\/>is.\mbox{\hyperlink{unionp4est__iter__face__side_1_1p4est__iter__face__side__data_aab4d82c9073b31abd091d5383a69b63c}{hanging}}.\mbox{\hyperlink{structp4est__iter__face__side__hanging_adcfe28552cc20c79095e062a7d3129ca}{quadid}}[j]];}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{        \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{          udata = (step3\_data\_t *) side[i]-\/>is.hanging.quad[j]-\/>p.user\_data;}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{        uavg[i] += udata-\/>u;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      uavg[i] /= \mbox{\hyperlink{p4est__connectivity_8h_a23079dfa254ae5df731633a54a8382f0}{P4EST\_HALF}};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      quad = side[i]-\/>is.\mbox{\hyperlink{unionp4est__iter__face__side_1_1p4est__iter__face__side__data_abb2075c4a1ed0a326779d6c1462fefe2}{full}}.\mbox{\hyperlink{structp4est__iter__face__side__full_a89f38f0bf009c7448bdf7d97884ce2d3}{quad}};}
+\DoxyCodeLine{      h[i] =}
+\DoxyCodeLine{        (double) \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (quad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) / (double) \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4EST\_ROOT\_LEN}};}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (side[i]-\/>is.full.is\_ghost) \{}
+\DoxyCodeLine{        udata = \&ghost\_data[side[i]-\/>is.\mbox{\hyperlink{unionp4est__iter__face__side_1_1p4est__iter__face__side__data_abb2075c4a1ed0a326779d6c1462fefe2}{full}}.\mbox{\hyperlink{structp4est__iter__face__side__full_aad5d25e815207300384b82840f126d44}{quadid}}];}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{        udata = (step3\_data\_t *) side[i]-\/>is.full.quad-\/>p.user\_data;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      uavg[i] = udata-\/>u;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  du\_est = (uavg[1] -\/ uavg[0]) / ((h[0] + h[1]) / 2.);}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < 2; i++) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (side[i]-\/>is\_hanging) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* there are 2\string^(d-\/1) (P4EST\_HALF) subfaces */}}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (j = 0; j < \mbox{\hyperlink{p4est__connectivity_8h_a23079dfa254ae5df731633a54a8382f0}{P4EST\_HALF}}; j++) \{}
+\DoxyCodeLine{        quad = side[i]-\/>is.\mbox{\hyperlink{unionp4est__iter__face__side_1_1p4est__iter__face__side__data_aab4d82c9073b31abd091d5383a69b63c}{hanging}}.\mbox{\hyperlink{structp4est__iter__face__side__hanging_a16fc5a7f97d0b39657797658d5afab3e}{quad}}[j];}
+\DoxyCodeLine{        \textcolor{keywordflow}{if} (!side[i]-\/>is.hanging.is\_ghost[j]) \{}
+\DoxyCodeLine{          udata = (step3\_data\_t *) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{          du\_old = udata-\/>du[which\_dir];}
+\DoxyCodeLine{          if (du\_old == du\_old) \{}
+\DoxyCodeLine{            \textcolor{comment}{/* there has already been an update */}}
+\DoxyCodeLine{            \textcolor{keywordflow}{if} (du\_est * du\_old >= 0.) \{}
+\DoxyCodeLine{              \textcolor{keywordflow}{if} (fabs (du\_est) < fabs (du\_old)) \{}
+\DoxyCodeLine{                udata-\/>du[which\_dir] = du\_est;}
+\DoxyCodeLine{              \}}
+\DoxyCodeLine{            \}}
+\DoxyCodeLine{            \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{              udata-\/>du[which\_dir] = 0.;}
+\DoxyCodeLine{            \}}
+\DoxyCodeLine{          \}}
+\DoxyCodeLine{          \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{            udata-\/>du[which\_dir] = du\_est;}
+\DoxyCodeLine{          \}}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      quad = side[i]-\/>is.\mbox{\hyperlink{unionp4est__iter__face__side_1_1p4est__iter__face__side__data_abb2075c4a1ed0a326779d6c1462fefe2}{full}}.\mbox{\hyperlink{structp4est__iter__face__side__full_a89f38f0bf009c7448bdf7d97884ce2d3}{quad}};}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (!side[i]-\/>is.full.is\_ghost) \{}
+\DoxyCodeLine{        udata = (step3\_data\_t *) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{        du\_old = udata-\/>du[which\_dir];}
+\DoxyCodeLine{        if (du\_old == du\_old) \{}
+\DoxyCodeLine{          \textcolor{comment}{/* there has already been an update */}}
+\DoxyCodeLine{          \textcolor{keywordflow}{if} (du\_est * du\_old >= 0.) \{}
+\DoxyCodeLine{            \textcolor{keywordflow}{if} (fabs (du\_est) < fabs (du\_old)) \{}
+\DoxyCodeLine{              udata-\/>du[which\_dir] = du\_est;}
+\DoxyCodeLine{            \}}
+\DoxyCodeLine{          \}}
+\DoxyCodeLine{          \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{            udata-\/>du[which\_dir] = 0.;}
+\DoxyCodeLine{          \}}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{        \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{          udata-\/>du[which\_dir] = du\_est;}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_compute\_max (\mbox{\hyperlink{structp4est__iter__volume__info}{p4est\_iter\_volume\_info\_t}} * info, \textcolor{keywordtype}{void} *user\_data)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *q = info-\/>\mbox{\hyperlink{structp4est__iter__volume__info_a1e9040be1cad1838d0407c1cc01e5122}{quad}};}
+\DoxyCodeLine{  step3\_data\_t       *data = (step3\_data\_t *) q-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              umax = *((\textcolor{keywordtype}{double} *) user\_data);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  umax = SC\_MAX (data-\/>u, umax);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  *((\textcolor{keywordtype}{double} *) user\_data) = umax;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{double}}
+\DoxyCodeLine{step3\_get\_timestep (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}})}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  step3\_ctx\_t        *ctx = (step3\_ctx\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}}      t, flt, llt;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__tree}{p4est\_tree\_t}}       *tree;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 max\_level, global\_max\_level;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret, i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              min\_h, vnorm;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              dt;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* compute the timestep by finding the smallest quadrant */}}
+\DoxyCodeLine{  flt = \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a124d4dc0b8cd3b07351de80f19351beb}{first\_local\_tree}};}
+\DoxyCodeLine{  llt = \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_abd072c07f3197827fe22c16379de6ab8}{last\_local\_tree}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  max\_level = 0;}
+\DoxyCodeLine{  for (t = flt; t <= llt; t++) \{}
+\DoxyCodeLine{    tree = p4est\_tree\_array\_index (\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a6158d35a403f1dbec23833746c5b4a8b}{trees}}, t);}
+\DoxyCodeLine{    max\_level = SC\_MAX (max\_level, tree-\/>\mbox{\hyperlink{structp4est__tree_a93ee1718ce000fa3468848fb1673a689}{maxlevel}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  mpiret =}
+\DoxyCodeLine{    sc\_MPI\_Allreduce (\&max\_level, \&global\_max\_level, 1, sc\_MPI\_INT,}
+\DoxyCodeLine{                      sc\_MPI\_MAX, \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a88446986bafb8d46456976515b22c856}{mpicomm}});}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  min\_h =}
+\DoxyCodeLine{    (double) \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (global\_max\_level) / (double) \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4EST\_ROOT\_LEN}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  vnorm = 0;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; i++) \{}
+\DoxyCodeLine{    vnorm += ctx-\/>v[i] * ctx-\/>v[i];}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  vnorm = sqrt (vnorm);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  dt = min\_h / 2. / vnorm;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} dt;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_timestep (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \textcolor{keywordtype}{double} start\_time, \textcolor{keywordtype}{double} end\_time)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              t = start\_time;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              dt = 0.;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  step3\_data\_t       *ghost\_data;}
+\DoxyCodeLine{  step3\_ctx\_t        *ctx = (step3\_ctx\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 refine\_period = ctx-\/>refine\_period;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 repartition\_period = ctx-\/>repartition\_period;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 write\_period = ctx-\/>write\_period;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 recursive = 0;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 allowed\_level = \mbox{\hyperlink{p4est_8h_a398bac71234696389c90d0f986bb31aa}{P4EST\_QMAXLEVEL}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 allowcoarsening = 1;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 callbackorphans = 0;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              orig\_max\_err = ctx-\/>max\_err;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              umax, global\_umax;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__ghost}{p4est\_ghost\_t}}      *ghost;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* create the ghost quadrants */}}
+\DoxyCodeLine{  ghost = \mbox{\hyperlink{p4est__ghost_8h_a34a0bfb7169437f6fc2382a67c47e89d}{p4est\_ghost\_new}} (\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4EST\_CONNECT\_FULL}});}
+\DoxyCodeLine{  \textcolor{comment}{/* create space for storing the ghost data */}}
+\DoxyCodeLine{  ghost\_data = \mbox{\hyperlink{p4est__base_8h_a1fef909873d570158d6ac7b43c7d94f1}{P4EST\_ALLOC}} (step3\_data\_t, ghost-\/>ghosts.elem\_count);}
+\DoxyCodeLine{  \textcolor{comment}{/* synchronize the ghost data */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__ghost_8h_a58908a7bf0810077c99a6ddccc642fcd}{p4est\_ghost\_exchange\_data}} (\mbox{\hyperlink{structp4est}{p4est}}, ghost, ghost\_data);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* initialize du/dx estimates */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\_iterate}} (\mbox{\hyperlink{structp4est}{p4est}}, ghost, (\textcolor{keywordtype}{void} *) ghost\_data,     \textcolor{comment}{/* pass in ghost data that we just exchanged */}}
+\DoxyCodeLine{                 step3\_reset\_derivatives,       \textcolor{comment}{/* blank the previously calculated derivatives */}}
+\DoxyCodeLine{                 step3\_minmod\_estimate, \textcolor{comment}{/* compute the minmod estimate of each cell's derivative */}}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{                 NULL,          \textcolor{comment}{/* there is no callback for the edges between quadrants */}}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{                 NULL);         \textcolor{comment}{/* there is no callback for the corners between quadrants */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (t = start\_time, i = ctx-\/>time\_step; t < end\_time; t += dt, i++) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_PRODUCTIONF (\textcolor{stringliteral}{"{}time \%f\(\backslash\)n"{}}, t);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* refine */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!(i \% refine\_period)) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (i) \{}
+\DoxyCodeLine{        \textcolor{comment}{/* compute umax */}}
+\DoxyCodeLine{        umax = 0.;}
+\DoxyCodeLine{        \textcolor{comment}{/* initialize derivative estimates */}}
+\DoxyCodeLine{        \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\_iterate}} (\mbox{\hyperlink{structp4est}{p4est}}, NULL, (\textcolor{keywordtype}{void} *) \&umax,     \textcolor{comment}{/* pass in ghost data that we just exchanged */}}
+\DoxyCodeLine{                       step3\_compute\_max,       \textcolor{comment}{/* blank the previously calculated derivatives */}}
+\DoxyCodeLine{                       NULL,    \textcolor{comment}{/* there is no callback for the faces between quadrants */}}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{                       NULL,    \textcolor{comment}{/* there is no callback for the edges between quadrants */}}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{                       NULL);   \textcolor{comment}{/* there is no callback for the corners between quadrants */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{        mpiret =}
+\DoxyCodeLine{          sc\_MPI\_Allreduce (\&umax, \&global\_umax, 1, sc\_MPI\_DOUBLE, sc\_MPI\_MAX,}
+\DoxyCodeLine{                            \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a88446986bafb8d46456976515b22c856}{mpicomm}});}
+\DoxyCodeLine{        SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{        ctx-\/>max\_err = orig\_max\_err * global\_umax;}
+\DoxyCodeLine{        P4EST\_GLOBAL\_PRODUCTIONF (\textcolor{stringliteral}{"{}u\_max \%f\(\backslash\)n"{}}, global\_umax);}
+\DoxyCodeLine{}
+\DoxyCodeLine{        \textcolor{comment}{/* adapt */}}
+\DoxyCodeLine{        \mbox{\hyperlink{p4est__extended_8h_aad32df9df3630b6bac05e7366a5f1e46}{p4est\_refine\_ext}} (\mbox{\hyperlink{structp4est}{p4est}}, recursive, allowed\_level,}
+\DoxyCodeLine{                          step3\_refine\_err\_estimate, NULL,}
+\DoxyCodeLine{                          step3\_replace\_quads);}
+\DoxyCodeLine{        \mbox{\hyperlink{p4est__extended_8h_a06630b99f70cb85c73452640e8b4d54e}{p4est\_coarsen\_ext}} (\mbox{\hyperlink{structp4est}{p4est}}, recursive, callbackorphans,}
+\DoxyCodeLine{                           step3\_coarsen\_err\_estimate, NULL,}
+\DoxyCodeLine{                           step3\_replace\_quads);}
+\DoxyCodeLine{        \mbox{\hyperlink{p4est__extended_8h_a666a197be8d6d83c08cc14bfdc8565ed}{p4est\_balance\_ext}} (\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa33499fc87edef5b1226ade261dd0d6e6}{P4EST\_CONNECT\_FACE}}, NULL,}
+\DoxyCodeLine{                           step3\_replace\_quads);}
+\DoxyCodeLine{}
+\DoxyCodeLine{        \mbox{\hyperlink{p4est__ghost_8h_a4b4ae4fa996d0b8705d6267953c3e757}{p4est\_ghost\_destroy}} (ghost);}
+\DoxyCodeLine{        \mbox{\hyperlink{p4est__base_8h_a0b2d45f13b66edfed0ccfde75808c745}{P4EST\_FREE}} (ghost\_data);}
+\DoxyCodeLine{        ghost = NULL;}
+\DoxyCodeLine{        ghost\_data = NULL;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      dt = step3\_get\_timestep (\mbox{\hyperlink{structp4est}{p4est}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* repartition */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (i \&\& !(i \% repartition\_period)) \{}
+\DoxyCodeLine{      \mbox{\hyperlink{p4est_8h_a54c1f4e6bc35c181952371a8046523aa}{p4est\_partition}} (\mbox{\hyperlink{structp4est}{p4est}}, allowcoarsening, NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (ghost) \{}
+\DoxyCodeLine{        \mbox{\hyperlink{p4est__ghost_8h_a4b4ae4fa996d0b8705d6267953c3e757}{p4est\_ghost\_destroy}} (ghost);}
+\DoxyCodeLine{        \mbox{\hyperlink{p4est__base_8h_a0b2d45f13b66edfed0ccfde75808c745}{P4EST\_FREE}} (ghost\_data);}
+\DoxyCodeLine{        ghost = NULL;}
+\DoxyCodeLine{        ghost\_data = NULL;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* write out solution */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!(i \% write\_period)) \{}
+\DoxyCodeLine{      step3\_write\_solution (\mbox{\hyperlink{structp4est}{p4est}}, i);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* synchronize the ghost data */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!ghost) \{}
+\DoxyCodeLine{      ghost = \mbox{\hyperlink{p4est__ghost_8h_a34a0bfb7169437f6fc2382a67c47e89d}{p4est\_ghost\_new}} (\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4EST\_CONNECT\_FULL}});}
+\DoxyCodeLine{      ghost\_data = \mbox{\hyperlink{p4est__base_8h_a1fef909873d570158d6ac7b43c7d94f1}{P4EST\_ALLOC}} (step3\_data\_t, ghost-\/>ghosts.elem\_count);}
+\DoxyCodeLine{      \mbox{\hyperlink{p4est__ghost_8h_a58908a7bf0810077c99a6ddccc642fcd}{p4est\_ghost\_exchange\_data}} (\mbox{\hyperlink{structp4est}{p4est}}, ghost, ghost\_data);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* compute du/dt */}}
+\DoxyCodeLine{    \textcolor{comment}{/* *INDENT-\/OFF* */}}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\_iterate}} (\mbox{\hyperlink{structp4est}{p4est}},                 \textcolor{comment}{/* the forest */}}
+\DoxyCodeLine{                   ghost,                 \textcolor{comment}{/* the ghost layer */}}
+\DoxyCodeLine{                   (\textcolor{keywordtype}{void} *) ghost\_data,   \textcolor{comment}{/* the synchronized ghost data */}}
+\DoxyCodeLine{                   step3\_quad\_divergence, \textcolor{comment}{/* callback to compute each quad's}}
+\DoxyCodeLine{\textcolor{comment}{                                             interior contribution to du/dt */}}
+\DoxyCodeLine{                   step3\_upwind\_flux,     \textcolor{comment}{/* callback to compute each quads'}}
+\DoxyCodeLine{\textcolor{comment}{                                             faces' contributions to du/du */}}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{                   NULL,                  \textcolor{comment}{/* there is no callback for the}}
+\DoxyCodeLine{\textcolor{comment}{                                             edges between quadrants */}}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{                   NULL);                 \textcolor{comment}{/* there is no callback for the}}
+\DoxyCodeLine{\textcolor{comment}{                                             corners between quadrants */}}
+\DoxyCodeLine{    \textcolor{comment}{/* *INDENT-\/ON* */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* update u */}}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\_iterate}} (\mbox{\hyperlink{structp4est}{p4est}}, NULL, \textcolor{comment}{/* ghosts are not needed for this loop */}}
+\DoxyCodeLine{                   (\textcolor{keywordtype}{void} *) \&dt,        \textcolor{comment}{/* pass in dt */}}
+\DoxyCodeLine{                   step3\_timestep\_update,       \textcolor{comment}{/* update each cell */}}
+\DoxyCodeLine{                   NULL,        \textcolor{comment}{/* there is no callback for the faces between quadrants */}}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{                   NULL,        \textcolor{comment}{/* there is no callback for the edges between quadrants */}}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{                   NULL);       \textcolor{comment}{/* there is no callback for the corners between quadrants */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* synchronize the ghost data */}}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__ghost_8h_a58908a7bf0810077c99a6ddccc642fcd}{p4est\_ghost\_exchange\_data}} (\mbox{\hyperlink{structp4est}{p4est}}, ghost, ghost\_data);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* update du/dx estimate */}}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\_iterate}} (\mbox{\hyperlink{structp4est}{p4est}}, ghost, (\textcolor{keywordtype}{void} *) ghost\_data,   \textcolor{comment}{/* pass in ghost data that we just exchanged */}}
+\DoxyCodeLine{                   step3\_reset\_derivatives,     \textcolor{comment}{/* blank the previously calculated derivatives */}}
+\DoxyCodeLine{                   step3\_minmod\_estimate,       \textcolor{comment}{/* compute the minmod estimate of each cell's derivative */}}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{                   NULL,        \textcolor{comment}{/* there is no callback for the edges between quadrants */}}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{                   NULL);       \textcolor{comment}{/* there is no callback for the corners between quadrants */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  ctx-\/>time\_step = i -\/ 1;}
+\DoxyCodeLine{  ctx-\/>current\_time = t -\/ dt;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_FILE\_DEPRECATED}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (step3\_checkpoint) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* write checkpoint file */}}
+\DoxyCodeLine{    step3\_write\_checkpoint (\mbox{\hyperlink{structp4est}{p4est}}, i -\/ 1);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif }\textcolor{comment}{/* P4EST\_ENABLE\_FILE\_DEPRECATED */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a0b2d45f13b66edfed0ccfde75808c745}{P4EST\_FREE}} (ghost\_data);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__ghost_8h_a4b4ae4fa996d0b8705d6267953c3e757}{p4est\_ghost\_destroy}} (ghost);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{step3\_run (sc\_MPI\_Comm mpicomm)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__connectivity}{p4est\_connectivity\_t}} *conn;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est\_t}}            *\mbox{\hyperlink{structp4est}{p4est}};}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 recursive, partforcoarsen;}
+\DoxyCodeLine{  step3\_ctx\_t         ctx;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Avoid write of uninitialized bytes (valgrind warning)}}
+\DoxyCodeLine{\textcolor{comment}{   * due to compiler padding.}}
+\DoxyCodeLine{\textcolor{comment}{   */}}
+\DoxyCodeLine{  memset (\&ctx, -\/1, \textcolor{keyword}{sizeof} (ctx));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  ctx.bump\_width = 0.1;}
+\DoxyCodeLine{  ctx.max\_err = 2.e-\/2;}
+\DoxyCodeLine{  ctx.center[0] = 0.5;}
+\DoxyCodeLine{  ctx.center[1] = 0.5;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{  ctx.center[2] = 0.5;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{  \textcolor{comment}{/* randomly chosen advection direction */}}
+\DoxyCodeLine{  ctx.v[0] = -\/0.445868402501118;}
+\DoxyCodeLine{  ctx.v[1] = -\/0.895098523991131;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  ctx.v[0] = 0.485191768970225;}
+\DoxyCodeLine{  ctx.v[1] = -\/0.427996381877778;}
+\DoxyCodeLine{  ctx.v[2] = 0.762501176669961;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  ctx.refine\_period = 2;}
+\DoxyCodeLine{  ctx.repartition\_period = 4;}
+\DoxyCodeLine{  ctx.write\_period = 8;}
+\DoxyCodeLine{  ctx.time\_step = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Create a forest that consists of just one periodic quadtree/octree. */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{  conn = \mbox{\hyperlink{p4est__connectivity_8h_ae65fe72b77b6f6c6825fc33efc101dab}{p4est\_connectivity\_new\_periodic}} ();}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  conn = \mbox{\hyperlink{p8est__connectivity_8h_a1374c4c2fc06e436e047d32c28b87288}{p8est\_connectivity\_new\_periodic}} ();}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* *INDENT-\/OFF* */}}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est}} = \mbox{\hyperlink{p4est__extended_8h_ac11cf572e8ac72c4beb78465f98b63f3}{p4est\_new\_ext}} (mpicomm, \textcolor{comment}{/* communicator */}}
+\DoxyCodeLine{                         conn,    \textcolor{comment}{/* connectivity */}}
+\DoxyCodeLine{                         0,       \textcolor{comment}{/* minimum quadrants per MPI process */}}
+\DoxyCodeLine{                         4,       \textcolor{comment}{/* minimum level of refinement */}}
+\DoxyCodeLine{                         1,       \textcolor{comment}{/* fill uniform */}}
+\DoxyCodeLine{                         \textcolor{keyword}{sizeof} (step3\_data\_t),         \textcolor{comment}{/* data size */}}
+\DoxyCodeLine{                         step3\_init\_initial\_condition,  \textcolor{comment}{/* initializes data */}}
+\DoxyCodeLine{                         (\textcolor{keywordtype}{void} *) (\&ctx));              \textcolor{comment}{/* context */}}
+\DoxyCodeLine{  \textcolor{comment}{/* *INDENT-\/ON* */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* refine and coarsen based on an interpolation error estimate */}}
+\DoxyCodeLine{  recursive = 1;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a1a31375edfa42b5609e7656233c32cca}{p4est\_refine}} (\mbox{\hyperlink{structp4est}{p4est}}, recursive, step3\_refine\_err\_estimate,}
+\DoxyCodeLine{                step3\_init\_initial\_condition);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_ad250f4765d9778ec3940e9fabea7c853}{p4est\_coarsen}} (\mbox{\hyperlink{structp4est}{p4est}}, recursive, step3\_coarsen\_initial\_condition,}
+\DoxyCodeLine{                 step3\_init\_initial\_condition);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Partition: The quadrants are redistributed for equal element count.  The}}
+\DoxyCodeLine{\textcolor{comment}{   * partition can optionally be modified such that a family of octants, which}}
+\DoxyCodeLine{\textcolor{comment}{   * are possibly ready for coarsening, are never split between processors. */}}
+\DoxyCodeLine{  partforcoarsen = 1;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* If we call the 2:1 balance we ensure that neighbors do not differ in size}}
+\DoxyCodeLine{\textcolor{comment}{   * by more than a factor of 2.  This can optionally include diagonal}}
+\DoxyCodeLine{\textcolor{comment}{   * neighbors across edges or corners as well; see p4est.h. */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a6b603736cf5007b14755197a9c179a85}{p4est\_balance}} (\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa33499fc87edef5b1226ade261dd0d6e6}{P4EST\_CONNECT\_FACE}}, step3\_init\_initial\_condition);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a54c1f4e6bc35c181952371a8046523aa}{p4est\_partition}} (\mbox{\hyperlink{structp4est}{p4est}}, partforcoarsen, NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* time step */}}
+\DoxyCodeLine{  step3\_timestep (\mbox{\hyperlink{structp4est}{p4est}}, 0., 0.1);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Destroy the p4est and the connectivity structure. */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a1e78f347378fe8b097ef019214f2338e}{p4est\_destroy}} (\mbox{\hyperlink{structp4est}{p4est}});}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__connectivity_8h_a208e613cae5e1bd3baffb587387b672c}{p4est\_connectivity\_destroy}} (conn);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{int}}
+\DoxyCodeLine{main (\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char} **argv)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret, retval;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 help, usage\_error;}
+\DoxyCodeLine{  sc\_MPI\_Comm         mpicomm;}
+\DoxyCodeLine{  sc\_options\_t       *opt;}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{char}         *filename;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Initialize MPI; see sc\_mpi.h.}}
+\DoxyCodeLine{\textcolor{comment}{   * If configure -\/-\/enable-\/mpi is given these are true MPI calls.}}
+\DoxyCodeLine{\textcolor{comment}{   * Else these are dummy functions that simulate a single-\/processor run. */}}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Init (\&argc, \&argv);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  mpicomm = sc\_MPI\_COMM\_WORLD;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* These functions are optional.  If called they store the MPI rank as a}}
+\DoxyCodeLine{\textcolor{comment}{   * static variable so subsequent global p4est log messages are only issued}}
+\DoxyCodeLine{\textcolor{comment}{   * from processor zero.  Here we turn off most of the logging; see sc.h. */}}
+\DoxyCodeLine{  sc\_init (mpicomm, 1, 1, NULL, SC\_LP\_ESSENTIAL);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}{p4est\_init}} (NULL, SC\_LP\_PRODUCTION);}
+\DoxyCodeLine{  P4EST\_GLOBAL\_PRODUCTIONF}
+\DoxyCodeLine{    (\textcolor{stringliteral}{"{}This is the p4est \%dD demo example/steps/\%s\_step3\(\backslash\)n"{}},}
+\DoxyCodeLine{     \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}, \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Read command line options */}}
+\DoxyCodeLine{  filename = NULL;}
+\DoxyCodeLine{  opt = sc\_options\_new (argv[0]);}
+\DoxyCodeLine{  sc\_options\_add\_bool (opt, \textcolor{charliteral}{'H'}, \textcolor{stringliteral}{"{}help"{}}, \&help, 0,}
+\DoxyCodeLine{                       \textcolor{stringliteral}{"{}Print the help string and end the program"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_FILE\_DEPRECATED}}
+\DoxyCodeLine{  sc\_options\_add\_bool (opt, \textcolor{charliteral}{'C'}, \textcolor{stringliteral}{"{}write-\/checkpoint"{}}, \&step3\_checkpoint, 0,}
+\DoxyCodeLine{                       \textcolor{stringliteral}{"{}Write checkpoint files to disk"{}});}
+\DoxyCodeLine{  sc\_options\_add\_string (opt, \textcolor{charliteral}{'L'}, \textcolor{stringliteral}{"{}load-\/checkpoint"{}}, \&filename,}
+\DoxyCodeLine{                         NULL, \textcolor{stringliteral}{"{}Load and start from a checkpoint file"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  retval = sc\_options\_parse (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_ERROR, opt, argc, argv);}
+\DoxyCodeLine{  usage\_error = (retval == -\/1 || retval < argc);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Action of the main program: error out or run demonstration */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (usage\_error || help) \{}
+\DoxyCodeLine{    sc\_options\_print\_usage (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_PRODUCTION, opt, NULL);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    sc\_options\_print\_summary (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_PRODUCTION, opt);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    step3\_restart (filename, mpicomm, 0.1);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* End of program -\/-\/ free allocated memory */}}
+\DoxyCodeLine{  sc\_options\_destroy (opt);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* Verify that allocations internal to p4est and sc do not leak memory.}}
+\DoxyCodeLine{\textcolor{comment}{   * This should be called if sc\_init () has been called earlier. */}}
+\DoxyCodeLine{  sc\_finalize ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* This is standard MPI programs.  Without -\/-\/enable-\/mpi, this is a dummy. */}}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Finalize ();}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} usage\_error ? EXIT\_FAILURE : EXIT\_SUCCESS;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCodeInclude}
+ 

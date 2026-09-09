@@ -1,0 +1,73 @@
+\hypertarget{structp4est__ghost__exchange}{}\doxysection{p4est\+\_\+ghost\+\_\+exchange Struct Reference}
+\label{structp4est__ghost__exchange}\index{p4est\_ghost\_exchange@{p4est\_ghost\_exchange}}
+
+
+Transient storage for asynchronous ghost exchange.  
+
+
+
+
+{\ttfamily \#include $<$p4est\+\_\+ghost.\+h$>$}
+
+
+
+Collaboration diagram for p4est\+\_\+ghost\+\_\+exchange\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structp4est__ghost__exchange__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a3230e784531023afe3c16e737fc686c1}\label{structp4est__ghost__exchange_a3230e784531023afe3c16e737fc686c1}} 
+int \mbox{\hyperlink{structp4est__ghost__exchange_a3230e784531023afe3c16e737fc686c1}{is\+\_\+custom}}
+\begin{DoxyCompactList}\small\item\em False for p4est\+\_\+ghost\+\_\+exchange\+\_\+data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a291f34bbc6be1806ffe47d12162237e8}\label{structp4est__ghost__exchange_a291f34bbc6be1806ffe47d12162237e8}} 
+int \mbox{\hyperlink{structp4est__ghost__exchange_a291f34bbc6be1806ffe47d12162237e8}{is\+\_\+levels}}
+\begin{DoxyCompactList}\small\item\em Are we restricted to levels or not. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a457c63df2cc6d3836accfed10013f1fc}\label{structp4est__ghost__exchange_a457c63df2cc6d3836accfed10013f1fc}} 
+\mbox{\hyperlink{p4est_8h_abbf85f084ef575fb279717eba3aba29c}{p4est\+\_\+t}} $\ast$ \mbox{\hyperlink{structp4est__ghost__exchange_a457c63df2cc6d3836accfed10013f1fc}{p4est}}
+\begin{DoxyCompactList}\small\item\em The forest used for reference. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a7fa5e47b6c031e564f0668f023c8bdc8}\label{structp4est__ghost__exchange_a7fa5e47b6c031e564f0668f023c8bdc8}} 
+\mbox{\hyperlink{p4est__ghost_8h_aaa1000659b80aeb802788aac34dcbf5c}{p4est\+\_\+ghost\+\_\+t}} $\ast$ \mbox{\hyperlink{structp4est__ghost__exchange_a7fa5e47b6c031e564f0668f023c8bdc8}{ghost}}
+\begin{DoxyCompactList}\small\item\em The ghost layer used for reference. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_ab6c1fa415cbb5f5b12b4caa6c3bf6fae}\label{structp4est__ghost__exchange_ab6c1fa415cbb5f5b12b4caa6c3bf6fae}} 
+int \mbox{\hyperlink{structp4est__ghost__exchange_ab6c1fa415cbb5f5b12b4caa6c3bf6fae}{minlevel}}
+\begin{DoxyCompactList}\small\item\em Meaningful with is\+\_\+levels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a30ca278efd9827ed86f9850091843d1d}\label{structp4est__ghost__exchange_a30ca278efd9827ed86f9850091843d1d}} 
+int \mbox{\hyperlink{structp4est__ghost__exchange_a30ca278efd9827ed86f9850091843d1d}{maxlevel}}
+\begin{DoxyCompactList}\small\item\em Meaningful with is\+\_\+levels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a5d3a33d2db30753a1833545aa9241baa}\label{structp4est__ghost__exchange_a5d3a33d2db30753a1833545aa9241baa}} 
+size\+\_\+t \mbox{\hyperlink{structp4est__ghost__exchange_a5d3a33d2db30753a1833545aa9241baa}{data\+\_\+size}}
+\begin{DoxyCompactList}\small\item\em The data size to transfer per quadrant. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a4cd270e2820bfe5abc24cadf7168cbd7}\label{structp4est__ghost__exchange_a4cd270e2820bfe5abc24cadf7168cbd7}} 
+void $\ast$ \mbox{\hyperlink{structp4est__ghost__exchange_a4cd270e2820bfe5abc24cadf7168cbd7}{ghost\+\_\+data}}
+\begin{DoxyCompactList}\small\item\em Allocated contiguous array for ghost data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a20055be6f6bc9e1c1c45363dfcc05062}\label{structp4est__ghost__exchange_a20055be6f6bc9e1c1c45363dfcc05062}} 
+int $\ast$ \mbox{\hyperlink{structp4est__ghost__exchange_a20055be6f6bc9e1c1c45363dfcc05062}{qactive}}
+\begin{DoxyCompactList}\small\item\em p4est-\/$>$mpisize many integers \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a0ffc833c0473def94d4d8a55b58b69ff}\label{structp4est__ghost__exchange_a0ffc833c0473def94d4d8a55b58b69ff}} 
+int $\ast$ \mbox{\hyperlink{structp4est__ghost__exchange_a0ffc833c0473def94d4d8a55b58b69ff}{qbuffer}}
+\begin{DoxyCompactList}\small\item\em p4est-\/$>$mpisize many integers \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a40592c6a4883589ea7820fe053e3e580}\label{structp4est__ghost__exchange_a40592c6a4883589ea7820fe053e3e580}} 
+sc\+\_\+array\+\_\+t \mbox{\hyperlink{structp4est__ghost__exchange_a40592c6a4883589ea7820fe053e3e580}{requests}}
+\begin{DoxyCompactList}\small\item\em Array of send requests. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a69a1523ae1e9d7fd4a85c3fd8f38c045}\label{structp4est__ghost__exchange_a69a1523ae1e9d7fd4a85c3fd8f38c045}} 
+sc\+\_\+array\+\_\+t \mbox{\hyperlink{structp4est__ghost__exchange_a69a1523ae1e9d7fd4a85c3fd8f38c045}{sbuffers}}
+\begin{DoxyCompactList}\small\item\em Array of send buffers. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a399441106d78de8272296f8da23c61d3}\label{structp4est__ghost__exchange_a399441106d78de8272296f8da23c61d3}} 
+sc\+\_\+array\+\_\+t \mbox{\hyperlink{structp4est__ghost__exchange_a399441106d78de8272296f8da23c61d3}{rrequests}}
+\begin{DoxyCompactList}\small\item\em Array of receive requests. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__ghost__exchange_a725d3440e1dadf5b5175ea3f6f6ddaad}\label{structp4est__ghost__exchange_a725d3440e1dadf5b5175ea3f6f6ddaad}} 
+sc\+\_\+array\+\_\+t \mbox{\hyperlink{structp4est__ghost__exchange_a725d3440e1dadf5b5175ea3f6f6ddaad}{rbuffers}}
+\begin{DoxyCompactList}\small\item\em Array of receive buffers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Transient storage for asynchronous ghost exchange. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p4est__ghost_8h}{p4est\+\_\+ghost.\+h}}\end{DoxyCompactItemize}

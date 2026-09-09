@@ -1,0 +1,150 @@
+.TH "p8est_mesh_t" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p8est_mesh_t \- This structure contains complete mesh information on a 2:1 balanced forest\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p8est_mesh\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBlocal_num_quadrants\fP"
+.br
+.RI "number of process-local quadrants "
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBghost_num_quadrants\fP"
+.br
+.RI "number of ghost-layer quadrants "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP * \fBquad_to_tree\fP"
+.br
+.RI "tree index for each local quad\&. "
+.ti -1c
+.RI "int * \fBghost_to_proc\fP"
+.br
+.RI "processor for each ghost quad "
+.ti -1c
+.RI "\fBp4est_locidx_t\fP * \fBquad_to_quad\fP"
+.br
+.RI "one index for each of the 6 faces "
+.ti -1c
+.RI "int8_t * \fBquad_to_face\fP"
+.br
+.RI "encodes orientation/2:1 status "
+.ti -1c
+.RI "sc_array_t * \fBquad_to_half\fP"
+.br
+.RI "stores half-size neighbors "
+.ti -1c
+.RI "sc_array_t * \fBquad_level\fP"
+.br
+.RI "Stores lists of per-level quads\&. "
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBlocal_num_edges\fP"
+.br
+.RI "unsame-size and tree-boundary edges "
+.ti -1c
+.RI "\fBp4est_locidx_t\fP * \fBquad_to_edge\fP"
+.br
+.RI "12 indices for each local quad "
+.ti -1c
+.RI "sc_array_t * \fBedge_offset\fP"
+.br
+.RI "local_num_edges + 1 entries "
+.ti -1c
+.RI "sc_array_t * \fBedge_quad\fP"
+.br
+.RI "edge_offset indexes into this "
+.ti -1c
+.RI "sc_array_t * \fBedge_edge\fP"
+.br
+.RI "and this one too (type int8_t) "
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBlocal_num_corners\fP"
+.br
+.RI "tree-boundary corners "
+.ti -1c
+.RI "\fBp4est_locidx_t\fP * \fBquad_to_corner\fP"
+.br
+.RI "8 indices for each local quad "
+.ti -1c
+.RI "sc_array_t * \fBcorner_offset\fP"
+.br
+.RI "local_num_corners + 1 entries "
+.ti -1c
+.RI "sc_array_t * \fBcorner_quad\fP"
+.br
+.RI "corner_offset indexes into this "
+.ti -1c
+.RI "sc_array_t * \fBcorner_corner\fP"
+.br
+.RI "and this one too (type int8_t) "
+.ti -1c
+.RI "\fBp8est_mesh_params_t\fP \fBparams\fP"
+.br
+.RI "parameters the mesh was created with, e\&.g\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This structure contains complete mesh information on a 2:1 balanced forest\&. 
+
+It stores the locally relevant neighborhood, that is, all locally owned quadrants and one layer of adjacent ghost quadrants and their owners\&.
+.PP
+For each local quadrant, its tree number is stored in quad_to_tree\&. The quad_to_tree array is NULL by default and can be enabled using \fBp8est_mesh_new_ext\fP or \fBp8est_mesh_new_params\fP\&. For each ghost quadrant, its owner rank is stored in ghost_to_proc\&. For each level, an array of local quadrant numbers is stored in quad_level\&. The quad_level array is NULL by default and can be enabled using \fBp8est_mesh_new_ext\fP or \fBp8est_mesh_new_params\fP\&.
+.PP
+The quad_to_quad list stores one value for each local quadrant's face\&. This value is in 0\&.\&.local_num_quadrants-1 for local quadrants, or in local_num_quadrants + (0\&.\&.ghost_num_quadrants-1) for ghost quadrants\&.
+.PP
+The quad_to_face list has equally many entries that are either:
+.IP "1." 4
+A value of v = 0\&.\&.23 indicates one same-size neighbor\&. This value is decoded as v = r * 6 + nf, where nf = 0\&.\&.5 is the neighbor's connecting face number and r = 0\&.\&.3 is the relative orientation of the neighbor's face; see \fBp8est_connectivity\&.h\fP\&.
+.IP "2." 4
+A value of v = 24\&.\&.119 indicates a double-size neighbor\&. This value is decoded as v = 24 + h * 24 + r * 6 + nf, where r and nf are as above and h = 0\&.\&.3 is the number of the subface\&. h designates the subface of the large neighbor that the quadrant touches (this is the same as the large neighbor's face corner)\&.
+.IP "3." 4
+A value of v = -24\&.\&.-1 indicates four half-size neighbors\&. In this case the corresponding quad_to_quad index points into the quad_to_half array that stores four quadrant numbers per index, and the orientation of the smaller faces follows from 24 + v\&. The entries of quad_to_half encode between local and ghost quadrant in the same way as the quad_to_quad values described above\&. The small neighbors in quad_to_half are stored in the sequence of the face corners of this, i\&.e\&., the large quadrant\&.
+.PP
+.PP
+A quadrant on the boundary of the forest sees itself and its face number\&.
+.PP
+The quad_to_edge list stores edge neighbors that are not face neighbors\&. On the inside of a tree, there are one or two of those depending on size\&. Between trees, there can be any number of same- or different-sized neighbors\&. For same-tree same-size neighbors, we record their number in quad_to_edge by the same convention as described for quad_to_quad above\&. In this case, the neighbor's matching edge number is always diagonally opposite, that is, edge number ^ 3\&.
+.PP
+For half- and double-size and all inter-tree edge neighbors, the quad_to_edge value is in local_num_quadrants + local_num_ghosts + [0 \&.\&. local_num_edges - 1]\&. After subtracting the number of local and ghost quadrants, it indexes into edge_offset, which encodes a group of edge neighbors\&. Each member of a group may be one same/double-size quadrant or two half-size quadrants; this is determined by the value of the edge_edge field as follows\&.
+.IP "1." 4
+A value of e = 0\&.\&.23 indicates one same-size neighbor\&. This value is encoded as e = r * 12 + ne, where ne = 0\&.\&.11 is the neighbor's connecting edge number and r = 0\&.\&.1 indicates an edge flip\&.
+.IP "2." 4
+A value of e = 24\&.\&.71 indicates a double-size neighbor\&. This value is decoded as e = 24 + h * 24 + r * 12 + ne, where r and ne are as above and h = 0\&.\&.1 is the number of the subedge\&. h designates the subedge of the large neighbor that the quadrant touches (this is the same as the large neighbor's edge corner)\&.
+.IP "3." 4
+A value of e = -24\&.\&.-1 indicates two half-size neighbors\&. They are represented by two consecutive entries of the edge_quad and edge_edge arrays with identical values for edge_edge\&. The orientation of the smaller edges follows from 24 + e\&. The small neighbors in edge_quad are stored in the sequence of the edge corners of this, i\&.e\&., the large quadrant\&.
+.PP
+.PP
+Edges with no diagonal neighbor at all are assigned the value -3\&. This only happens on the domain boundary, which is necessarily a tree boundary\&. Edge neighbors for face-hanging nodes are assigned the value -1\&.
+.PP
+The quad_to_corner list stores corner neighbors that are not face or edge neighbors\&. On the inside of a tree, there is precisely one such neighbor per corner\&. In this case, its index is encoded as described above for quad_to_quad\&. The neighbor's matching corner number is always diagonally opposite, that is, corner number ^ 7\&.
+.PP
+On the inside of an inter-tree face, we have precisely one corner neighbor\&. If a corner is across an inter-tree edge or corner, then the number of corner neighbors may be any non-negative number\&. In all three cases, the quad_to_corner value is in local_num_quadrants + local_num_ghosts + [0 \&.\&. local_num_corners - 1]\&. After subtracting the number of local and ghost quadrants, it indexes into corner_offset, which encodes a group of corner neighbors\&. Each group contains the quadrant numbers encoded as usual for quad_to_quad in corner_quad, and the corner number from the neighbor as corner_corner\&.
+.PP
+Corners with no diagonal neighbor at all are assigned the value -3\&. This only happens on the domain boundary, which is necessarily a tree boundary\&. If edgehanging_corners in params is 0, all corner-neighbors for face- and edge-hanging nodes are assigned the value -1\&. If it is 1, we check for corner neighbors across coarse edges and assign -1 for the remaining face- and edge-hanging nodes\&.
+.PP
+The params struct describes the parameters the mesh was created with\&. For full control over the parameters, use \fBp8est_mesh_new_params\fP for mesh creation\&. 
+.SH "Field Documentation"
+.PP 
+.SS "\fBp8est_mesh_params_t\fP p8est_mesh_t::params"
+
+.PP
+parameters the mesh was created with, e\&.g\&. by passing them to \fBp8est_mesh_new_ext\fP or \fBp8est_mesh_new_params\fP 
+.SS "sc_array_t* p8est_mesh_t::quad_level"
+
+.PP
+Stores lists of per-level quads\&. The array has entries indexed by 0\&.\&.P4EST_QMAXLEVEL inclusive that are arrays of local quadrant ids\&. Is NULL if compute_level_lists in params is 0\&. 
+.SS "\fBp4est_topidx_t\fP* p8est_mesh_t::quad_to_tree"
+
+.PP
+tree index for each local quad\&. Is NULL if compute_tree_index in params is 0\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

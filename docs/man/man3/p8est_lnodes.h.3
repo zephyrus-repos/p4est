@@ -1,0 +1,289 @@
+.TH "src/p8est_lnodes.h" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/p8est_lnodes.h \- Generate Lobatto node numbers for any degree\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <p8est_ghost\&.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBp8est_lnodes\fP"
+.br
+.RI "Store a parallel numbering of Lobatto points of a given degree > 0\&. "
+.ti -1c
+.RI "struct \fBp8est_lnodes_rank\fP"
+.br
+.RI "The structure stored in the sharers array\&. "
+.ti -1c
+.RI "struct \fBp8est_lnodes_buffer\fP"
+.br
+.RI "p8est_lnodes_buffer_t handles the communication of data associated with nodes\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef int16_t \fBp8est_lnodes_code_t\fP"
+.br
+.RI "The face code encodes the configuration of a hanging quadrant\&. "
+.ti -1c
+.RI "typedef struct \fBp8est_lnodes\fP \fBp8est_lnodes_t\fP"
+.br
+.RI "Store a parallel numbering of Lobatto points of a given degree > 0\&. "
+.ti -1c
+.RI "typedef struct \fBp8est_lnodes_rank\fP \fBp8est_lnodes_rank_t\fP"
+.br
+.RI "The structure stored in the sharers array\&. "
+.ti -1c
+.RI "typedef struct \fBp8est_lnodes_buffer\fP \fBp8est_lnodes_buffer_t\fP"
+.br
+.RI "p8est_lnodes_buffer_t handles the communication of data associated with nodes\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBp8est_lnodes_t\fP * \fBp8est_lnodes_new\fP (\fBp8est_t\fP *\fBp8est\fP, \fBp8est_ghost_t\fP *ghost_layer, int degree)"
+.br
+.RI "Create a tensor-product Lobatto node structure for a given degree\&. "
+.ti -1c
+.RI "void \fBp8est_lnodes_destroy\fP (\fBp8est_lnodes_t\fP *lnodes)"
+.br
+.RI "Free all memory in a previously constructed lnodes structure\&. "
+.ti -1c
+.RI "void \fBp8est_partition_lnodes\fP (\fBp8est_t\fP *\fBp8est\fP, \fBp8est_ghost_t\fP *ghost, int degree, int partition_for_coarsening)"
+.br
+.RI "Partition using weights based on the number of nodes assigned to each element in lnodes\&. "
+.ti -1c
+.RI "void \fBp8est_partition_lnodes_detailed\fP (\fBp8est_t\fP *\fBp4est\fP, \fBp8est_ghost_t\fP *ghost, int nodes_per_volume, int nodes_per_face, int nodes_per_edge, int nodes_per_corner, int partition_for_coarsening)"
+.br
+.RI "Partition using weights that are broken down by where they reside: in volumes, on faces, on edges, or on corners\&. "
+.ti -1c
+.RI "void \fBp8est_ghost_support_lnodes\fP (\fBp8est_t\fP *\fBp8est\fP, \fBp8est_lnodes_t\fP *lnodes, \fBp8est_ghost_t\fP *ghost)"
+.br
+.RI "Expand the ghost layer to include the support of all nodes supported on the local partition\&. "
+.ti -1c
+.RI "void \fBp8est_ghost_expand_by_lnodes\fP (\fBp8est_t\fP *\fBp8est\fP, \fBp8est_lnodes_t\fP *lnodes, \fBp8est_ghost_t\fP *ghost)"
+.br
+.RI "Expand the ghost layer as in \fBp8est_ghost_expand()\fP, but use node support to define adjacency instead of geometric adjacency\&. "
+.ti -1c
+.RI "\fBp8est_lnodes_buffer_t\fP * \fBp8est_lnodes_share_owned_begin\fP (sc_array_t *node_data, \fBp8est_lnodes_t\fP *lnodes)"
+.br
+.RI "p8est_lnodes_share_owned_begin "
+.ti -1c
+.RI "void \fBp8est_lnodes_share_owned_end\fP (\fBp8est_lnodes_buffer_t\fP *buffer)"
+.br
+.ti -1c
+.RI "void \fBp8est_lnodes_share_owned\fP (sc_array_t *node_data, \fBp8est_lnodes_t\fP *lnodes)"
+.br
+.RI "Equivalent to calling p8est_lnodes_share_owned_end directly after p8est_lnodes_share_owned_begin\&. "
+.ti -1c
+.RI "\fBp8est_lnodes_buffer_t\fP * \fBp8est_lnodes_share_all_begin\fP (sc_array_t *node_data, \fBp8est_lnodes_t\fP *lnodes)"
+.br
+.RI "p8est_lnodes_share_all_begin "
+.ti -1c
+.RI "void \fBp8est_lnodes_share_all_end\fP (\fBp8est_lnodes_buffer_t\fP *buffer)"
+.br
+.ti -1c
+.RI "\fBp8est_lnodes_buffer_t\fP * \fBp8est_lnodes_share_all\fP (sc_array_t *node_data, \fBp8est_lnodes_t\fP *lnodes)"
+.br
+.RI "Equivalend to calling p8est_lnodes_share_all_end directly after p8est_lnodes_share_all_begin\&. "
+.ti -1c
+.RI "void \fBp8est_lnodes_buffer_destroy\fP (\fBp8est_lnodes_buffer_t\fP *buffer)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "const int \fBp8est_lnodes_corner_hanging\fP [8]"
+.br
+.RI "For each corner, the direction of the hanging face/edge\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Generate Lobatto node numbers for any degree\&. 
+
+
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBp8est_lnodes_buffer\fP \fBp8est_lnodes_buffer_t\fP"
+
+.PP
+p8est_lnodes_buffer_t handles the communication of data associated with nodes\&. \fIsend_buffers\fP is an array of arrays: one buffer for each process to which the current process sends node-data\&. It should not be altered between a shared_*_begin and a shared_*_end call\&.
+.PP
+\fIrecv_buffers\fP is an array of arrays that is used in lnodes_share_all_*\&. \fIrecv_buffers\fP[j] corresponds with lnodes->sharers[j]: it is the same length as \fIlnodes->sharers\fP[j]->shared_nodes\&. At the completion of lnodes_share_all or lnodes_share_all_end, recv_buffers[j] contains the node-data from the process lnodes->sharers[j]->rank (unless j is the current rank, in which case recv_buffers[j] is empty)\&. 
+.SS "typedef struct \fBp8est_lnodes_rank\fP \fBp8est_lnodes_rank_t\fP"
+
+.PP
+The structure stored in the sharers array\&. shared_nodes is a sorted array of p4est_locidx_t that indexes into local nodes\&. The shared_nodes array has a contiguous (or empty) section of nodes owned by the current rank\&. shared_mine_offset and shared_mine_count identify this section by indexing the shared_nodes array, not the local nodes array\&. owned_offset and owned_count define the section of local nodes that is owned by the listed rank (the section may be empty)\&. For the current process these coincide with those in p8est_lnodes_t\&. 
+.SS "typedef struct \fBp8est_lnodes\fP \fBp8est_lnodes_t\fP"
+
+.PP
+Store a parallel numbering of Lobatto points of a given degree > 0\&. Each element has degree+1 nodes per edge and vnodes = (degree+1)^3 nodes per volume\&. element_nodes is of dimension vnodes * num_local_elements and lists the nodes of each element in lexicographic yx-order (x varies fastest); element_nodes indexes into the set of local nodes, layed out as follows: 
+.PP
+.nf
+local nodes = [<-----owned_count----->|<-----nonlocal_nodes----->]
+            = [<----------------num_local_nodes----------------->]
+
+.fi
+.PP
+ nonlocal_nodes contains the globally unique numbers for independent nodes that are owned by other processes; for local nodes, the globally unique numbers are given by i + global_offset, where i is the local number\&. Hanging nodes are always local and don't have a global number\&. They index the geometrically corresponding independent nodes of a neighbor\&.
+.PP
+Whether nodes are hanging or not is decided based on the element faces and edges\&. This information is encoded in face_code with one int16_t per element\&. If no faces or edges are hanging, the value is zero, otherwise the face_code is interpreted by p8est_lnodes_decode\&.
+.PP
+Independent nodes can be shared by multiple MPI ranks\&. The owner rank of a node is the one from the lowest numbered element on the lowest numbered octree \fItouching\fP the node\&.
+.PP
+What is meant by \fItouching\fP? A quadrant is said to touch all faces/edges/corners that are incident on it, and by extension all nodes that are contained in those faces/edges/corners\&. 
+.PP
+.nf
+           X      +-----------+
+            x     |\           \
+           x      | \           \
+            . x   |  \           \
+           x   X  |   +-----------+
++-----+     . .   |   |           |
+|\     \   X   o  +   |           |
+| +-----+   o .    \  |     p     |
++ |  q  |      o    \ |           |
+ \|     |     o      \|           |
+  +-----+      O      +-----------+
+
+.fi
+.PP
+ In this example degree = 3\&. There are 4 nodes that live on the face between q and p, two on each edge and one at each corner of that face\&. The face is incident on q, so q owns the nodes marked '\&.' on the face (provided q is from a lower tree or has a lower index than p)\&. The bottom and front edges are incident on q, so q owns its nodes marked 'o' as well\&. The front lower corner is incident on q, so q owns its node 'O' as well\&. The other edges and corners are not incident on q, so q cannot own their nodes, marked 'x' and 'X'\&.
+.PP
+global_owned_count contains the number of independent nodes owned by each process\&.
+.PP
+The sharers array contains items of type p8est_lnodes_rank_t that hold the ranks that own or share independent local nodes\&. If there are no shared nodes on this processor, it is empty\&. Otherwise, it is sorted by rank and the current process is included\&.
+.PP
+degree < 0 indicates that the lnodes data structure is being used to number the quadrant boundary object (faces, edge and corners) rather than the $C^0$ Lobatto nodes:
+.PP
+if degree == -1, then one node is assigned per face, and no nodes are assigned per volume, per edge, or per corner: this numbering can be used for low-order Raviart-Thomas elements\&. In this case, vnodes == 6, and the nodes are listed in face-order\&.
+.PP
+if degree == -2, then one node is assigned per face and per edge and no nodes are assigned per volume or per corner\&. In this case, vnodes == 18, and the nodes are listed in face-order, followed by edge-order\&.
+.PP
+if degree == -3, then one node is assigned per face, per edge and per corner and no nodes are assigned per volume\&. In this case, vnodes == 26, and the nodes are listed in face-order, followed by edge-order, followed by corner-order\&. 
+.SH "Function Documentation"
+.PP 
+.SS "void p8est_ghost_expand_by_lnodes (\fBp8est_t\fP * p8est, \fBp8est_lnodes_t\fP * lnodes, \fBp8est_ghost_t\fP * ghost)"
+
+.PP
+Expand the ghost layer as in \fBp8est_ghost_expand()\fP, but use node support to define adjacency instead of geometric adjacency\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp8est\fP\fP The forest from which the ghost layer was generated\&. 
+.br
+\fIlnodes\fP The nodes to support\&. 
+.br
+\fIghost\fP The ghost layer to be expanded\&. 
+.RE
+.PP
+
+.SS "void p8est_ghost_support_lnodes (\fBp8est_t\fP * p8est, \fBp8est_lnodes_t\fP * lnodes, \fBp8est_ghost_t\fP * ghost)"
+
+.PP
+Expand the ghost layer to include the support of all nodes supported on the local partition\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp8est\fP\fP The forest from which the ghost layer was generated\&. 
+.br
+\fIlnodes\fP The nodes to support\&. 
+.br
+\fIghost\fP The ghost layer to be expanded\&. 
+.RE
+.PP
+
+.SS "void p8est_lnodes_destroy (\fBp8est_lnodes_t\fP * lnodes)"
+
+.PP
+Free all memory in a previously constructed lnodes structure\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIlnodes\fP This pointer will be deep freed\&. Do no longer use once this function returns\&. 
+.RE
+.PP
+
+.SS "\fBp8est_lnodes_t\fP* p8est_lnodes_new (\fBp8est_t\fP * p8est, \fBp8est_ghost_t\fP * ghost_layer, int degree)"
+
+.PP
+Create a tensor-product Lobatto node structure for a given degree\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp8est\fP\fP Valid forest\&. 
+.br
+\fIghost_layer\fP Valid full ghost layer, i\&. e\&. constructed by \fBp8est_ghost_new\fP with the same forest and argument \fBP8EST_CONNECT_FULL\fP\&. 
+.br
+\fIdegree\fP Degree >= 1 leads to N = degree + 1 nodes in every direction\&. Degrees -1, -2, and -3 are legal for special constructions; see \fBp8est_lnodes\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Fully initialized nodes structure\&. 
+.RE
+.PP
+
+.SS "\fBp8est_lnodes_buffer_t\fP* p8est_lnodes_share_all (sc_array_t * node_data, \fBp8est_lnodes_t\fP * lnodes)"
+
+.PP
+Equivalend to calling p8est_lnodes_share_all_end directly after p8est_lnodes_share_all_begin\&. Use if there is no local work that can be done to mask the communication cost\&. 
+.PP
+\fBReturns\fP
+.RS 4
+A fully initialized buffer that contains the received data\&. After processing this data, the buffer must be freed with p8est_lnodes_buffer_destroy\&. 
+.RE
+.PP
+
+.SS "\fBp8est_lnodes_buffer_t\fP* p8est_lnodes_share_all_begin (sc_array_t * node_data, \fBp8est_lnodes_t\fP * lnodes)"
+
+.PP
+p8est_lnodes_share_all_begin \fInode_data\fP is a user_defined array of arbitrary type, where each entry is associated with the \fIlnodes\fP local nodes entry of matching index\&. For every process that shares an entry with the current one, the value in the \fInode_data\fP array of that process is written into a \fIbuffer->recv_buffers\fP entry as described above\&. The user can then perform some arbitrary work that requires the data from all processes that share a node (such as reduce, max, min, etc\&.)\&. When the work concludes, the \fIbuffer\fP should be destroyed with p8est_lnodes_buffer_destroy\&.
+.PP
+Values of \fInode_data\fP are not guaranteed to be send, and \fIbuffer->recv_buffer\fP entries are not guaranteed to be received until the \fIbuffer\fP created by p8est_lnodes_share_all_begin is passed to p8est_lnodes_share_all_end\&. 
+.SS "void p8est_lnodes_share_owned (sc_array_t * node_data, \fBp8est_lnodes_t\fP * lnodes)"
+
+.PP
+Equivalent to calling p8est_lnodes_share_owned_end directly after p8est_lnodes_share_owned_begin\&. Use if there is no local work that can be done to mask the communication cost\&. 
+.SS "\fBp8est_lnodes_buffer_t\fP* p8est_lnodes_share_owned_begin (sc_array_t * node_data, \fBp8est_lnodes_t\fP * lnodes)"
+
+.PP
+p8est_lnodes_share_owned_begin \fInode_data\fP is a user-defined array of arbitrary type, where each entry is associated with the \fIlnodes\fP local nodes entry of matching index\&. For every local nodes entry that is owned by a process other than the current one, the value in the \fInode_data\fP array of the owning process is written directly into the \fInode_data\fP array of the current process\&. Values of \fInode_data\fP are not guaranteed to be sent or received until the \fIbuffer\fP created by p8est_lnodes_share_owned_begin is passed to p8est_lnodes_share_owned_end\&.
+.PP
+To be memory neutral, the \fIbuffer\fP created by p8est_lnodes_share_owned_begin must be destroying with p8est_lnodes_buffer_destroy (it is not destroyed by p8est_lnodes_share_owned_end)\&. 
+.SS "void p8est_partition_lnodes (\fBp8est_t\fP * p8est, \fBp8est_ghost_t\fP * ghost, int degree, int partition_for_coarsening)"
+
+.PP
+Partition using weights based on the number of nodes assigned to each element in lnodes\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp8est\fP\fP the forest to be repartitioned 
+.br
+\fIghost\fP the ghost layer 
+.br
+\fIdegree\fP the degree that would be passed to \fBp8est_lnodes_new()\fP 
+.br
+\fIpartition_for_coarsening\fP whether the partition should allow coarsening (i\&.e\&. group siblings who might merge) 
+.RE
+.PP
+
+.SH "Variable Documentation"
+.PP 
+.SS "const int p8est_lnodes_corner_hanging[8]\fC [extern]\fP"
+
+.PP
+For each corner, the direction of the hanging face/edge\&. The corner index is with respect to a zero child quadrant\&. Corners that may hang on a face store its normal direction\&. Corners that may hang on an edge store the edge direction + 3\&. Corners that may never hang store the value -1\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

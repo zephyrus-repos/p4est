@@ -1,0 +1,54 @@
+.TH "p4est_neighbor_transform_t" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p4est_neighbor_transform_t \- Generic interface for transformations between a tree and any of its neighbors\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p4est_connectivity\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBp4est_connect_type_t\fP \fBneighbor_type\fP"
+.br
+.RI "type of connection to neighbor "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP \fBneighbor\fP"
+.br
+.RI "neighbor tree index "
+.ti -1c
+.RI "int8_t \fBindex_self\fP"
+.br
+.RI "index of interface from self's perspective "
+.ti -1c
+.RI "int8_t \fBindex_neighbor\fP"
+.br
+.RI "index of interface from neighbor's perspective "
+.ti -1c
+.RI "int8_t \fBperm\fP [\fBP4EST_DIM\fP]"
+.br
+.RI "permutation of dimensions when transforming self coords to neighbor coords "
+.ti -1c
+.RI "int8_t \fBsign\fP [\fBP4EST_DIM\fP]"
+.br
+.RI "sign changes when transforming self coords to neighbor coords "
+.ti -1c
+.RI "\fBp4est_qcoord_t\fP \fBorigin_self\fP [\fBP4EST_DIM\fP]"
+.br
+.RI "point on the interface from self's perspective "
+.ti -1c
+.RI "\fBp4est_qcoord_t\fP \fBorigin_neighbor\fP [\fBP4EST_DIM\fP]"
+.br
+.RI "point on the interface from neighbor's perspective "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Generic interface for transformations between a tree and any of its neighbors\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

@@ -1,0 +1,48 @@
+\hypertarget{spheres_2spheres3_8c-example}{}\doxysection{spheres/spheres3.\+c}
+This 3D example program randomly generates parallel distributed sets of 3D sphere shells and refines all quadrants of a 3D forest intersecting any of the cells. It compiles from the same code as the 2D example \mbox{\hyperlink{spheres_2spheres2_8c-example}{spheres/spheres2.\+c}} with minimal redefinitions (please see a more detailed description there). In this sense, the code is mostly dimension independent.
+
+Usage\+: {\ttfamily p8est\+\_\+spheres} with the following options\+: \begin{DoxyVerb}*    -l | --minlevel  <INT>       Lowest level
+*    -L | --maxlevel  <INT>       Highest level
+*    -r | --rmax      <REAL>      Max sphere radius
+*    -t | --thickness <REAL>      Relative sphere thickness
+*    -f | --lfraction <REAL>      Length density of spheres
+*    -s | --spherelems <REAL>     Min elements per sphere diameter
+*    -N | --nbottom   <INT>       Notify bottom multiplicator
+*    -A | --alltoall  <BOOLEAN> Notify alltoall implementation
+*    -S | --scaling   <BOOLEAN> Configure for scaling test
+*    -R | --repetitions <INT>     Repeat run multiple times
+*    -V | --write-vtk <BOOLEAN> Output VTK files
+*    -P | --prefix    <STRING>    Prefix for file output \end{DoxyVerb}
+
+
+
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{  This file is part of p4est.}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is a C library to manage a collection (a forest) of multiple}}
+\DoxyCodeLine{\textcolor{comment}{  connected adaptive quadtrees or octrees in parallel.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  Copyright (C) 2010 The University of Texas System}}
+\DoxyCodeLine{\textcolor{comment}{  Additional copyright (C) 2011 individual authors}}
+\DoxyCodeLine{\textcolor{comment}{  Written by Carsten Burstedde, Lucas C. Wilcox, and Tobin Isaac}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is free software; you can redistribute it and/or modify}}
+\DoxyCodeLine{\textcolor{comment}{  it under the terms of the GNU General Public License as published by}}
+\DoxyCodeLine{\textcolor{comment}{  the Free Software Foundation; either version 2 of the License, or}}
+\DoxyCodeLine{\textcolor{comment}{  (at your option) any later version.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is distributed in the hope that it will be useful,}}
+\DoxyCodeLine{\textcolor{comment}{  but WITHOUT ANY WARRANTY; without even the implied warranty of}}
+\DoxyCodeLine{\textcolor{comment}{  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the}}
+\DoxyCodeLine{\textcolor{comment}{  GNU General Public License for more details.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  You should have received a copy of the GNU General Public License}}
+\DoxyCodeLine{\textcolor{comment}{  along with p4est; if not, write to the Free Software Foundation, Inc.,}}
+\DoxyCodeLine{\textcolor{comment}{  51 Franklin Street, Fifth Floor, Boston, MA 02110-\/1301, USA.}}
+\DoxyCodeLine{\textcolor{comment}{*/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "{}p4est\_to\_p8est\_spheres.h"{}}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "{}spheres2.c"{}}}
+
+\end{DoxyCodeInclude}
+ 

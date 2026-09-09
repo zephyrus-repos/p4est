@@ -1,0 +1,902 @@
+\hypertarget{userdata_2userdata_run2_8c-example}{}\doxysection{userdata/userdata\+\_\+run2.\+c}
+A 2D example of managing application data\+: {\bfseries{core code}}.The workflow is documented more extensively in \mbox{\hyperlink{example_userdata}{A demonstration of how to manage application data}}.
+
+This file contains the code compiled for both the 2D and 3D demo. This is accomplished with only minimal redefinitions. We write the code only once and use it twice. The 3D source \mbox{\hyperlink{userdata_2userdata_run3_8c-example}{userdata/userdata\+\_\+run3.\+c}} is a formal wrapper. In this sense, the code is mostly dimension independent.
+
+This file contains the detailed code of the demo. Its entry point is called from \mbox{\hyperlink{userdata_2userdata2_8c-example}{userdata/userdata2.\+c}}, which is a good example of setting up a {\bfseries{main program}} and defining and parsing command line options.
+
+
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{  This file is part of p4est.}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is a C library to manage a collection (a forest) of multiple}}
+\DoxyCodeLine{\textcolor{comment}{  connected adaptive quadtrees or octrees in parallel.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  Copyright (C) 2010 The University of Texas System}}
+\DoxyCodeLine{\textcolor{comment}{  Additional copyright (C) 2011 individual authors}}
+\DoxyCodeLine{\textcolor{comment}{  Written by Carsten Burstedde, Lucas C. Wilcox, and Tobin Isaac}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is free software; you can redistribute it and/or modify}}
+\DoxyCodeLine{\textcolor{comment}{  it under the terms of the GNU General Public License as published by}}
+\DoxyCodeLine{\textcolor{comment}{  the Free Software Foundation; either version 2 of the License, or}}
+\DoxyCodeLine{\textcolor{comment}{  (at your option) any later version.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is distributed in the hope that it will be useful,}}
+\DoxyCodeLine{\textcolor{comment}{  but WITHOUT ANY WARRANTY; without even the implied warranty of}}
+\DoxyCodeLine{\textcolor{comment}{  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the}}
+\DoxyCodeLine{\textcolor{comment}{  GNU General Public License for more details.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  You should have received a copy of the GNU General Public License}}
+\DoxyCodeLine{\textcolor{comment}{  along with p4est; if not, write to the Free Software Foundation, Inc.,}}
+\DoxyCodeLine{\textcolor{comment}{  51 Franklin Street, Fifth Floor, Boston, MA 02110-\/1301, USA.}}
+\DoxyCodeLine{\textcolor{comment}{*/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* the core functionality of the exmple program, for both 2D and 3D */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "{}userdata\_global.h"{}}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__bits_8h}{p4est\_bits.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__communication_8h}{p4est\_communication.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__extended_8h}{p4est\_extended.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__vtk_8h}{p4est\_vtk.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__bits_8h}{p8est\_bits.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__communication_8h}{p8est\_communication.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__extended_8h}{p8est\_extended.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__vtk_8h}{p8est\_vtk.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/************ code used regardless of internal or external data **************/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* demonstration data for each quadrant */}}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct }userdata\_quadrant\_internal}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{comment}{/* Store a piecewise constant variable field. */}}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              value;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{userdata\_quadrant\_internal\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* analytic solution function for demonstration purposes */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{double}}
+\DoxyCodeLine{userdata\_analytic (p4est\_userdata\_global\_t *g, \textcolor{keyword}{const} \textcolor{keywordtype}{double} coords[3])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return}}
+\DoxyCodeLine{    .5 * sin (M\_PI * coords[0]) +}
+\DoxyCodeLine{    .25 * exp (-\/.5 * pow ((coords[1] -\/ .5) / 2.5, 2.)) +}
+\DoxyCodeLine{    .25 * cos (4. * M\_PI * coords[2]);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* compute the value of the given function at quadrant midpoint */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{double}}
+\DoxyCodeLine{userdata\_value (p4est\_userdata\_global\_t *g,}
+\DoxyCodeLine{                \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree, \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} *quadrant)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\_qcoord\_t}}      coords\_in[\mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}];}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              coords\_out[3];}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* transform quadrant midpoint into the geometry system */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__bits_8h_a1c0bd87bc88f3389fa5f224922ce060a}{p4est\_quadrant\_volume\_coordinates}} (quadrant, coords\_in);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__geometry_8h_a699f3bd91e2560abeafc23322e12f0c3}{p4est\_geometry\_transform\_coordinates}} (g-\/>geom, which\_tree,}
+\DoxyCodeLine{                                        coords\_in, coords\_out);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* evaluate function at this point */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} userdata\_analytic (g, coords\_out);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* wrapper for an iteration over every local element */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{userdata\_iterate\_volume (p4est\_userdata\_global\_t *g,}
+\DoxyCodeLine{                         \mbox{\hyperlink{p4est__iterate_8h_adb709fe6510c4f0b3a918d2f976dbfbc}{p4est\_iter\_volume\_t}} volume\_callback)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{comment}{/* iterate over local quadrants passing an arbitrary callback */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qcount == 0);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__iterate_8h_aca75de06c7e9f039fa3be925a6ae87b4}{p4est\_iterate}} (g-\/>p4est, NULL, g, volume\_callback, NULL,}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{                 NULL,}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{                 NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qcount == g-\/>p4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{  g-\/>qcount = 0;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* write a VTK file with the mesh and the element data */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{userdata\_vtk\_general (p4est\_userdata\_global\_t *g, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *filename)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{char}         *fnames[1] = \{ \textcolor{stringliteral}{"{}value"{}} \};}
+\DoxyCodeLine{  sc\_array\_t         *fvalues[1] = \{ NULL \};}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__vtk_8h_aec7e360e192839f06f58cbfc7afb6d6c}{p4est\_vtk\_context\_t}} *vtk, *rvtk;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* check preconditions */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>p4est != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (!g-\/>novtk);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* verify structure of VTK data */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qarray != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qarray-\/>elem\_size == sizeof (\textcolor{keywordtype}{double}));}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qarray-\/>elem\_count ==}
+\DoxyCodeLine{                (\textcolor{keywordtype}{size\_t}) g-\/>p4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{  fvalues[0] = g-\/>qarray;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* write file in multpile steps */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>p4est != NULL);}
+\DoxyCodeLine{  vtk = \mbox{\hyperlink{p4est__vtk_8h_a34dbafa8dbc61172ead1a4da4c7103ca}{p4est\_vtk\_context\_new}} (g-\/>p4est, filename);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__vtk_8h_a78d37feae8abed0901541feab1247b87}{p4est\_vtk\_context\_set\_geom}} (vtk, g-\/>geom);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} ((rvtk = \mbox{\hyperlink{p4est__vtk_8h_a17ce523f11f580944630c6c604a070da}{p4est\_vtk\_write\_header}} (vtk)) == NULL) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERRORF (\textcolor{stringliteral}{"{}ERROR: write VTK header for \%s\(\backslash\)n"{}}, filename);}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  P4EST\_ASSERT (rvtk == vtk);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* the cell data is written from a contiguous array of values */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} ((rvtk = \mbox{\hyperlink{p4est__vtk_8h_a737397caa2806babf0d501c03b918a23}{p4est\_vtk\_write\_cell\_data}} (vtk, 1, 1, 1, 0, 1, 0,}
+\DoxyCodeLine{                                         fnames, fvalues)) == NULL) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERRORF (\textcolor{stringliteral}{"{}ERROR: write VTK data for \%s\(\backslash\)n"{}}, filename);}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  P4EST\_ASSERT (rvtk == vtk);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* finalize the output files and deallocate context */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (\mbox{\hyperlink{p4est__vtk_8h_a23950ebd8b9b99877fa152752b5150d4}{p4est\_vtk\_write\_footer}} (vtk)) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERRORF (\textcolor{stringliteral}{"{}ERROR: write VTK footer for \%s\(\backslash\)n"{}}, filename);}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* return success */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/************ functions that expect user data internal to p4est **************/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* callback to initialize internal quadrant data */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{userdata\_init\_internal (\mbox{\hyperlink{structp4est}{p4est\_t}} *\mbox{\hyperlink{structp4est}{p4est}},}
+\DoxyCodeLine{                        \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                        \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrant)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{comment}{/* the global data structure is stashed into the forest's user pointer */}}
+\DoxyCodeLine{  p4est\_userdata\_global\_t *g =}
+\DoxyCodeLine{    (p4est\_userdata\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* p4est is agnostic to the quadrant user data */}}
+\DoxyCodeLine{  userdata\_quadrant\_internal\_t *qdat =}
+\DoxyCodeLine{    (userdata\_quadrant\_internal\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* compute field value from analytic expression */}}
+\DoxyCodeLine{  qdat-\/>value = userdata\_value (g, which\_tree, quadrant);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* we know that the callback is executed in order for every quadrant */}}
+\DoxyCodeLine{  g-\/>qcount++;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* callback for placing the element data in the VTK file */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{userdata\_vtk\_internal\_volume (\mbox{\hyperlink{structp4est__iter__volume__info}{p4est\_iter\_volume\_info\_t}} *v, \textcolor{keywordtype}{void} *user\_data)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{comment}{/* the global data structure is passed by the iterator */}}
+\DoxyCodeLine{  p4est\_userdata\_global\_t *g = (p4est\_userdata\_global\_t *) user\_data;}
+\DoxyCodeLine{  userdata\_quadrant\_internal\_t *qdat;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* check call consistency */}}
+\DoxyCodeLine{  P4EST\_ASSERT (v != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (v-\/>p4est == g-\/>p4est);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qarray != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* access quadrant user data */}}
+\DoxyCodeLine{  qdat = (userdata\_quadrant\_internal\_t *) v-\/>\mbox{\hyperlink{structp4est__iter__volume__info_a1e9040be1cad1838d0407c1cc01e5122}{quad}}-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{  P4EST\_ASSERT (qdat != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* write quadrant value into output array and advance counter */}}
+\DoxyCodeLine{  *(\textcolor{keywordtype}{double} *) sc\_array\_index (g-\/>qarray, g-\/>qcount) = qdat-\/>value;}
+\DoxyCodeLine{  ++g-\/>qcount;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* write a VTK file with the mesh and the element data */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{userdata\_vtk\_internal (p4est\_userdata\_global\_t *g, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *filename)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>p4est != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qarray == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>in\_internal);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>novtk) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* output disabled */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* populate temporary array for output data */}}
+\DoxyCodeLine{  g-\/>qarray = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{double}), (\textcolor{keywordtype}{size\_t})}
+\DoxyCodeLine{                                  g-\/>p4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{  userdata\_iterate\_volume (g, userdata\_vtk\_internal\_volume);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (userdata\_vtk\_general (g, filename)) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERRORF (\textcolor{stringliteral}{"{}ERROR: write VTK file \%s\(\backslash\)n"{}}, filename);}
+\DoxyCodeLine{    sc\_array\_destroy\_null (\&g-\/>qarray);}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* return memory neutral */}}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&g-\/>qarray);}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* callback to tell p4est which quadrants shall be refined */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{userdata\_refine\_internal (\mbox{\hyperlink{structp4est}{p4est\_t}} *\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                          \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} *quadrant)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 refine;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* the global data structure is stashed into the forest's user pointer */}}
+\DoxyCodeLine{  p4est\_userdata\_global\_t *g =}
+\DoxyCodeLine{    (p4est\_userdata\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* update the quadrant user data contents */}}
+\DoxyCodeLine{  userdata\_quadrant\_internal\_t *qdat =}
+\DoxyCodeLine{    (userdata\_quadrant\_internal\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{  P4EST\_ASSERT (qdat != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* placeholder for a proper refinement criterion */}}
+\DoxyCodeLine{  refine = ((which\_tree \% 3) == 0) || (fabs (qdat-\/>value) > .8);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!refine || quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} >= g-\/>maxlevel) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* quadrant is unchanged, keep counting */}}
+\DoxyCodeLine{    g-\/>qcount++;}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{comment}{/* calculate new quadrant data in the replacement callback */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* callback to tell p4est which quadrants shall be coarsened */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{userdata\_coarsen\_internal (\mbox{\hyperlink{structp4est}{p4est\_t}} *\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                           \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} *quadrant[])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 coarsen;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* the global data structure is stashed into the forest's user pointer */}}
+\DoxyCodeLine{  p4est\_userdata\_global\_t *g =}
+\DoxyCodeLine{    (p4est\_userdata\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* we do not coarsen, we are only passed one quadrant */}}
+\DoxyCodeLine{  if (quadrant[1] == NULL) \{}
+\DoxyCodeLine{    ++g-\/>qcount;}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* really should determine proper coarsening criterion */}}
+\DoxyCodeLine{  coarsen = ((which\_tree \% 3) == 1);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!coarsen) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* we decided not to coarsen this family of quadrants */}}
+\DoxyCodeLine{    ++g-\/>qcount;}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{comment}{/* calculate new quadrant data in the replacement callback */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* update element data for a family of quadrants during adaptation */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{userdata\_replace\_internal (\mbox{\hyperlink{structp4est}{p4est\_t}} *\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                           \textcolor{keywordtype}{int} num\_outgoing, \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} *outgoing[],}
+\DoxyCodeLine{                           \textcolor{keywordtype}{int} num\_incoming, \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} *incoming[])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              sum;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* the global data structure is stashed into the forest's user pointer */}}
+\DoxyCodeLine{  p4est\_userdata\_global\_t *g =}
+\DoxyCodeLine{    (p4est\_userdata\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* check context invariant */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>in\_balance || g-\/>bcount == 0);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (num\_incoming > 1) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* we are refining */}}
+\DoxyCodeLine{    P4EST\_ASSERT (num\_outgoing == 1);}
+\DoxyCodeLine{    P4EST\_ASSERT (num\_incoming == \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* access old (larger) quadrant's data */}}
+\DoxyCodeLine{    userdata\_quadrant\_internal\_t *qold =}
+\DoxyCodeLine{      (userdata\_quadrant\_internal\_t *) outgoing[0]-\/>p.user\_data;}
+\DoxyCodeLine{    P4EST\_ASSERT (qold != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* determine offset for new quadrants' indices */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!g-\/>in\_balance) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* we rely on the iterator property of the refinement algorithm */}}
+\DoxyCodeLine{      g-\/>qcount += \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      \textcolor{comment}{/* within 2:1 balance, we do not have an iterator property;}}
+\DoxyCodeLine{\textcolor{comment}{         determine the new index by accessing the outgoing quadrant */}}
+\DoxyCodeLine{      g-\/>bcount += \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}} -\/ 1;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* access new (smaller) quadrants' data */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}; ++i) \{}
+\DoxyCodeLine{      userdata\_quadrant\_internal\_t *qnew =}
+\DoxyCodeLine{        (userdata\_quadrant\_internal\_t *) incoming[i]-\/>p.user\_data;}
+\DoxyCodeLine{      P4EST\_ASSERT (qnew != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* we just copy the old value into the refined elements */}}
+\DoxyCodeLine{      qnew-\/>value = qold-\/>value;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{comment}{/* we are coarsening */}}
+\DoxyCodeLine{    P4EST\_ASSERT (!g-\/>in\_balance);}
+\DoxyCodeLine{    P4EST\_ASSERT (num\_outgoing == \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}});}
+\DoxyCodeLine{    P4EST\_ASSERT (num\_incoming == 1);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* access new (larger) quadrant's data */}}
+\DoxyCodeLine{    userdata\_quadrant\_internal\_t *qnew =}
+\DoxyCodeLine{      (userdata\_quadrant\_internal\_t *) incoming[0]-\/>p.user\_data;}
+\DoxyCodeLine{    P4EST\_ASSERT (qnew != NULL);}
+\DoxyCodeLine{    g-\/>qcount++;}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* access old (smaller) quadrants' data */}}
+\DoxyCodeLine{    sum = 0.;}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}; ++i) \{}
+\DoxyCodeLine{      userdata\_quadrant\_internal\_t *qold =}
+\DoxyCodeLine{        (userdata\_quadrant\_internal\_t *) outgoing[i]-\/>p.user\_data;}
+\DoxyCodeLine{      P4EST\_ASSERT (qold != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* just copy the old value into the refined elements */}}
+\DoxyCodeLine{      sum += qold-\/>value;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* we just overage the old values into the coarsened element */}}
+\DoxyCodeLine{    qnew-\/>value = sum * (1. / \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* provide function for consistent deallocation */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{userdata\_run\_internal\_return (\textcolor{keywordtype}{int} retval, p4est\_userdata\_global\_t *g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* clean up what has been allocated in the same function */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>p4est != NULL) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* destroy forest */}}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est_8h_a1e78f347378fe8b097ef019214f2338e}{p4est\_destroy}} (g-\/>p4est);}
+\DoxyCodeLine{    g-\/>p4est = NULL;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} retval;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* core demo with quadrant data stored internal to p4est */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{userdata\_run\_internal (p4est\_userdata\_global\_t *g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>p4est == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>in\_internal);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* this is the demo for userdata allocated by p4est and stored internally */}}
+\DoxyCodeLine{  P4EST\_GLOBAL\_PRODUCTION (\mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}}}
+\DoxyCodeLine{                           \textcolor{stringliteral}{"{}\_userdata: application data INTERNAL\(\backslash\)n"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* create initial forest and populate quadrant data by callback */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qcount == 0);}
+\DoxyCodeLine{  g-\/>p4est = \mbox{\hyperlink{p4est__extended_8h_ac11cf572e8ac72c4beb78465f98b63f3}{p4est\_new\_ext}}}
+\DoxyCodeLine{    (g-\/>mpicomm, g-\/>conn, 0, SC\_MAX (g-\/>maxlevel -\/ 1, 0), 1,}
+\DoxyCodeLine{     sizeof (userdata\_quadrant\_internal\_t), userdata\_init\_internal, g);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qcount == g-\/>p4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{  g-\/>qcount = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* We like the invariant that after partitioning, partition-\/independent}}
+\DoxyCodeLine{\textcolor{comment}{     coarsening is always possible since every family of siblings is placed}}
+\DoxyCodeLine{\textcolor{comment}{     on a single process; this is not guaranteed by p4est\_new\_ext. */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a54c1f4e6bc35c181952371a8046523aa}{p4est\_partition}} (g-\/>p4est, 1, NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* write VTK files to visualize geometry and data */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (userdata\_vtk\_internal (g, \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_userdata\_internal\_new"{}})) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: write VTK output after forest\_new\(\backslash\)n"{}});}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} userdata\_run\_internal\_return (-\/1, g);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* refine the mesh adaptively and non-\/recursively */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qcount == 0);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__extended_8h_aad32df9df3630b6bac05e7366a5f1e46}{p4est\_refine\_ext}} (g-\/>p4est, 0, g-\/>maxlevel, userdata\_refine\_internal,}
+\DoxyCodeLine{                    NULL, userdata\_replace\_internal);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qcount == g-\/>p4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{  g-\/>qcount = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* coarsen the mesh adaptively and non-\/recursively */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qcount == 0);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__extended_8h_a06630b99f70cb85c73452640e8b4d54e}{p4est\_coarsen\_ext}} (g-\/>p4est, 0, 1, userdata\_coarsen\_internal,}
+\DoxyCodeLine{                     NULL, userdata\_replace\_internal);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qcount == g-\/>p4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{  g-\/>qcount = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* execute 2:1 balance on the mesh */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qcount == 0);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>bcount == 0);}
+\DoxyCodeLine{  P4EST\_ASSERT (!g-\/>in\_balance);}
+\DoxyCodeLine{  g-\/>in\_balance = 1;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__extended_8h_a666a197be8d6d83c08cc14bfdc8565ed}{p4est\_balance\_ext}} (g-\/>p4est, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4EST\_CONNECT\_FULL}},}
+\DoxyCodeLine{                     NULL, userdata\_replace\_internal);}
+\DoxyCodeLine{  g-\/>bcount = 0;}
+\DoxyCodeLine{  g-\/>in\_balance = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* write VTK files to visualize geometry and data after adaptation */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (userdata\_vtk\_internal (g, \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_userdata\_internal\_adapt"{}})) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: write VTK output after adaptation\(\backslash\)n"{}});}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} userdata\_run\_internal\_return (-\/1, g);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* repartition the mesh and the quadrant data */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a54c1f4e6bc35c181952371a8046523aa}{p4est\_partition}} (g-\/>p4est, 1, NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* write VTK files to visualize geometry and data after partitioning */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (userdata\_vtk\_internal (g, \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_userdata\_internal\_partition"{}})) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: write VTK output after adaptation\(\backslash\)n"{}});}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} userdata\_run\_internal\_return (-\/1, g);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* return memory neutral */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} userdata\_run\_internal\_return (0, g);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/************ functions that expect user data external to p4est **************/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* metadata for each quadrant */}}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct }userdata\_quadrant\_external}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{comment}{/* refinement flag */}}
+\DoxyCodeLine{  int8\_t              refine;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* coarsening flag */}}
+\DoxyCodeLine{  int8\_t              coarsen;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{userdata\_quadrant\_external\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* callback to initialize quadrant metadata */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{userdata\_init\_external (\mbox{\hyperlink{structp4est}{p4est\_t}} *\mbox{\hyperlink{structp4est}{p4est}},}
+\DoxyCodeLine{                        \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                        \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrant)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{comment}{/* the global data structure is stashed into the forest's user pointer */}}
+\DoxyCodeLine{  p4est\_userdata\_global\_t *g =}
+\DoxyCodeLine{    (p4est\_userdata\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* p4est is agnostic to the quadrant user data */}}
+\DoxyCodeLine{  userdata\_quadrant\_external\_t *qdat =}
+\DoxyCodeLine{    (userdata\_quadrant\_external\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* zero all bytes to initialize compiler padding */}}
+\DoxyCodeLine{  memset (qdat, 0, \textcolor{keyword}{sizeof} (*qdat));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* advance debug counter */}}
+\DoxyCodeLine{  ++g-\/>qcount;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* callback for local elements' initialization */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{userdata\_init\_external\_volume (\mbox{\hyperlink{structp4est__iter__volume__info}{p4est\_iter\_volume\_info\_t}} *v, \textcolor{keywordtype}{void} *user\_data)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{comment}{/* the global data structure is passed into every iterator */}}
+\DoxyCodeLine{  p4est\_userdata\_global\_t *g = (p4est\_userdata\_global\_t *) user\_data;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* check call consistency */}}
+\DoxyCodeLine{  P4EST\_ASSERT (v != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (v-\/>p4est == g-\/>p4est);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* compute value in external userdata array */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qarray != NULL);}
+\DoxyCodeLine{  *(\textcolor{keywordtype}{double} *) sc\_array\_index (g-\/>qarray, g-\/>qcount++) =}
+\DoxyCodeLine{    userdata\_value (g, v-\/>\mbox{\hyperlink{structp4est__iter__volume__info_aa9203b989bb29cc3ff536dd224727ab4}{treeid}}, v-\/>\mbox{\hyperlink{structp4est__iter__volume__info_a1e9040be1cad1838d0407c1cc01e5122}{quad}});}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* write a VTK file with the mesh and the element data */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{userdata\_vtk\_external (p4est\_userdata\_global\_t *g, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *filename)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>p4est != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qarray != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>in\_external);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>novtk) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* output disabled */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* the data array is already in the required form */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (userdata\_vtk\_general (g, filename)) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERRORF (\textcolor{stringliteral}{"{}ERROR: write VTK file \%s\(\backslash\)n"{}}, filename);}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* return success */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* callback to evaluate refinement/coarsening criterio */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{userdata\_criterion\_external\_volume (\mbox{\hyperlink{structp4est__iter__volume__info}{p4est\_iter\_volume\_info\_t}} *v,}
+\DoxyCodeLine{                                    \textcolor{keywordtype}{void} *user\_data)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{comment}{/* the global data structure is passed into every iterator */}}
+\DoxyCodeLine{  p4est\_userdata\_global\_t *g = (p4est\_userdata\_global\_t *) user\_data;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* check call consistency */}}
+\DoxyCodeLine{  P4EST\_ASSERT (v != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (v-\/>p4est == g-\/>p4est);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* p4est is agnostic to the quadrant user data */}}
+\DoxyCodeLine{  userdata\_quadrant\_external\_t *qdat =}
+\DoxyCodeLine{    (userdata\_quadrant\_external\_t *) v-\/>\mbox{\hyperlink{structp4est__iter__volume__info_a1e9040be1cad1838d0407c1cc01e5122}{quad}}-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* refinement criteria for demonstration */}}
+\DoxyCodeLine{  qdat-\/>refine = ((v-\/>\mbox{\hyperlink{structp4est__iter__volume__info_aa9203b989bb29cc3ff536dd224727ab4}{treeid}} \% 3) == 0);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* coarsening criteria for demonstration */}}
+\DoxyCodeLine{  qdat-\/>coarsen = ((v-\/>\mbox{\hyperlink{structp4est__iter__volume__info_aa9203b989bb29cc3ff536dd224727ab4}{treeid}} \% 3) == 1);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* refine also if value is near the extremes */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qarray != NULL);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (fabs (*(\textcolor{keywordtype}{double} *) sc\_array\_index (g-\/>qarray, g-\/>qcount++)) > .8) \{}
+\DoxyCodeLine{    qdat-\/>refine = 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* at this point, refinement and coarsening may both be requested */}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* callback to tell p4est which quadrants shall be refined */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{userdata\_refine\_external (\mbox{\hyperlink{structp4est}{p4est\_t}} *\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                          \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} *quadrant)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{comment}{/* the global data structure is stashed into the forest's user pointer */}}
+\DoxyCodeLine{  p4est\_userdata\_global\_t *g =}
+\DoxyCodeLine{    (p4est\_userdata\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* access the quadrant user data contents */}}
+\DoxyCodeLine{  userdata\_quadrant\_external\_t *qdat =}
+\DoxyCodeLine{    (userdata\_quadrant\_external\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{  P4EST\_ASSERT (qdat != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* access refinement criterion */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!qdat-\/>refine || quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} >= g-\/>maxlevel) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* callback to tell p4est which quadrants shall be coarsened */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{userdata\_coarsen\_external (\mbox{\hyperlink{structp4est}{p4est\_t}} *\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                           \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} *quadrant[])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* with external user data, we do not use p4est\_coarsen\_ext */}}
+\DoxyCodeLine{  P4EST\_ASSERT (quadrant[1] != NULL);}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}; ++i) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* access the quadrant user data contents */}}
+\DoxyCodeLine{    userdata\_quadrant\_external\_t *qdat =}
+\DoxyCodeLine{      (userdata\_quadrant\_external\_t *) quadrant[i]-\/>p.user\_data;}
+\DoxyCodeLine{    P4EST\_ASSERT (qdat != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* access coarsening criterion */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!qdat-\/>coarsen || qdat-\/>refine) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* interpolate/project data after refinement/ */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{userdata\_project\_external (p4est\_userdata\_global\_t *g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              value;}
+\DoxyCodeLine{  \textcolor{keywordtype}{size\_t}              pdindex, ndindex;}
+\DoxyCodeLine{  \textcolor{keywordtype}{size\_t}              pdbound;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_DEBUG}}
+\DoxyCodeLine{  \textcolor{keywordtype}{size\_t}              ndbound;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  sc\_array\_t         *parray, *narray;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}}      tt;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__tree}{p4est\_tree\_t}}       *ptree, *ntree;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *pquad, *nquad;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* check invariants */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>p4est != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>n4est != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qarray != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>in\_external);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* allocate a second data array and deallocate the first afterwards */}}
+\DoxyCodeLine{  pdindex = ndindex = 0;}
+\DoxyCodeLine{  parray = g-\/>qarray;}
+\DoxyCodeLine{  P4EST\_ASSERT (parray-\/>elem\_count == (\textcolor{keywordtype}{size\_t}) g-\/>p4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{  narray = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{double}),}
+\DoxyCodeLine{                               (\textcolor{keywordtype}{size\_t}) g-\/>n4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>p4est-\/>first\_local\_tree == g-\/>n4est-\/>first\_local\_tree);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>p4est-\/>last\_local\_tree == g-\/>n4est-\/>last\_local\_tree);}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (tt = g-\/>n4est-\/>first\_local\_tree; tt <= g-\/>n4est-\/>last\_local\_tree; ++tt) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* simultaneous loop over old and new mesh with same partition */}}
+\DoxyCodeLine{    ptree = p4est\_tree\_array\_index (g-\/>p4est-\/>trees, tt);}
+\DoxyCodeLine{    pquad = p4est\_quadrant\_array\_index (\&ptree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}, 0);}
+\DoxyCodeLine{    pdbound = (size\_t) ptree-\/>\mbox{\hyperlink{structp4est__tree_ab0248e174f0d63c76bbe1ba955f732be}{quadrants\_offset}} + ptree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}.elem\_count;}
+\DoxyCodeLine{    ntree = p4est\_tree\_array\_index (g-\/>n4est-\/>trees, tt);}
+\DoxyCodeLine{    nquad = p4est\_quadrant\_array\_index (\&ntree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}, 0);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_DEBUG}}
+\DoxyCodeLine{    ndbound = (size\_t) ntree-\/>\mbox{\hyperlink{structp4est__tree_ab0248e174f0d63c76bbe1ba955f732be}{quadrants\_offset}} + ntree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}.elem\_count;}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{    for (;;) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* simultaneous loop over old and new quadrants in this tree */}}
+\DoxyCodeLine{      P4EST\_ASSERT (abs (pquad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} -\/ nquad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) <= 1);}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (pquad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} == nquad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) \{}
+\DoxyCodeLine{        \textcolor{comment}{/* old and new quadrant are same size: copy value */}}
+\DoxyCodeLine{        *(\textcolor{keywordtype}{double} *) sc\_array\_index (narray, ndindex++) =}
+\DoxyCodeLine{          *(\textcolor{keywordtype}{double} *) sc\_array\_index (parray, pdindex++);}
+\DoxyCodeLine{        pquad++;}
+\DoxyCodeLine{        nquad++;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (pquad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} + 1 == nquad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) \{}
+\DoxyCodeLine{        \textcolor{comment}{/* new quadrants are refined from the old one: copy value */}}
+\DoxyCodeLine{        value = *(\textcolor{keywordtype}{double} *) sc\_array\_index (parray, pdindex++);}
+\DoxyCodeLine{        \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}; ++i) \{}
+\DoxyCodeLine{          \textcolor{comment}{/* all new quadrants must be siblings of a family */}}
+\DoxyCodeLine{          *(\textcolor{keywordtype}{double} *) sc\_array\_index (narray, ndindex++) = value;}
+\DoxyCodeLine{          P4EST\_ASSERT (\mbox{\hyperlink{p4est__bits_8h_a2b0cbbd87c0bc9d640fb0ee8b32d9a0f}{p4est\_quadrant\_child\_id}} (nquad) == i);}
+\DoxyCodeLine{          P4EST\_ASSERT (nquad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} == pquad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} + 1);}
+\DoxyCodeLine{          ++nquad;}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{        ++pquad;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (nquad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} + 1 == pquad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}}) \{}
+\DoxyCodeLine{        \textcolor{comment}{/* new quadrant is coarsened from the old ones */}}
+\DoxyCodeLine{        value = 0.;}
+\DoxyCodeLine{        \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}; ++i) \{}
+\DoxyCodeLine{          \textcolor{comment}{/* all old quadrants must be siblings of a family */}}
+\DoxyCodeLine{          value += *(\textcolor{keywordtype}{double} *) sc\_array\_index (parray, pdindex++);}
+\DoxyCodeLine{          P4EST\_ASSERT (\mbox{\hyperlink{p4est__bits_8h_a2b0cbbd87c0bc9d640fb0ee8b32d9a0f}{p4est\_quadrant\_child\_id}} (pquad) == i);}
+\DoxyCodeLine{          P4EST\_ASSERT (pquad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} == nquad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} + 1);}
+\DoxyCodeLine{          ++pquad;}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{        \textcolor{comment}{/* for demonstration just compute the average value */}}
+\DoxyCodeLine{        *(\textcolor{keywordtype}{double} *) sc\_array\_index (narray, ndindex++) =}
+\DoxyCodeLine{          value * (1. / \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}});}
+\DoxyCodeLine{        ++nquad;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{        \textcolor{comment}{/* no other situation can arise */}}
+\DoxyCodeLine{        SC\_ABORT\_NOT\_REACHED ();}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* break quadrant loop if the local tree is traversed */}}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (pdindex == pdbound) \{}
+\DoxyCodeLine{        P4EST\_ASSERT (ndindex == ndbound);}
+\DoxyCodeLine{        \textcolor{keywordflow}{break};}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      P4EST\_ASSERT (ndindex < ndbound);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* this tree is now processed */}}
+\DoxyCodeLine{    P4EST\_ASSERT (pquad -\/ p4est\_quadrant\_array\_index (\&ptree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}, 0) ==}
+\DoxyCodeLine{                  (ptrdiff\_t) ptree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}.elem\_count);}
+\DoxyCodeLine{    P4EST\_ASSERT (nquad -\/ p4est\_quadrant\_array\_index (\&ntree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}, 0) ==}
+\DoxyCodeLine{                  (ptrdiff\_t) ntree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}.elem\_count);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* by construction we have traversed both meshes simultaneously */}}
+\DoxyCodeLine{  P4EST\_ASSERT (pdindex == (\textcolor{keywordtype}{size\_t}) g-\/>p4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{  P4EST\_ASSERT (ndindex == (\textcolor{keywordtype}{size\_t}) g-\/>n4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* replace the old array with the new one */}}
+\DoxyCodeLine{  sc\_array\_destroy (g-\/>qarray);}
+\DoxyCodeLine{  g-\/>qarray = narray;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* adapt the mesh according to refinement criteria and project application data */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{userdata\_adapt\_external (p4est\_userdata\_global\_t *g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>in\_external);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* execute refinement on a copy of the forest */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>n4est == NULL);}
+\DoxyCodeLine{  g-\/>n4est = \mbox{\hyperlink{p4est_8h_a808053321e785b3aba01aaa63f68517d}{p4est\_copy}} (g-\/>p4est, 1);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* adapt the new forest non-\/recursively */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a1a31375edfa42b5609e7656233c32cca}{p4est\_refine}} (g-\/>n4est, 0,}
+\DoxyCodeLine{                userdata\_refine\_external, userdata\_init\_external);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_ad250f4765d9778ec3940e9fabea7c853}{p4est\_coarsen}} (g-\/>n4est, 0,}
+\DoxyCodeLine{                 userdata\_coarsen\_external, userdata\_init\_external);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a6b603736cf5007b14755197a9c179a85}{p4est\_balance}} (g-\/>n4est, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4EST\_CONNECT\_FULL}}, userdata\_init\_external);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* interpolate/project values from old to adapted forest */}}
+\DoxyCodeLine{  userdata\_project\_external (g);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a1e78f347378fe8b097ef019214f2338e}{p4est\_destroy}} (g-\/>p4est);}
+\DoxyCodeLine{  g-\/>p4est = g-\/>n4est;}
+\DoxyCodeLine{  g-\/>n4est = NULL;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* execute partitioning with associated data transfer */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{userdata\_partition\_external (p4est\_userdata\_global\_t *g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qarray != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>n4est == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>in\_external);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* partition moves the quadrant user data around */}}
+\DoxyCodeLine{  g-\/>n4est = \mbox{\hyperlink{p4est_8h_a808053321e785b3aba01aaa63f68517d}{p4est\_copy}} (g-\/>p4est, 1);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (\mbox{\hyperlink{p4est__extended_8h_a124f2669c375fa66dc746be591ca2404}{p4est\_partition\_ext}} (g-\/>n4est, 1, NULL) == 0) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* the partition is unchanged, do nothing */}}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>p4est-\/>local\_num\_quadrants ==}
+\DoxyCodeLine{                  g-\/>n4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est_8h_a1e78f347378fe8b097ef019214f2338e}{p4est\_destroy}} (g-\/>n4est);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    sc\_array\_t         *parray, *narray;}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* transfer quadrant data from old to new partition */}}
+\DoxyCodeLine{    parray = g-\/>qarray;}
+\DoxyCodeLine{    P4EST\_ASSERT (parray-\/>elem\_count ==}
+\DoxyCodeLine{                  (\textcolor{keywordtype}{size\_t}) g-\/>p4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{    narray = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{double}),}
+\DoxyCodeLine{                                 (\textcolor{keywordtype}{size\_t}) g-\/>n4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__communication_8h_a9a9ef6c16f81067f0c917a838a8fdfac}{p4est\_transfer\_fixed}} (g-\/>n4est-\/>global\_first\_quadrant,}
+\DoxyCodeLine{                          g-\/>p4est-\/>global\_first\_quadrant,}
+\DoxyCodeLine{                          \textcolor{comment}{/* the tag can really be anything */}}
+\DoxyCodeLine{                          g-\/>p4est-\/>mpicomm, P4EST\_COMM\_TAG\_LAST + 0,}
+\DoxyCodeLine{                          \textcolor{comment}{/* don't assert invalid index on empty array */}}
+\DoxyCodeLine{                          sc\_array\_index\_null (narray, 0),}
+\DoxyCodeLine{                          sc\_array\_index\_null (parray, 0), parray-\/>elem\_size);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* free old forest and application data */}}
+\DoxyCodeLine{    sc\_array\_destroy (g-\/>qarray);}
+\DoxyCodeLine{    g-\/>qarray = narray;}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est_8h_a1e78f347378fe8b097ef019214f2338e}{p4est\_destroy}} (g-\/>p4est);}
+\DoxyCodeLine{    g-\/>p4est = g-\/>n4est;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* maintain invariant */}}
+\DoxyCodeLine{  g-\/>n4est = NULL;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* provide function for consistent deallocation */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{userdata\_run\_external\_return (\textcolor{keywordtype}{int} retval, p4est\_userdata\_global\_t *g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* clean up what has been allocated in the same function */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>qarray != NULL) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* destroy application userdata */}}
+\DoxyCodeLine{    sc\_array\_destroy\_null (\&g-\/>qarray);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>n4est != NULL) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* destroy forest */}}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est_8h_a1e78f347378fe8b097ef019214f2338e}{p4est\_destroy}} (g-\/>n4est);}
+\DoxyCodeLine{    g-\/>n4est = NULL;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>p4est != NULL) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* destroy forest */}}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est_8h_a1e78f347378fe8b097ef019214f2338e}{p4est\_destroy}} (g-\/>p4est);}
+\DoxyCodeLine{    g-\/>p4est = NULL;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} retval;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* core demo with quadrant data stored external to p4est */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{userdata\_run\_external (p4est\_userdata\_global\_t *g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>p4est == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qarray == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>in\_external);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* this is the demo for userdata allocated by the application developer */}}
+\DoxyCodeLine{  P4EST\_GLOBAL\_PRODUCTION (\mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}}}
+\DoxyCodeLine{                           \textcolor{stringliteral}{"{}\_userdata: application data EXTERNAL\(\backslash\)n"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* create initial forest and populate metadata by callback */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qcount == 0);}
+\DoxyCodeLine{  g-\/>p4est = \mbox{\hyperlink{p4est__extended_8h_ac11cf572e8ac72c4beb78465f98b63f3}{p4est\_new\_ext}}}
+\DoxyCodeLine{    (g-\/>mpicomm, g-\/>conn, 0, SC\_MAX (g-\/>maxlevel -\/ 1, 0), 1,}
+\DoxyCodeLine{     sizeof (userdata\_quadrant\_external\_t), userdata\_init\_external, g);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qcount == g-\/>p4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{  g-\/>qcount = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* We like the invariant that after partitioning, partition-\/independent}}
+\DoxyCodeLine{\textcolor{comment}{     coarsening is always possible since every family of siblings is placed}}
+\DoxyCodeLine{\textcolor{comment}{     on a single process; this is not guaranteed by p4est\_new\_ext. */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a54c1f4e6bc35c181952371a8046523aa}{p4est\_partition}} (g-\/>p4est, 1, NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* populate quadrant data by volume iterator */}}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qarray == NULL);}
+\DoxyCodeLine{  g-\/>qarray = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{double}),}
+\DoxyCodeLine{                                  (\textcolor{keywordtype}{size\_t}) g-\/>p4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{  userdata\_iterate\_volume (g, userdata\_init\_external\_volume);}
+\DoxyCodeLine{  g-\/>qcount = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* write VTK files to visualize geometry and data */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (userdata\_vtk\_external (g, \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_userdata\_external\_new"{}})) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: write VTK output after forest\_new\(\backslash\)n"{}});}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} userdata\_run\_external\_return (-\/1, g);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* evaluate refinement criteria */}}
+\DoxyCodeLine{  userdata\_iterate\_volume (g, userdata\_criterion\_external\_volume);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* refine, coarsen, and balance the mesh, then project data once */}}
+\DoxyCodeLine{  userdata\_adapt\_external (g);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* write VTK files to visualize geometry and data */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (userdata\_vtk\_external (g, \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_userdata\_external\_adapt"{}})) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: write VTK output after forest\_adapt\(\backslash\)n"{}});}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} userdata\_run\_external\_return (-\/1, g);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* repartition the mesh and the application data */}}
+\DoxyCodeLine{  userdata\_partition\_external (g);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* write VTK files to visualize geometry and data */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (userdata\_vtk\_external (g, \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_userdata\_external\_partition"{}})) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: write VTK output after forest\_partition\(\backslash\)n"{}});}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} userdata\_run\_external\_return (-\/1, g);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* return memory neutral */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} userdata\_run\_external\_return (0, g);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* *********** this function is the entry point into this file ***************/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* execute the demonstration */}}
+\DoxyCodeLine{\textcolor{keywordtype}{int}}
+\DoxyCodeLine{p4est\_userdata\_run (p4est\_userdata\_global\_t *g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 erres;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>options != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>conn != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (\mbox{\hyperlink{p4est__connectivity_8h_a3780b75fcd2a5b578c6dc294c4e77a5e}{p4est\_connectivity\_is\_valid}} (g-\/>conn));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* for consistency, track error status the same way */}}
+\DoxyCodeLine{  P4EST\_ASSERT (!g-\/>in\_internal);}
+\DoxyCodeLine{  P4EST\_ASSERT (!g-\/>in\_external);}
+\DoxyCodeLine{  erres = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* run the example once with p4est-\/allocated application data */}}
+\DoxyCodeLine{  g-\/>in\_internal = 1;}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!erres \&\& !g-\/>noint \&\& (erres = userdata\_run\_internal (g))) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: run with internal data\(\backslash\)n"{}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  g-\/>in\_internal = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* run the example another time with user-\/allocated application data */}}
+\DoxyCodeLine{  g-\/>in\_external = 1;}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!erres \&\& !g-\/>noext \&\& (erres = userdata\_run\_external (g))) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}ERROR: run with external data\(\backslash\)n"{}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  g-\/>in\_external = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* return error status */}}
+\DoxyCodeLine{  P4EST\_ASSERT (!g-\/>in\_internal);}
+\DoxyCodeLine{  P4EST\_ASSERT (!g-\/>in\_external);}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} erres;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCodeInclude}
+ 

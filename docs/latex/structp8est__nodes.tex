@@ -1,0 +1,66 @@
+\hypertarget{structp8est__nodes}{}\doxysection{p8est\+\_\+nodes Struct Reference}
+\label{structp8est__nodes}\index{p8est\_nodes@{p8est\_nodes}}
+
+
+This structure holds complete parallel node information.  
+
+
+
+
+{\ttfamily \#include $<$p8est\+\_\+nodes.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp8est__nodes_a6bc96818bad9d79bed10c85a711f7342}\label{structp8est__nodes_a6bc96818bad9d79bed10c85a711f7342}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} {\bfseries num\+\_\+local\+\_\+quadrants}
+\item 
+\mbox{\Hypertarget{structp8est__nodes_a6fa96d9df55c82d319e35d29723e7aec}\label{structp8est__nodes_a6fa96d9df55c82d319e35d29723e7aec}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} {\bfseries num\+\_\+owned\+\_\+indeps}
+\item 
+\mbox{\Hypertarget{structp8est__nodes_ab2a3c7d2ea7eb9aa8f7838152dad49aa}\label{structp8est__nodes_ab2a3c7d2ea7eb9aa8f7838152dad49aa}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} {\bfseries num\+\_\+owned\+\_\+shared}
+\item 
+\mbox{\Hypertarget{structp8est__nodes_a12138c3ca46b5254a3cd30940a3c7fda}\label{structp8est__nodes_a12138c3ca46b5254a3cd30940a3c7fda}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} {\bfseries offset\+\_\+owned\+\_\+indeps}
+\item 
+\mbox{\Hypertarget{structp8est__nodes_afdb08c3d7fb9f48ffeff8756324ccc0c}\label{structp8est__nodes_afdb08c3d7fb9f48ffeff8756324ccc0c}} 
+sc\+\_\+array\+\_\+t {\bfseries indep\+\_\+nodes}
+\item 
+\mbox{\Hypertarget{structp8est__nodes_ad4240f8903f665ef530b2f81b0f99879}\label{structp8est__nodes_ad4240f8903f665ef530b2f81b0f99879}} 
+sc\+\_\+array\+\_\+t {\bfseries face\+\_\+hangings}
+\item 
+\mbox{\Hypertarget{structp8est__nodes_a9933127fef8a3565d9bc00d735933d3a}\label{structp8est__nodes_a9933127fef8a3565d9bc00d735933d3a}} 
+sc\+\_\+array\+\_\+t {\bfseries edge\+\_\+hangings}
+\item 
+\mbox{\Hypertarget{structp8est__nodes_ac7efbff3917ce62be0c67963b67362bd}\label{structp8est__nodes_ac7efbff3917ce62be0c67963b67362bd}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$ {\bfseries local\+\_\+nodes}
+\item 
+\mbox{\Hypertarget{structp8est__nodes_a867142414c373546cc7ad183c055716a}\label{structp8est__nodes_a867142414c373546cc7ad183c055716a}} 
+sc\+\_\+array\+\_\+t {\bfseries shared\+\_\+indeps}
+\item 
+\mbox{\Hypertarget{structp8est__nodes_aae73e19dcf4470df0ca326bbb117ebd6}\label{structp8est__nodes_aae73e19dcf4470df0ca326bbb117ebd6}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$ {\bfseries shared\+\_\+offsets}
+\item 
+\mbox{\Hypertarget{structp8est__nodes_a4f4ec8b3e211850c15398c1e058a6aca}\label{structp8est__nodes_a4f4ec8b3e211850c15398c1e058a6aca}} 
+int $\ast$ {\bfseries nonlocal\+\_\+ranks}
+\item 
+\mbox{\Hypertarget{structp8est__nodes_a5730ea63ef8e8181da45bbca0b888526}\label{structp8est__nodes_a5730ea63ef8e8181da45bbca0b888526}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$ {\bfseries global\+\_\+owned\+\_\+indeps}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This structure holds complete parallel node information. 
+
+Nodes are unique and either independent, face or edge hanging. Independent nodes store their owner\textquotesingle{}s tree id in piggy3.\+which\+\_\+tree. The index in their owner\textquotesingle{}s ordering is stored in piggy3.\+local\+\_\+num. Hanging nodes store their owner\textquotesingle{}s tree id in piggy.\+which\+\_\+tree. The numbers of their associated independent nodes are in piggy.\+depends\mbox{[}\mbox{]}.
+
+The local\+\_\+nodes table is of dimension 8 $\ast$ num\+\_\+local\+\_\+quadrants and encodes the node indexes for all corners of all quadrants. Let ni \+:= indep\+\_\+nodes.\+elem\+\_\+count, fi \+:= face\+\_\+hangings.\+elem\+\_\+count, ei \+:= edge\+\_\+hangings.\+elem\+\_\+count. If for l \+:= local\+\_\+nodes\mbox{[}k\mbox{]} l $>$= 0 \&\& l $<$ ni\+: l indexes into indep\+\_\+nodes. l $>$= ni \&\& l $<$ ni + fi\+: l -\/ ni indexes into face\+\_\+hangings. l $>$= ni + fi \&\& l $<$ ni + fi + ei\+: l -\/ ni -\/ fi indexes into edge\+\_\+hangings. No other values for l are permitted.
+
+The array shared\+\_\+indeps holds lists of node sharers (not including rank). The entry shared\+\_\+indeps\mbox{[}i\mbox{]} is of type sc\+\_\+recycle\+\_\+array\+\_\+t and holds the list of nodes with i + 1 sharers. For each independent node, its member pad8 holds the number of sharers and its member pad16 holds the position in the assigned recycle array if this number fits into an int16\+\_\+t. If this limit is exceeded, the array shared\+\_\+offsets is filled with these positions as one p4est\+\_\+locidx\+\_\+t per independent node, and all pad16 members are set to -\/1. To recognize the latter situation you can check for shared\+\_\+offsets != NULL.
+
+Each processor owns num\+\_\+owned\+\_\+indeps of the stored independent nodes. The first independent owned node is at index offset\+\_\+owned\+\_\+indeps. The table nonlocal\+\_\+ranks contains the ranks of all stored non-\/owned nodes. The table global\+\_\+owned\+\_\+indeps holds the number of owned nodes for each rank. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/p8est\+\_\+nodes.\+h\end{DoxyCompactItemize}

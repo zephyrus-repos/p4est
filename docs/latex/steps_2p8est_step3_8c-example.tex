@@ -1,0 +1,42 @@
+\hypertarget{steps_2p8est_step3_8c-example}{}\doxysection{steps/p8est\+\_\+step3.\+c}
+This 3D example program uses \mbox{\hyperlink{structp4est}{p4est}} to solve a simple advection problem. It is numerically very simple, and intended to demonstrate several methods of interacting with the \mbox{\hyperlink{structp4est}{p4est}} data after it has been refined and partitioned. It demonstrates the construction of \mbox{\hyperlink{ghost}{ghost}} layers (cf. also \mbox{\hyperlink{p8est__ghost_8h}{p8est\+\_\+ghost.\+h}}) and communication of ghost-\/layer data, and it demonstrates interacting with the quadrants and quadrant boundaries through the \mbox{\hyperlink{p8est__iterate_8h_aa02f00d36004bce0f076a96b713d1920}{p8est\+\_\+iterate}} routine (cf. \mbox{\hyperlink{p8est__iterate_8h}{p8est\+\_\+iterate.\+h}}).
+
+The header file \mbox{\hyperlink{p4est__to__p8est_8h_source}{p4est\+\_\+to\+\_\+p8est.\+h}} defines preprocessor macros that map 2D \mbox{\hyperlink{structp4est}{p4est}} routines and objects to their 3D \mbox{\hyperlink{structp8est}{p8est}} counterparts. By including this file and then including the source for the 2D example \mbox{\hyperlink{steps_2p4est_step3_8c-example}{steps/p4est\+\_\+step3.\+c}}, we convert the 2D example to a 3D example.
+
+It is entirely possible to write a 3D-\/only program without relying on this mechanism. In this case use the p8est$\ast$ header files, functions, and data structures.
+
+Usage\+: \begin{quote}
+{\ttfamily p8est\+\_\+step3} \end{quote}
+
+
+
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{  This file is part of p4est.}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is a C library to manage a collection (a forest) of multiple}}
+\DoxyCodeLine{\textcolor{comment}{  connected adaptive quadtrees or octrees in parallel.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  Copyright (C) 2010 The University of Texas System}}
+\DoxyCodeLine{\textcolor{comment}{  Additional copyright (C) 2011 individual authors}}
+\DoxyCodeLine{\textcolor{comment}{  Written by Carsten Burstedde, Lucas C. Wilcox, and Tobin Isaac}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is free software; you can redistribute it and/or modify}}
+\DoxyCodeLine{\textcolor{comment}{  it under the terms of the GNU General Public License as published by}}
+\DoxyCodeLine{\textcolor{comment}{  the Free Software Foundation; either version 2 of the License, or}}
+\DoxyCodeLine{\textcolor{comment}{  (at your option) any later version.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is distributed in the hope that it will be useful,}}
+\DoxyCodeLine{\textcolor{comment}{  but WITHOUT ANY WARRANTY; without even the implied warranty of}}
+\DoxyCodeLine{\textcolor{comment}{  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the}}
+\DoxyCodeLine{\textcolor{comment}{  GNU General Public License for more details.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  You should have received a copy of the GNU General Public License}}
+\DoxyCodeLine{\textcolor{comment}{  along with p4est; if not, write to the Free Software Foundation, Inc.,}}
+\DoxyCodeLine{\textcolor{comment}{  51 Franklin Street, Fifth Floor, Boston, MA 02110-\/1301, USA.}}
+\DoxyCodeLine{\textcolor{comment}{*/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <p4est\_to\_p8est.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "{}p4est\_step3.c"{}}}
+
+\end{DoxyCodeInclude}
+ 

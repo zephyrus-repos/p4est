@@ -1,0 +1,78 @@
+.TH "p4est_ghost_exchange" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p4est_ghost_exchange \- Transient storage for asynchronous ghost exchange\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p4est_ghost\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "int \fBis_custom\fP"
+.br
+.RI "False for p4est_ghost_exchange_data\&. "
+.ti -1c
+.RI "int \fBis_levels\fP"
+.br
+.RI "Are we restricted to levels or not\&. "
+.ti -1c
+.RI "\fBp4est_t\fP * \fBp4est\fP"
+.br
+.RI "The forest used for reference\&. "
+.ti -1c
+.RI "\fBp4est_ghost_t\fP * \fBghost\fP"
+.br
+.RI "The ghost layer used for reference\&. "
+.ti -1c
+.RI "int \fBminlevel\fP"
+.br
+.RI "Meaningful with is_levels\&. "
+.ti -1c
+.RI "int \fBmaxlevel\fP"
+.br
+.RI "Meaningful with is_levels\&. "
+.ti -1c
+.RI "size_t \fBdata_size\fP"
+.br
+.RI "The data size to transfer per quadrant\&. "
+.ti -1c
+.RI "void * \fBghost_data\fP"
+.br
+.RI "Allocated contiguous array for ghost data\&. "
+.ti -1c
+.RI "int * \fBqactive\fP"
+.br
+.RI "p4est->mpisize many integers "
+.ti -1c
+.RI "int * \fBqbuffer\fP"
+.br
+.RI "p4est->mpisize many integers "
+.ti -1c
+.RI "sc_array_t \fBrequests\fP"
+.br
+.RI "Array of send requests\&. "
+.ti -1c
+.RI "sc_array_t \fBsbuffers\fP"
+.br
+.RI "Array of send buffers\&. "
+.ti -1c
+.RI "sc_array_t \fBrrequests\fP"
+.br
+.RI "Array of receive requests\&. "
+.ti -1c
+.RI "sc_array_t \fBrbuffers\fP"
+.br
+.RI "Array of receive buffers\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Transient storage for asynchronous ghost exchange\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

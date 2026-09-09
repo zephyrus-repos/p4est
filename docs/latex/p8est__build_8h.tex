@@ -1,0 +1,129 @@
+\hypertarget{p8est__build_8h}{}\doxysection{src/p8est\+\_\+build.h File Reference}
+\label{p8est__build_8h}\index{src/p8est\_build.h@{src/p8est\_build.h}}
+
+
+Create a new \mbox{\hyperlink{structp8est}{p8est}} object by adding individual quadrants in order.  
+
+
+{\ttfamily \#include $<$p8est.\+h$>$}\newline
+Include dependency graph for p8est\+\_\+build.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p8est__build_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p8est__build_8h_ab547c0508d4dac74ded17433b5fe20ce}\label{p8est__build_8h_ab547c0508d4dac74ded17433b5fe20ce}} 
+typedef struct p8est\+\_\+build \mbox{\hyperlink{p8est__build_8h_ab547c0508d4dac74ded17433b5fe20ce}{p8est\+\_\+build\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Context object for building a new \mbox{\hyperlink{structp4est}{p4est}} from individual quadrants. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{p8est__build_8h_ab547c0508d4dac74ded17433b5fe20ce}{p8est\+\_\+build\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__build_8h_ae6269b6ac8dd199e7f93348062cf8f28}{p8est\+\_\+build\+\_\+new}} (\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$from, size\+\_\+t data\+\_\+size, \mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}} init\+\_\+fn, void $\ast$user\+\_\+pointer)
+\begin{DoxyCompactList}\small\item\em Allocate a context for building a new forest. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p8est__build_8h_ac65014ac59a068331642faa5b8bdbf77}{p8est\+\_\+build\+\_\+init\+\_\+add}} (\mbox{\hyperlink{p8est__build_8h_ab547c0508d4dac74ded17433b5fe20ce}{p8est\+\_\+build\+\_\+t}} $\ast$build, \mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}} add\+\_\+init\+\_\+fn)
+\begin{DoxyCompactList}\small\item\em Set a dedicated initialization callback for manually added quadrants. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p8est__build_8h_a5ec1d9e903badb544c615a87f1b2532d}{p8est\+\_\+build\+\_\+add}} (\mbox{\hyperlink{p8est__build_8h_ab547c0508d4dac74ded17433b5fe20ce}{p8est\+\_\+build\+\_\+t}} $\ast$build, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} which\+\_\+tree, \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$quadrant)
+\begin{DoxyCompactList}\small\item\em This function is usable from a \mbox{\hyperlink{p8est__search_8h_ada1664e2b337f4b7ba12ec32233f2f7c}{p8est\+\_\+search\+\_\+local\+\_\+t}} callback. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$ \mbox{\hyperlink{p8est__build_8h_ab384b0345d2e8aafeba7d29ae228761c}{p8est\+\_\+build\+\_\+complete}} (\mbox{\hyperlink{p8est__build_8h_ab547c0508d4dac74ded17433b5fe20ce}{p8est\+\_\+build\+\_\+t}} $\ast$build)
+\begin{DoxyCompactList}\small\item\em Finalize the construction of the new forest after adding quadrants. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Create a new \mbox{\hyperlink{structp8est}{p8est}} object by adding individual quadrants in order. 
+
+This can for example be driven by running \mbox{\hyperlink{p8est__search_8h_a572ae2996ef73b4d798f66062837d465}{p8est\+\_\+search\+\_\+local}}. This allows to create a heavily coarsened forest in one pass. It is also legal to add more highly refined quadrants.
+
+The only rules are to respect the original partition boundary and to add non-\/overlapping quadrants in Morton order. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p8est__build_8h_a5ec1d9e903badb544c615a87f1b2532d}\label{p8est__build_8h_a5ec1d9e903badb544c615a87f1b2532d}} 
+\index{p8est\_build.h@{p8est\_build.h}!p8est\_build\_add@{p8est\_build\_add}}
+\index{p8est\_build\_add@{p8est\_build\_add}!p8est\_build.h@{p8est\_build.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_build\_add()}{p8est\_build\_add()}}
+{\footnotesize\ttfamily int p8est\+\_\+build\+\_\+add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__build_8h_ab547c0508d4dac74ded17433b5fe20ce}{p8est\+\_\+build\+\_\+t}} $\ast$}]{build,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{which\+\_\+tree,  }\item[{\mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} $\ast$}]{quadrant }\end{DoxyParamCaption})}
+
+
+
+This function is usable from a \mbox{\hyperlink{p8est__search_8h_ada1664e2b337f4b7ba12ec32233f2f7c}{p8est\+\_\+search\+\_\+local\+\_\+t}} callback. 
+
+It can also be used outside of a search context using proper care.
+
+It may be called multiple times in order of trees and then quadrants. The quadrant added in each call must fit entirely into the current tree. This means that inner nodes of the tree may not be legal to pass in here. It is safest to call this function only on leaves of the original tree. However, other calls are possible if subsequent quadrants do not overlap.
+
+It is legal to call this function twice with the same quadrant. In this case the second call does nothing.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em build} & The building context must be passed through. \\
+\hline
+\mbox{\texttt{ in}}  & {\em which\+\_\+tree} & The tree number is passed from the search callback. \\
+\hline
+\mbox{\texttt{ in}}  & {\em quadrant} & The quadrant is passed from the search callback. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the quadrant was added, false if it was identical to the previous one and thus not added. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__build_8h_ab384b0345d2e8aafeba7d29ae228761c}\label{p8est__build_8h_ab384b0345d2e8aafeba7d29ae228761c}} 
+\index{p8est\_build.h@{p8est\_build.h}!p8est\_build\_complete@{p8est\_build\_complete}}
+\index{p8est\_build\_complete@{p8est\_build\_complete}!p8est\_build.h@{p8est\_build.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_build\_complete()}{p8est\_build\_complete()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}}$\ast$ p8est\+\_\+build\+\_\+complete (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__build_8h_ab547c0508d4dac74ded17433b5fe20ce}{p8est\+\_\+build\+\_\+t}} $\ast$}]{build }\end{DoxyParamCaption})}
+
+
+
+Finalize the construction of the new forest after adding quadrants. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em build} & The building context will be deallocated inside. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A valid forest object. Its revision number is set to zero. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p8est__build_8h_ac65014ac59a068331642faa5b8bdbf77}\label{p8est__build_8h_ac65014ac59a068331642faa5b8bdbf77}} 
+\index{p8est\_build.h@{p8est\_build.h}!p8est\_build\_init\_add@{p8est\_build\_init\_add}}
+\index{p8est\_build\_init\_add@{p8est\_build\_init\_add}!p8est\_build.h@{p8est\_build.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_build\_init\_add()}{p8est\_build\_init\_add()}}
+{\footnotesize\ttfamily void p8est\+\_\+build\+\_\+init\+\_\+add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est__build_8h_ab547c0508d4dac74ded17433b5fe20ce}{p8est\+\_\+build\+\_\+t}} $\ast$}]{build,  }\item[{\mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}}}]{add\+\_\+init\+\_\+fn }\end{DoxyParamCaption})}
+
+
+
+Set a dedicated initialization callback for manually added quadrants. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em build} & The building context at any stage. \\
+\hline
+\mbox{\texttt{ in}}  & {\em add\+\_\+init\+\_\+fn} & Henceforth used for quadrants added by \mbox{\hyperlink{p8est__build_8h_a5ec1d9e903badb544c615a87f1b2532d}{p8est\+\_\+build\+\_\+add}}. NULL leaves the quadrant data uninitialized. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p8est__build_8h_ae6269b6ac8dd199e7f93348062cf8f28}\label{p8est__build_8h_ae6269b6ac8dd199e7f93348062cf8f28}} 
+\index{p8est\_build.h@{p8est\_build.h}!p8est\_build\_new@{p8est\_build\_new}}
+\index{p8est\_build\_new@{p8est\_build\_new}!p8est\_build.h@{p8est\_build.h}}
+\doxysubsubsection{\texorpdfstring{p8est\_build\_new()}{p8est\_build\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p8est__build_8h_ab547c0508d4dac74ded17433b5fe20ce}{p8est\+\_\+build\+\_\+t}}$\ast$ p8est\+\_\+build\+\_\+new (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$}]{from,  }\item[{size\+\_\+t}]{data\+\_\+size,  }\item[{\mbox{\hyperlink{p8est_8h_ac85f8cf7a0c95fb7e9c583f7d072b399}{p8est\+\_\+init\+\_\+t}}}]{init\+\_\+fn,  }\item[{void $\ast$}]{user\+\_\+pointer }\end{DoxyParamCaption})}
+
+
+
+Allocate a context for building a new forest. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em from} & This forest is used as a template for creation. \\
+\hline
+\mbox{\texttt{ in}}  & {\em data\+\_\+size} & Data size of the created forest, may be zero. \\
+\hline
+\mbox{\texttt{ in}}  & {\em init\+\_\+fn} & This functions is called for created quadrants, added manually by \mbox{\hyperlink{p8est__build_8h_a5ec1d9e903badb544c615a87f1b2532d}{p8est\+\_\+build\+\_\+add}} or by the internal completion of the subtrees. It may be overridden for added quadrants by \mbox{\hyperlink{p8est__build_8h_ac65014ac59a068331642faa5b8bdbf77}{p8est\+\_\+build\+\_\+init\+\_\+add}}. NULL leaves the quadrant data uninitialized. \\
+\hline
+\mbox{\texttt{ in}}  & {\em user\+\_\+pointer} & Registered into the newly built forest. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A context that needs to be processed further. 
+\end{DoxyReturn}

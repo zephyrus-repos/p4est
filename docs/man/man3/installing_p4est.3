@@ -1,0 +1,199 @@
+.TH "installing_p4est" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+installing_p4est \- Installation 
+We collect helpful hints to build the \fBp4est\fP software library and examples\&.
+.SH "Using a Debian package"
+.PP
+Installing \fC\fBp4est\fP\fP on Debian-based systems via a package manager is the most straightforward method to get started\&. This method is beneficial for users who prefer a managed installation and do not require the latest version or customization of the build process\&. This provides a frozen and stable version of the code with minimal hassle\&. However, contributions back to the software aren't possible in this manner\&.
+.PP
+Before proceeding, ensure your package lists are up to date\&. Open a terminal and update your system's package list with the following command:
+.PP
+.RS 4
+\fCsudo apt-get update\fP 
+.RE
+.PP
+Once the package lists are updated, you can install \fC\fBp4est\fP\fP using \fCapt-get\fP\&.
+.PP
+.RS 4
+\fCsudo apt-get install libp4est-<VERSION>\fP 
+.RE
+.PP
+The available version can be found in the \fCdebian package tracker\fP, or by running
+.PP
+.RS 4
+\fCapt-cache search \fBp4est\fP\fP 
+.RE
+.PP
+.SH "Installing p4est from a \&.tar\&.gz archive"
+.PP
+No special tools are needed to build from a tarball obtained for example from \fCthe release directory\fP\&.
+.PP
+After unpacking the tar file, we recommend to change into an empty build directory\&. The \fCconfigure\fP script from the toplevel directory of the unpacked tar file can be executed as is\&. We recommend to create an empty build directory\&.
+.SS "Step-by-step guide"
+.SS "1\&. Unpack the tarball"
+.RS 4
+\fCtar -xzf p4est-<VERSION>\&.tar\&.gz\fP 
+.RE
+.PP
+.SS "2\&. Create and change into a build directory"
+.RS 4
+\fCmkdir p4est_build\fP 
+.RE
+.PP
+.RS 4
+\fCcd p4est_build\fP 
+.RE
+.PP
+.SS "3\&. Run the configure script"
+.RS 4
+\fC\&.\&./p4est-<VERSION>/configure --help\fP 
+.RE
+.PP
+.RS 4
+\fC\&.\&./p4est-<VERSION>/configure --enable-mpi --etc\&.\&.\&.\fP 
+.RE
+.PP
+You may also set environment variables like \fCCFLAGS='-Wall -g'\fP\&.
+.SS "4\&. Compile the software"
+.RS 4
+\fCmake -j\fP 
+.RE
+.PP
+Adding the environment variable \fCV=1\fP would re-enable much \fCmake\fP output\&.
+.SS "5\&. Install the software (optional)"
+.RS 4
+\fCmake install\fP 
+.RE
+.PP
+The software is installed by default into the prefix \fC\&./local\fP\&. This can be changed by setting \fCconfigure --prefix=<PATH>\fP\&.
+.SH "Building from source on Unix-like systems"
+.PP
+For a more hands-on approach, consider cloning the \fBp4est\fP GitHub repository\&. You'll need familiarity with the revision control tool \fCgit\fP or its GUI frontends\&. The branch \fCdevelop\fP is recommended as it has minimized dependencies and houses the latest algorithms\&. To generate the configure script, call the \fC\&./bootstrap\fP script in the \fBp4est\fP top-level source directory\&. This requires a working installation of GNU autoconf, automake, and libtool\&.
+.SS "Prerequisites"
+.IP "\(bu" 2
+For the installation from source, we still prefer the autotools over the CMake system (which has recently been added)\&. Ensure you have:
+.IP "  \(bu" 4
+\fCautomake\fP 
+.IP "  \(bu" 4
+\fCautoconf\fP 
+.IP "  \(bu" 4
+\fClibtool\fP 
+.IP "  \(bu" 4
+\fCmake\fP 
+.PP
+
+.PP
+.SS "Optional components"
+.IP "\(bu" 2
+For enhancing parallel processing, having \fCMPI\fP is advisable and configuring \fC--enable-mpi\fP\&.
+.PP
+.SS "Step-by-step guide"
+.SS "1\&. Source retrieval"
+.RS 4
+\fCgit clone https://github.com/cburstedde/p4est.git\fP 
+.RE
+.PP
+.SS "2\&. Bootstrap execution"
+Navigate to the \fC\fBp4est\fP\fP directory and initiate the bootstrap script, especially if you've cloned it from GitHub:
+.PP
+.RS 4
+\fCcd \fBp4est\fP\fP 
+.RE
+.PP
+.RS 4
+\fC\&./bootstrap\fP 
+.RE
+.PP
+.SS "3\&. Setting up p4est"
+Decide on a compilation directory\&. For this guide, \fC~/p4est_build\fP is used, presuming the source is in \fC~/p4est\fP:
+.PP
+.RS 4
+\fCmkdir ~/p4est_build\fP 
+.RE
+.PP
+.RS 4
+\fCcd ~/p4est_build\fP 
+.RE
+.PP
+.RS 4
+\fC\&.\&./p4est/configure [OPTIONS]\fP 
+.RE
+.PP
+The \fCconfigure\fP script is quite versatile and has multiple options, among them:
+.PP
+.IP "\(bu" 2
+\fC--enable-debug\fP: Activates debugging mode, increasing verbosity and turns on \fCP4EST_ASSERT\fP for checks\&.
+.IP "\(bu" 2
+\fC--enable-mpi\fP: This integrates the \fCmpi\&.h\fP header and triggers MPI compiler wrappers\&. Without this option, MPI routine wrappers are employed for serial compilation\&.
+.IP "\(bu" 2
+\fC--prefix=<PATH>\fP: Define an absolute path to a directory (need not yet exist) that will be populated by \fCmake install\fP with the header and library files built\&.
+.PP
+.PP
+Additionally, the command:
+.PP
+.RS 4
+\fC\&.\&./p4est/configure --help\fP 
+.RE
+.PP
+prints a list of currently available options to configure\&.
+.PP
+A common developer-oriented configuration might resemble:
+.PP
+.RS 4
+\fCrelative/path/to/configure CFLAGS='-Wall -Wuninitialized -O0 -g' --enable-mpi --enable-debug\fP 
+.RE
+.PP
+While a production-oriented configuration could be:
+.PP
+.RS 4
+\fCrelative/path/to/configure CFLAGS='-Wall -Wno-unused-but-set-variable -O2' --enable-mpi\fP 
+.RE
+.PP
+.SS "4\&. Compiling p4est"
+After configuration, the next step is the compilation of \fC\fBp4est\fP:\fP 
+.PP
+.RS 4
+\fCmake -j\fP 
+.RE
+.PP
+.RS 4
+\fCmake install -j\fP 
+.RE
+.PP
+.SS "5\&. Verification Step"
+It's recommended to execute the \fC\fBp4est\fP\fP test programs post-installation to ensure everything is in order:
+.PP
+.RS 4
+\fCmake -j4 check\fP 
+.RE
+.PP
+Where the \fC-j\fP option limits parallel make to at most four targets at the same time\&.
+.SS "6\&. Autogenerated API documentation"
+The Doxygen output for \fBp4est\fP and libsc can be recreated with the following command after the configuration process:
+.PP
+.RS 4
+\fCmake doxygen\fP 
+.RE
+.PP
+This requires the doxygen program and produces html, latex and man format documentation under \fCdoc\fP\&.
+.SS "7\&. Integrating with p4est"
+For projects aiming to incorporate \fC\fBp4est\fP\fP as an external library, where we assume for this example that it has been configured with \fC--prefix=$HOME/p4est_install\fP and built with \fCmake install\fP, use
+.PP
+.RS 4
+\fCexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/p4est_install/lib\fP 
+.RE
+.PP
+to be able to run built executables that dynamically link to \fBp4est\fP\&. Append to the compile command:
+.PP
+.RS 4
+\fC-I$HOME/p4est_install/include -L$HOME/p4est_install/lib -lp4est -lsc -lz -lm\fP 
+.RE
+.PP
+For full functionality, we expect a zlib that provides the function \fCadler32_combine\fP\&.
+.SH "Further information and links"
+.PP
+You may find further documentation for installation on both \fCLinux\fP and \fCWindows\fP in the source folder\&.
+.PP
+For users with Windows 10 version 2004 and higher, you may also try \fCWSL\fP as \fBp4est\fP works well in the subsystem\&. 

@@ -1,0 +1,52 @@
+\hypertarget{points_2generate_points3_8c-example}{}\doxysection{points/generate\+\_\+points3.\+c}
+3D auxiliary program to generate a file of points in parallel.\+It uses the MPI I/O functionality of libsc to create one large file. The file is written to in parallel and using partitioned file access.
+
+The file contains first a binary integer \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}} storing the global number of points and then the list of point coordinates as 3-\/tuples of binary type double.
+
+The usage of the program is \begin{DoxyVerb}p8est_points_generate <configuration> <globalnumpoints> <prefix>
+\end{DoxyVerb}
+ where configuration is one of
+
+
+\begin{DoxyItemize}
+\item {\ttfamily unit} The unit cube,
+\item {\ttfamily brick} An example brick connectivity using configuration (2,3,4) as the number of trees per direction.
+\item {\ttfamily periodic} The unit cube with all-\/periodic boundary conditions.
+\item {\ttfamily rotwrap} The unit cube with various self-\/periodic b.\+c.
+\item {\ttfamily twocubes} Two connected cubes.
+\item {\ttfamily rotcubes} A collection of six connected rotated cubes.
+\end{DoxyItemize}
+
+
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{  This file is part of p4est.}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is a C library to manage a collection (a forest) of multiple}}
+\DoxyCodeLine{\textcolor{comment}{  connected adaptive quadtrees or octrees in parallel.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  Copyright (C) 2010 The University of Texas System}}
+\DoxyCodeLine{\textcolor{comment}{  Additional copyright (C) 2011 individual authors}}
+\DoxyCodeLine{\textcolor{comment}{  Written by Carsten Burstedde, Lucas C. Wilcox, and Tobin Isaac}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is free software; you can redistribute it and/or modify}}
+\DoxyCodeLine{\textcolor{comment}{  it under the terms of the GNU General Public License as published by}}
+\DoxyCodeLine{\textcolor{comment}{  the Free Software Foundation; either version 2 of the License, or}}
+\DoxyCodeLine{\textcolor{comment}{  (at your option) any later version.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is distributed in the hope that it will be useful,}}
+\DoxyCodeLine{\textcolor{comment}{  but WITHOUT ANY WARRANTY; without even the implied warranty of}}
+\DoxyCodeLine{\textcolor{comment}{  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the}}
+\DoxyCodeLine{\textcolor{comment}{  GNU General Public License for more details.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  You should have received a copy of the GNU General Public License}}
+\DoxyCodeLine{\textcolor{comment}{  along with p4est; if not, write to the Free Software Foundation, Inc.,}}
+\DoxyCodeLine{\textcolor{comment}{  51 Franklin Street, Fifth Floor, Boston, MA 02110-\/1301, USA.}}
+\DoxyCodeLine{\textcolor{comment}{*/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* Please see doc/example\_points.dox for a documentation of this program. */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <p4est\_to\_p8est.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "{}generate\_points2.c"{}}}
+
+\end{DoxyCodeInclude}
+ 

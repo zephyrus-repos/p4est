@@ -1,0 +1,90 @@
+\hypertarget{structp8est__ghost}{}\doxysection{p8est\+\_\+ghost Struct Reference}
+\label{structp8est__ghost}\index{p8est\_ghost@{p8est\_ghost}}
+
+
+Quadrants that neighbor the local domain.  
+
+
+
+
+{\ttfamily \#include $<$p8est\+\_\+ghost.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp8est__ghost_a512e3936a5154367707b435b437b2d24}\label{structp8est__ghost_a512e3936a5154367707b435b437b2d24}} 
+int \mbox{\hyperlink{structp8est__ghost_a512e3936a5154367707b435b437b2d24}{mpisize}}
+\begin{DoxyCompactList}\small\item\em MPI size of the ghost. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__ghost_a30f2bf7eba1c09f87a6378909de0680c}\label{structp8est__ghost_a30f2bf7eba1c09f87a6378909de0680c}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{structp8est__ghost_a30f2bf7eba1c09f87a6378909de0680c}{num\+\_\+trees}}
+\begin{DoxyCompactList}\small\item\em number of trees of the ghost \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__ghost_a7a29006bf947210111859cabed86308f}\label{structp8est__ghost_a7a29006bf947210111859cabed86308f}} 
+\mbox{\hyperlink{p8est__connectivity_8h_aaa5a9d47d1b169507e1095783ab89be1}{p8est\+\_\+connect\+\_\+type\+\_\+t}} \mbox{\hyperlink{structp8est__ghost_a7a29006bf947210111859cabed86308f}{btype}}
+\begin{DoxyCompactList}\small\item\em which neighbors are in the ghost layer \end{DoxyCompactList}\item 
+sc\+\_\+array\+\_\+t \mbox{\hyperlink{structp8est__ghost_ab82ceaa55368a07a928b9e15f78969c8}{ghosts}}
+\begin{DoxyCompactList}\small\item\em An array of \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} quadrants which make up the ghost layer around {\bfseries{\mbox{\hyperlink{structp8est}{p8est}}}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__ghost_a4a00111ef9db27c617d006b5afb4b832}\label{structp8est__ghost_a4a00111ef9db27c617d006b5afb4b832}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__ghost_a4a00111ef9db27c617d006b5afb4b832}{tree\+\_\+offsets}}
+\begin{DoxyCompactList}\small\item\em num\+\_\+trees + 1 ghost indices \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__ghost_ac80db77332c57972e5d1920ee949cc5a}\label{structp8est__ghost_ac80db77332c57972e5d1920ee949cc5a}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__ghost_ac80db77332c57972e5d1920ee949cc5a}{proc\+\_\+offsets}}
+\begin{DoxyCompactList}\small\item\em mpisize + 1 ghost indices \end{DoxyCompactList}\item 
+sc\+\_\+array\+\_\+t \mbox{\hyperlink{structp8est__ghost_a02699249df6b3dc2851c05b7e65f37c8}{mirrors}}
+\begin{DoxyCompactList}\small\item\em An array of local quadrants that touch the parallel boundary from the inside, i.\+e., that are ghosts in the perspective of at least one other processor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__ghost_a8915532eee244a1963cc5d67cd6866d5}\label{structp8est__ghost_a8915532eee244a1963cc5d67cd6866d5}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__ghost_a8915532eee244a1963cc5d67cd6866d5}{mirror\+\_\+tree\+\_\+offsets}}
+\begin{DoxyCompactList}\small\item\em num\+\_\+trees + 1 mirror indices \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__ghost_aa25b6fb4122ca2c28b57ef280b408441}\label{structp8est__ghost_aa25b6fb4122ca2c28b57ef280b408441}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__ghost_aa25b6fb4122ca2c28b57ef280b408441}{mirror\+\_\+proc\+\_\+mirrors}}
+\begin{DoxyCompactList}\small\item\em indices into mirrors grouped by outside processor rank and ascending within each rank \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__ghost_ab946c7b7f36999dadc264b562e090d67}\label{structp8est__ghost_ab946c7b7f36999dadc264b562e090d67}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__ghost_ab946c7b7f36999dadc264b562e090d67}{mirror\+\_\+proc\+\_\+offsets}}
+\begin{DoxyCompactList}\small\item\em mpisize + 1 indices into mirror\+\_\+proc\+\_\+mirrors \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__ghost_a7bbeb965854f862bbb2cab369425ae4c}{mirror\+\_\+proc\+\_\+fronts}}
+\begin{DoxyCompactList}\small\item\em like mirror\+\_\+proc\+\_\+mirrors, but limited to the outermost octants. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__ghost_a46202661bf76b21877b141be6441e9bf}\label{structp8est__ghost_a46202661bf76b21877b141be6441e9bf}} 
+\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} $\ast$ \mbox{\hyperlink{structp8est__ghost_a46202661bf76b21877b141be6441e9bf}{mirror\+\_\+proc\+\_\+front\+\_\+offsets}}
+\begin{DoxyCompactList}\small\item\em NULL until p8est\+\_\+ghost\+\_\+expand is called. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Quadrants that neighbor the local domain. 
+
+See also the page \mbox{\hyperlink{ghost}{The ghost layer}} for general information. 
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structp8est__ghost_ab82ceaa55368a07a928b9e15f78969c8}\label{structp8est__ghost_ab82ceaa55368a07a928b9e15f78969c8}} 
+\index{p8est\_ghost@{p8est\_ghost}!ghosts@{ghosts}}
+\index{ghosts@{ghosts}!p8est\_ghost@{p8est\_ghost}}
+\doxysubsubsection{\texorpdfstring{ghosts}{ghosts}}
+{\footnotesize\ttfamily sc\+\_\+array\+\_\+t p8est\+\_\+ghost\+::ghosts}
+
+
+
+An array of \mbox{\hyperlink{p8est_8h_afc7b50a120350b7a224598f8e36befb9}{p8est\+\_\+quadrant\+\_\+t}} quadrants which make up the ghost layer around {\bfseries{\mbox{\hyperlink{structp8est}{p8est}}}}. 
+
+Their piggy3 (cf. \mbox{\hyperlink{unionp8est__quadrant_1_1p8est__quadrant__data}{p8est\+\_\+quadrant\+::p8est\+\_\+quadrant\+\_\+data}}) data member is filled with their owner\textquotesingle{}s tree and local number (cumulative over trees). Quadrants are ordered in \mbox{\hyperlink{p8est__bits_8h_a787796c376e716f1efad7a1e89faa02c}{p8est\+\_\+quadrant\+\_\+compare\+\_\+piggy}} order. These are quadrants inside the neighboring tree, i.\+e., {\ttfamily p8est\+\_\+quadrant\+\_\+is\+\_\+inside} is true for the quadrant and the neighboring tree. \mbox{\Hypertarget{structp8est__ghost_a7bbeb965854f862bbb2cab369425ae4c}\label{structp8est__ghost_a7bbeb965854f862bbb2cab369425ae4c}} 
+\index{p8est\_ghost@{p8est\_ghost}!mirror\_proc\_fronts@{mirror\_proc\_fronts}}
+\index{mirror\_proc\_fronts@{mirror\_proc\_fronts}!p8est\_ghost@{p8est\_ghost}}
+\doxysubsubsection{\texorpdfstring{mirror\_proc\_fronts}{mirror\_proc\_fronts}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}$\ast$ p8est\+\_\+ghost\+::mirror\+\_\+proc\+\_\+fronts}
+
+
+
+like mirror\+\_\+proc\+\_\+mirrors, but limited to the outermost octants. 
+
+This is NULL until p8est\+\_\+ghost\+\_\+expand is called \mbox{\Hypertarget{structp8est__ghost_a02699249df6b3dc2851c05b7e65f37c8}\label{structp8est__ghost_a02699249df6b3dc2851c05b7e65f37c8}} 
+\index{p8est\_ghost@{p8est\_ghost}!mirrors@{mirrors}}
+\index{mirrors@{mirrors}!p8est\_ghost@{p8est\_ghost}}
+\doxysubsubsection{\texorpdfstring{mirrors}{mirrors}}
+{\footnotesize\ttfamily sc\+\_\+array\+\_\+t p8est\+\_\+ghost\+::mirrors}
+
+
+
+An array of local quadrants that touch the parallel boundary from the inside, i.\+e., that are ghosts in the perspective of at least one other processor. 
+
+The storage convention is the same as for {\ttfamily ghosts} above. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p8est__ghost_8h}{p8est\+\_\+ghost.\+h}}\end{DoxyCompactItemize}

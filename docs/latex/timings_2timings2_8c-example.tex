@@ -1,0 +1,774 @@
+\hypertarget{timings_2timings2_8c-example}{}\doxysection{timings/timings2.\+c}
+This 2D example program (3D counterpart\+: \mbox{\hyperlink{timings_2timings3_8c-example}{timings/timings3.\+c}}) calls \mbox{\hyperlink{structp4est}{p4est}}\textquotesingle{}s core routines.\+The example\textquotesingle{}s purpose is to measure the runtime of \mbox{\hyperlink{structp4est}{p4est}}\textquotesingle{}s core routines.
+
+Usage\+: \begin{quote}
+{\ttfamily p4est\+\_\+timings $<$configuration$>$ $<$level$>$} \end{quote}
+possible configurations\+:
+\begin{DoxyItemize}
+\item {\ttfamily unit} Refinement on the unit square.
+\item {\ttfamily periodic} Refinement on the unit square with periodic b.\+c.
+\item {\ttfamily three} Refinement on a forest with three trees.
+\item {\ttfamily moebius} Refinement on a 5-\/tree Moebius band.
+\item {\ttfamily star} Refinement on a 6-\/tree star shaped domain.
+\end{DoxyItemize}
+
+
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{  This file is part of p4est.}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is a C library to manage a collection (a forest) of multiple}}
+\DoxyCodeLine{\textcolor{comment}{  connected adaptive quadtrees or octrees in parallel.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  Copyright (C) 2010 The University of Texas System}}
+\DoxyCodeLine{\textcolor{comment}{  Additional copyright (C) 2011 individual authors}}
+\DoxyCodeLine{\textcolor{comment}{  Written by Carsten Burstedde, Lucas C. Wilcox, and Tobin Isaac}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is free software; you can redistribute it and/or modify}}
+\DoxyCodeLine{\textcolor{comment}{  it under the terms of the GNU General Public License as published by}}
+\DoxyCodeLine{\textcolor{comment}{  the Free Software Foundation; either version 2 of the License, or}}
+\DoxyCodeLine{\textcolor{comment}{  (at your option) any later version.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is distributed in the hope that it will be useful,}}
+\DoxyCodeLine{\textcolor{comment}{  but WITHOUT ANY WARRANTY; without even the implied warranty of}}
+\DoxyCodeLine{\textcolor{comment}{  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the}}
+\DoxyCodeLine{\textcolor{comment}{  GNU General Public License for more details.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  You should have received a copy of the GNU General Public License}}
+\DoxyCodeLine{\textcolor{comment}{  along with p4est; if not, write to the Free Software Foundation, Inc.,}}
+\DoxyCodeLine{\textcolor{comment}{  51 Franklin Street, Fifth Floor, Boston, MA 02110-\/1301, USA.}}
+\DoxyCodeLine{\textcolor{comment}{*/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{ * Usage: p4est\_timings <configuration> <level>}}
+\DoxyCodeLine{\textcolor{comment}{ *        possible configurations:}}
+\DoxyCodeLine{\textcolor{comment}{ *        o unit      Refinement on the unit square.}}
+\DoxyCodeLine{\textcolor{comment}{ *        o periodic  Refinement on the unit square with periodic b.c.}}
+\DoxyCodeLine{\textcolor{comment}{ *        o three     Refinement on a forest with three trees.}}
+\DoxyCodeLine{\textcolor{comment}{ *        o moebius   Refinement on a 5-\/tree Moebius band.}}
+\DoxyCodeLine{\textcolor{comment}{ *        o star      Refinement on a 6-\/tree star shaped domain.}}
+\DoxyCodeLine{\textcolor{comment}{ *}}
+\DoxyCodeLine{\textcolor{comment}{ * Usage: p8est\_timings <configuration> <level>}}
+\DoxyCodeLine{\textcolor{comment}{ *        possible configurations:}}
+\DoxyCodeLine{\textcolor{comment}{ *        o unit      Refinement on the unit cube.}}
+\DoxyCodeLine{\textcolor{comment}{ *        o periodic  Refinement on the unit cube with all-\/periodic b.c.}}
+\DoxyCodeLine{\textcolor{comment}{ *        o rotwrap   Refinement on the unit cube with weird periodic b.c.}}
+\DoxyCodeLine{\textcolor{comment}{ *        o twocubes  Refinement on a forest with two trees.}}
+\DoxyCodeLine{\textcolor{comment}{ *        o rotcubes  Refinement on a forest with six rotated trees.}}
+\DoxyCodeLine{\textcolor{comment}{ *        o shell     Refinement on a 24-\/tree spherical shell.}}
+\DoxyCodeLine{\textcolor{comment}{ */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__algorithms_8h}{p4est\_algorithms.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__bits_8h}{p4est\_bits.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__extended_8h}{p4est\_extended.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__ghost_8h}{p4est\_ghost.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <p4est\_nodes.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__vtk_8h}{p4est\_vtk.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__lnodes_8h}{p4est\_lnodes.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__algorithms_8h}{p8est\_algorithms.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__bits_8h}{p8est\_bits.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__extended_8h}{p8est\_extended.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__ghost_8h}{p8est\_ghost.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <p8est\_nodes.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__vtk_8h}{p8est\_vtk.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__lnodes_8h}{p8est\_lnodes.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <sc\_flops.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <sc\_statistics.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <sc\_options.h>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* \#define P4EST\_TIMINGS\_VTK */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{enum}}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_CONFIG\_NULL,}
+\DoxyCodeLine{  P4EST\_CONFIG\_UNIT,}
+\DoxyCodeLine{  P4EST\_CONFIG\_PERIODIC,}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{  P4EST\_CONFIG\_THREE,}
+\DoxyCodeLine{  P4EST\_CONFIG\_MOEBIUS,}
+\DoxyCodeLine{  P4EST\_CONFIG\_STAR}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  P4EST\_CONFIG\_ROTWRAP,}
+\DoxyCodeLine{  P4EST\_CONFIG\_TWOCUBES,}
+\DoxyCodeLine{  P4EST\_CONFIG\_ROTCUBES,}
+\DoxyCodeLine{  P4EST\_CONFIG\_SHELL}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{timings\_config\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{enum}}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  TIMINGS\_REFINE,}
+\DoxyCodeLine{  TIMINGS\_BALANCE,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_A,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_COMM,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_B,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_A\_COUNT\_IN,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_A\_COUNT\_OUT,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_COMM\_SENT,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_COMM\_NZPEERS,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_B\_COUNT\_IN,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_B\_COUNT\_OUT,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_RANGES,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_NOTIFY,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_NOTIFY\_ALLGATHER,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_A\_ZERO\_SENDS,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_A\_ZERO\_RECEIVES,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_B\_ZERO\_SENDS,}
+\DoxyCodeLine{  TIMINGS\_BALANCE\_B\_ZERO\_RECEIVES,}
+\DoxyCodeLine{  TIMINGS\_REBALANCE,}
+\DoxyCodeLine{  TIMINGS\_REBALANCE\_A,}
+\DoxyCodeLine{  TIMINGS\_REBALANCE\_COMM,}
+\DoxyCodeLine{  TIMINGS\_REBALANCE\_B,}
+\DoxyCodeLine{  TIMINGS\_REBALANCE\_A\_COUNT\_IN,}
+\DoxyCodeLine{  TIMINGS\_REBALANCE\_A\_COUNT\_OUT,}
+\DoxyCodeLine{  TIMINGS\_REBALANCE\_COMM\_SENT,}
+\DoxyCodeLine{  TIMINGS\_REBALANCE\_COMM\_NZPEERS,}
+\DoxyCodeLine{  TIMINGS\_REBALANCE\_B\_COUNT\_IN,}
+\DoxyCodeLine{  TIMINGS\_REBALANCE\_B\_COUNT\_OUT,}
+\DoxyCodeLine{  TIMINGS\_PARTITION,}
+\DoxyCodeLine{  TIMINGS\_GHOSTS,}
+\DoxyCodeLine{  TIMINGS\_NODES,}
+\DoxyCodeLine{  TIMINGS\_TRILINEAR\_OBSOLETE,}
+\DoxyCodeLine{  TIMINGS\_REPARTITION,}
+\DoxyCodeLine{  TIMINGS\_LNODES,}
+\DoxyCodeLine{  TIMINGS\_LNODES3,}
+\DoxyCodeLine{  TIMINGS\_LNODES7,}
+\DoxyCodeLine{  TIMINGS\_NUM\_STATS}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  timings\_config\_t    config;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpisize;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 level;}
+\DoxyCodeLine{  \textcolor{keywordtype}{unsigned}            checksum;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{timings\_regression\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  sc\_MPI\_Comm         mpicomm;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpisize;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpirank;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{mpi\_context\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}          refine\_level = 0;}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}          level\_shift = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* *INDENT-\/OFF* */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} timings\_regression\_t regression\_oldschool[] =}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 1, 10, 0x6e3e83c4U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 1, 11, 0x334bc3deU \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 64, 14, 0xad908ce4U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 256, 15, 0x9e7da646U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_STAR, 1, 6, 0x14107b57U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_STAR, 4, 6, 0x14107b57U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_STAR, 52, 13, 0xc86c74d9U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_STAR, 64, 13, 0xc86c74d9U \},}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 1, 5, 0xe1ffa67bU \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 1, 6, 0x2cad814dU \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 3, 8, 0xeb252238U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_PERIODIC, 1, 5, 0x99874fedU \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_PERIODIC, 2, 5, 0x575af6d5U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_PERIODIC, 7, 6, 0xbc35524aU \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_ROTWRAP, 2, 6, 0x372f7402U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_ROTWRAP, 7, 6, 0xa2f1ee48U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_TWOCUBES, 5, 6, 0xa8b1f54eU \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_TWOCUBES, 8, 5, 0x98d3579dU \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_ROTCUBES, 1, 5, 0x404e4aa8U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_ROTCUBES, 7, 6, 0x4c381706U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_SHELL, 1, 4, 0x8c56f159U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_SHELL, 3, 5, 0xafbc4f8cU \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_SHELL, 5, 6, 0xf6d9efb8U \},}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_NULL, 0, 0, 0 \}}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} timings\_regression\_t regression\_latest[] =}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 1, 10, 0x6e3e83c4U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 1, 11, 0x334bc3deU \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 64, 14, 0xad908ce4U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 256, 15, 0x9e7da646U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_STAR, 1, 6, 0x14107b57U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_STAR, 4, 6, 0x14107b57U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_STAR, 52, 13, 0xc86c74d9U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_STAR, 64, 13, 0xc86c74d9U \},}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 1, 5, 0xc2012e84U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 1, 6, 0x2cad814dU \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_UNIT, 3, 8, 0xeb252238U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_PERIODIC, 1, 5, 0x2776c9b7U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_PERIODIC, 2, 5, 0x2776c9b7U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_PERIODIC, 7, 6, 0x4f281079U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_ROTWRAP, 2, 6, 0x372f7402U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_ROTWRAP, 7, 6, 0x372f7402U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_TWOCUBES, 5, 6, 0xa8b1f54eU \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_TWOCUBES, 8, 5, 0x0aad11d0U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_ROTCUBES, 1, 5, 0x404e4aa8U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_ROTCUBES, 7, 6, 0x4c381706U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_SHELL, 1, 4, 0x8c56f159U \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_SHELL, 3, 5, 0xafbc4f8cU \},}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_SHELL, 5, 6, 0xf6d9efb8U \},}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \{ P4EST\_CONFIG\_NULL, 0, 0, 0 \}}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{\textcolor{comment}{/* *INDENT-\/ON* */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{refine\_fractal (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{                \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * q)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 qid;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} ((\textcolor{keywordtype}{int}) q-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} >= refine\_level) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} ((\textcolor{keywordtype}{int}) q-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}} < refine\_level -\/ level\_shift) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  qid = \mbox{\hyperlink{p4est__bits_8h_a2b0cbbd87c0bc9d640fb0ee8b32d9a0f}{p4est\_quadrant\_child\_id}} (q);}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} (qid == 0 || qid == 3}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{          || qid == 5 || qid == 6}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{    );}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{int}}
+\DoxyCodeLine{main (\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char} **argv)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 wrongusage;}
+\DoxyCodeLine{  \textcolor{keywordtype}{unsigned}            crc, gcrc;}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{char}         *config\_name;}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{char}         *load\_name;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}     *quadrant\_counts;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}      count\_refined, count\_balanced;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}      prev\_quadrant, next\_quadrant;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}      global\_shipped;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__connectivity}{p4est\_connectivity\_t}} *connectivity;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est\_t}}            *\mbox{\hyperlink{structp4est}{p4est}};}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__nodes}{p4est\_nodes\_t}}      *nodes = NULL;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__ghost}{p4est\_ghost\_t}}      *ghost;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__lnodes}{p4est\_lnodes\_t}}     *lnodes;}
+\DoxyCodeLine{  \textcolor{keyword}{const} timings\_regression\_t *r, *regression;}
+\DoxyCodeLine{  timings\_config\_t    config;}
+\DoxyCodeLine{  sc\_statinfo\_t       stats[TIMINGS\_NUM\_STATS];}
+\DoxyCodeLine{  sc\_flopinfo\_t       fi, snapshot;}
+\DoxyCodeLine{  mpi\_context\_t       mpi\_context, *mpi = \&mpi\_context;}
+\DoxyCodeLine{  sc\_options\_t       *opt;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 overlap;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 subtree;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 borders;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 max\_ranges;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 use\_ranges, use\_ranges\_notify, use\_balance\_verify;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 oldschool, generate;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 first\_argc;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 test\_multiple\_orders;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 skip\_nodes, skip\_lnodes;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 repartition\_lnodes;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* initialize MPI and p4est internals */}}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Init (\&argc, \&argv);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  mpi-\/>mpicomm = sc\_MPI\_COMM\_WORLD;}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Comm\_size (mpi-\/>mpicomm, \&mpi-\/>mpisize);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Comm\_rank (mpi-\/>mpicomm, \&mpi-\/>mpirank);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_init (mpi-\/>mpicomm, 1, 1, NULL, SC\_LP\_DEFAULT);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4EST\_ENABLE\_DEBUG}}
+\DoxyCodeLine{  sc\_set\_log\_defaults (NULL, NULL, SC\_LP\_STATISTICS);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}{p4est\_init}} (NULL, SC\_LP\_DEFAULT);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* process command line arguments */}}
+\DoxyCodeLine{  P4EST\_GLOBAL\_PRODUCTIONF (\textcolor{stringliteral}{"{}Size of \%dtant: \%lld bytes\(\backslash\)n"{}}, \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}},}
+\DoxyCodeLine{                            (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) \textcolor{keyword}{sizeof} (\mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  opt = sc\_options\_new (argv[0]);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_options\_add\_switch (opt, \textcolor{charliteral}{'o'}, \textcolor{stringliteral}{"{}new-\/balance-\/overlap"{}}, \&overlap,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}use the new balance overlap algorithm"{}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (opt, \textcolor{charliteral}{'s'}, \textcolor{stringliteral}{"{}new-\/balance-\/subtree"{}}, \&subtree,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}use the new balance subtree algorithm"{}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (opt, \textcolor{charliteral}{'b'}, \textcolor{stringliteral}{"{}new-\/balance-\/borders"{}}, \&borders,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}use borders in balance"{}});}
+\DoxyCodeLine{  sc\_options\_add\_int (opt, \textcolor{charliteral}{'m'}, \textcolor{stringliteral}{"{}max-\/ranges"{}}, \&max\_ranges, -\/1,}
+\DoxyCodeLine{                      \textcolor{stringliteral}{"{}override p4est\_num\_ranges"{}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (opt, \textcolor{charliteral}{'r'}, \textcolor{stringliteral}{"{}ranges"{}}, \&use\_ranges,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}use ranges in balance"{}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (opt, \textcolor{charliteral}{'t'}, \textcolor{stringliteral}{"{}ranges-\/notify"{}}, \&use\_ranges\_notify,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}use both ranges and notify"{}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (opt, \textcolor{charliteral}{'y'}, \textcolor{stringliteral}{"{}balance-\/verify"{}}, \&use\_balance\_verify,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}use verifications in balance"{}});}
+\DoxyCodeLine{  sc\_options\_add\_int (opt, \textcolor{charliteral}{'l'}, \textcolor{stringliteral}{"{}level"{}}, \&refine\_level, 0,}
+\DoxyCodeLine{                      \textcolor{stringliteral}{"{}initial refine level"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{  sc\_options\_add\_string (opt, \textcolor{charliteral}{'c'}, \textcolor{stringliteral}{"{}configuration"{}}, \&config\_name, \textcolor{stringliteral}{"{}unit"{}},}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}configuration: unit|periodic|three|moebius|star"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  sc\_options\_add\_string (opt, \textcolor{charliteral}{'c'}, \textcolor{stringliteral}{"{}configuration"{}}, \&config\_name, \textcolor{stringliteral}{"{}unit"{}},}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}configuration: unit|periodic|rotwrap|twocubes|rotcubes|shell"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  sc\_options\_add\_bool (opt, 0, \textcolor{stringliteral}{"{}oldschool"{}}, \&oldschool, 0,}
+\DoxyCodeLine{                       \textcolor{stringliteral}{"{}Use original p4est\_new call"{}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (opt, 0, \textcolor{stringliteral}{"{}generate"{}}, \&generate,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}Generate regression commands"{}});}
+\DoxyCodeLine{  sc\_options\_add\_string (opt, \textcolor{charliteral}{'f'}, \textcolor{stringliteral}{"{}load-\/forest"{}}, \&load\_name, NULL,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}load saved "{}} \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (opt, 0, \textcolor{stringliteral}{"{}multiple-\/lnodes"{}},}
+\DoxyCodeLine{                         \&test\_multiple\_orders,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}Also time lnodes for orders 2, 4, and 8"{}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (opt, 0, \textcolor{stringliteral}{"{}skip-\/nodes"{}}, \&skip\_nodes, \textcolor{stringliteral}{"{}Skip nodes"{}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (opt, 0, \textcolor{stringliteral}{"{}skip-\/lnodes"{}}, \&skip\_lnodes, \textcolor{stringliteral}{"{}Skip lnodes"{}});}
+\DoxyCodeLine{  sc\_options\_add\_switch (opt, 0, \textcolor{stringliteral}{"{}repartition-\/lnodes"{}},}
+\DoxyCodeLine{                         \&repartition\_lnodes,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}Repartition to load-\/balance lnodes"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  first\_argc = sc\_options\_parse (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_DEFAULT,}
+\DoxyCodeLine{                                 opt, argc, argv);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (first\_argc < 0 || first\_argc != argc) \{}
+\DoxyCodeLine{    sc\_options\_print\_usage (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_ERROR, opt, NULL);}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (max\_ranges < -\/1 || max\_ranges == 0) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERROR (\textcolor{stringliteral}{"{}The -\/m / -\/-\/max-\/ranges option must be positive\(\backslash\)n"{}});}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  sc\_options\_print\_summary (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_PRODUCTION, opt);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (skip\_lnodes) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (test\_multiple\_orders) \{}
+\DoxyCodeLine{      SC\_GLOBAL\_PRODUCTION}
+\DoxyCodeLine{        (\textcolor{stringliteral}{"{}Warning: cannot test multiple lnode orders if -\/-\/skip-\/lnodes is given.\(\backslash\)n"{}});}
+\DoxyCodeLine{      test\_multiple\_orders = 0;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  wrongusage = 0;}
+\DoxyCodeLine{  config = P4EST\_CONFIG\_NULL;}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!strcmp (config\_name, \textcolor{stringliteral}{"{}unit"{}})) \{}
+\DoxyCodeLine{    config = P4EST\_CONFIG\_UNIT;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (config\_name, \textcolor{stringliteral}{"{}periodic"{}})) \{}
+\DoxyCodeLine{    config = P4EST\_CONFIG\_PERIODIC;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (config\_name, \textcolor{stringliteral}{"{}three"{}})) \{}
+\DoxyCodeLine{    config = P4EST\_CONFIG\_THREE;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (config\_name, \textcolor{stringliteral}{"{}moebius"{}})) \{}
+\DoxyCodeLine{    config = P4EST\_CONFIG\_MOEBIUS;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (config\_name, \textcolor{stringliteral}{"{}star"{}})) \{}
+\DoxyCodeLine{    config = P4EST\_CONFIG\_STAR;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (config\_name, \textcolor{stringliteral}{"{}rotwrap"{}})) \{}
+\DoxyCodeLine{    config = P4EST\_CONFIG\_ROTWRAP;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (config\_name, \textcolor{stringliteral}{"{}twocubes"{}})) \{}
+\DoxyCodeLine{    config = P4EST\_CONFIG\_TWOCUBES;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (config\_name, \textcolor{stringliteral}{"{}rotcubes"{}})) \{}
+\DoxyCodeLine{    config = P4EST\_CONFIG\_ROTCUBES;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (!strcmp (config\_name, \textcolor{stringliteral}{"{}shell"{}})) \{}
+\DoxyCodeLine{    config = P4EST\_CONFIG\_SHELL;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (load\_name != NULL) \{}
+\DoxyCodeLine{    config\_name = load\_name;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    wrongusage = 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (wrongusage) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_LERRORF (\textcolor{stringliteral}{"{}Wrong configuration name given: \%s\(\backslash\)n"{}},}
+\DoxyCodeLine{                          config\_name);}
+\DoxyCodeLine{    sc\_options\_print\_usage (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_ERROR, opt, NULL);}
+\DoxyCodeLine{    sc\_abort\_collective (\textcolor{stringliteral}{"{}Usage error"{}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* get command line argument: maximum refinement level */}}
+\DoxyCodeLine{  level\_shift = 4;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* print general setup information */}}
+\DoxyCodeLine{  P4EST\_GLOBAL\_STATISTICSF}
+\DoxyCodeLine{    (\textcolor{stringliteral}{"{}Processors \%d configuration \%s level \%d shift \%d\(\backslash\)n"{}}, mpi-\/>mpisize,}
+\DoxyCodeLine{     config\_name, refine\_level, level\_shift);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* start overall timing */}}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Barrier (mpi-\/>mpicomm);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  sc\_flops\_start (\&fi);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* create connectivity and forest structures */}}
+\DoxyCodeLine{  regression = NULL;}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (load\_name == NULL) \{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (config == P4EST\_CONFIG\_PERIODIC) \{}
+\DoxyCodeLine{      connectivity = \mbox{\hyperlink{p4est__connectivity_8h_ae65fe72b77b6f6c6825fc33efc101dab}{p4est\_connectivity\_new\_periodic}} ();}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (config == P4EST\_CONFIG\_THREE) \{}
+\DoxyCodeLine{      connectivity = \mbox{\hyperlink{p4est__connectivity_8h_ad6fcb80b167783b7ab298755473c8177}{p4est\_connectivity\_new\_corner}} ();}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (config == P4EST\_CONFIG\_MOEBIUS) \{}
+\DoxyCodeLine{      connectivity = \mbox{\hyperlink{p4est__connectivity_8h_a1e487dc9a4ba345cfffea3763eb822aa}{p4est\_connectivity\_new\_moebius}} ();}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (config == P4EST\_CONFIG\_STAR) \{}
+\DoxyCodeLine{      connectivity = \mbox{\hyperlink{p4est__connectivity_8h_a24d49c084093dd00d7a8b29c19541e63}{p4est\_connectivity\_new\_star}} ();}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      connectivity = \mbox{\hyperlink{p4est__connectivity_8h_aab03936b137ccdc4fa7520e7e017fcf0}{p4est\_connectivity\_new\_unitsquare}} ();}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (config == P4EST\_CONFIG\_PERIODIC) \{}
+\DoxyCodeLine{      connectivity = \mbox{\hyperlink{p8est__connectivity_8h_a1374c4c2fc06e436e047d32c28b87288}{p8est\_connectivity\_new\_periodic}} ();}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (config == P4EST\_CONFIG\_ROTWRAP) \{}
+\DoxyCodeLine{      connectivity = \mbox{\hyperlink{p8est__connectivity_8h_a9574e95e719a7cb31ce4c5a73bf3fa83}{p8est\_connectivity\_new\_rotwrap}} ();}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (config == P4EST\_CONFIG\_TWOCUBES) \{}
+\DoxyCodeLine{      connectivity = \mbox{\hyperlink{p8est__connectivity_8h_a71b16c2537992a3c1e4e51cb52ce76e4}{p8est\_connectivity\_new\_twocubes}} ();}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (config == P4EST\_CONFIG\_ROTCUBES) \{}
+\DoxyCodeLine{      connectivity = \mbox{\hyperlink{p8est__connectivity_8h_ac88e4c055b8847d3c9074c17c624da6e}{p8est\_connectivity\_new\_rotcubes}} ();}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (config == P4EST\_CONFIG\_SHELL) \{}
+\DoxyCodeLine{      connectivity = \mbox{\hyperlink{p8est__connectivity_8h_a8cbb255251c75f998d200aa3873fd359}{p8est\_connectivity\_new\_shell}} ();}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      connectivity = \mbox{\hyperlink{p8est__connectivity_8h_a53bdb596e76c52c1e23aaecd0aacc763}{p8est\_connectivity\_new\_unitcube}} ();}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* create new p4est from scratch */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (oldschool) \{}
+\DoxyCodeLine{      regression = regression\_oldschool;}
+\DoxyCodeLine{      \mbox{\hyperlink{structp4est}{p4est}} = \mbox{\hyperlink{p4est__extended_8h_ac11cf572e8ac72c4beb78465f98b63f3}{p4est\_new\_ext}} (mpi-\/>mpicomm, connectivity,}
+\DoxyCodeLine{                             15, 0, 0, 0, NULL, NULL);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      regression = regression\_latest;}
+\DoxyCodeLine{      \mbox{\hyperlink{structp4est}{p4est}} = \mbox{\hyperlink{p4est__extended_8h_ac11cf572e8ac72c4beb78465f98b63f3}{p4est\_new\_ext}} (mpi-\/>mpicomm, connectivity,}
+\DoxyCodeLine{                             0, refine\_level -\/ level\_shift, 1, 0, NULL, NULL);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* print all available regression tests */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (generate) \{}
+\DoxyCodeLine{      \textcolor{keyword}{const} \textcolor{keywordtype}{char}         *config\_gname = NULL;}
+\DoxyCodeLine{}
+\DoxyCodeLine{      P4EST\_GLOBAL\_PRODUCTION (\textcolor{stringliteral}{"{}Checksum regression tests available:\(\backslash\)n"{}});}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (r = regression; r-\/>config != P4EST\_CONFIG\_NULL; ++r) \{}
+\DoxyCodeLine{        \textcolor{keywordflow}{switch} (r-\/>config) \{}
+\DoxyCodeLine{        \textcolor{keywordflow}{case} P4EST\_CONFIG\_PERIODIC:}
+\DoxyCodeLine{          config\_gname = \textcolor{stringliteral}{"{}periodic"{}};}
+\DoxyCodeLine{          \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{        \textcolor{keywordflow}{case} P4EST\_CONFIG\_THREE:}
+\DoxyCodeLine{          config\_gname = \textcolor{stringliteral}{"{}three"{}};}
+\DoxyCodeLine{          \textcolor{keywordflow}{break};}
+\DoxyCodeLine{        \textcolor{keywordflow}{case} P4EST\_CONFIG\_MOEBIUS:}
+\DoxyCodeLine{          config\_gname = \textcolor{stringliteral}{"{}moebius"{}};}
+\DoxyCodeLine{          \textcolor{keywordflow}{break};}
+\DoxyCodeLine{        \textcolor{keywordflow}{case} P4EST\_CONFIG\_STAR:}
+\DoxyCodeLine{          config\_gname = \textcolor{stringliteral}{"{}star"{}};}
+\DoxyCodeLine{          \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{        \textcolor{keywordflow}{case} P4EST\_CONFIG\_ROTWRAP:}
+\DoxyCodeLine{          config\_gname = \textcolor{stringliteral}{"{}rotwrap"{}};}
+\DoxyCodeLine{          \textcolor{keywordflow}{break};}
+\DoxyCodeLine{        \textcolor{keywordflow}{case} P4EST\_CONFIG\_TWOCUBES:}
+\DoxyCodeLine{          config\_gname = \textcolor{stringliteral}{"{}twocubes"{}};}
+\DoxyCodeLine{          \textcolor{keywordflow}{break};}
+\DoxyCodeLine{        \textcolor{keywordflow}{case} P4EST\_CONFIG\_ROTCUBES:}
+\DoxyCodeLine{          config\_gname = \textcolor{stringliteral}{"{}rotcubes"{}};}
+\DoxyCodeLine{          \textcolor{keywordflow}{break};}
+\DoxyCodeLine{        \textcolor{keywordflow}{case} P4EST\_CONFIG\_SHELL:}
+\DoxyCodeLine{          config\_gname = \textcolor{stringliteral}{"{}shell"{}};}
+\DoxyCodeLine{          \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{        \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{          config\_gname = \textcolor{stringliteral}{"{}unit"{}};}
+\DoxyCodeLine{          \textcolor{keywordflow}{break};}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{        P4EST\_GLOBAL\_PRODUCTIONF (\textcolor{stringliteral}{"{}mpirun -\/np \%3d \%s\%s -\/c \%10s -\/l \%2d\(\backslash\)n"{}},}
+\DoxyCodeLine{                                  r-\/>mpisize, \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_timings"{}},}
+\DoxyCodeLine{                                  oldschool ? \textcolor{stringliteral}{"{} -\/-\/oldschool"{}} : \textcolor{stringliteral}{"{}"{}},}
+\DoxyCodeLine{                                  config\_gname, r-\/>level);}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \mbox{\hyperlink{structp4est}{p4est}} = \mbox{\hyperlink{p4est_8h_a9296defed7471c1a85d6dd2cc3d62f30}{p4est\_load}} (load\_name, mpi-\/>mpicomm, 0, 0, NULL, \&connectivity);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}} = \mbox{\hyperlink{p4est__base_8h_ad50853c36f4d58ad6e34adc81ac00a1e}{P4EST\_ALLOC\_ZERO}} (\mbox{\hyperlink{structp4est__inspect}{p4est\_inspect\_t}}, 1);}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>\mbox{\hyperlink{structp4est__inspect_af11cd9f378e72005aedba0dd9228095b}{use\_balance\_ranges}} = use\_ranges;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>\mbox{\hyperlink{structp4est__inspect_ac34dec33477683aa433c272ffceb73b3}{use\_balance\_ranges\_notify}} = use\_ranges\_notify;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>\mbox{\hyperlink{structp4est__inspect_af5c77d866e9fd3f94f7cc4a3bde79520}{use\_balance\_verify}} = use\_balance\_verify;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>\mbox{\hyperlink{structp4est__inspect_a7155df6e23babf6109c92cda3f251c6e}{balance\_max\_ranges}} = max\_ranges;}
+\DoxyCodeLine{  P4EST\_GLOBAL\_STATISTICSF}
+\DoxyCodeLine{    (\textcolor{stringliteral}{"{}Balance: new overlap \%d new subtree \%d borders \%d\(\backslash\)n"{}}, overlap,}
+\DoxyCodeLine{     (overlap \&\& subtree), (overlap \&\& borders));}
+\DoxyCodeLine{  quadrant\_counts = \mbox{\hyperlink{p4est__base_8h_a1fef909873d570158d6ac7b43c7d94f1}{P4EST\_ALLOC}} (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}, \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a5858a68da810aa216a076578c49439fe}{mpisize}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* time refine */}}
+\DoxyCodeLine{  sc\_flops\_snap (\&fi, \&snapshot);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a1a31375edfa42b5609e7656233c32cca}{p4est\_refine}} (\mbox{\hyperlink{structp4est}{p4est}}, 1, refine\_fractal, NULL);}
+\DoxyCodeLine{  sc\_flops\_shot (\&fi, \&snapshot);}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_REFINE], snapshot.iwtime, \textcolor{stringliteral}{"{}Refine"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_TIMINGS\_VTK}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__vtk_8h_a9e8a44b027b5372824a2c1ef2c17dea8}{p4est\_vtk\_write\_file}} (\mbox{\hyperlink{structp4est}{p4est}}, \textcolor{stringliteral}{"{}timings\_refined"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  count\_refined = \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a92c7d2fddd5c84a5245f4873d4f2026a}{global\_num\_quadrants}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* time balance */}}
+\DoxyCodeLine{  sc\_flops\_snap (\&fi, \&snapshot);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a6b603736cf5007b14755197a9c179a85}{p4est\_balance}} (\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4EST\_CONNECT\_FULL}}, NULL);}
+\DoxyCodeLine{  sc\_flops\_shot (\&fi, \&snapshot);}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE], snapshot.iwtime, \textcolor{stringliteral}{"{}Balance"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_A],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_A, \textcolor{stringliteral}{"{}Balance A time"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_COMM],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_comm, \textcolor{stringliteral}{"{}Balance comm time"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_B],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_B, \textcolor{stringliteral}{"{}Balance B time"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_A\_COUNT\_IN],}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{double}) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_A\_count\_in,}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Balance A count inlist"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_A\_COUNT\_OUT],}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{double}) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_A\_count\_out,}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Balance A count outlist"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_COMM\_SENT],}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{double}) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_comm\_sent,}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Balance sent second round"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_COMM\_NZPEERS],}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{double}) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_comm\_nzpeers,}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Balance nonzero peers second round"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_B\_COUNT\_IN],}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{double}) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_B\_count\_in,}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Balance B count inlist"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_B\_COUNT\_OUT],}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{double}) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_B\_count\_out,}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Balance B count outlist"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_RANGES],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>\mbox{\hyperlink{structp4est__inspect_ade5bd2879949227c41d29fbf34269d77}{balance\_ranges}}, \textcolor{stringliteral}{"{}Balance time for ranges"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_NOTIFY],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>\mbox{\hyperlink{structp4est__inspect_a1231de4ab5b4d8bd357834aa8b205af8}{balance\_notify}}, \textcolor{stringliteral}{"{}Balance time for notify"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_NOTIFY\_ALLGATHER],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>\mbox{\hyperlink{structp4est__inspect_a3e452c81745d7bd41d5c195813c7881d}{balance\_notify\_allgather}},}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Balance time for notify\_allgather"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_A\_ZERO\_RECEIVES],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_zero\_receives[0],}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Balance A zero receives"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_A\_ZERO\_SENDS],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_zero\_sends[0],}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Balance A zero sends"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_B\_ZERO\_RECEIVES],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_zero\_receives[1],}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Balance B zero receives"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_BALANCE\_B\_ZERO\_SENDS],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_zero\_sends[1],}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Balance B zero sends"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_TIMINGS\_VTK}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__vtk_8h_a9e8a44b027b5372824a2c1ef2c17dea8}{p4est\_vtk\_write\_file}} (\mbox{\hyperlink{structp4est}{p4est}}, \textcolor{stringliteral}{"{}timings\_balanced"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  count\_balanced = \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a92c7d2fddd5c84a5245f4873d4f2026a}{global\_num\_quadrants}};}
+\DoxyCodeLine{  crc = \mbox{\hyperlink{p4est_8h_ad1e90b05434a0cf76f1f44af7f72ef66}{p4est\_checksum}} (\mbox{\hyperlink{structp4est}{p4est}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* time rebalance -\/ is a noop on the tree */}}
+\DoxyCodeLine{  sc\_flops\_snap (\&fi, \&snapshot);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a6b603736cf5007b14755197a9c179a85}{p4est\_balance}} (\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4EST\_CONNECT\_FULL}}, NULL);}
+\DoxyCodeLine{  sc\_flops\_shot (\&fi, \&snapshot);}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_REBALANCE], snapshot.iwtime, \textcolor{stringliteral}{"{}Rebalance"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_REBALANCE\_A],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_A, \textcolor{stringliteral}{"{}Rebalance A time"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_REBALANCE\_COMM],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_comm, \textcolor{stringliteral}{"{}Rebalance comm time"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_REBALANCE\_B],}
+\DoxyCodeLine{                 \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_B, \textcolor{stringliteral}{"{}Rebalance B time"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_REBALANCE\_A\_COUNT\_IN],}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{double}) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_A\_count\_in,}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Rebalance A count inlist"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_REBALANCE\_A\_COUNT\_OUT],}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{double}) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_A\_count\_out,}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Rebalance A count outlist"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_REBALANCE\_COMM\_SENT],}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{double}) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_comm\_sent,}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Rebalance sent second round"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_REBALANCE\_COMM\_NZPEERS],}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{double}) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_comm\_nzpeers,}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Rebalance nonzero peers second round"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_REBALANCE\_B\_COUNT\_IN],}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{double}) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_B\_count\_in,}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Rebalance B count inlist"{}});}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_REBALANCE\_B\_COUNT\_OUT],}
+\DoxyCodeLine{                 (\textcolor{keywordtype}{double}) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}}-\/>balance\_B\_count\_out,}
+\DoxyCodeLine{                 \textcolor{stringliteral}{"{}Rebalance B count outlist"{}});}
+\DoxyCodeLine{  P4EST\_ASSERT (count\_balanced == \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a92c7d2fddd5c84a5245f4873d4f2026a}{global\_num\_quadrants}});}
+\DoxyCodeLine{  P4EST\_ASSERT (crc == \mbox{\hyperlink{p4est_8h_ad1e90b05434a0cf76f1f44af7f72ef66}{p4est\_checksum}} (\mbox{\hyperlink{structp4est}{p4est}}));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* time a uniform partition */}}
+\DoxyCodeLine{  sc\_flops\_snap (\&fi, \&snapshot);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a54c1f4e6bc35c181952371a8046523aa}{p4est\_partition}} (\mbox{\hyperlink{structp4est}{p4est}}, 0, NULL);}
+\DoxyCodeLine{  sc\_flops\_shot (\&fi, \&snapshot);}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_PARTITION], snapshot.iwtime, \textcolor{stringliteral}{"{}Partition"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_TIMINGS\_VTK}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__vtk_8h_a9e8a44b027b5372824a2c1ef2c17dea8}{p4est\_vtk\_write\_file}} (\mbox{\hyperlink{structp4est}{p4est}}, \textcolor{stringliteral}{"{}timings\_partitioned"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  P4EST\_ASSERT (crc == \mbox{\hyperlink{p4est_8h_ad1e90b05434a0cf76f1f44af7f72ef66}{p4est\_checksum}} (\mbox{\hyperlink{structp4est}{p4est}}));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* time building the ghost layer */}}
+\DoxyCodeLine{  sc\_flops\_snap (\&fi, \&snapshot);}
+\DoxyCodeLine{  ghost = \mbox{\hyperlink{p4est__ghost_8h_a34a0bfb7169437f6fc2382a67c47e89d}{p4est\_ghost\_new}} (\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4EST\_CONNECT\_FULL}});}
+\DoxyCodeLine{  sc\_flops\_shot (\&fi, \&snapshot);}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_GHOSTS], snapshot.iwtime, \textcolor{stringliteral}{"{}Ghost layer"{}});}
+\DoxyCodeLine{  gcrc = \mbox{\hyperlink{p4est__ghost_8h_ab117a104ade0f5032a2a0f4c03b4462d}{p4est\_ghost\_checksum}} (\mbox{\hyperlink{structp4est}{p4est}}, ghost);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* time the node numbering */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!skip\_nodes) \{}
+\DoxyCodeLine{    sc\_flops\_snap (\&fi, \&snapshot);}
+\DoxyCodeLine{    nodes = p4est\_nodes\_new (\mbox{\hyperlink{structp4est}{p4est}}, ghost);}
+\DoxyCodeLine{    sc\_flops\_shot (\&fi, \&snapshot);}
+\DoxyCodeLine{    sc\_stats\_set1 (\&stats[TIMINGS\_NODES], snapshot.iwtime, \textcolor{stringliteral}{"{}Nodes"{}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    sc\_stats\_set1 (\&stats[TIMINGS\_NODES], 0., \textcolor{stringliteral}{"{}Nodes"{}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* set this anyway so the output format is dimension independent */}}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_TRILINEAR\_OBSOLETE], 0., \textcolor{stringliteral}{"{}Unused"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!skip\_nodes) \{}
+\DoxyCodeLine{    p4est\_nodes\_destroy (nodes);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!skip\_lnodes \&\& repartition\_lnodes) \{}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__lnodes_8h_a838a5869a10015c19af18f98d04b19e1}{p4est\_partition\_lnodes}} (\mbox{\hyperlink{structp4est}{p4est}}, ghost, 1, 0);}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__ghost_8h_a4b4ae4fa996d0b8705d6267953c3e757}{p4est\_ghost\_destroy}} (ghost);}
+\DoxyCodeLine{    ghost = \mbox{\hyperlink{p4est__ghost_8h_a34a0bfb7169437f6fc2382a67c47e89d}{p4est\_ghost\_new}} (\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4EST\_CONNECT\_FULL}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* time the lnode numbering */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!skip\_lnodes) \{}
+\DoxyCodeLine{    sc\_flops\_snap (\&fi, \&snapshot);}
+\DoxyCodeLine{    lnodes = \mbox{\hyperlink{p4est__lnodes_8h_af5aea4df6408e9ec5065e0b23f96e157}{p4est\_lnodes\_new}} (\mbox{\hyperlink{structp4est}{p4est}}, ghost, 1);}
+\DoxyCodeLine{    sc\_flops\_shot (\&fi, \&snapshot);}
+\DoxyCodeLine{    sc\_stats\_set1 (\&stats[TIMINGS\_LNODES], snapshot.iwtime, \textcolor{stringliteral}{"{}L-\/Nodes"{}});}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__lnodes_8h_ab0d0d912d5e6212b1b924bca21e922f5}{p4est\_lnodes\_destroy}} (lnodes);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    sc\_stats\_set1 (\&stats[TIMINGS\_LNODES], 0., \textcolor{stringliteral}{"{}L-\/Nodes"{}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (test\_multiple\_orders) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (repartition\_lnodes) \{}
+\DoxyCodeLine{      \mbox{\hyperlink{p4est__lnodes_8h_a838a5869a10015c19af18f98d04b19e1}{p4est\_partition\_lnodes}} (\mbox{\hyperlink{structp4est}{p4est}}, ghost, 3, 0);}
+\DoxyCodeLine{      \mbox{\hyperlink{p4est__ghost_8h_a4b4ae4fa996d0b8705d6267953c3e757}{p4est\_ghost\_destroy}} (ghost);}
+\DoxyCodeLine{      ghost = \mbox{\hyperlink{p4est__ghost_8h_a34a0bfb7169437f6fc2382a67c47e89d}{p4est\_ghost\_new}} (\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4EST\_CONNECT\_FULL}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    sc\_flops\_snap (\&fi, \&snapshot);}
+\DoxyCodeLine{    lnodes = \mbox{\hyperlink{p4est__lnodes_8h_af5aea4df6408e9ec5065e0b23f96e157}{p4est\_lnodes\_new}} (\mbox{\hyperlink{structp4est}{p4est}}, ghost, 3);}
+\DoxyCodeLine{    sc\_flops\_shot (\&fi, \&snapshot);}
+\DoxyCodeLine{    sc\_stats\_set1 (\&stats[TIMINGS\_LNODES3], snapshot.iwtime, \textcolor{stringliteral}{"{}L-\/Nodes 3"{}});}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__lnodes_8h_ab0d0d912d5e6212b1b924bca21e922f5}{p4est\_lnodes\_destroy}} (lnodes);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (repartition\_lnodes) \{}
+\DoxyCodeLine{      \mbox{\hyperlink{p4est__lnodes_8h_a838a5869a10015c19af18f98d04b19e1}{p4est\_partition\_lnodes}} (\mbox{\hyperlink{structp4est}{p4est}}, ghost, 7, 0);}
+\DoxyCodeLine{      \mbox{\hyperlink{p4est__ghost_8h_a4b4ae4fa996d0b8705d6267953c3e757}{p4est\_ghost\_destroy}} (ghost);}
+\DoxyCodeLine{      ghost = \mbox{\hyperlink{p4est__ghost_8h_a34a0bfb7169437f6fc2382a67c47e89d}{p4est\_ghost\_new}} (\mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4EST\_CONNECT\_FULL}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    sc\_flops\_snap (\&fi, \&snapshot);}
+\DoxyCodeLine{    lnodes = \mbox{\hyperlink{p4est__lnodes_8h_af5aea4df6408e9ec5065e0b23f96e157}{p4est\_lnodes\_new}} (\mbox{\hyperlink{structp4est}{p4est}}, ghost, 7);}
+\DoxyCodeLine{    sc\_flops\_shot (\&fi, \&snapshot);}
+\DoxyCodeLine{    sc\_stats\_set1 (\&stats[TIMINGS\_LNODES7], snapshot.iwtime, \textcolor{stringliteral}{"{}L-\/Nodes 7"{}});}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__lnodes_8h_ab0d0d912d5e6212b1b924bca21e922f5}{p4est\_lnodes\_destroy}} (lnodes);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    sc\_stats\_set1 (\&stats[TIMINGS\_LNODES3], 0., \textcolor{stringliteral}{"{}L-\/Nodes 3"{}});}
+\DoxyCodeLine{    sc\_stats\_set1 (\&stats[TIMINGS\_LNODES7], 0., \textcolor{stringliteral}{"{}L-\/Nodes 7"{}});}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__ghost_8h_a4b4ae4fa996d0b8705d6267953c3e757}{p4est\_ghost\_destroy}} (ghost);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* time a partition with a shift of all elements by one processor */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0, next\_quadrant = 0; i < \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a5858a68da810aa216a076578c49439fe}{mpisize}}; ++i) \{}
+\DoxyCodeLine{    prev\_quadrant = next\_quadrant;}
+\DoxyCodeLine{    next\_quadrant = (\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a92c7d2fddd5c84a5245f4873d4f2026a}{global\_num\_quadrants}} * (i + 1)) / \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a5858a68da810aa216a076578c49439fe}{mpisize}};}
+\DoxyCodeLine{    quadrant\_counts[i] = (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) (next\_quadrant -\/ prev\_quadrant);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a5858a68da810aa216a076578c49439fe}{mpisize}} > 1) \{}
+\DoxyCodeLine{    quadrant\_counts[0] += quadrant\_counts[\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a5858a68da810aa216a076578c49439fe}{mpisize}} -\/ 1];  \textcolor{comment}{/* same type */}}
+\DoxyCodeLine{    quadrant\_counts[\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a5858a68da810aa216a076578c49439fe}{mpisize}} -\/ 1] = 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_flops\_snap (\&fi, \&snapshot);}
+\DoxyCodeLine{  global\_shipped = \mbox{\hyperlink{p4est__algorithms_8h_a85ebc40fdba570a0e97c982b490e0858}{p4est\_partition\_given}} (\mbox{\hyperlink{structp4est}{p4est}}, quadrant\_counts);}
+\DoxyCodeLine{  sc\_flops\_shot (\&fi, \&snapshot);}
+\DoxyCodeLine{  sc\_stats\_set1 (\&stats[TIMINGS\_REPARTITION], snapshot.iwtime, \textcolor{stringliteral}{"{}Repartition"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_GLOBAL\_PRODUCTIONF}
+\DoxyCodeLine{    (\textcolor{stringliteral}{"{}Done "{}} \mbox{\hyperlink{p4est__connectivity_8h_ab6dcdaf6247909a4bf21a817391781a8}{P4EST\_STRING}} \textcolor{stringliteral}{"{}\_partition\_given shipped \%lld quadrants \%.3g\%\%\(\backslash\)n"{}},}
+\DoxyCodeLine{     (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) global\_shipped,}
+\DoxyCodeLine{     global\_shipped * 100. / \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a92c7d2fddd5c84a5245f4873d4f2026a}{global\_num\_quadrants}});}
+\DoxyCodeLine{  P4EST\_ASSERT (crc == \mbox{\hyperlink{p4est_8h_ad1e90b05434a0cf76f1f44af7f72ef66}{p4est\_checksum}} (\mbox{\hyperlink{structp4est}{p4est}}));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* verify forest checksum */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (regression != NULL \&\& mpi-\/>mpirank == 0) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (r = regression; r-\/>config != P4EST\_CONFIG\_NULL; ++r) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (r-\/>config != config || r-\/>mpisize != mpi-\/>mpisize}
+\DoxyCodeLine{          || r-\/>level != refine\_level)}
+\DoxyCodeLine{        \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{      SC\_CHECK\_ABORT (crc == r-\/>checksum, \textcolor{stringliteral}{"{}Checksum mismatch"{}});}
+\DoxyCodeLine{      P4EST\_GLOBAL\_INFO (\textcolor{stringliteral}{"{}Checksum regression OK\(\backslash\)n"{}});}
+\DoxyCodeLine{      \textcolor{keywordflow}{break};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* print status and checksum */}}
+\DoxyCodeLine{  P4EST\_GLOBAL\_STATISTICSF (\textcolor{stringliteral}{"{}Processors \%d level \%d shift \%d"{}}}
+\DoxyCodeLine{                            \textcolor{stringliteral}{"{} checksums 0x\%08x 0x\%08x\(\backslash\)n"{}},}
+\DoxyCodeLine{                            mpi-\/>mpisize, refine\_level, level\_shift,}
+\DoxyCodeLine{                            crc, gcrc);}
+\DoxyCodeLine{  P4EST\_GLOBAL\_STATISTICSF (\textcolor{stringliteral}{"{}Level \%d refined to \%lld balanced to \%lld\(\backslash\)n"{}},}
+\DoxyCodeLine{                            refine\_level, (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) count\_refined,}
+\DoxyCodeLine{                            (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) count\_balanced);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* calculate and print timings */}}
+\DoxyCodeLine{  sc\_stats\_compute (mpi-\/>mpicomm, TIMINGS\_NUM\_STATS, stats);}
+\DoxyCodeLine{  sc\_stats\_print (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_ESSENTIAL,}
+\DoxyCodeLine{                  TIMINGS\_NUM\_STATS, stats, 1, 1);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* destroy the p4est and its connectivity structure */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a0b2d45f13b66edfed0ccfde75808c745}{P4EST\_FREE}} (quadrant\_counts);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a0b2d45f13b66edfed0ccfde75808c745}{P4EST\_FREE}} (\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a8471d9aacc47e5f6db816aa9439554fe}{inspect}});}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a1e78f347378fe8b097ef019214f2338e}{p4est\_destroy}} (\mbox{\hyperlink{structp4est}{p4est}});}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__connectivity_8h_a208e613cae5e1bd3baffb587387b672c}{p4est\_connectivity\_destroy}} (connectivity);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_options\_destroy (opt);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* clean up and exit */}}
+\DoxyCodeLine{  sc\_finalize ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Finalize ();}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCodeInclude}
+ 

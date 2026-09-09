@@ -1,0 +1,640 @@
+\hypertarget{p4est__base_8h}{}\doxysection{src/p4est\+\_\+base.h File Reference}
+\label{p4est__base_8h}\index{src/p4est\_base.h@{src/p4est\_base.h}}
+
+
+General support types and functions.  
+
+
+{\ttfamily \#include $<$p4est\+\_\+config.\+h$>$}\newline
+{\ttfamily \#include $<$sc\+\_\+config.\+h$>$}\newline
+{\ttfamily \#include $<$sc\+\_\+containers.\+h$>$}\newline
+Include dependency graph for p4est\+\_\+base.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p4est__base_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p4est__base_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ab52cbea952a4a454e487b329375b62b7}\label{p4est__base_8h_ab52cbea952a4a454e487b329375b62b7}} 
+\#define {\bfseries \+\_\+p4est\+\_\+const}~\+\_\+sc\+\_\+const
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ae1bf0fa26745966fe1df45e50a6a8a5d}\label{p4est__base_8h_ae1bf0fa26745966fe1df45e50a6a8a5d}} 
+\#define \mbox{\hyperlink{p4est__base_8h_ae1bf0fa26745966fe1df45e50a6a8a5d}{P4\+EST\+\_\+\+COMM\+\_\+\+TRANSFER\+\_\+\+NULL}}
+\begin{DoxyCompactList}\small\item\em We do no longer dereference unneeded pointers in p4est\+\_\+transfer\+\_\+. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{p4est__base_8h_a16ed4740c3269672ea00dedec0be38cc}{P4\+EST\+\_\+\+CONN\+\_\+\+DISK\+\_\+\+PERIODIC}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{p4est__connectivity_8h_a4bf17365036ea364005f0bdbb61779c7}{p4est\+\_\+connectivity\+\_\+new\+\_\+disk}} function now accepts a bool arg. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__base_8h_afc14e1c5cb100548d9ac8cfa82d0e0a6}\label{p4est__base_8h_afc14e1c5cb100548d9ac8cfa82d0e0a6}} 
+\#define \mbox{\hyperlink{p4est__base_8h_afc14e1c5cb100548d9ac8cfa82d0e0a6}{P4\+EST\+\_\+\+CONN\+\_\+\+REORDER\+\_\+\+NEWID}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{p4est__connectivity_8h_adf23471dc921f5fa6529232a2e79b7fd}{p4est\+\_\+connectivity\+\_\+reorder\+\_\+newid}} function exists. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{p4est__base_8h_aa3bfced1c8552b64130dfd479f284c88}{P4\+EST\+\_\+\+SEARCH\+\_\+\+LOCAL}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{p4est__search_8h_a08966f233b715e731217a2c2d288bbeb}{p4est\+\_\+search\+\_\+local}} function replaces \mbox{\hyperlink{p4est__search_8h_a026bdd9000d5770e079e11ae09a7eef7}{p4est\+\_\+search}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__base_8h_a28a5c49fb8b23090ef3fbd0b7539cbdc}\label{p4est__base_8h_a28a5c49fb8b23090ef3fbd0b7539cbdc}} 
+\#define \mbox{\hyperlink{p4est__base_8h_a28a5c49fb8b23090ef3fbd0b7539cbdc}{P4\+EST\+\_\+\+VTK\+\_\+\+CELL\+\_\+\+DATAV}}
+\begin{DoxyCompactList}\small\item\em We expose the \mbox{\hyperlink{p4est__vtk_8h_a2d177be5c0b7275d9d403510a84ad713}{p4est\+\_\+vtk\+\_\+write\+\_\+cell\+\_\+datav}} function. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__base_8h_acb07e7364332b6723898960a19096201}\label{p4est__base_8h_acb07e7364332b6723898960a19096201}} 
+\#define {\bfseries p4est\+\_\+qcoord\+\_\+compare}~sc\+\_\+int32\+\_\+compare
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a3c9055ef0e143ed035cca323a4ff2143}\label{p4est__base_8h_a3c9055ef0e143ed035cca323a4ff2143}} 
+\#define {\bfseries P4\+EST\+\_\+\+QCOORD\+\_\+\+BITS}~32
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a56fc927daa8f2586acf6d0670a8b1184}\label{p4est__base_8h_a56fc927daa8f2586acf6d0670a8b1184}} 
+\#define {\bfseries P4\+EST\+\_\+\+MPI\+\_\+\+QCOORD}~sc\+\_\+\+MPI\+\_\+\+INT
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a2078fdc9c4f71033ccf08713da3c9d5c}\label{p4est__base_8h_a2078fdc9c4f71033ccf08713da3c9d5c}} 
+\#define {\bfseries P4\+EST\+\_\+\+VTK\+\_\+\+QCOORD}~\char`\"{}Int32\char`\"{}
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a4161b3dbf8bd146847209c439359200e}\label{p4est__base_8h_a4161b3dbf8bd146847209c439359200e}} 
+\#define {\bfseries P4\+EST\+\_\+\+F90\+\_\+\+QCOORD}~INTEGER(KIND=C\+\_\+\+INT32\+\_\+T)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a4482d2ebbfc78a7a26985cc2ae9dce92}\label{p4est__base_8h_a4482d2ebbfc78a7a26985cc2ae9dce92}} 
+\#define {\bfseries P4\+EST\+\_\+\+QCOORD\+\_\+\+MIN}~INT32\+\_\+\+MIN
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a0cc531da45900082396af74b699d677b}\label{p4est__base_8h_a0cc531da45900082396af74b699d677b}} 
+\#define {\bfseries P4\+EST\+\_\+\+QCOORD\+\_\+\+MAX}~INT32\+\_\+\+MAX
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a5c381a211e7cf5f3034b73ef7d004ba7}\label{p4est__base_8h_a5c381a211e7cf5f3034b73ef7d004ba7}} 
+\#define {\bfseries P4\+EST\+\_\+\+QCOORD\+\_\+1}~((\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}) 1)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ae95aa9d83d6971d7aa089ecb2315191a}\label{p4est__base_8h_ae95aa9d83d6971d7aa089ecb2315191a}} 
+\#define {\bfseries P4\+EST\+\_\+\+QCOORD\+\_\+\+ABS}(x)~((\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}) labs ((long) (x)))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a603e8d65f1992010bcd65da6b07a2628}\label{p4est__base_8h_a603e8d65f1992010bcd65da6b07a2628}} 
+\#define {\bfseries p4est\+\_\+topidx\+\_\+compare}~sc\+\_\+int32\+\_\+compare
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a21ae4902d9514d55968d63b72ca23b64}\label{p4est__base_8h_a21ae4902d9514d55968d63b72ca23b64}} 
+\#define {\bfseries P4\+EST\+\_\+\+TOPIDX\+\_\+\+BITS}~32
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a80f5f75876797bf42366f0b7774b1d25}\label{p4est__base_8h_a80f5f75876797bf42366f0b7774b1d25}} 
+\#define {\bfseries P4\+EST\+\_\+\+MPI\+\_\+\+TOPIDX}~sc\+\_\+\+MPI\+\_\+\+INT
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a34d96482fe4132e8240c8da1459fca03}\label{p4est__base_8h_a34d96482fe4132e8240c8da1459fca03}} 
+\#define {\bfseries P4\+EST\+\_\+\+VTK\+\_\+\+TOPIDX}~\char`\"{}Int32\char`\"{}
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a81a3595dc2d329b7b96409dbc097e1e4}\label{p4est__base_8h_a81a3595dc2d329b7b96409dbc097e1e4}} 
+\#define {\bfseries P4\+EST\+\_\+\+F90\+\_\+\+TOPIDX}~INTEGER(KIND=C\+\_\+\+INT32\+\_\+T)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_aabe05f0c3a16967f83dd68bf02bf4cb3}\label{p4est__base_8h_aabe05f0c3a16967f83dd68bf02bf4cb3}} 
+\#define {\bfseries P4\+EST\+\_\+\+TOPIDX\+\_\+\+MIN}~INT32\+\_\+\+MIN
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a167cfa9b2cb7fc39f451a647c86c0a21}\label{p4est__base_8h_a167cfa9b2cb7fc39f451a647c86c0a21}} 
+\#define {\bfseries P4\+EST\+\_\+\+TOPIDX\+\_\+\+MAX}~INT32\+\_\+\+MAX
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a3aa7444025a760f927350478b01427aa}\label{p4est__base_8h_a3aa7444025a760f927350478b01427aa}} 
+\#define {\bfseries P4\+EST\+\_\+\+TOPIDX\+\_\+\+FITS\+\_\+32}~1
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a7b14c142453358cbb06532c8c6fa9697}\label{p4est__base_8h_a7b14c142453358cbb06532c8c6fa9697}} 
+\#define {\bfseries P4\+EST\+\_\+\+TOPIDX\+\_\+1}~((\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}) 1)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a865eb0959009476524b4ac7faa205a76}\label{p4est__base_8h_a865eb0959009476524b4ac7faa205a76}} 
+\#define {\bfseries P4\+EST\+\_\+\+TOPIDX\+\_\+\+ABS}(x)~((\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}) labs ((long) (x)))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ad9dc8d767c8c4687202581573e871299}\label{p4est__base_8h_ad9dc8d767c8c4687202581573e871299}} 
+\#define {\bfseries p4est\+\_\+locidx\+\_\+compare}~sc\+\_\+int32\+\_\+compare
+\item 
+\mbox{\Hypertarget{p4est__base_8h_afc1c9f444c21de85d6cff3e7398b20d7}\label{p4est__base_8h_afc1c9f444c21de85d6cff3e7398b20d7}} 
+\#define {\bfseries P4\+EST\+\_\+\+LOCIDX\+\_\+\+BITS}~32
+\item 
+\mbox{\Hypertarget{p4est__base_8h_af1fb8408cc2eccbf5446c531fb739993}\label{p4est__base_8h_af1fb8408cc2eccbf5446c531fb739993}} 
+\#define {\bfseries P4\+EST\+\_\+\+MPI\+\_\+\+LOCIDX}~sc\+\_\+\+MPI\+\_\+\+INT
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ade84478c781e0a82679fd449f2319da7}\label{p4est__base_8h_ade84478c781e0a82679fd449f2319da7}} 
+\#define {\bfseries P4\+EST\+\_\+\+VTK\+\_\+\+LOCIDX}~\char`\"{}Int32\char`\"{}
+\item 
+\mbox{\Hypertarget{p4est__base_8h_aadf13d1c0d388d2d3a6e25c3f476e9b4}\label{p4est__base_8h_aadf13d1c0d388d2d3a6e25c3f476e9b4}} 
+\#define {\bfseries P4\+EST\+\_\+\+F90\+\_\+\+LOCIDX}~INTEGER(KIND=C\+\_\+\+INT32\+\_\+T)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a52068248b169f1ea929b7706159b6518}\label{p4est__base_8h_a52068248b169f1ea929b7706159b6518}} 
+\#define {\bfseries P4\+EST\+\_\+\+LOCIDX\+\_\+\+MIN}~INT32\+\_\+\+MIN
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a39041034d48af86b9c39c60b65ec6aaf}\label{p4est__base_8h_a39041034d48af86b9c39c60b65ec6aaf}} 
+\#define {\bfseries P4\+EST\+\_\+\+LOCIDX\+\_\+\+MAX}~INT32\+\_\+\+MAX
+\item 
+\mbox{\Hypertarget{p4est__base_8h_af5d7114103982cfa3d58210a250079a8}\label{p4est__base_8h_af5d7114103982cfa3d58210a250079a8}} 
+\#define {\bfseries P4\+EST\+\_\+\+LOCIDX\+\_\+1}~((\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}) 1)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ac60e218ff3d8f3fa817ed09f08338a61}\label{p4est__base_8h_ac60e218ff3d8f3fa817ed09f08338a61}} 
+\#define {\bfseries P4\+EST\+\_\+\+LOCIDX\+\_\+\+ABS}(x)~((\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}) labs ((long) (x)))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ab3f344dcf270fd4858ab00ae43c28d84}\label{p4est__base_8h_ab3f344dcf270fd4858ab00ae43c28d84}} 
+\#define {\bfseries p4est\+\_\+gloidx\+\_\+compare}~sc\+\_\+int64\+\_\+compare
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ae06910fcc244b415da64f40921a6dd64}\label{p4est__base_8h_ae06910fcc244b415da64f40921a6dd64}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOIDX\+\_\+\+BITS}~64
+\item 
+\mbox{\Hypertarget{p4est__base_8h_aa38aebf045c6c1a371746c78dd5899d3}\label{p4est__base_8h_aa38aebf045c6c1a371746c78dd5899d3}} 
+\#define {\bfseries P4\+EST\+\_\+\+MPI\+\_\+\+GLOIDX}~sc\+\_\+\+MPI\+\_\+\+LONG\+\_\+\+LONG\+\_\+\+INT
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a9b23206950c12dd77e218cb00874f308}\label{p4est__base_8h_a9b23206950c12dd77e218cb00874f308}} 
+\#define {\bfseries P4\+EST\+\_\+\+VTK\+\_\+\+GLOIDX}~\char`\"{}Int64\char`\"{}
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a8b6ea40acb9a806996a89f419960e9a3}\label{p4est__base_8h_a8b6ea40acb9a806996a89f419960e9a3}} 
+\#define {\bfseries P4\+EST\+\_\+\+F90\+\_\+\+GLOIDX}~INTEGER(KIND=C\+\_\+\+INT64\+\_\+T)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a7eb76f2f6349e2971cf9712b73044ee1}\label{p4est__base_8h_a7eb76f2f6349e2971cf9712b73044ee1}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOIDX\+\_\+\+MIN}~INT64\+\_\+\+MIN
+\item 
+\mbox{\Hypertarget{p4est__base_8h_aad0b8854dff9914ffd2089b6c0f2006f}\label{p4est__base_8h_aad0b8854dff9914ffd2089b6c0f2006f}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOIDX\+\_\+\+MAX}~INT64\+\_\+\+MAX
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a1c6587b290645b87ce9df342a5ea4dfa}\label{p4est__base_8h_a1c6587b290645b87ce9df342a5ea4dfa}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOIDX\+\_\+1}~((\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}}) 1)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a268011f0ee3fc588e1f22bcafabeb1e1}\label{p4est__base_8h_a268011f0ee3fc588e1f22bcafabeb1e1}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOIDX\+\_\+\+ABS}(x)~((\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}}) llabs ((long long) (x)))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_aa07f473727b64af3e97bf8b2051d2a04}\label{p4est__base_8h_aa07f473727b64af3e97bf8b2051d2a04}} 
+\#define {\bfseries P4\+EST\+\_\+\+ASSERT}(c)~SC\+\_\+\+NOOP ()
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a08c01d5e28d9d12d7dcd8bf7cbcbb0c3}\label{p4est__base_8h_a08c01d5e28d9d12d7dcd8bf7cbcbb0c3}} 
+\#define {\bfseries P4\+EST\+\_\+\+EXECUTE\+\_\+\+ASSERT\+\_\+\+FALSE}(expression)~  do \{ (void) (expression); \} while (0)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a69bf014af8702694b12c8b370328d8fa}\label{p4est__base_8h_a69bf014af8702694b12c8b370328d8fa}} 
+\#define {\bfseries P4\+EST\+\_\+\+EXECUTE\+\_\+\+ASSERT\+\_\+\+TRUE}(expression)~  do \{ (void) (expression); \} while (0)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_abbe30c93e23ba5ac6478ce48328c794c}\label{p4est__base_8h_abbe30c93e23ba5ac6478ce48328c794c}} 
+\#define {\bfseries P4\+EST\+\_\+\+EXECUTE\+\_\+\+ASSERT\+\_\+\+INT}(expression,  ival)~  do \{ (void) (expression); \} while (0)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ad4537b4c4e6c02e6d08433d0434661fb}\label{p4est__base_8h_ad4537b4c4e6c02e6d08433d0434661fb}} 
+\#define {\bfseries P4\+EST\+\_\+\+EXECUTE\+\_\+\+ASSERT\+\_\+\+TOPIDX}(expression,  tval)~  do \{ (void) (expression); \} while (0)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a7a47d0e858afc6392bc753ace23fb696}\label{p4est__base_8h_a7a47d0e858afc6392bc753ace23fb696}} 
+\#define {\bfseries P4\+EST\+\_\+\+DEBUG\+\_\+\+EXECUTE}(expression)~SC\+\_\+\+NOOP ()
+\item 
+\#define \mbox{\hyperlink{p4est__base_8h_a1fef909873d570158d6ac7b43c7d94f1}{P4\+EST\+\_\+\+ALLOC}}(t,  n)
+\begin{DoxyCompactList}\small\item\em allocate a {\itshape t-\/array} with {\itshape n} elements \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{p4est__base_8h_ad50853c36f4d58ad6e34adc81ac00a1e}{P4\+EST\+\_\+\+ALLOC\+\_\+\+ZERO}}(t,  n)
+\begin{DoxyCompactList}\small\item\em allocate a {\itshape t-\/array} with {\itshape n} elements and zero \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{p4est__base_8h_ace1905a91eca3db722dd70a27ce57339}{P4\+EST\+\_\+\+REALLOC}}(p,  t,  n)
+\begin{DoxyCompactList}\small\item\em reallocate the {\itshape t-\/array} {\itshape p} with {\itshape n} elements \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__base_8h_aebda2fbbcb209c154505d0a3f3adee83}\label{p4est__base_8h_aebda2fbbcb209c154505d0a3f3adee83}} 
+\#define \mbox{\hyperlink{p4est__base_8h_aebda2fbbcb209c154505d0a3f3adee83}{P4\+EST\+\_\+\+STRDUP}}(s)~sc\+\_\+strdup (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\+\_\+package\+\_\+id}}, (s))
+\begin{DoxyCompactList}\small\item\em duplicate a string \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__base_8h_a0b2d45f13b66edfed0ccfde75808c745}\label{p4est__base_8h_a0b2d45f13b66edfed0ccfde75808c745}} 
+\#define \mbox{\hyperlink{p4est__base_8h_a0b2d45f13b66edfed0ccfde75808c745}{P4\+EST\+\_\+\+FREE}}(p)~sc\+\_\+free (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\+\_\+package\+\_\+id}}, (p))
+\begin{DoxyCompactList}\small\item\em free an allocated array \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__base_8h_a6fc877adea3a959e6d3a95371391459d}\label{p4est__base_8h_a6fc877adea3a959e6d3a95371391459d}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOG}(p,  s)~  SC\+\_\+\+GEN\+\_\+\+LOG (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\+\_\+package\+\_\+id}}, SC\+\_\+\+LC\+\_\+\+GLOBAL, (p), (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_aabb7b91fc49fdfed391371d29126757f}\label{p4est__base_8h_aabb7b91fc49fdfed391371d29126757f}} 
+\#define {\bfseries P4\+EST\+\_\+\+LOG}(p,  s)~  SC\+\_\+\+GEN\+\_\+\+LOG (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\+\_\+package\+\_\+id}}, SC\+\_\+\+LC\+\_\+\+NORMAL, (p), (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ace8916cad21795a9e660eecd0af8e8c1}\label{p4est__base_8h_ace8916cad21795a9e660eecd0af8e8c1}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOGF}(p,  f, ...)~  SC\+\_\+\+GEN\+\_\+\+LOGF (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\+\_\+package\+\_\+id}}, SC\+\_\+\+LC\+\_\+\+GLOBAL, (p), (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a25b2c8487f6233beb9565006698b484f}\label{p4est__base_8h_a25b2c8487f6233beb9565006698b484f}} 
+\#define {\bfseries P4\+EST\+\_\+\+LOGF}(p,  f, ...)~  SC\+\_\+\+GEN\+\_\+\+LOGF (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\+\_\+package\+\_\+id}}, SC\+\_\+\+LC\+\_\+\+NORMAL, (p), (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ae1306d38f6411e94fd5f6919eb4ca692}\label{p4est__base_8h_ae1306d38f6411e94fd5f6919eb4ca692}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+TRACE}(s)~P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+TRACE, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a4101e27f2c8e3dd69f85b90e7d01f5b5}\label{p4est__base_8h_a4101e27f2c8e3dd69f85b90e7d01f5b5}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+LDEBUG}(s)~P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+DEBUG, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a485701dde980213978779f5420e5ee1c}\label{p4est__base_8h_a485701dde980213978779f5420e5ee1c}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+VERBOSE}(s)~P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+VERBOSE, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a69d80906f22478d911f58b399fd94525}\label{p4est__base_8h_a69d80906f22478d911f58b399fd94525}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+INFO}(s)~P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+INFO, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a9481881a7a83086f69b930df7f1b0817}\label{p4est__base_8h_a9481881a7a83086f69b930df7f1b0817}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+STATISTICS}(s)~P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+STATISTICS, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a3f76559dfa6c903c6ff8f5c8f5b8205d}\label{p4est__base_8h_a3f76559dfa6c903c6ff8f5c8f5b8205d}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+PRODUCTION}(s)~P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+PRODUCTION, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a28023fa4732c878cf73c1cd3ef8588aa}\label{p4est__base_8h_a28023fa4732c878cf73c1cd3ef8588aa}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+ESSENTIAL}(s)~P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+ESSENTIAL, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a4b04961bb2465fa90e1630605d9ea1a8}\label{p4est__base_8h_a4b04961bb2465fa90e1630605d9ea1a8}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+LERROR}(s)~P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+ERROR, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a6d05b322cfe7b92b162013c9b2b81873}\label{p4est__base_8h_a6d05b322cfe7b92b162013c9b2b81873}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+TRACEF}(f, ...)~  P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+TRACE, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a493680f4c3c2100641d3541307267526}\label{p4est__base_8h_a493680f4c3c2100641d3541307267526}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+LDEBUGF}(f, ...)~  P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+DEBUG, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ac012cf18bd26b48660deaea4f2295eb0}\label{p4est__base_8h_ac012cf18bd26b48660deaea4f2295eb0}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+VERBOSEF}(f, ...)~  P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+VERBOSE, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_afde136f4ee22a138d1617da85f870df6}\label{p4est__base_8h_afde136f4ee22a138d1617da85f870df6}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+INFOF}(f, ...)~  P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+INFO, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a75b0ddc7b06fcf596a89af0a6474d9f1}\label{p4est__base_8h_a75b0ddc7b06fcf596a89af0a6474d9f1}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+STATISTICSF}(f, ...)~  P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+STATISTICS, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a5960df2308c534bfa183b699d7205a4e}\label{p4est__base_8h_a5960df2308c534bfa183b699d7205a4e}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+PRODUCTIONF}(f, ...)~  P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+PRODUCTION, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ab1e904149ff615708b4cb18ca20d72d9}\label{p4est__base_8h_ab1e904149ff615708b4cb18ca20d72d9}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+ESSENTIALF}(f, ...)~  P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+ESSENTIAL, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a464c0cec9f64d6729a409d303f21ebe4}\label{p4est__base_8h_a464c0cec9f64d6729a409d303f21ebe4}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+LERRORF}(f, ...)~  P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+ERROR, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_afc9d19f17326c1cd964e81e4f6e0413f}\label{p4est__base_8h_afc9d19f17326c1cd964e81e4f6e0413f}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+NOTICE}~P4\+EST\+\_\+\+GLOBAL\+\_\+\+STATISTICS
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a86f098e3454f98aedf5298f75cc43d80}\label{p4est__base_8h_a86f098e3454f98aedf5298f75cc43d80}} 
+\#define {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+NOTICEF}~P4\+EST\+\_\+\+GLOBAL\+\_\+\+STATISTICSF
+\item 
+\mbox{\Hypertarget{p4est__base_8h_af7ed51d6b999b3964c173be71a18d4aa}\label{p4est__base_8h_af7ed51d6b999b3964c173be71a18d4aa}} 
+\#define {\bfseries P4\+EST\+\_\+\+TRACE}(s)~P4\+EST\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+TRACE, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_abc449bf7f3265e7a61bcd444c500b647}\label{p4est__base_8h_abc449bf7f3265e7a61bcd444c500b647}} 
+\#define {\bfseries P4\+EST\+\_\+\+LDEBUG}(s)~P4\+EST\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+DEBUG, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a1394b693f644c74f64a52fbfd52e628b}\label{p4est__base_8h_a1394b693f644c74f64a52fbfd52e628b}} 
+\#define {\bfseries P4\+EST\+\_\+\+VERBOSE}(s)~P4\+EST\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+VERBOSE, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a9b2063e7ce5c30c912df0315d978c284}\label{p4est__base_8h_a9b2063e7ce5c30c912df0315d978c284}} 
+\#define {\bfseries P4\+EST\+\_\+\+INFO}(s)~P4\+EST\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+INFO, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a4b5265f2a3fe14a223ef951a9cff5d83}\label{p4est__base_8h_a4b5265f2a3fe14a223ef951a9cff5d83}} 
+\#define {\bfseries P4\+EST\+\_\+\+STATISTICS}(s)~P4\+EST\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+STATISTICS, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_abc8dd475977817fa5f2d7a3ac9235ba9}\label{p4est__base_8h_abc8dd475977817fa5f2d7a3ac9235ba9}} 
+\#define {\bfseries P4\+EST\+\_\+\+PRODUCTION}(s)~P4\+EST\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+PRODUCTION, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a04df32f358d350c561c5cc9fed786f46}\label{p4est__base_8h_a04df32f358d350c561c5cc9fed786f46}} 
+\#define {\bfseries P4\+EST\+\_\+\+ESSENTIAL}(s)~P4\+EST\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+ESSENTIAL, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_acf38fae97f8530d4e01bc21903b240af}\label{p4est__base_8h_acf38fae97f8530d4e01bc21903b240af}} 
+\#define {\bfseries P4\+EST\+\_\+\+LERROR}(s)~P4\+EST\+\_\+\+LOG (SC\+\_\+\+LP\+\_\+\+ERROR, (s))
+\item 
+\mbox{\Hypertarget{p4est__base_8h_af8894999e7eae40be7a0018fb0746d7b}\label{p4est__base_8h_af8894999e7eae40be7a0018fb0746d7b}} 
+\#define {\bfseries P4\+EST\+\_\+\+TRACEF}(f, ...)~  P4\+EST\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+TRACE, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a4505da3fb3eea10c939f9805bbf20089}\label{p4est__base_8h_a4505da3fb3eea10c939f9805bbf20089}} 
+\#define {\bfseries P4\+EST\+\_\+\+LDEBUGF}(f, ...)~  P4\+EST\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+DEBUG, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_aeb81978406ea82fcd4a86d9fd1633f1a}\label{p4est__base_8h_aeb81978406ea82fcd4a86d9fd1633f1a}} 
+\#define {\bfseries P4\+EST\+\_\+\+VERBOSEF}(f, ...)~  P4\+EST\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+VERBOSE, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a2de3906daaaf1928f67486aa6a9be78d}\label{p4est__base_8h_a2de3906daaaf1928f67486aa6a9be78d}} 
+\#define {\bfseries P4\+EST\+\_\+\+INFOF}(f, ...)~  P4\+EST\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+INFO, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a243df5563fb775dcce96bb81ec30d02c}\label{p4est__base_8h_a243df5563fb775dcce96bb81ec30d02c}} 
+\#define {\bfseries P4\+EST\+\_\+\+STATISTICSF}(f, ...)~  P4\+EST\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+STATISTICS, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a3bcc1d43a833128f06b5df639f75f5d9}\label{p4est__base_8h_a3bcc1d43a833128f06b5df639f75f5d9}} 
+\#define {\bfseries P4\+EST\+\_\+\+PRODUCTIONF}(f, ...)~  P4\+EST\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+PRODUCTION, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a2291911e5a44b5c443bd9fd74b63a008}\label{p4est__base_8h_a2291911e5a44b5c443bd9fd74b63a008}} 
+\#define {\bfseries P4\+EST\+\_\+\+ESSENTIALF}(f, ...)~  P4\+EST\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+ESSENTIAL, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a8f5d2a900b533ad7e2b7b2913e77df0f}\label{p4est__base_8h_a8f5d2a900b533ad7e2b7b2913e77df0f}} 
+\#define {\bfseries P4\+EST\+\_\+\+LERRORF}(f, ...)~  P4\+EST\+\_\+\+LOGF (SC\+\_\+\+LP\+\_\+\+ERROR, (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a0de1d8dadf671550506a0333d62f4a28}\label{p4est__base_8h_a0de1d8dadf671550506a0333d62f4a28}} 
+\#define {\bfseries P4\+EST\+\_\+\+NOTICE}~P4\+EST\+\_\+\+STATISTICS
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a351c2414043c4b02757ab90f0a47f735}\label{p4est__base_8h_a351c2414043c4b02757ab90f0a47f735}} 
+\#define {\bfseries P4\+EST\+\_\+\+NOTICEF}~P4\+EST\+\_\+\+STATISTICSF
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}\label{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}} 
+typedef int32\+\_\+t \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Typedef for quadrant coordinates. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}\label{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}} 
+typedef int32\+\_\+t \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Typedef for counting topological entities (trees, tree vertices). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}\label{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}} 
+typedef int32\+\_\+t \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Typedef for processor-\/local indexing of quadrants and nodes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}\label{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}} 
+typedef int64\+\_\+t \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\+\_\+gloidx\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Typedef for globally unique indexing of quadrants. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__base_8h_a2d945fe4bda5137692d171b0ea609507}\label{p4est__base_8h_a2d945fe4bda5137692d171b0ea609507}} 
+typedef enum \mbox{\hyperlink{p4est__base_8h_a9da730795f2d6b15fc6eda1e4f5d0b16}{p4est\+\_\+comm\+\_\+tag}} \mbox{\hyperlink{p4est__base_8h_a2d945fe4bda5137692d171b0ea609507}{p4est\+\_\+comm\+\_\+tag\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Tags for MPI messages. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a9da730795f2d6b15fc6eda1e4f5d0b16}\label{p4est__base_8h_a9da730795f2d6b15fc6eda1e4f5d0b16}} 
+enum \mbox{\hyperlink{p4est__base_8h_a9da730795f2d6b15fc6eda1e4f5d0b16}{p4est\+\_\+comm\+\_\+tag}} \{ \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+TAG\+\_\+\+FIRST} = SC\+\_\+\+TAG\+\_\+\+FIRST
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+COUNT\+\_\+\+PERTREE} = SC\+\_\+\+TAG\+\_\+\+LAST
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+BALANCE\+\_\+\+FIRST\+\_\+\+COUNT}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+BALANCE\+\_\+\+FIRST\+\_\+\+LOAD}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+BALANCE\+\_\+\+SECOND\+\_\+\+COUNT}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+BALANCE\+\_\+\+SECOND\+\_\+\+LOAD}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+PARTITION\+\_\+\+GIVEN}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+PARTITION\+\_\+\+WEIGHTED\+\_\+\+LOW}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+PARTITION\+\_\+\+WEIGHTED\+\_\+\+HIGH}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+PARTITION\+\_\+\+CORRECTION}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+GHOST\+\_\+\+COUNT}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+GHOST\+\_\+\+LOAD}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+GHOST\+\_\+\+EXCHANGE}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+GHOST\+\_\+\+EXPAND\+\_\+\+COUNT}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+GHOST\+\_\+\+EXPAND\+\_\+\+LOAD}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+GHOST\+\_\+\+SUPPORT\+\_\+\+COUNT}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+GHOST\+\_\+\+SUPPORT\+\_\+\+LOAD}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+GHOST\+\_\+\+CHECKSUM}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+NODES\+\_\+\+QUERY}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+NODES\+\_\+\+REPLY}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+SAVE}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+LNODES\+\_\+\+TEST}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+LNODES\+\_\+\+PASS}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+LNODES\+\_\+\+OWNED}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+LNODES\+\_\+\+ALL}
+, \newline
+{\bfseries P4\+EST\+\_\+\+COMM\+\_\+\+TAG\+\_\+\+LAST}
+ \}
+\begin{DoxyCompactList}\small\item\em Tags for MPI messages. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a1a8eef62017561e35873051fd83b62dc}\label{p4est__base_8h_a1a8eef62017561e35873051fd83b62dc}} 
+void {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+LOGF} (int priority, const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ad6cd6ef088e8476c982b1f03d8acdc66}\label{p4est__base_8h_ad6cd6ef088e8476c982b1f03d8acdc66}} 
+void {\bfseries P4\+EST\+\_\+\+LOGF} (int priority, const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a4fa709b7037106a3f2e91e7aa847c973}\label{p4est__base_8h_a4fa709b7037106a3f2e91e7aa847c973}} 
+void {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+TRACEF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a55bb962f9cce907964370edc8e558af4}\label{p4est__base_8h_a55bb962f9cce907964370edc8e558af4}} 
+void {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+LDEBUGF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a8e5a9792e93e92771dceaf5a175ebea7}\label{p4est__base_8h_a8e5a9792e93e92771dceaf5a175ebea7}} 
+void {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+VERBOSEF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a5256e0cb63033c62e30c14e18136a8db}\label{p4est__base_8h_a5256e0cb63033c62e30c14e18136a8db}} 
+void {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+INFOF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_aa5d4b83533f69efb961b3a6bbfc0013b}\label{p4est__base_8h_aa5d4b83533f69efb961b3a6bbfc0013b}} 
+void {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+STATISTICSF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a329e3b622b8941aad79f65cd9886911a}\label{p4est__base_8h_a329e3b622b8941aad79f65cd9886911a}} 
+void {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+PRODUCTIONF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a601dbb34168262f2e56abcd50eb64d21}\label{p4est__base_8h_a601dbb34168262f2e56abcd50eb64d21}} 
+void {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+ESSENTIALF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_ac2a9255ecc37db53b940da4d742c2056}\label{p4est__base_8h_ac2a9255ecc37db53b940da4d742c2056}} 
+void {\bfseries P4\+EST\+\_\+\+GLOBAL\+\_\+\+LERRORF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a133f48b9b168130409d11c136740b201}\label{p4est__base_8h_a133f48b9b168130409d11c136740b201}} 
+void {\bfseries P4\+EST\+\_\+\+TRACEF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a24625b2b68abf123595aedfaad34b4ea}\label{p4est__base_8h_a24625b2b68abf123595aedfaad34b4ea}} 
+void {\bfseries P4\+EST\+\_\+\+LDEBUGF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_adfa90664542f88aa0175392586cf7bc0}\label{p4est__base_8h_adfa90664542f88aa0175392586cf7bc0}} 
+void {\bfseries P4\+EST\+\_\+\+VERBOSEF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a8a0ff015f417e2a4c87a4d0fbdaad2f0}\label{p4est__base_8h_a8a0ff015f417e2a4c87a4d0fbdaad2f0}} 
+void {\bfseries P4\+EST\+\_\+\+INFOF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a8cd6ab4df4c1792a951ad9f4176f8740}\label{p4est__base_8h_a8cd6ab4df4c1792a951ad9f4176f8740}} 
+void {\bfseries P4\+EST\+\_\+\+STATISTICSF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a6d264b0d37aa16e12300e831cb5acf00}\label{p4est__base_8h_a6d264b0d37aa16e12300e831cb5acf00}} 
+void {\bfseries P4\+EST\+\_\+\+PRODUCTIONF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a8b8cd9acc1f555a7f7d64a144e70f4ab}\label{p4est__base_8h_a8b8cd9acc1f555a7f7d64a144e70f4ab}} 
+void {\bfseries P4\+EST\+\_\+\+ESSENTIALF} (const char $\ast$fmt,...)
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a270a55052f2a6d85972f98e163c43a93}\label{p4est__base_8h_a270a55052f2a6d85972f98e163c43a93}} 
+void {\bfseries P4\+EST\+\_\+\+LERRORF} (const char $\ast$fmt,...)
+\item 
+void \mbox{\hyperlink{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}{p4est\+\_\+init}} (sc\+\_\+log\+\_\+handler\+\_\+t log\+\_\+handler, int log\+\_\+threshold)
+\begin{DoxyCompactList}\small\item\em Registers \mbox{\hyperlink{structp4est}{p4est}} with the SC Library and sets the logging behavior. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__base_8h_aff50102e3d38cd5f9f6a3ba296bf8100}{p4est\+\_\+is\+\_\+initialized}} (void)
+\begin{DoxyCompactList}\small\item\em Return whether \mbox{\hyperlink{structp4est}{p4est}} has been initialized or not. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__base_8h_a6b0b312666f1c11953058197690f71e4}{p4est\+\_\+have\+\_\+zlib}} (void)
+\begin{DoxyCompactList}\small\item\em Check for a sufficiently recent zlib installation. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__base_8h_a8f1ce3300c283b066cff4d6fe8ce3e52}{p4est\+\_\+get\+\_\+package\+\_\+id}} (void)
+\begin{DoxyCompactList}\small\item\em Query the package identity as registered in libsc. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{p4est__base_8h_af8d98fc3cd3ed0a14787665bc5272e3d}{p4est\+\_\+version}} (void)
+\begin{DoxyCompactList}\small\item\em Return the full version of \mbox{\hyperlink{structp4est}{p4est}}. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__base_8h_a64a6d7754ab3414701228db2fe9d8708}{p4est\+\_\+version\+\_\+major}} (void)
+\begin{DoxyCompactList}\small\item\em Return the major version of \mbox{\hyperlink{structp4est}{p4est}}. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__base_8h_ac8526acd55a14851ae169b30384fdf2b}{p4est\+\_\+version\+\_\+minor}} (void)
+\begin{DoxyCompactList}\small\item\em Return the minor version of \mbox{\hyperlink{structp4est}{p4est}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}\label{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}} 
+int \mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\+\_\+package\+\_\+id}}
+\begin{DoxyCompactList}\small\item\em the libsc package id for \mbox{\hyperlink{structp4est}{p4est}} (set in \mbox{\hyperlink{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}{p4est\+\_\+init()}}) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+General support types and functions. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{p4est__base_8h_a1fef909873d570158d6ac7b43c7d94f1}\label{p4est__base_8h_a1fef909873d570158d6ac7b43c7d94f1}} 
+\index{p4est\_base.h@{p4est\_base.h}!P4EST\_ALLOC@{P4EST\_ALLOC}}
+\index{P4EST\_ALLOC@{P4EST\_ALLOC}!p4est\_base.h@{p4est\_base.h}}
+\doxysubsubsection{\texorpdfstring{P4EST\_ALLOC}{P4EST\_ALLOC}}
+{\footnotesize\ttfamily \#define P4\+EST\+\_\+\+ALLOC(\begin{DoxyParamCaption}\item[{}]{t,  }\item[{}]{n }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                                   (t *) sc\_malloc (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}},    \(\backslash\)}
+\DoxyCodeLine{                                                   (n) * \textcolor{keyword}{sizeof}(t))}
+
+\end{DoxyCode}
+
+
+allocate a {\itshape t-\/array} with {\itshape n} elements 
+
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{particles_2particles2_8c-example}{particles/particles2.\+c}}, \mbox{\hyperlink{points_2generate_points2_8c-example}{points/generate\+\_\+points2.\+c}}, \mbox{\hyperlink{steps_2p4est_step3_8c-example}{steps/p4est\+\_\+step3.\+c}}, and \mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__base_8h_ad50853c36f4d58ad6e34adc81ac00a1e}\label{p4est__base_8h_ad50853c36f4d58ad6e34adc81ac00a1e}} 
+\index{p4est\_base.h@{p4est\_base.h}!P4EST\_ALLOC\_ZERO@{P4EST\_ALLOC\_ZERO}}
+\index{P4EST\_ALLOC\_ZERO@{P4EST\_ALLOC\_ZERO}!p4est\_base.h@{p4est\_base.h}}
+\doxysubsubsection{\texorpdfstring{P4EST\_ALLOC\_ZERO}{P4EST\_ALLOC\_ZERO}}
+{\footnotesize\ttfamily \#define P4\+EST\+\_\+\+ALLOC\+\_\+\+ZERO(\begin{DoxyParamCaption}\item[{}]{t,  }\item[{}]{n }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                                   (t *) sc\_calloc (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}},    \(\backslash\)}
+\DoxyCodeLine{                                                   (\textcolor{keywordtype}{size\_t}) (n), \textcolor{keyword}{sizeof}(t))}
+
+\end{DoxyCode}
+
+
+allocate a {\itshape t-\/array} with {\itshape n} elements and zero 
+
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__base_8h_a16ed4740c3269672ea00dedec0be38cc}\label{p4est__base_8h_a16ed4740c3269672ea00dedec0be38cc}} 
+\index{p4est\_base.h@{p4est\_base.h}!P4EST\_CONN\_DISK\_PERIODIC@{P4EST\_CONN\_DISK\_PERIODIC}}
+\index{P4EST\_CONN\_DISK\_PERIODIC@{P4EST\_CONN\_DISK\_PERIODIC}!p4est\_base.h@{p4est\_base.h}}
+\doxysubsubsection{\texorpdfstring{P4EST\_CONN\_DISK\_PERIODIC}{P4EST\_CONN\_DISK\_PERIODIC}}
+{\footnotesize\ttfamily \#define P4\+EST\+\_\+\+CONN\+\_\+\+DISK\+\_\+\+PERIODIC}
+
+
+
+The \mbox{\hyperlink{p4est__connectivity_8h_a4bf17365036ea364005f0bdbb61779c7}{p4est\+\_\+connectivity\+\_\+new\+\_\+disk}} function now accepts a bool arg. 
+
+The same holds for \mbox{\hyperlink{p4est__wrap_8h_af46b435c0e3a5561db9308a80f15849c}{p4est\+\_\+wrap\+\_\+new\+\_\+disk}}. \mbox{\Hypertarget{p4est__base_8h_ace1905a91eca3db722dd70a27ce57339}\label{p4est__base_8h_ace1905a91eca3db722dd70a27ce57339}} 
+\index{p4est\_base.h@{p4est\_base.h}!P4EST\_REALLOC@{P4EST\_REALLOC}}
+\index{P4EST\_REALLOC@{P4EST\_REALLOC}!p4est\_base.h@{p4est\_base.h}}
+\doxysubsubsection{\texorpdfstring{P4EST\_REALLOC}{P4EST\_REALLOC}}
+{\footnotesize\ttfamily \#define P4\+EST\+\_\+\+REALLOC(\begin{DoxyParamCaption}\item[{}]{p,  }\item[{}]{t,  }\item[{}]{n }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                                    (t *) sc\_realloc (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}},   \(\backslash\)}
+\DoxyCodeLine{                                                    (p), (n) * \textcolor{keyword}{sizeof}(t))}
+
+\end{DoxyCode}
+
+
+reallocate the {\itshape t-\/array} {\itshape p} with {\itshape n} elements 
+
+\mbox{\Hypertarget{p4est__base_8h_aa3bfced1c8552b64130dfd479f284c88}\label{p4est__base_8h_aa3bfced1c8552b64130dfd479f284c88}} 
+\index{p4est\_base.h@{p4est\_base.h}!P4EST\_SEARCH\_LOCAL@{P4EST\_SEARCH\_LOCAL}}
+\index{P4EST\_SEARCH\_LOCAL@{P4EST\_SEARCH\_LOCAL}!p4est\_base.h@{p4est\_base.h}}
+\doxysubsubsection{\texorpdfstring{P4EST\_SEARCH\_LOCAL}{P4EST\_SEARCH\_LOCAL}}
+{\footnotesize\ttfamily \#define P4\+EST\+\_\+\+SEARCH\+\_\+\+LOCAL}
+
+
+
+The \mbox{\hyperlink{p4est__search_8h_a08966f233b715e731217a2c2d288bbeb}{p4est\+\_\+search\+\_\+local}} function replaces \mbox{\hyperlink{p4est__search_8h_a026bdd9000d5770e079e11ae09a7eef7}{p4est\+\_\+search}}. 
+
+The latter function is still available with updated internal semantics. Furthermore, we have added \mbox{\hyperlink{p4est__search_8h_ac1e3c141fb8e18837819b4b3ab35e4ad}{p4est\+\_\+search\+\_\+partition}} to search the parallel partition without accessing any local elements, and \mbox{\hyperlink{p4est__search_8h_a877607ea5e4b91e4272bce17cadca43e}{p4est\+\_\+search\+\_\+all}} that combines the two. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p4est__base_8h_a8f1ce3300c283b066cff4d6fe8ce3e52}\label{p4est__base_8h_a8f1ce3300c283b066cff4d6fe8ce3e52}} 
+\index{p4est\_base.h@{p4est\_base.h}!p4est\_get\_package\_id@{p4est\_get\_package\_id}}
+\index{p4est\_get\_package\_id@{p4est\_get\_package\_id}!p4est\_base.h@{p4est\_base.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_get\_package\_id()}{p4est\_get\_package\_id()}}
+{\footnotesize\ttfamily int p4est\+\_\+get\+\_\+package\+\_\+id (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Query the package identity as registered in libsc. 
+
+\begin{DoxyReturn}{Returns}
+This is -\/1 before \mbox{\hyperlink{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}{p4est\+\_\+init}} has been called and a proper package identifier ($>$= 0) afterwards. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{userdata_2userdata2_8c-example}{userdata/userdata2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__base_8h_a6b0b312666f1c11953058197690f71e4}\label{p4est__base_8h_a6b0b312666f1c11953058197690f71e4}} 
+\index{p4est\_base.h@{p4est\_base.h}!p4est\_have\_zlib@{p4est\_have\_zlib}}
+\index{p4est\_have\_zlib@{p4est\_have\_zlib}!p4est\_base.h@{p4est\_base.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_have\_zlib()}{p4est\_have\_zlib()}}
+{\footnotesize\ttfamily int p4est\+\_\+have\+\_\+zlib (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Check for a sufficiently recent zlib installation. 
+
+\begin{DoxyReturn}{Returns}
+True if zlib is detected in both sc and \mbox{\hyperlink{structp4est}{p4est}}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}\label{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}} 
+\index{p4est\_base.h@{p4est\_base.h}!p4est\_init@{p4est\_init}}
+\index{p4est\_init@{p4est\_init}!p4est\_base.h@{p4est\_base.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_init()}{p4est\_init()}}
+{\footnotesize\ttfamily void p4est\+\_\+init (\begin{DoxyParamCaption}\item[{sc\+\_\+log\+\_\+handler\+\_\+t}]{log\+\_\+handler,  }\item[{int}]{log\+\_\+threshold }\end{DoxyParamCaption})}
+
+
+
+Registers \mbox{\hyperlink{structp4est}{p4est}} with the SC Library and sets the logging behavior. 
+
+This function is optional. This function must only be called before additional threads are created. If this function is not called or called with log\+\_\+handler == NULL, the default SC log handler will be used. If this function is not called or called with log\+\_\+threshold == SC\+\_\+\+LP\+\_\+\+DEFAULT, the default SC log threshold will be used. The default SC log settings can be changed with sc\+\_\+set\+\_\+log\+\_\+defaults (). \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{particles_2particles2_8c-example}{particles/particles2.\+c}}, \mbox{\hyperlink{points_2generate_points2_8c-example}{points/generate\+\_\+points2.\+c}}, \mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}, \mbox{\hyperlink{simple_2simple3_8c-example}{simple/simple3.\+c}}, \mbox{\hyperlink{spheres_2spheres2_8c-example}{spheres/spheres2.\+c}}, \mbox{\hyperlink{steps_2p4est_step1_8c-example}{steps/p4est\+\_\+step1.\+c}}, \mbox{\hyperlink{steps_2p4est_step3_8c-example}{steps/p4est\+\_\+step3.\+c}}, \mbox{\hyperlink{test_coordinates2_8c-example}{test\+\_\+coordinates2.\+c}}, \mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}, and \mbox{\hyperlink{userdata_2userdata2_8c-example}{userdata/userdata2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__base_8h_aff50102e3d38cd5f9f6a3ba296bf8100}\label{p4est__base_8h_aff50102e3d38cd5f9f6a3ba296bf8100}} 
+\index{p4est\_base.h@{p4est\_base.h}!p4est\_is\_initialized@{p4est\_is\_initialized}}
+\index{p4est\_is\_initialized@{p4est\_is\_initialized}!p4est\_base.h@{p4est\_base.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_is\_initialized()}{p4est\_is\_initialized()}}
+{\footnotesize\ttfamily int p4est\+\_\+is\+\_\+initialized (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Return whether \mbox{\hyperlink{structp4est}{p4est}} has been initialized or not. 
+
+Keep in mind that \mbox{\hyperlink{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}{p4est\+\_\+init}} is an optional function but it helps with proper parallel logging.
+
+Currently there is no inverse to \mbox{\hyperlink{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}{p4est\+\_\+init}}, and no way to deinit it. This is ok since initialization generally does no harm. Just do not call libsc\textquotesingle{}s finalize function while \mbox{\hyperlink{structp4est}{p4est}} is still in use.
+
+\begin{DoxyReturn}{Returns}
+True if \mbox{\hyperlink{structp4est}{p4est}} has been initialized with a call to \mbox{\hyperlink{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}{p4est\+\_\+init}} and false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__base_8h_af8d98fc3cd3ed0a14787665bc5272e3d}\label{p4est__base_8h_af8d98fc3cd3ed0a14787665bc5272e3d}} 
+\index{p4est\_base.h@{p4est\_base.h}!p4est\_version@{p4est\_version}}
+\index{p4est\_version@{p4est\_version}!p4est\_base.h@{p4est\_base.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_version()}{p4est\_version()}}
+{\footnotesize\ttfamily const char$\ast$ p4est\+\_\+version (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Return the full version of \mbox{\hyperlink{structp4est}{p4est}}. 
+
+\begin{DoxyReturn}{Returns}
+Return the version of \mbox{\hyperlink{structp4est}{p4est}} using the format {\ttfamily VERSION\+\_\+\+MAJOR.\+VERSION\+\_\+\+MINOR.\+VERSION\+\_\+\+POINT}, where {\ttfamily VERSION\+\_\+\+POINT} can contain dots and characters, e.\+g. to indicate the additional number of commits and a git commit hash. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__base_8h_a64a6d7754ab3414701228db2fe9d8708}\label{p4est__base_8h_a64a6d7754ab3414701228db2fe9d8708}} 
+\index{p4est\_base.h@{p4est\_base.h}!p4est\_version\_major@{p4est\_version\_major}}
+\index{p4est\_version\_major@{p4est\_version\_major}!p4est\_base.h@{p4est\_base.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_version\_major()}{p4est\_version\_major()}}
+{\footnotesize\ttfamily int p4est\+\_\+version\+\_\+major (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Return the major version of \mbox{\hyperlink{structp4est}{p4est}}. 
+
+\begin{DoxyReturn}{Returns}
+Return the major version of \mbox{\hyperlink{structp4est}{p4est}}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__base_8h_ac8526acd55a14851ae169b30384fdf2b}\label{p4est__base_8h_ac8526acd55a14851ae169b30384fdf2b}} 
+\index{p4est\_base.h@{p4est\_base.h}!p4est\_version\_minor@{p4est\_version\_minor}}
+\index{p4est\_version\_minor@{p4est\_version\_minor}!p4est\_base.h@{p4est\_base.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_version\_minor()}{p4est\_version\_minor()}}
+{\footnotesize\ttfamily int p4est\+\_\+version\+\_\+minor (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Return the minor version of \mbox{\hyperlink{structp4est}{p4est}}. 
+
+\begin{DoxyReturn}{Returns}
+Return the minor version of \mbox{\hyperlink{structp4est}{p4est}}. 
+\end{DoxyReturn}

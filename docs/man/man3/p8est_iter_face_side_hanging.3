@@ -1,0 +1,34 @@
+.TH "p8est_iter_face_side_hanging" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p8est_iter_face_side_hanging \- Shortcut to access hanging face information\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p8est_iterate\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "int8_t \fBis_ghost\fP [4]"
+.br
+.RI "boolean: local (0) or ghost "
+.ti -1c
+.RI "\fBp8est_quadrant_t\fP * \fBquad\fP [4]"
+.br
+.RI "the actual quadrant "
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBquadid\fP [4]"
+.br
+.RI "index in tree or ghost array "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Shortcut to access hanging face information\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

@@ -1,0 +1,42 @@
+.TH "p8est_iter_volume_info" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p8est_iter_volume_info \- The information that is available to the user-defined p8est_iter_volume_t callback function\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p8est_iterate\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBp8est_t\fP * \fBp4est\fP"
+.br
+.ti -1c
+.RI "\fBp8est_ghost_t\fP * \fBghost_layer\fP"
+.br
+.ti -1c
+.RI "\fBp8est_quadrant_t\fP * \fBquad\fP"
+.br
+.RI "the quadrant of the callback "
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBquadid\fP"
+.br
+.RI "id in \fIquad's\fP tree array (see p8est_tree_t) "
+.ti -1c
+.RI "\fBp4est_topidx_t\fP \fBtreeid\fP"
+.br
+.RI "the tree containing \fIquad\fP "
+.in -1c
+.SH "Detailed Description"
+.PP 
+The information that is available to the user-defined p8est_iter_volume_t callback function\&. 
+
+\fItreeid\fP gives the index in \fIp4est->trees\fP of the tree to which \fIquad\fP belongs\&. \fIquadid\fP gives the index of \fIquad\fP within \fItree's\fP quadrants array\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

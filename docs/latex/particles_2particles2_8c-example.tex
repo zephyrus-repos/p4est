@@ -1,0 +1,2745 @@
+\hypertarget{particles_2particles2_8c-example}{}\doxysection{particles/particles2.\+c}
+2D version of a generic particle tracking demo (3D counterpart\+: \mbox{\hyperlink{particles_2particles3_8c-example}{particles/particles3.\+c}}).For a high-\/level description of the concepts implemented and references to important \mbox{\hyperlink{structp4est}{p4est}} calls please see \mbox{\hyperlink{example_particles}{A particle tracking example}}.
+
+
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{  This file is part of p4est.}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is a C library to manage a collection (a forest) of multiple}}
+\DoxyCodeLine{\textcolor{comment}{  connected adaptive quadtrees or octrees in parallel.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  Copyright (C) 2010 The University of Texas System}}
+\DoxyCodeLine{\textcolor{comment}{  Additional copyright (C) 2011 individual authors}}
+\DoxyCodeLine{\textcolor{comment}{  Written by Carsten Burstedde, Lucas C. Wilcox, and Tobin Isaac}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is free software; you can redistribute it and/or modify}}
+\DoxyCodeLine{\textcolor{comment}{  it under the terms of the GNU General Public License as published by}}
+\DoxyCodeLine{\textcolor{comment}{  the Free Software Foundation; either version 2 of the License, or}}
+\DoxyCodeLine{\textcolor{comment}{  (at your option) any later version.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is distributed in the hope that it will be useful,}}
+\DoxyCodeLine{\textcolor{comment}{  but WITHOUT ANY WARRANTY; without even the implied warranty of}}
+\DoxyCodeLine{\textcolor{comment}{  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the}}
+\DoxyCodeLine{\textcolor{comment}{  GNU General Public License for more details.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  You should have received a copy of the GNU General Public License}}
+\DoxyCodeLine{\textcolor{comment}{  along with p4est; if not, write to the Free Software Foundation, Inc.,}}
+\DoxyCodeLine{\textcolor{comment}{  51 Franklin Street, Fifth Floor, Boston, MA 02110-\/1301, USA.}}
+\DoxyCodeLine{\textcolor{comment}{*/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{ * The particle demo compiles from this file twice into one 2D version}}
+\DoxyCodeLine{\textcolor{comment}{ * and one 3D version.  Most of the code is dimension independent.}}
+\DoxyCodeLine{\textcolor{comment}{ */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__bits_8h}{p4est\_bits.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__build_8h}{p4est\_build.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__communication_8h}{p4est\_communication.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__extended_8h}{p4est\_extended.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__search_8h}{p4est\_search.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p4est__vtk_8h}{p4est\_vtk.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__bits_8h}{p8est\_bits.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__build_8h}{p8est\_build.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__communication_8h}{p8est\_communication.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__extended_8h}{p8est\_extended.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__search_8h}{p8est\_search.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{p8est__vtk_8h}{p8est\_vtk.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif }\textcolor{comment}{/* P4\_TO\_P8 */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <sc\_notify.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <sc\_options.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "{}particles\_global.h"{}}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define PARTICLES\_xstr(s) PARTICLES\_str(s)}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define PARTICLES\_str(s) \#s}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define PARTICLES\_48() PARTICLES\_xstr(P4EST\_CHILDREN)}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* Send full particle information in first message, comment out if not */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define PART\_SENDFULL}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* Context data to compute initial particle positions */}}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct }pi\_data}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              sigma;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              invs2;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              gnorm;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              center[3];}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{pi\_data\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* Data type for payload data inside each quadrant */}}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct }qu\_data}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keyword}{union}}
+\DoxyCodeLine{  \{}
+\DoxyCodeLine{    \textcolor{comment}{/* Offset into local array of all particles after this quadrant */}}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lpend;}
+\DoxyCodeLine{    \textcolor{keywordtype}{double}              d;}
+\DoxyCodeLine{  \} u;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* counts of local particles remaining on this quadrant and received ones */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      premain, preceive;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{qu\_data\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* Property data stored in a flat array over all particles */}}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct }pa\_data}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              xv[6];}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              wo[6];}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              up[6];}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              rm[3];}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}      id;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{pa\_data\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{ppad (part\_global\_t * g, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *lead)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{size\_t}              zz;}
+\DoxyCodeLine{  pa\_data\_t          *pad;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>padata != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (lead != NULL) \{}
+\DoxyCodeLine{    P4EST\_VERBOSEF (\textcolor{stringliteral}{"{}PPAD \%s\(\backslash\)n"{}}, lead);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (zz = 0; zz < g-\/>padata-\/>elem\_count; ++zz) \{}
+\DoxyCodeLine{    pad = (pa\_data\_t *) sc\_array\_index (g-\/>padata, zz);}
+\DoxyCodeLine{    P4EST\_VERBOSEF (\textcolor{stringliteral}{"{}PPAD L \%d I \%d\(\backslash\)n"{}}, (\textcolor{keywordtype}{int}) zz, (\textcolor{keywordtype}{int}) pad-\/>id);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{lrem (part\_global\_t * g, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *lead)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{size\_t}              zz;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lrem;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>iremain != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (lead != NULL) \{}
+\DoxyCodeLine{    P4EST\_VERBOSEF (\textcolor{stringliteral}{"{}LREM \%s\(\backslash\)n"{}}, lead);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (zz = 0; zz < g-\/>iremain-\/>elem\_count; ++zz) \{}
+\DoxyCodeLine{    lrem = *(\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_index (g-\/>iremain, zz);}
+\DoxyCodeLine{    P4EST\_VERBOSEF (\textcolor{stringliteral}{"{}LREM Z \%d N \%d\(\backslash\)n"{}}, (\textcolor{keywordtype}{int}) zz, (\textcolor{keywordtype}{int}) lrem);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef PART\_SENDFULL}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define PART\_MSGSIZE (sizeof (pa\_data\_t))}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define PART\_MSGSIZE (3 * sizeof (double))}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* Hash table entry for a process that we send messages to */}}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct }comm\_psend}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 rank;}
+\DoxyCodeLine{  sc\_array\_t          message;     \textcolor{comment}{/*< Message data to send */}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{comm\_psend\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* Array entry for a process that we send messages to */}}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct }comm\_prank}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 rank;}
+\DoxyCodeLine{  comm\_psend\_t       *psend;        \textcolor{comment}{/*< Points to hash table entry */}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{comm\_prank\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{enum} comm\_tag}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  COMM\_TAG\_PART = P4EST\_COMM\_TAG\_LAST,}
+\DoxyCodeLine{  COMM\_TAG\_FIXED,}
+\DoxyCodeLine{  COMM\_TAG\_CUSTOM,}
+\DoxyCodeLine{  COMM\_TAG\_LAST}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{comm\_tag\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} planet\_xyz[3][3] = \{}
+\DoxyCodeLine{  \{.48, .58, .59\},}
+\DoxyCodeLine{  \{.58, .41, .46\},}
+\DoxyCodeLine{  \{.51, .52, .42\}}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} planet\_mass[3] = \{ .049, .167, .06 \};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} pidensy\_sigma = .07;}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} pidensy\_center[3] = \{ .3, .4, .5 \};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define PART\_NQPOINTS 3}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{double}       qpoints[PART\_NQPOINTS];}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{double}       qweights[PART\_NQPOINTS];}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} rk1b[1] = \{ 0. \};   \textcolor{comment}{/*< avoid -\/pedantic warning for [0] */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} rk1g[1] = \{ 1. \};}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} rk2b[1] = \{ 1. \};}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} rk2g[2] = \{ .5, .5 \};}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} rk3b[2] = \{ 1. / 3., 2. / 3. \};}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} rk3g[3] = \{ .25, 0., .75 \};}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} rk4b[3] = \{ .5, .5, 1. \};}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} rk4g[4] = \{ 1. / 6., 1. / 3., 1. / 3., 1. / 6. \};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} *prk[4][2] = \{}
+\DoxyCodeLine{  \{rk1b, rk1g\},}
+\DoxyCodeLine{  \{rk2b, rk2g\},}
+\DoxyCodeLine{  \{rk3b, rk3g\},}
+\DoxyCodeLine{  \{rk4b, rk4g\}}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{char}  *snames[PART\_STATS\_LAST] = \{}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Notify"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Binary"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Nary"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Comm"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Wait\_A"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Wait\_B"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Num\_Peers"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Search\_P"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Search\_L"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Trans\_F"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Trans\_C"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Build"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Pertree\_F"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}Pertree\_B"{}},}
+\DoxyCodeLine{  \textcolor{stringliteral}{"{}RK"{}}}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{p4est\_free\_int (\textcolor{keywordtype}{int} **pptr)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (pptr != NULL);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a0b2d45f13b66edfed0ccfde75808c745}{P4EST\_FREE}} (*pptr);}
+\DoxyCodeLine{  *pptr = NULL;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{part\_string\_to\_int (\textcolor{keyword}{const} \textcolor{keywordtype}{char} *str, \textcolor{keywordtype}{int} n, ...)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i, j;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                *pi;}
+\DoxyCodeLine{  \textcolor{keywordtype}{char}                buf[BUFSIZ];}
+\DoxyCodeLine{  va\_list             ap;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (n >= 0);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (str == NULL || n == 0) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* use a once-\/loop for clean early return */}}
+\DoxyCodeLine{  va\_start (ap, n);}
+\DoxyCodeLine{  \textcolor{keywordflow}{do} \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (n == 1) \{}
+\DoxyCodeLine{      pi = va\_arg (ap, \textcolor{keywordtype}{int} *);}
+\DoxyCodeLine{      *pi = atoi (str);}
+\DoxyCodeLine{      \textcolor{keywordflow}{break};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    j = snprintf (buf, BUFSIZ, \textcolor{stringliteral}{"{}\%s"{}}, \textcolor{stringliteral}{"{}\%d"{}});}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (j >= BUFSIZ) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{break};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 1; i < n; ++i) \{}
+\DoxyCodeLine{      j += snprintf (buf + j, BUFSIZ -\/ j, \textcolor{stringliteral}{"{}:\%s"{}}, \textcolor{stringliteral}{"{}\%d"{}});}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (j >= BUFSIZ) \{}
+\DoxyCodeLine{        \textcolor{keywordflow}{break};}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* we ignore return values and rely on defaults */}}
+\DoxyCodeLine{    vsscanf (str, buf, ap);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{while} (0);}
+\DoxyCodeLine{  va\_end (ap);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}        *}
+\DoxyCodeLine{sc\_array\_index\_begin (sc\_array\_t * arr)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (arr != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (arr-\/>elem\_count == 0) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (arr-\/>array != NULL);}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} (\textcolor{keywordtype}{void} *) arr-\/>array;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_DEBUG}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}        *}
+\DoxyCodeLine{sc\_array\_index\_end (sc\_array\_t * arr)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (arr != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (arr-\/>elem\_count == 0) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} NULL;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (arr-\/>array != NULL);}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} (\textcolor{keywordtype}{void} *) (arr-\/>array + arr-\/>elem\_count * arr-\/>elem\_size);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* With two initialized arrays of same metadata, copy array data */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{sc\_array\_paste (sc\_array\_t * dest, sc\_array\_t * src)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (dest-\/>elem\_size == src-\/>elem\_size);}
+\DoxyCodeLine{  P4EST\_ASSERT (dest-\/>elem\_count == src-\/>elem\_count);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  memcpy (dest-\/>array, src-\/>array, src-\/>elem\_count * src-\/>elem\_size);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* Initialize one array with contents from other, reinit the other */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{sc\_array\_swap\_init (sc\_array\_t * array, sc\_array\_t * from, \textcolor{keywordtype}{size\_t} elem\_size)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  *array = *from;}
+\DoxyCodeLine{  sc\_array\_init (from, elem\_size);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/* Turn statistics collected so far into one value */}}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{sc\_stats\_collapse (sc\_statinfo\_t * stats)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              value;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  SC\_ASSERT (stats-\/>dirty);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (stats-\/>count) \{}
+\DoxyCodeLine{    value = stats-\/>sum\_values / (double) stats-\/>count;}
+\DoxyCodeLine{    stats-\/>sum\_values = value;}
+\DoxyCodeLine{    stats-\/>sum\_squares = value * value;}
+\DoxyCodeLine{    stats-\/>min = stats-\/>max = value;}
+\DoxyCodeLine{    stats-\/>count = 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{comm\_prank\_compare (\textcolor{keyword}{const} \textcolor{keywordtype}{void} *v1, \textcolor{keyword}{const} \textcolor{keywordtype}{void} *v2)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} sc\_int\_compare (\&((\textcolor{keyword}{const} comm\_prank\_t *) v1)-\/>rank,}
+\DoxyCodeLine{                         \&((\textcolor{keyword}{const} comm\_prank\_t *) v2)-\/>rank);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{double}}
+\DoxyCodeLine{gaussnorm (\textcolor{keywordtype}{double} sigma)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} pow (2. * M\_PI * sigma * sigma, -\/.5 * \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}});}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{double}}
+\DoxyCodeLine{pidense (\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y, \textcolor{keywordtype}{double} z, \textcolor{keywordtype}{void} *data)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  pi\_data\_t          *piddata = (pi\_data\_t *) data;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (piddata != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (piddata-\/>sigma > 0.);}
+\DoxyCodeLine{  P4EST\_ASSERT (piddata-\/>invs2 > 0.);}
+\DoxyCodeLine{  P4EST\_ASSERT (piddata-\/>gnorm > 0.);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} piddata-\/>gnorm * exp (-\/.5 * (SC\_SQR (x -\/ piddata-\/>center[0]) +}
+\DoxyCodeLine{                                      SC\_SQR (y -\/ piddata-\/>center[1]) +}
+\DoxyCodeLine{                                      SC\_SQR (z -\/ piddata-\/>center[2])) *}
+\DoxyCodeLine{                               piddata-\/>invs2);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{loopquad (part\_global\_t * g, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} tt, \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quad,}
+\DoxyCodeLine{          \textcolor{keywordtype}{double} lxyz[3], \textcolor{keywordtype}{double} hxyz[3], \textcolor{keywordtype}{double} dxyz[3])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\_qcoord\_t}}      qh;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  qh = \mbox{\hyperlink{p4est_8h_a95dd59166894e55562dd7bb741bb78c5}{P4EST\_QUADRANT\_LEN}} (quad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}});}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a90acb1ef22be84e31afdec64aab60567}{p4est\_qcoord\_to\_vertex}} (g-\/>conn, tt, quad-\/>x, quad-\/>\mbox{\hyperlink{structp4est__quadrant_ad226034132b973fe7955ef797938dea0}{y}},}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{                          quad-\/>z,}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{                          lxyz);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a90acb1ef22be84e31afdec64aab60567}{p4est\_qcoord\_to\_vertex}} (g-\/>conn, tt, quad-\/>x + qh, quad-\/>\mbox{\hyperlink{structp4est__quadrant_ad226034132b973fe7955ef797938dea0}{y}} + qh,}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{                          quad-\/>z + qh,}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{                          hxyz);}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < 3; ++i) \{}
+\DoxyCodeLine{    lxyz[i] /= g-\/>bricklength;}
+\DoxyCodeLine{    hxyz[i] /= g-\/>bricklength;}
+\DoxyCodeLine{    dxyz[i] = hxyz[i] -\/ lxyz[i];}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{run\_pre (part\_global\_t * g, pi\_data\_t * piddata)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* prepare parallel statistics */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < PART\_STATS\_LAST; ++i) \{}
+\DoxyCodeLine{    sc\_stats\_init (g-\/>si + i, snames[i]);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* prepare quadrature rule */}}
+\DoxyCodeLine{  P4EST\_ASSERT (PART\_NQPOINTS == 3);}
+\DoxyCodeLine{  qpoints[2] = sqrt (3. / 5.);}
+\DoxyCodeLine{  qpoints[1] = 0.;}
+\DoxyCodeLine{  qpoints[0] = -\/qpoints[2];}
+\DoxyCodeLine{  qweights[0] = qweights[2] = 5. / 9.;}
+\DoxyCodeLine{  qweights[1] = 8. / 9.;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < 3; ++i) \{}
+\DoxyCodeLine{    qpoints[i] = .5 * (1. + qpoints[i]);}
+\DoxyCodeLine{    qweights[i] *= .5;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* the length of the brick is a power of 2 */}}
+\DoxyCodeLine{  g-\/>bricklength = (1 << g-\/>bricklev);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* initial particle density */}}
+\DoxyCodeLine{  piddata-\/>sigma = pidensy\_sigma;}
+\DoxyCodeLine{  piddata-\/>invs2 = 1. / SC\_SQR (piddata-\/>sigma);}
+\DoxyCodeLine{  piddata-\/>gnorm = gaussnorm (piddata-\/>sigma);}
+\DoxyCodeLine{  piddata-\/>center[0] = pidensy\_center[0];}
+\DoxyCodeLine{  piddata-\/>center[1] = pidensy\_center[1];}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{  piddata-\/>center[2] = 0.;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  piddata-\/>center[2] = pidensy\_center[2];}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  g-\/>pidense = pidense;}
+\DoxyCodeLine{  g-\/>piddata = piddata;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* allocate arrays that are reused a lot */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < 2; ++i) \{}
+\DoxyCodeLine{    g-\/>ilh[i] = sc\_array\_new (\textcolor{keyword}{sizeof} (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}));}
+\DoxyCodeLine{    g-\/>jlh[i] = sc\_array\_new (\textcolor{keyword}{sizeof} (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}));}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{    g-\/>klh[i] = sc\_array\_new (\textcolor{keyword}{sizeof} (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}));}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>klh[i] == NULL);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{run\_post (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* clean up simulation memory */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < 2; ++i) \{}
+\DoxyCodeLine{    sc\_array\_destroy\_null (\&g-\/>ilh[i]);}
+\DoxyCodeLine{    sc\_array\_destroy\_null (\&g-\/>jlh[i]);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{    sc\_array\_destroy\_null (\&g-\/>klh[i]);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>klh[i] == NULL);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* analyze parallel statistics */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>collapse) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < PART\_STATS\_LAST; ++i) \{}
+\DoxyCodeLine{      sc\_stats\_collapse (g-\/>si + i);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  sc\_stats\_compute (g-\/>mpicomm, PART\_STATS\_LAST, g-\/>si);}
+\DoxyCodeLine{  sc\_stats\_print (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_ESSENTIAL,}
+\DoxyCodeLine{                  PART\_STATS\_LAST, g-\/>si, 1, 1);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{double}}
+\DoxyCodeLine{integrate (part\_global\_t * g, \textcolor{keyword}{const} \textcolor{keywordtype}{double} lxyz[3], \textcolor{keyword}{const} \textcolor{keywordtype}{double} dxyz[3])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i, j, k;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              wk, wkj, wkji;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              qpi[3], qpj[3], qpk[3];}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              d;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** run quadrature rule ***/}}
+\DoxyCodeLine{  P4EST\_ASSERT (PART\_NQPOINTS == 3);}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (k = 0; k < 3; ++k) \{}
+\DoxyCodeLine{    P4EST\_ASSERT (qpoints[k] >= 0. \&\& qpoints[k] <= 1.);}
+\DoxyCodeLine{    qpi[k] = lxyz[0] + qpoints[k] * dxyz[0];}
+\DoxyCodeLine{    qpj[k] = lxyz[1] + qpoints[k] * dxyz[1];}
+\DoxyCodeLine{    qpk[k] = lxyz[2] + qpoints[k] * dxyz[2];}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  d = 0.;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (k = 0; k < 3; ++k) \{}
+\DoxyCodeLine{    wk = qweights[k] * dxyz[2];}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  k = 1;}
+\DoxyCodeLine{  wk = 1.;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (j = 0; j < 3; ++j) \{}
+\DoxyCodeLine{    wkj = wk * qweights[j] * dxyz[1];}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < 3; ++i) \{}
+\DoxyCodeLine{      wkji = wkj * qweights[i] * dxyz[0];}
+\DoxyCodeLine{      d += wkji * g-\/>pidense (qpi[i], qpj[j], qpk[k], g-\/>piddata);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{  \{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} d;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{initrp\_refine (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}},}
+\DoxyCodeLine{               \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree, \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrant)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  qu\_data\_t          *qud = (qu\_data\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{  part\_global\_t      *g = (part\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      ilem\_particles;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  ilem\_particles =}
+\DoxyCodeLine{    (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) round (qud-\/>u.d * g-\/>num\_particles / g-\/>global\_density);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} (\textcolor{keywordtype}{double}) ilem\_particles > g-\/>elem\_particles;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{initrp (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 cycle, max\_cycles;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              lxyz[3], hxyz[3], dxyz[3];}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              d, ld;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              refine\_maxd, refine\_maxl;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              loclp[2], glolp[2];}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}}      tt;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lq;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      ilem\_particles;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}      old\_gnum, new\_gnum;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__tree}{p4est\_tree\_t}}       *tree;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *quad;}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  glolp[0] = glolp[1] = 0.;}
+\DoxyCodeLine{  max\_cycles = g-\/>maxlevel -\/ g-\/>minlevel;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (cycle = 0;; ++cycle) \{}
+\DoxyCodeLine{\textcolor{comment}{    /*** iterate through local cells to determine local particle density ***/}}
+\DoxyCodeLine{    ld = 0.;}
+\DoxyCodeLine{    refine\_maxd = refine\_maxl = 0.;}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (tt = g-\/>p4est-\/>first\_local\_tree; tt <= g-\/>\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_abd072c07f3197827fe22c16379de6ab8}{last\_local\_tree}};}
+\DoxyCodeLine{         ++tt) \{}
+\DoxyCodeLine{      tree = p4est\_tree\_array\_index (g-\/>p4est-\/>trees, tt);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (lq = 0; lq < (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}.elem\_count; ++lq) \{}
+\DoxyCodeLine{        quad = p4est\_quadrant\_array\_index (\&tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}, lq);}
+\DoxyCodeLine{        qud = (qu\_data\_t *) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{        loopquad (g, tt, quad, lxyz, hxyz, dxyz);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{        /***  integrate density over quadrant ***/}}
+\DoxyCodeLine{        qud-\/>u.d = d = integrate (g, lxyz, dxyz);}
+\DoxyCodeLine{        ld += d;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{        /*** maximum particle count and level ***/}}
+\DoxyCodeLine{        refine\_maxd = SC\_MAX (refine\_maxd, d);}
+\DoxyCodeLine{        refine\_maxl = SC\_MAX (refine\_maxl, (\textcolor{keywordtype}{double}) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a0f92ad9bd71d9e3f82246d2768ff23ad}{level}});}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{    /*** get global integral over density ***/}}
+\DoxyCodeLine{    mpiret = sc\_MPI\_Allreduce (\&ld, \&g-\/>global\_density, 1, sc\_MPI\_DOUBLE,}
+\DoxyCodeLine{                               sc\_MPI\_SUM, g-\/>mpicomm);}
+\DoxyCodeLine{    SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{    P4EST\_GLOBAL\_STATISTICSF (\textcolor{stringliteral}{"{}Global integral over density \%g\(\backslash\)n"{}},}
+\DoxyCodeLine{                              g-\/>global\_density);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{    /*** get global maximum of particle count and level ***/}}
+\DoxyCodeLine{    loclp[0] = refine\_maxd;}
+\DoxyCodeLine{    loclp[1] = refine\_maxl + g-\/>bricklev;}
+\DoxyCodeLine{    mpiret = sc\_MPI\_Allreduce (loclp, glolp, 2, sc\_MPI\_DOUBLE,}
+\DoxyCodeLine{                               sc\_MPI\_MAX, g-\/>mpicomm);}
+\DoxyCodeLine{    SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{    ilem\_particles = (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) round}
+\DoxyCodeLine{      (glolp[0] * g-\/>num\_particles / g-\/>global\_density);}
+\DoxyCodeLine{    P4EST\_GLOBAL\_PRODUCTIONF}
+\DoxyCodeLine{      (\textcolor{stringliteral}{"{}Maximum particle number per quadrant \%ld maxlevel \%g\(\backslash\)n"{}},}
+\DoxyCodeLine{       (\textcolor{keywordtype}{long}) ilem\_particles, glolp[1]);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{    /*** we have computed the density, this may be enough ***/}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (cycle >= max\_cycles || (\textcolor{keywordtype}{double}) ilem\_particles <= g-\/>elem\_particles) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{break};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{    /*** refine and balance ***/}}
+\DoxyCodeLine{    old\_gnum = g-\/>p4est-\/>global\_num\_quadrants;}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__extended_8h_aad32df9df3630b6bac05e7366a5f1e46}{p4est\_refine\_ext}} (g-\/>p4est, 0, g-\/>maxlevel -\/ g-\/>bricklev,}
+\DoxyCodeLine{                      initrp\_refine, NULL, NULL);}
+\DoxyCodeLine{    new\_gnum = g-\/>p4est-\/>global\_num\_quadrants;}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (old\_gnum == new\_gnum) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* done with refinement if no quadrants were added globally */}}
+\DoxyCodeLine{      \textcolor{comment}{/* cannot happen due to particle count above */}}
+\DoxyCodeLine{      SC\_ABORT\_NOT\_REACHED ();}
+\DoxyCodeLine{      \textcolor{keywordflow}{break};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0                           }\textcolor{comment}{/* we do not need balance for this application */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (cycle > 0) \{}
+\DoxyCodeLine{      \mbox{\hyperlink{p4est_8h_a6b603736cf5007b14755197a9c179a85}{p4est\_balance}} (g-\/>p4est, \mbox{\hyperlink{p4est__connectivity_8h_adc5f6166fc408c325589ce3e620552caa5bf35c11d90c02cb481e9edadb51bda7}{P4EST\_CONNECT\_FULL}}, NULL);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{    /*** unweighted partition ***/}}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est_8h_a54c1f4e6bc35c181952371a8046523aa}{p4est\_partition}} (g-\/>p4est, 0, NULL);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_GLOBAL\_ESSENTIALF (\textcolor{stringliteral}{"{}Created \%lld quadrants at maxlevel \%g\(\backslash\)n"{}},}
+\DoxyCodeLine{                           (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) g-\/>p4est-\/>global\_num\_quadrants,}
+\DoxyCodeLine{                           glolp[1]);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{srandquad (part\_global\_t * g, \textcolor{keyword}{const} \textcolor{keywordtype}{double} l[3])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{unsigned}            u;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (0 <= l[0] \&\& l[0] < 1.);}
+\DoxyCodeLine{  P4EST\_ASSERT (0 <= l[1] \&\& l[1] < 1.);}
+\DoxyCodeLine{  P4EST\_ASSERT (0 <= l[2] \&\& l[2] < 1.);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  u = ((\textcolor{keywordtype}{unsigned} int) (l[2] * (1 << 10)) << 20) +}
+\DoxyCodeLine{    ((\textcolor{keywordtype}{unsigned} int) (l[1] * (1 << 10)) << 10) +}
+\DoxyCodeLine{    (\textcolor{keywordtype}{unsigned} int) (l[0] * (1 << 10));}
+\DoxyCodeLine{  srand (u);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{create (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 j;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              lxyz[3], hxyz[3], dxyz[3];}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              r;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}}      tt;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lpnum, lq;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      li, ilem\_particles;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}      gpnum, gpoffset;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__tree}{p4est\_tree\_t}}       *tree;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *quad;}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{  pa\_data\_t          *pad;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>padata != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** iterate through local cells and populate with particles ***/}}
+\DoxyCodeLine{  lpnum = 0;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (tt = g-\/>p4est-\/>first\_local\_tree; tt <= g-\/>\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_abd072c07f3197827fe22c16379de6ab8}{last\_local\_tree}}; ++tt) \{}
+\DoxyCodeLine{    tree = p4est\_tree\_array\_index (g-\/>p4est-\/>trees, tt);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (lq = 0; lq < (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}.elem\_count; ++lq) \{}
+\DoxyCodeLine{      quad = p4est\_quadrant\_array\_index (\&tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}, lq);}
+\DoxyCodeLine{      qud = (qu\_data\_t *) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* calculate required number of particles */}}
+\DoxyCodeLine{      ilem\_particles = (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) round}
+\DoxyCodeLine{        (qud-\/>u.d / g-\/>global\_density * g-\/>num\_particles);}
+\DoxyCodeLine{      pad = (pa\_data\_t *) sc\_array\_push\_count (g-\/>padata, ilem\_particles);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{      /*** generate required number of particles ***/}}
+\DoxyCodeLine{      loopquad (g, tt, quad, lxyz, hxyz, dxyz);}
+\DoxyCodeLine{      srandquad (g, lxyz);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (li = 0; li < ilem\_particles; ++li) \{}
+\DoxyCodeLine{        \textcolor{keywordflow}{for} (j = 0; j < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; ++j) \{}
+\DoxyCodeLine{          r = rand () / (double) RAND\_MAX;}
+\DoxyCodeLine{          pad-\/>xv[j] = lxyz[j] + r * dxyz[j];}
+\DoxyCodeLine{}
+\DoxyCodeLine{          \textcolor{comment}{/* begin with some velocity choice */}}
+\DoxyCodeLine{          pad-\/>xv[3 + j] = 0.;}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{        pad-\/>xv[2] = pad-\/>xv[5] = 0.;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{        memset (pad-\/>wo, 0, 6 * sizeof (\textcolor{keywordtype}{double}));}
+\DoxyCodeLine{        memset (pad-\/>up, 0, 6 * sizeof (\textcolor{keywordtype}{double}));}
+\DoxyCodeLine{        pad-\/>rm[0] = pad-\/>rm[1] = pad-\/>rm[2] = -\/1.;}
+\DoxyCodeLine{        ++pad;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      lpnum += ilem\_particles;}
+\DoxyCodeLine{      qud-\/>u.lpend = lpnum;}
+\DoxyCodeLine{      qud-\/>premain = qud-\/>preceive = 0;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  g-\/>gplost = 0;}
+\DoxyCodeLine{  gpnum = (\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}) lpnum;}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Allreduce (\&gpnum, \&g-\/>gpnum, 1, P4EST\_MPI\_GLOIDX,}
+\DoxyCodeLine{                             sc\_MPI\_SUM, g-\/>mpicomm);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  P4EST\_GLOBAL\_ESSENTIALF (\textcolor{stringliteral}{"{}Created \%lld particles for \%g\(\backslash\)n"{}},}
+\DoxyCodeLine{                           (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) g-\/>gpnum, g-\/>num\_particles);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* create globally unique particle numbers */}}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Exscan (\&gpnum, \&gpoffset, 1, P4EST\_MPI\_GLOIDX,}
+\DoxyCodeLine{                          sc\_MPI\_SUM, g-\/>mpicomm);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>mpirank == 0) \{}
+\DoxyCodeLine{    gpoffset = 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  pad = (pa\_data\_t *) sc\_array\_index\_begin (g-\/>padata);}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (li = 0; li < lpnum; ++li) \{}
+\DoxyCodeLine{    (pad++)-\/>\textcolor{keywordtype}{id} = gpoffset + li;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  P4EST\_ASSERT (pad == (pa\_data\_t *) sc\_array\_index\_end (g-\/>padata));}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{rkrhs (part\_global\_t * g, \textcolor{keyword}{const} \textcolor{keywordtype}{double} xv[6], \textcolor{keywordtype}{double} rk[6])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 j;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              d;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              diff[3];}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; ++i) \{}
+\DoxyCodeLine{    rk[i] = xv[3 + i];}
+\DoxyCodeLine{    rk[3 + i] = 0.;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{  rk[2] = rk[5] = 0.;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* we use as many planets as we have dimensions */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (j = 0; j < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; ++j) \{}
+\DoxyCodeLine{    d = 0.;}
+\DoxyCodeLine{    \textcolor{comment}{/* distance is always computed in 3D space */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < 3; ++i) \{}
+\DoxyCodeLine{      diff[i] = planet\_xyz[j][i] -\/ xv[i];}
+\DoxyCodeLine{      d += SC\_SQR (diff[i]);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    d = planet\_mass[j] * pow (d, -\/1.5);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; ++i) \{}
+\DoxyCodeLine{      rk[3 + i] += d * diff[i];}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{rkstage (part\_global\_t * g, pa\_data\_t * pad, \textcolor{keywordtype}{double} h)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{int}           stage = g-\/>stage;}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{int}           order = g-\/>order;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              d;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              rk[6];}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* evaluate right hand side */}}
+\DoxyCodeLine{  rkrhs (g, stage == 0 ? pad-\/>xv : pad-\/>wo, rk);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* compute new evaluation point if necessary */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (stage + 1 < order) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* stage is not the last */}}
+\DoxyCodeLine{    d = h * prk[order -\/ 1][0][stage];}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < 6; ++i) \{}
+\DoxyCodeLine{      pad-\/>wo[i] = pad-\/>xv[i] + d * rk[i];}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* compute an update to the state */}}
+\DoxyCodeLine{  d = prk[order -\/ 1][1][stage];}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (stage == 0) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* first stage */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (order > 1) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* first stage is not the last */}}
+\DoxyCodeLine{      P4EST\_ASSERT (stage + 1 < order);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (i = 0; i < 6; ++i) \{}
+\DoxyCodeLine{        pad-\/>up[i] = d * rk[i];}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      \textcolor{comment}{/* first stage is also the last */}}
+\DoxyCodeLine{      P4EST\_ASSERT (stage + 1 == order);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (i = 0; i < 6; ++i) \{}
+\DoxyCodeLine{        pad-\/>xv[i] += h * d * rk[i];}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{comment}{/* stage is not the first */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (stage + 1 < order) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* stage is neither first nor last */}}
+\DoxyCodeLine{      P4EST\_ASSERT (0 < stage);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (i = 0; i < 6; ++i) \{}
+\DoxyCodeLine{        pad-\/>up[i] += d * rk[i];}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      \textcolor{comment}{/* stage is last of several */}}
+\DoxyCodeLine{      P4EST\_ASSERT (stage + 1 == order);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (i = 0; i < 6; ++i) \{}
+\DoxyCodeLine{        pad-\/>xv[i] += h * (pad-\/>up[i] + d * rk[i]);}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{psearch\_quad (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{              \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrant, \textcolor{keywordtype}{int} pfirst, \textcolor{keywordtype}{int} plast,}
+\DoxyCodeLine{              \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} local\_num, \textcolor{keywordtype}{void} *point)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  part\_global\_t      *g = (part\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{\#ifdef P4EST\_ENABLE\_DEBUG}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  if (local\_num >= 0) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* quadrant is a local leaf */}}
+\DoxyCodeLine{    qud = (qu\_data\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{    P4EST\_ASSERT (qud-\/>premain == 0);}
+\DoxyCodeLine{    P4EST\_ASSERT (qud-\/>preceive == 0);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* compute coordinate range of this quadrant */}}
+\DoxyCodeLine{  loopquad (g, which\_tree, quadrant, g-\/>lxyz, g-\/>hxyz, g-\/>dxyz);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* always return 1 to search particles individually */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{double}      *}
+\DoxyCodeLine{particle\_lookfor (part\_global\_t * g, pa\_data\_t * pad)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (0 <= g-\/>stage \&\& g-\/>stage < g-\/>order);}
+\DoxyCodeLine{  P4EST\_ASSERT (pad != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} g-\/>stage + 1 < g-\/>order ? pad-\/>wo : pad-\/>xv;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{psearch\_point (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{               \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrant, \textcolor{keywordtype}{int} pfirst, \textcolor{keywordtype}{int} plast,}
+\DoxyCodeLine{               \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} local\_num, \textcolor{keywordtype}{void} *point)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                *pfn;}
+\DoxyCodeLine{  \textcolor{keywordtype}{size\_t}              zp;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}             *x;}
+\DoxyCodeLine{  part\_global\_t      *g = (part\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{  pa\_data\_t          *pad = (pa\_data\_t *) point;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* access location of particle to be searched */}}
+\DoxyCodeLine{  x = particle\_lookfor (g, pad);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* due to roundoff we call this even for a local leaf */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; ++i) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!(g-\/>lxyz[i] <= x[i] \&\& x[i] <= g-\/>hxyz[i])) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* the point is outside the search quadrant */}}
+\DoxyCodeLine{      \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* convention for entries of pfound:}}
+\DoxyCodeLine{\textcolor{comment}{     -\/1              particle has not yet been found}}
+\DoxyCodeLine{\textcolor{comment}{     [0 .. mpisize)  particle found on that rank, me or other}}
+\DoxyCodeLine{\textcolor{comment}{   */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* find process/quadrant for this particle */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (local\_num >= 0) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* quadrant is a local leaf */}}
+\DoxyCodeLine{    P4EST\_ASSERT (pfirst == g-\/>mpirank \&\& plast == g-\/>mpirank);}
+\DoxyCodeLine{    zp = sc\_array\_position (g-\/>padata, point);}
+\DoxyCodeLine{    pfn = (\textcolor{keywordtype}{int} *) sc\_array\_index (g-\/>pfound, zp);}
+\DoxyCodeLine{    \textcolor{comment}{/* first local match counts (due to roundoff there may be multiple) */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (*pfn != g-\/>mpirank) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* particle was either yet unfound, or found on another process */}}
+\DoxyCodeLine{      \textcolor{comment}{/* bump counter of particles in this local quadrant */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{      \textcolor{comment}{/* HACK */}}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (g-\/>printn > 0 \&\& !(pad-\/>id \% g-\/>printn)) \{}
+\DoxyCodeLine{        pad = (pa\_data\_t *) point;}
+\DoxyCodeLine{        P4EST\_VERBOSEF (\textcolor{stringliteral}{"{}Locremain particle \%lld \%d\(\backslash\)n"{}},}
+\DoxyCodeLine{                        (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) pad-\/>id, (\textcolor{keywordtype}{int}) zp);}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{      *pfn = g-\/>mpirank;}
+\DoxyCodeLine{      *(\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_push (g-\/>iremain) = (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) zp;}
+\DoxyCodeLine{      qud = (qu\_data\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{      ++qud-\/>premain;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{comment}{/* return value will have no effect, but we must return */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (pfirst == plast) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (pfirst == g-\/>mpirank) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* continue recursion for local branch quadrant */}}
+\DoxyCodeLine{      P4EST\_ASSERT (plast == g-\/>mpirank);}
+\DoxyCodeLine{      \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{comment}{/* found particle on a remote process */}}
+\DoxyCodeLine{    P4EST\_ASSERT (plast != g-\/>mpirank);}
+\DoxyCodeLine{    zp = sc\_array\_position (g-\/>padata, point);}
+\DoxyCodeLine{    pfn = (\textcolor{keywordtype}{int} *) sc\_array\_index (g-\/>pfound, zp);}
+\DoxyCodeLine{    \textcolor{comment}{/* only count match if it has not been found locally or on lower rank */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (*pfn < 0 || (*pfn != g-\/>mpirank \&\& pfirst < *pfn)) \{}
+\DoxyCodeLine{      *pfn = pfirst;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{comment}{/* return value will have no effect, but we must return */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* the process for this particle has not yet been found */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{presearch (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              t0\_searchp, t1;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>padata != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>pfound == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>iremain == NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  g-\/>pfound = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{int}), g-\/>padata-\/>elem\_count);}
+\DoxyCodeLine{  sc\_array\_memset (g-\/>pfound, -\/1);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  g-\/>iremain = sc\_array\_new (\textcolor{keyword}{sizeof} (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t0\_searchp = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* search through partition for parallel branch boundaries */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__search_8h_a877607ea5e4b91e4272bce17cadca43e}{p4est\_search\_all}} (g-\/>p4est, 0, psearch\_quad, psearch\_point, g-\/>padata);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!g-\/>scaling || g-\/>verylast) \{}
+\DoxyCodeLine{    sc\_stats\_accumulate (g-\/>si + PART\_STATS\_SEARCHP, t1 -\/ t0\_searchp);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{unsigned}}
+\DoxyCodeLine{psend\_hash (\textcolor{keyword}{const} \textcolor{keywordtype}{void} *v, \textcolor{keyword}{const} \textcolor{keywordtype}{void} *u)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keyword}{const} comm\_psend\_t *ps = (\textcolor{keyword}{const} comm\_psend\_t *) v;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (u == NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} ps-\/>rank;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{psend\_equal (\textcolor{keyword}{const} \textcolor{keywordtype}{void} *v1, \textcolor{keyword}{const} \textcolor{keywordtype}{void} *v2, \textcolor{keyword}{const} \textcolor{keywordtype}{void} *u)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keyword}{const} comm\_psend\_t *ps1 = (\textcolor{keyword}{const} comm\_psend\_t *) v1;}
+\DoxyCodeLine{  \textcolor{keyword}{const} comm\_psend\_t *ps2 = (\textcolor{keyword}{const} comm\_psend\_t *) v2;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (u == NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} ps1-\/>rank == ps2-\/>rank;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{pack (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 retval;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                *pfn;}
+\DoxyCodeLine{  \textcolor{keywordtype}{size\_t}              zz, numz;}
+\DoxyCodeLine{  \textcolor{keywordtype}{void}              **hfound;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lremain, lsend, llost;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}      loclrs[4], glolrs[4];}
+\DoxyCodeLine{  comm\_psend\_t       *cps, *there;}
+\DoxyCodeLine{  comm\_prank\_t       *trank;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef PART\_SENDFULL}}
+\DoxyCodeLine{  pa\_data\_t          *pad;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}             *msg;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}             *x;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>psmem == NULL);}
+\DoxyCodeLine{  g-\/>psmem = sc\_mempool\_new (\textcolor{keyword}{sizeof} (comm\_psend\_t));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>pfound != NULL);}
+\DoxyCodeLine{  numz = g-\/>pfound-\/>elem\_count;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>padata != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>padata-\/>elem\_count == numz);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>psend == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>recevs == NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  g-\/>psend = sc\_hash\_new (psend\_hash, psend\_equal, NULL, NULL);}
+\DoxyCodeLine{  g-\/>recevs = sc\_array\_new (\textcolor{keyword}{sizeof} (comm\_prank\_t));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  lremain = lsend = llost = 0;}
+\DoxyCodeLine{  cps = (comm\_psend\_t *) sc\_mempool\_alloc (g-\/>psmem);}
+\DoxyCodeLine{  cps-\/>rank = -\/1;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (zz = 0; zz < numz; ++zz) \{}
+\DoxyCodeLine{    pfn = (\textcolor{keywordtype}{int} *) sc\_array\_index (g-\/>pfound, zz);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* ignore those that leave the domain or stay local */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (*pfn < 0) \{}
+\DoxyCodeLine{      P4EST\_ASSERT (*pfn == -\/1);}
+\DoxyCodeLine{      ++llost;}
+\DoxyCodeLine{      \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (*pfn == g-\/>mpirank) \{}
+\DoxyCodeLine{      ++lremain;}
+\DoxyCodeLine{      \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* access message structure */}}
+\DoxyCodeLine{    P4EST\_ASSERT (0 <= *pfn \&\& *pfn < g-\/>mpisize);}
+\DoxyCodeLine{    cps-\/>rank = *pfn;}
+\DoxyCodeLine{    P4EST\_ASSERT (cps-\/>rank != g-\/>mpirank);}
+\DoxyCodeLine{    retval = sc\_hash\_insert\_unique (g-\/>psend, cps, \&hfound);}
+\DoxyCodeLine{    P4EST\_ASSERT (hfound != NULL);}
+\DoxyCodeLine{    there = *((comm\_psend\_t **) hfound);}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!retval) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* message for this rank exists already */}}
+\DoxyCodeLine{      P4EST\_ASSERT (there-\/>message.elem\_size == PART\_MSGSIZE);}
+\DoxyCodeLine{      P4EST\_ASSERT (there-\/>message.elem\_count > 0);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      \textcolor{comment}{/* message is added for this rank */}}
+\DoxyCodeLine{      P4EST\_ASSERT (there == cps);}
+\DoxyCodeLine{      trank = (comm\_prank\_t *) sc\_array\_push (g-\/>recevs);}
+\DoxyCodeLine{      trank-\/>rank = there-\/>rank;}
+\DoxyCodeLine{      trank-\/>psend = there;}
+\DoxyCodeLine{      sc\_array\_init (\&there-\/>message, PART\_MSGSIZE);}
+\DoxyCodeLine{      cps = (comm\_psend\_t *) sc\_mempool\_alloc (g-\/>psmem);}
+\DoxyCodeLine{      cps-\/>rank = -\/1;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* add to message buffer */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef PART\_SENDFULL}}
+\DoxyCodeLine{    pad = (pa\_data\_t *) sc\_array\_push (\&there-\/>message);}
+\DoxyCodeLine{    memcpy (pad, sc\_array\_index (g-\/>padata, zz), sizeof (pa\_data\_t));}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{    msg = (\textcolor{keywordtype}{double} *) sc\_array\_push (\&there-\/>message);}
+\DoxyCodeLine{    x = particle\_lookfor (g, (pa\_data\_t *) sc\_array\_index (g-\/>padata, zz));}
+\DoxyCodeLine{    memcpy (msg, x, 3 * \textcolor{keyword}{sizeof} (\textcolor{keywordtype}{double}));}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* this particle is to be sent to another process */}}
+\DoxyCodeLine{    ++lsend;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  sc\_mempool\_free (g-\/>psmem, cps);}
+\DoxyCodeLine{  sc\_array\_sort (g-\/>recevs, comm\_prank\_compare);}
+\DoxyCodeLine{  \textcolor{comment}{/* TODO: hash table still needed?  Yes, unless we rearrange data sent */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* keep track of some global numbers */}}
+\DoxyCodeLine{  loclrs[0] = (\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}) lremain;}
+\DoxyCodeLine{  loclrs[1] = (\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}) lsend;}
+\DoxyCodeLine{  loclrs[2] = (\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}) llost;}
+\DoxyCodeLine{  loclrs[3] = (\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}) g-\/>recevs-\/>elem\_count;}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Allreduce (loclrs, glolrs, 4, P4EST\_MPI\_GLOIDX,}
+\DoxyCodeLine{                             sc\_MPI\_SUM, g-\/>mpicomm);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  P4EST\_GLOBAL\_STATISTICSF}
+\DoxyCodeLine{    (\textcolor{stringliteral}{"{}Stage \%d from \%lld remain \%lld sent \%lld lost \%lld avg peers \%.3g\(\backslash\)n"{}},}
+\DoxyCodeLine{     g-\/>stage, (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) g-\/>gpnum, (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) glolrs[0],}
+\DoxyCodeLine{     (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) glolrs[1], (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) glolrs[2],}
+\DoxyCodeLine{     glolrs[3] / (\textcolor{keywordtype}{double}) g-\/>mpisize);}
+\DoxyCodeLine{  P4EST\_ASSERT (glolrs[0] + glolrs[1] + glolrs[2] == g-\/>gpnum);}
+\DoxyCodeLine{  g-\/>gplost += glolrs[2];}
+\DoxyCodeLine{  g-\/>gpnum -\/= glolrs[2];}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* count number of peers as statistics */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!g-\/>scaling || g-\/>verylast) \{}
+\DoxyCodeLine{    sc\_stats\_accumulate (g-\/>si + PART\_STATS\_PEERS, (\textcolor{keywordtype}{double}) loclrs[3]);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* another array that is no longer needed */}}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&g-\/>pfound);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{comm (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 num\_receivers;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 num\_senders;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 count, cucount;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 msglen;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              t0\_notify, t0\_wait1, t0\_comm, t1;}
+\DoxyCodeLine{  sc\_MPI\_Request     *reqs;}
+\DoxyCodeLine{  sc\_array\_t         *notif, *payl;}
+\DoxyCodeLine{  sc\_array\_t         *arr;}
+\DoxyCodeLine{  comm\_psend\_t       *cps;}
+\DoxyCodeLine{  comm\_prank\_t       *trank;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>psmem != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>recevs != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>prebuf == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>recv\_req == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>send\_req == NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t0\_comm = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* pass receiver ranks and message size to notify */}}
+\DoxyCodeLine{  num\_receivers = (int) g-\/>recevs-\/>elem\_count;}
+\DoxyCodeLine{  P4EST\_ASSERT (0 <= num\_receivers \&\& num\_receivers < g-\/>mpisize);}
+\DoxyCodeLine{  notif = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{int}), num\_receivers);}
+\DoxyCodeLine{  payl = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{int}), num\_receivers);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>olap\_notify) \{}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>send\_req == NULL);}
+\DoxyCodeLine{    g-\/>send\_req = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (sc\_MPI\_Request), num\_receivers);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < num\_receivers; ++i) \{}
+\DoxyCodeLine{    trank = (comm\_prank\_t *) sc\_array\_index\_int (g-\/>recevs, i);}
+\DoxyCodeLine{    *(\textcolor{keywordtype}{int} *) sc\_array\_index\_int (notif, i) = trank-\/>rank;}
+\DoxyCodeLine{    cps = trank-\/>psend;}
+\DoxyCodeLine{    P4EST\_ASSERT (trank-\/>rank == cps-\/>rank);}
+\DoxyCodeLine{    arr = \&cps-\/>message;}
+\DoxyCodeLine{    P4EST\_ASSERT (arr-\/>elem\_size == PART\_MSGSIZE);}
+\DoxyCodeLine{    P4EST\_ASSERT (arr-\/>elem\_count > 0);}
+\DoxyCodeLine{    *(\textcolor{keywordtype}{int} *) sc\_array\_index\_int (payl, i) = (int) arr-\/>elem\_count;}
+\DoxyCodeLine{    if (g-\/>olap\_notify) \{}
+\DoxyCodeLine{      msglen = (int) (arr-\/>elem\_count * arr-\/>elem\_size);}
+\DoxyCodeLine{      mpiret = sc\_MPI\_Isend}
+\DoxyCodeLine{        (arr-\/>array, msglen, sc\_MPI\_BYTE, cps-\/>rank, COMM\_TAG\_PART,}
+\DoxyCodeLine{         g-\/>mpicomm, (sc\_MPI\_Request *) sc\_array\_index\_int (g-\/>send\_req, i));}
+\DoxyCodeLine{      SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t0\_notify = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* reverse communication pattern */}}
+\DoxyCodeLine{  sc\_notify\_ext (notif, NULL, payl, NULL, g-\/>mpicomm);}
+\DoxyCodeLine{  P4EST\_ASSERT (payl-\/>elem\_count == notif-\/>elem\_count);}
+\DoxyCodeLine{  num\_senders = (int) notif-\/>elem\_count;}
+\DoxyCodeLine{  P4EST\_ASSERT (0 <= num\_senders \&\& num\_senders < g-\/>mpisize);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!g-\/>scaling || g-\/>verylast) \{}
+\DoxyCodeLine{    sc\_stats\_accumulate (g-\/>si + PART\_STATS\_NOTIFY, t1 -\/ t0\_notify);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* receive particles into a flat array over all processes */}}
+\DoxyCodeLine{  cucount = 0;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < num\_senders; ++i) \{}
+\DoxyCodeLine{    cucount += *(\textcolor{keywordtype}{int} *) sc\_array\_index\_int (payl, i);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  g-\/>prebuf = sc\_array\_new\_count (PART\_MSGSIZE, cucount);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* post non-\/blocking receive */}}
+\DoxyCodeLine{  g-\/>recv\_req = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (sc\_MPI\_Request), num\_senders);}
+\DoxyCodeLine{  cucount = 0;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < num\_senders; ++i) \{}
+\DoxyCodeLine{    count = *(\textcolor{keywordtype}{int} *) sc\_array\_index\_int (payl, i);}
+\DoxyCodeLine{    msglen = count * (int) PART\_MSGSIZE;}
+\DoxyCodeLine{    mpiret = sc\_MPI\_Irecv}
+\DoxyCodeLine{      (sc\_array\_index (g-\/>prebuf, cucount), msglen, sc\_MPI\_BYTE,}
+\DoxyCodeLine{       *(\textcolor{keywordtype}{int} *) sc\_array\_index\_int (notif, i), COMM\_TAG\_PART, g-\/>mpicomm,}
+\DoxyCodeLine{       (sc\_MPI\_Request *) sc\_array\_index\_int (g-\/>recv\_req, i));}
+\DoxyCodeLine{    SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{    cucount += count;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  P4EST\_ASSERT (cucount == (\textcolor{keywordtype}{int}) g-\/>prebuf-\/>elem\_count);}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&notif);}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&payl);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* post non-\/blocking send if not done earlier */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!g-\/>olap\_notify) \{}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>send\_req == NULL);}
+\DoxyCodeLine{    g-\/>send\_req = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (sc\_MPI\_Request), num\_receivers);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < num\_receivers; ++i) \{}
+\DoxyCodeLine{      trank = (comm\_prank\_t *) sc\_array\_index\_int (g-\/>recevs, i);}
+\DoxyCodeLine{      cps = trank-\/>psend;}
+\DoxyCodeLine{      P4EST\_ASSERT (trank-\/>rank == cps-\/>rank);}
+\DoxyCodeLine{      arr = \&cps-\/>message;}
+\DoxyCodeLine{      P4EST\_ASSERT (arr-\/>elem\_size == PART\_MSGSIZE);}
+\DoxyCodeLine{      P4EST\_ASSERT (arr-\/>elem\_count > 0);}
+\DoxyCodeLine{      msglen = (int) (arr-\/>elem\_count * arr-\/>elem\_size);}
+\DoxyCodeLine{      mpiret = sc\_MPI\_Isend}
+\DoxyCodeLine{        (arr-\/>array, msglen, sc\_MPI\_BYTE, cps-\/>rank, COMM\_TAG\_PART,}
+\DoxyCodeLine{         g-\/>mpicomm, (sc\_MPI\_Request *) sc\_array\_index\_int (g-\/>send\_req, i));}
+\DoxyCodeLine{      SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t0\_wait1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* wait for all incoming messages to complete */}}
+\DoxyCodeLine{  reqs = (sc\_MPI\_Request *) sc\_array\_index\_begin (g-\/>recv\_req);}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Waitall (num\_senders, reqs, sc\_MPI\_STATUSES\_IGNORE);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&g-\/>recv\_req);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!g-\/>scaling || g-\/>verylast) \{}
+\DoxyCodeLine{    sc\_stats\_accumulate (g-\/>si + PART\_STATS\_WAIT1, t1 -\/ t0\_wait1);}
+\DoxyCodeLine{    sc\_stats\_accumulate (g-\/>si + PART\_STATS\_COMM, t1 -\/ t0\_comm);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{slocal\_quad (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{             \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrant, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} local\_num,}
+\DoxyCodeLine{             \textcolor{keywordtype}{void} *point)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  part\_global\_t      *g = (part\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{\#ifdef P4EST\_ENABLE\_DEBUG}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  if (local\_num >= 0) \{}
+\DoxyCodeLine{    qud = (qu\_data\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{    P4EST\_ASSERT (qud-\/>preceive == 0);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* compute coordinate range of this quadrant */}}
+\DoxyCodeLine{  loopquad (g, which\_tree, quadrant, g-\/>lxyz, g-\/>hxyz, g-\/>dxyz);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* always return 1 to search particles individually */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{slocal\_point (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{              \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrant, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} local\_num,}
+\DoxyCodeLine{              \textcolor{keywordtype}{void} *point)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{char}               *cf;}
+\DoxyCodeLine{  \textcolor{keywordtype}{size\_t}              zp;}
+\DoxyCodeLine{  part\_global\_t      *g = (part\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{\#ifdef PART\_SENDFULL}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}             *x;}
+\DoxyCodeLine{  pa\_data\_t          *pad = (pa\_data\_t *) point;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* access location of particle to be searched */}}
+\DoxyCodeLine{  x = particle\_lookfor (g, pad);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}             *x = (\textcolor{keywordtype}{double} *) point;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* due to roundoff we call this even for a local leaf */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; ++i) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!(g-\/>lxyz[i] <= x[i] \&\& x[i] <= g-\/>hxyz[i])) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* the point is outside the search quadrant */}}
+\DoxyCodeLine{      \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (local\_num >= 0) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* quadrant is a local leaf */}}
+\DoxyCodeLine{    \textcolor{comment}{/* first local match counts (due to roundoff there may be multiple) */}}
+\DoxyCodeLine{    zp = sc\_array\_position (g-\/>prebuf, point);}
+\DoxyCodeLine{    cf = (\textcolor{keywordtype}{char} *) sc\_array\_index (g-\/>cfound, zp);}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!*cf) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* make sure this particle is not found twice */}}
+\DoxyCodeLine{      *cf = 1;}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* count this particle in its target quadrant */}}
+\DoxyCodeLine{      *(\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_push (g-\/>ireceive) = (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) zp;}
+\DoxyCodeLine{      qud = (qu\_data\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{      ++qud-\/>preceive;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* return value will have no effect */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* the leaf for this particle has not yet been found */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{postsearch (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              t0\_searchl, t1;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>ireceive == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>cfound == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>prebuf != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  g-\/>ireceive = sc\_array\_new (\textcolor{keyword}{sizeof} (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}));}
+\DoxyCodeLine{  g-\/>cfound = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{char}), g-\/>prebuf-\/>elem\_count);}
+\DoxyCodeLine{  sc\_array\_memset (g-\/>cfound, 0);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t0\_searchl = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* run local search to find particles sent to us */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__search_8h_a08966f233b715e731217a2c2d288bbeb}{p4est\_search\_local}} (g-\/>p4est, 0, slocal\_quad, slocal\_point, g-\/>prebuf);}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&g-\/>cfound);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!g-\/>scaling || g-\/>verylast) \{}
+\DoxyCodeLine{    sc\_stats\_accumulate (g-\/>si + PART\_STATS\_SEARCHL, t1 -\/ t0\_searchl);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{adapt\_coarsen (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{               \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrants[])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      remain, receive;}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{  part\_global\_t      *g = (part\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* TODO: coarsen/refine on sum of still-\/there and to-\/be-\/there particles? */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* maybe this quadrant is just called for counting, or too big already */}}
+\DoxyCodeLine{  if (quadrants[1] == NULL ||}
+\DoxyCodeLine{      quadrants[0]-\/>level == g-\/>minlevel -\/ g-\/>bricklev) \{}
+\DoxyCodeLine{    qud = (qu\_data\_t *) quadrants[0]-\/>p.user\_data;}
+\DoxyCodeLine{\#ifdef P4EST\_ENABLE\_DEBUG}
+\DoxyCodeLine{    qud-\/>u.lpend = -\/1;}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{    g-\/>ireindex += qud-\/>premain;}
+\DoxyCodeLine{    g-\/>irvindex += qud-\/>preceive;}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* sum expected particle count over siblings */}}
+\DoxyCodeLine{  remain = receive = 0;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}; ++i) \{}
+\DoxyCodeLine{    qud = (qu\_data\_t *) quadrants[i]-\/>p.user\_data;}
+\DoxyCodeLine{\#ifdef P4EST\_ENABLE\_DEBUG}
+\DoxyCodeLine{    qud-\/>u.lpend = -\/1;}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{    remain += qud-\/>premain;}
+\DoxyCodeLine{    receive += qud-\/>preceive;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} ((\textcolor{keywordtype}{double}) (remain + receive) < .5 * g-\/>elem\_particles) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* we will coarsen and adjust ireindex, irvindex in adapt\_replace */}}
+\DoxyCodeLine{    g-\/>qremain = remain;}
+\DoxyCodeLine{    g-\/>qreceive = receive;}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{comment}{/* we will not coarsen and proceed with next quadrant */}}
+\DoxyCodeLine{    qud = (qu\_data\_t *) quadrants[0]-\/>p.user\_data;}
+\DoxyCodeLine{    g-\/>ireindex += qud-\/>premain;}
+\DoxyCodeLine{    g-\/>irvindex += qud-\/>preceive;}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{adapt\_refine (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{              \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrant)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  qu\_data\_t          *qud = (qu\_data\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{  part\_global\_t      *g = (part\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* we have set this to -\/1 in adapt\_coarsen */}}
+\DoxyCodeLine{  P4EST\_ASSERT (qud-\/>u.lpend == -\/1);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} ((\textcolor{keywordtype}{double}) (qud-\/>premain + qud-\/>preceive) > g-\/>elem\_particles) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* we are trying to refine, we will possibly go into the replace function */}}
+\DoxyCodeLine{    g-\/>ire2 = g-\/>ireindex;}
+\DoxyCodeLine{    g-\/>ireindex += qud-\/>premain;}
+\DoxyCodeLine{    g-\/>irv2 = g-\/>irvindex;}
+\DoxyCodeLine{    g-\/>irvindex += qud-\/>preceive;}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{comment}{/* maintain cumulative particle count for next quadrant */}}
+\DoxyCodeLine{    g-\/>ireindex += qud-\/>premain;}
+\DoxyCodeLine{    g-\/>irvindex += qud-\/>preceive;}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{enum} pa\_mode}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  PA\_MODE\_REMAIN,}
+\DoxyCodeLine{  PA\_MODE\_RECEIVE,}
+\DoxyCodeLine{  PA\_MODE\_LOCATE}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{pa\_mode\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{split\_by\_coord (part\_global\_t * g, sc\_array\_t * in,}
+\DoxyCodeLine{                sc\_array\_t * out[2], pa\_mode\_t mode, \textcolor{keywordtype}{int} component,}
+\DoxyCodeLine{                \textcolor{keyword}{const} \textcolor{keywordtype}{double} lxyz[3], \textcolor{keyword}{const} \textcolor{keywordtype}{double} dxyz[3])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      ppos;}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{double}       *x;}
+\DoxyCodeLine{  \textcolor{keywordtype}{size\_t}              zz, znum;}
+\DoxyCodeLine{  pa\_data\_t          *pad;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (in != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (in-\/>elem\_size == sizeof (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}));}
+\DoxyCodeLine{  P4EST\_ASSERT (out != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (out[0] != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (out[0]-\/>elem\_size == \textcolor{keyword}{sizeof} (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}));}
+\DoxyCodeLine{  sc\_array\_truncate (out[0]);}
+\DoxyCodeLine{  P4EST\_ASSERT (out[1] != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (out[1]-\/>elem\_size == \textcolor{keyword}{sizeof} (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}));}
+\DoxyCodeLine{  sc\_array\_truncate (out[1]);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  znum = in-\/>elem\_count;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (zz = 0; zz < znum; ++zz) \{}
+\DoxyCodeLine{    ppos = *(\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_index (in, zz);}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (mode == PA\_MODE\_REMAIN) \{}
+\DoxyCodeLine{      pad = (pa\_data\_t *) sc\_array\_index (g-\/>padata, ppos);}
+\DoxyCodeLine{      x = particle\_lookfor (g, pad);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (mode == PA\_MODE\_RECEIVE) \{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef PART\_SENDFULL}}
+\DoxyCodeLine{      pad = (pa\_data\_t *) sc\_array\_index (g-\/>prebuf, ppos);}
+\DoxyCodeLine{      x = particle\_lookfor (g, pad);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{      x = (\textcolor{keyword}{const} \textcolor{keywordtype}{double} *) sc\_array\_index (g-\/>prebuf, ppos);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      P4EST\_ASSERT (mode == PA\_MODE\_LOCATE);}
+\DoxyCodeLine{      pad = (pa\_data\_t *) sc\_array\_index (g-\/>padata, ppos);}
+\DoxyCodeLine{      x = pad-\/>xv;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (x[component] <= lxyz[component] + .5 * dxyz[component]) \{}
+\DoxyCodeLine{      *(\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_push (out[0]) = ppos;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{      *(\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_push (out[1]) = ppos;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{adapt\_replace (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}}, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree,}
+\DoxyCodeLine{               \textcolor{keywordtype}{int} num\_outgoing, \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * outgoing[],}
+\DoxyCodeLine{               \textcolor{keywordtype}{int} num\_incoming, \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * incoming[])}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_DEBUG}}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      remain, receive;}
+\DoxyCodeLine{  qu\_data\_t          *qod;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 wx, wy, wz;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              lxyz[3], hxyz[3], dxyz[3];}
+\DoxyCodeLine{  sc\_array\_t          iview, *arr;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      irem, ibeg;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}  **pchild;}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{  part\_global\_t      *g = (part\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  if (num\_outgoing == \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}) \{}
+\DoxyCodeLine{    P4EST\_ASSERT (num\_incoming == 1);}
+\DoxyCodeLine{    \textcolor{comment}{/* we are coarsening */}}
+\DoxyCodeLine{    qud = (qu\_data\_t *) incoming[0]-\/>p.user\_data;}
+\DoxyCodeLine{\#ifdef P4EST\_ENABLE\_DEBUG}
+\DoxyCodeLine{    qud-\/>u.lpend = -\/1;}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* sum counts over siblings */}}
+\DoxyCodeLine{    remain = receive = 0;}
+\DoxyCodeLine{    for (i = 0; i < \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}; ++i) \{}
+\DoxyCodeLine{      qod = (qu\_data\_t *) outgoing[i]-\/>p.user\_data;}
+\DoxyCodeLine{      P4EST\_ASSERT (qod-\/>u.lpend == -\/1);}
+\DoxyCodeLine{      remain += qod-\/>premain;}
+\DoxyCodeLine{      receive += qod-\/>preceive;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    P4EST\_ASSERT (remain == g-\/>qremain);}
+\DoxyCodeLine{    P4EST\_ASSERT (receive == g-\/>qreceive);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{    g-\/>ireindex += (qud-\/>premain = g-\/>qremain);}
+\DoxyCodeLine{    g-\/>irvindex += (qud-\/>preceive = g-\/>qreceive);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    P4EST\_ASSERT (num\_outgoing == 1);}
+\DoxyCodeLine{    P4EST\_ASSERT (num\_incoming == \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}});}
+\DoxyCodeLine{    \textcolor{comment}{/* we are refining */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* access parent quadrant */}}
+\DoxyCodeLine{    loopquad (g, which\_tree, outgoing[0], lxyz, hxyz, dxyz);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_DEBUG}}
+\DoxyCodeLine{    qod = (qu\_data\_t *) outgoing[0]-\/>p.user\_data;}
+\DoxyCodeLine{    P4EST\_ASSERT (qod-\/>u.lpend == -\/1);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* recover window onto remaining particles for the new family */}}
+\DoxyCodeLine{    ibeg = g-\/>ire2;}
+\DoxyCodeLine{    irem = g-\/>ireindex -\/ ibeg;}
+\DoxyCodeLine{    P4EST\_ASSERT (irem >= 0);}
+\DoxyCodeLine{    sc\_array\_init\_view (\&iview, g-\/>iremain, ibeg, irem);}
+\DoxyCodeLine{    P4EST\_ASSERT (qod-\/>premain == irem);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* sort remaining particles into the children */}}
+\DoxyCodeLine{    pchild = incoming;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{    split\_by\_coord (g, \&iview, g-\/>klh, PA\_MODE\_REMAIN, 2, lxyz, dxyz);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (wz = 0; wz < 2; ++wz) \{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>klh[0] == NULL);}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>klh[1] == NULL);}
+\DoxyCodeLine{    g-\/>klh[0] = \&iview;}
+\DoxyCodeLine{    wz = 0;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{    split\_by\_coord (g, g-\/>klh[wz], g-\/>jlh, PA\_MODE\_REMAIN, 1, lxyz, dxyz);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (wy = 0; wy < 2; ++wy) \{}
+\DoxyCodeLine{      split\_by\_coord (g, g-\/>jlh[wy], g-\/>ilh, PA\_MODE\_REMAIN, 0, lxyz, dxyz);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (wx = 0; wx < 2; ++wx) \{}
+\DoxyCodeLine{        \textcolor{comment}{/* we have a set of particles for child 4 * wz + 2 * wy + wx */}}
+\DoxyCodeLine{        arr = g-\/>ilh[wx];}
+\DoxyCodeLine{        sc\_array\_init\_view (\&iview, g-\/>iremain, ibeg, arr-\/>elem\_count);}
+\DoxyCodeLine{        sc\_array\_paste (\&iview, arr);}
+\DoxyCodeLine{        qud = (qu\_data\_t *) (*pchild++)-\/>p.user\_data;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_DEBUG}}
+\DoxyCodeLine{        qud-\/>u.lpend = -\/1;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{        ibeg += (qud-\/>premain = (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) arr-\/>elem\_count);}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{    \{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{    P4EST\_ASSERT (ibeg == g-\/>ireindex);}
+\DoxyCodeLine{    P4EST\_ASSERT (pchild == incoming + \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* recover window onto received particles for the new family */}}
+\DoxyCodeLine{    ibeg = g-\/>irv2;}
+\DoxyCodeLine{    irem = g-\/>irvindex -\/ ibeg;}
+\DoxyCodeLine{    P4EST\_ASSERT (irem >= 0);}
+\DoxyCodeLine{    sc\_array\_init\_view (\&iview, g-\/>ireceive, ibeg, irem);}
+\DoxyCodeLine{    P4EST\_ASSERT (qod-\/>preceive == irem);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* sort received particles into the children */}}
+\DoxyCodeLine{    pchild = incoming;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{    split\_by\_coord (g, \&iview, g-\/>klh, PA\_MODE\_RECEIVE, 2, lxyz, dxyz);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (wz = 0; wz < 2; ++wz) \{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>klh[0] == \&iview);}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>klh[1] == NULL);}
+\DoxyCodeLine{    wz = 0;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{    split\_by\_coord (g, g-\/>klh[wz], g-\/>jlh, PA\_MODE\_RECEIVE, 1, lxyz, dxyz);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (wy = 0; wy < 2; ++wy) \{}
+\DoxyCodeLine{      split\_by\_coord (g, g-\/>jlh[wy], g-\/>ilh, PA\_MODE\_RECEIVE, 0, lxyz, dxyz);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (wx = 0; wx < 2; ++wx) \{}
+\DoxyCodeLine{        \textcolor{comment}{/* we have a set of particles for child 4 * wz + 2 * wy + wx */}}
+\DoxyCodeLine{        arr = g-\/>ilh[wx];}
+\DoxyCodeLine{        sc\_array\_init\_view (\&iview, g-\/>ireceive, ibeg, arr-\/>elem\_count);}
+\DoxyCodeLine{        sc\_array\_paste (\&iview, arr);}
+\DoxyCodeLine{        qud = (qu\_data\_t *) (*pchild++)-\/>p.user\_data;}
+\DoxyCodeLine{        P4EST\_ASSERT (qud-\/>u.lpend == -\/1);}
+\DoxyCodeLine{        ibeg += (qud-\/>preceive = (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) arr-\/>elem\_count);}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{    \{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{    P4EST\_ASSERT (ibeg == g-\/>irvindex);}
+\DoxyCodeLine{    P4EST\_ASSERT (pchild == incoming + \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{    g-\/>klh[0] = NULL;}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>klh[1] == NULL);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{adapt (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>padata != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>prebuf != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>iremain != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>ireceive != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* coarsen the forest according to expected number of particles */}}
+\DoxyCodeLine{  g-\/>ireindex = g-\/>irvindex = 0;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__extended_8h_a06630b99f70cb85c73452640e8b4d54e}{p4est\_coarsen\_ext}} (g-\/>p4est, 0, 1, adapt\_coarsen, NULL, adapt\_replace);}
+\DoxyCodeLine{  P4EST\_ASSERT ((\textcolor{keywordtype}{size\_t}) g-\/>ireindex == g-\/>iremain-\/>elem\_count);}
+\DoxyCodeLine{  P4EST\_ASSERT ((\textcolor{keywordtype}{size\_t}) g-\/>irvindex == g-\/>ireceive-\/>elem\_count);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* refine the forest according to expected number of particles */}}
+\DoxyCodeLine{  g-\/>ireindex = g-\/>ire2 = 0;}
+\DoxyCodeLine{  g-\/>irvindex = g-\/>irv2 = 0;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__extended_8h_aad32df9df3630b6bac05e7366a5f1e46}{p4est\_refine\_ext}} (g-\/>p4est, 0, g-\/>maxlevel -\/ g-\/>bricklev,}
+\DoxyCodeLine{                    adapt\_refine, NULL, adapt\_replace);}
+\DoxyCodeLine{  P4EST\_ASSERT ((\textcolor{keywordtype}{size\_t}) g-\/>ireindex == g-\/>iremain-\/>elem\_count);}
+\DoxyCodeLine{  P4EST\_ASSERT ((\textcolor{keywordtype}{size\_t}) g-\/>irvindex == g-\/>ireceive-\/>elem\_count);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* TODO: coarsen and refine repeatedly if necessary */}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{regroup (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  sc\_array\_t         *newpa;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}}      tt;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      newnum;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      ppos;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lq, prev;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      qboth, li;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}     *premain, *preceive;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__tree}{p4est\_tree\_t}}       *tree;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *quad;}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{  pa\_data\_t          *pad;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>padata != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>prebuf != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>iremain != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>ireceive != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef PART\_SENDFULL}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#error "{}The following code is no longer compatible with SENDFULL"{}}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  newnum =}
+\DoxyCodeLine{    (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) (g-\/>iremain-\/>elem\_count + g-\/>ireceive-\/>elem\_count);}
+\DoxyCodeLine{  P4EST\_VERBOSEF (\textcolor{stringliteral}{"{}New local particle number \%lld\(\backslash\)n"{}}, (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) newnum);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* regroup remaining and received particles after adaptation */}}
+\DoxyCodeLine{  premain = (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_index\_begin (g-\/>iremain);}
+\DoxyCodeLine{  preceive = (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_index\_begin (g-\/>ireceive);}
+\DoxyCodeLine{  newpa = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (pa\_data\_t), newnum);}
+\DoxyCodeLine{  pad = (pa\_data\_t *) sc\_array\_index\_begin (newpa);}
+\DoxyCodeLine{  prev = 0;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (tt = g-\/>p4est-\/>first\_local\_tree; tt <= g-\/>\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_abd072c07f3197827fe22c16379de6ab8}{last\_local\_tree}}; ++tt) \{}
+\DoxyCodeLine{    tree = p4est\_tree\_array\_index (g-\/>p4est-\/>trees, tt);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (lq = 0; lq < (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}.elem\_count; ++lq) \{}
+\DoxyCodeLine{      quad = p4est\_quadrant\_array\_index (\&tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}, lq);}
+\DoxyCodeLine{      qud = (qu\_data\_t *) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{      qboth = qud-\/>premain + qud-\/>preceive;}
+\DoxyCodeLine{      if (qboth == 0) \{}
+\DoxyCodeLine{        qud-\/>u.lpend = prev;}
+\DoxyCodeLine{        qud-\/>premain = qud-\/>preceive = 0;}
+\DoxyCodeLine{        \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      prev += qboth;}
+\DoxyCodeLine{      P4EST\_ASSERT (prev <= newnum);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (li = 0; li < qud-\/>premain; ++li) \{}
+\DoxyCodeLine{        P4EST\_ASSERT (premain != NULL);}
+\DoxyCodeLine{        P4EST\_ASSERT}
+\DoxyCodeLine{          (premain < (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_index\_end (g-\/>iremain));}
+\DoxyCodeLine{        ppos = *premain++;}
+\DoxyCodeLine{        memcpy (pad++, sc\_array\_index (g-\/>padata, ppos), sizeof (pa\_data\_t));}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_DEBUG}}
+\DoxyCodeLine{        -\/-\/qboth;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (li = 0; li < qud-\/>preceive; ++li) \{}
+\DoxyCodeLine{        P4EST\_ASSERT (preceive != NULL);}
+\DoxyCodeLine{        P4EST\_ASSERT}
+\DoxyCodeLine{          (preceive < (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_index\_end (g-\/>ireceive));}
+\DoxyCodeLine{        ppos = *preceive++;}
+\DoxyCodeLine{        memcpy (pad++, sc\_array\_index (g-\/>prebuf, ppos), sizeof (pa\_data\_t));}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4EST\_ENABLE\_DEBUG}}
+\DoxyCodeLine{        -\/-\/qboth;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      P4EST\_ASSERT (qboth == 0);}
+\DoxyCodeLine{      qud-\/>u.lpend = prev;}
+\DoxyCodeLine{      qud-\/>premain = qud-\/>preceive = 0;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  P4EST\_ASSERT (prev == newnum);}
+\DoxyCodeLine{  P4EST\_ASSERT (pad == (pa\_data\_t *) sc\_array\_index\_end (newpa));}
+\DoxyCodeLine{  P4EST\_ASSERT}
+\DoxyCodeLine{    (premain == (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_index\_end (g-\/>iremain));}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&g-\/>iremain);}
+\DoxyCodeLine{  P4EST\_ASSERT}
+\DoxyCodeLine{    (preceive == (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_index\_end (g-\/>ireceive));}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&g-\/>ireceive);}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&g-\/>prebuf);}
+\DoxyCodeLine{  sc\_array\_destroy (g-\/>padata);}
+\DoxyCodeLine{  g-\/>padata = newpa;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{pprint (part\_global\_t * g, \textcolor{keywordtype}{double} t)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 k;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              d, ds;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      li, lpnum;}
+\DoxyCodeLine{  pa\_data\_t          *pad;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>padata != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>stage == 0);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* only output when specified */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>printn <= 0) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  lpnum = (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) g-\/>padata-\/>elem\_count;}
+\DoxyCodeLine{  pad = (pa\_data\_t *) sc\_array\_index\_begin (g-\/>padata);}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (li = 0; li < lpnum; ++li) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!(pad-\/>id \% g-\/>printn)) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* has the particle advanced far enough? */}}
+\DoxyCodeLine{      ds = 0.;}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (k = 0; k < \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}}; ++k) \{}
+\DoxyCodeLine{        d = pad-\/>xv[k] -\/ pad-\/>rm[k];}
+\DoxyCodeLine{        ds += d * d;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (ds >= SC\_SQR (.005)) \{}
+\DoxyCodeLine{        memcpy (pad-\/>rm, pad-\/>xv, \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}} * sizeof (\textcolor{keywordtype}{double}));}
+\DoxyCodeLine{}
+\DoxyCodeLine{        \textcolor{comment}{/* print current particle location */}}
+\DoxyCodeLine{        P4EST\_ESSENTIALF (\textcolor{stringliteral}{"{}T \%g I \%lld X \%g \%g \%g V \%g \%g \%g\(\backslash\)n"{}},}
+\DoxyCodeLine{                          t, (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) pad-\/>id,}
+\DoxyCodeLine{                          pad-\/>xv[0], pad-\/>xv[1], pad-\/>xv[2],}
+\DoxyCodeLine{                          pad-\/>xv[3], pad-\/>xv[4], pad-\/>xv[5]);}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    ++pad;}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  P4EST\_ASSERT (pad == (pa\_data\_t *) sc\_array\_index\_end (g-\/>padata));}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{waitmpi (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 num\_receivers;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              t0\_wait2, t1;}
+\DoxyCodeLine{  sc\_MPI\_Request     *reqs;}
+\DoxyCodeLine{  comm\_psend\_t       *cps;}
+\DoxyCodeLine{  comm\_prank\_t       *trank;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>recv\_req == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>send\_req != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>recevs != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>psend != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>psmem != NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t0\_wait2 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* wait for sent messages to complete */}}
+\DoxyCodeLine{  num\_receivers = (int) g-\/>recevs-\/>elem\_count;}
+\DoxyCodeLine{  reqs = (sc\_MPI\_Request *) sc\_array\_index\_begin (g-\/>send\_req),}
+\DoxyCodeLine{    mpiret = sc\_MPI\_Waitall (num\_receivers, reqs, sc\_MPI\_STATUSES\_IGNORE);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&g-\/>send\_req);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!g-\/>scaling || g-\/>verylast) \{}
+\DoxyCodeLine{    sc\_stats\_accumulate (g-\/>si + PART\_STATS\_WAIT2, t1 -\/ t0\_wait2);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* free send buffer */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < num\_receivers; ++i) \{}
+\DoxyCodeLine{    trank = (comm\_prank\_t *) sc\_array\_index\_int (g-\/>recevs, i);}
+\DoxyCodeLine{    cps = trank-\/>psend;}
+\DoxyCodeLine{    P4EST\_ASSERT (cps-\/>rank == trank-\/>rank);}
+\DoxyCodeLine{    P4EST\_ASSERT (cps-\/>message.elem\_size == PART\_MSGSIZE);}
+\DoxyCodeLine{    P4EST\_ASSERT (cps-\/>message.elem\_count > 0);}
+\DoxyCodeLine{    sc\_array\_reset (\&cps-\/>message);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&g-\/>recevs);}
+\DoxyCodeLine{  sc\_hash\_destroy (g-\/>psend);}
+\DoxyCodeLine{  g-\/>psend = NULL;}
+\DoxyCodeLine{  sc\_mempool\_destroy (g-\/>psmem);}
+\DoxyCodeLine{  g-\/>psmem = NULL;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{part\_weight (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}},}
+\DoxyCodeLine{             \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree, \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrant)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      ilem\_particles;}
+\DoxyCodeLine{  part\_global\_t      *g = (part\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{  qu\_data\_t          *qud = (qu\_data\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  ilem\_particles = qud-\/>u.lpend -\/ g-\/>prevlp;}
+\DoxyCodeLine{  g-\/>prevlp = qud-\/>u.lpend;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  *(\textcolor{keywordtype}{int} *) sc\_array\_index (g-\/>src\_fixed, g-\/>qcount++) =}
+\DoxyCodeLine{    (int) (ilem\_particles * \textcolor{keyword}{sizeof} (pa\_data\_t));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 1 + ilem\_particles;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{part (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              t0\_trans1, t1\_trans1;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              t0\_trans2, t1\_trans2;}
+\DoxyCodeLine{  sc\_array\_t         *dest\_data;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}}      tt;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      ldatasiz, lcount;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      dest\_quads, src\_quads;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      dest\_parts;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lquad, lq;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lpnum;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}      gshipped;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}     *src\_gfq;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__tree}{p4est\_tree\_t}}       *tree;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *quad;}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>src\_fixed == NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>dest\_fixed == NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>mpisize == 1) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* remember current forest and its particle counts per quadrant */}}
+\DoxyCodeLine{  src\_gfq = \mbox{\hyperlink{p4est__base_8h_a1fef909873d570158d6ac7b43c7d94f1}{P4EST\_ALLOC}} (\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}, g-\/>mpisize + 1);}
+\DoxyCodeLine{  memcpy (src\_gfq, g-\/>p4est-\/>global\_first\_quadrant,}
+\DoxyCodeLine{          (g-\/>mpisize + 1) * sizeof (\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}));}
+\DoxyCodeLine{  src\_quads = g-\/>p4est-\/>local\_num\_quadrants;}
+\DoxyCodeLine{  P4EST\_ASSERT ((\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}) src\_quads ==}
+\DoxyCodeLine{                src\_gfq[g-\/>mpirank + 1] -\/ src\_gfq[g-\/>mpirank]);}
+\DoxyCodeLine{  g-\/>src\_fixed = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{int}), src\_quads);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* count particles per quadrant in callback */}}
+\DoxyCodeLine{  g-\/>qcount = 0;}
+\DoxyCodeLine{  g-\/>prevlp = 0;}
+\DoxyCodeLine{  gshipped = \mbox{\hyperlink{p4est__extended_8h_a124f2669c375fa66dc746be591ca2404}{p4est\_partition\_ext}} (g-\/>p4est, 1, part\_weight);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>qcount == src\_quads);}
+\DoxyCodeLine{  dest\_quads = g-\/>p4est-\/>local\_num\_quadrants;}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>prevlp == (\textcolor{keywordtype}{int}) g-\/>padata-\/>elem\_count);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* if nothing happens, we're done */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (gshipped == 0) \{}
+\DoxyCodeLine{    sc\_array\_destroy\_null (\&g-\/>src\_fixed);}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__base_8h_a0b2d45f13b66edfed0ccfde75808c745}{P4EST\_FREE}} (src\_gfq);}
+\DoxyCodeLine{    \textcolor{keywordflow}{return};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t0\_trans1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* transfer particle counts per quadrant to new partition */}}
+\DoxyCodeLine{  g-\/>dest\_fixed = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{int}), dest\_quads);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__communication_8h_a9a9ef6c16f81067f0c917a838a8fdfac}{p4est\_transfer\_fixed}} (g-\/>p4est-\/>global\_first\_quadrant, src\_gfq,}
+\DoxyCodeLine{                        g-\/>mpicomm, COMM\_TAG\_FIXED,}
+\DoxyCodeLine{                        (\textcolor{keywordtype}{int} *) g-\/>dest\_fixed-\/>array,}
+\DoxyCodeLine{                        (\textcolor{keyword}{const} \textcolor{keywordtype}{int} *) g-\/>src\_fixed-\/>array, sizeof (\textcolor{keywordtype}{int}));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* transfer particle data to new partition */}}
+\DoxyCodeLine{  ldatasiz = (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) \textcolor{keyword}{sizeof} (pa\_data\_t);}
+\DoxyCodeLine{  dest\_parts = 0;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (lq = 0; lq < dest\_quads; ++lq) \{}
+\DoxyCodeLine{    dest\_parts += *(\textcolor{keywordtype}{int} *) sc\_array\_index (g-\/>dest\_fixed, lq);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  P4EST\_ASSERT (dest\_parts \% ldatasiz == 0);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t1\_trans1 = t0\_trans2 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  dest\_parts /= ldatasiz;}
+\DoxyCodeLine{  dest\_data = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (pa\_data\_t), dest\_parts);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__communication_8h_ace044f4c221f25afbb9a198ff24b676a}{p4est\_transfer\_custom}} (g-\/>p4est-\/>global\_first\_quadrant, src\_gfq,}
+\DoxyCodeLine{                         g-\/>mpicomm, COMM\_TAG\_CUSTOM,}
+\DoxyCodeLine{                         (pa\_data\_t *) dest\_data-\/>array,}
+\DoxyCodeLine{                         (\textcolor{keyword}{const} \textcolor{keywordtype}{int} *) g-\/>dest\_fixed-\/>array,}
+\DoxyCodeLine{                         (\textcolor{keyword}{const} pa\_data\_t *) g-\/>padata-\/>array,}
+\DoxyCodeLine{                         (\textcolor{keyword}{const} \textcolor{keywordtype}{int} *) g-\/>src\_fixed-\/>array);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* clean up and keep new particle data */}}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&g-\/>src\_fixed);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a0b2d45f13b66edfed0ccfde75808c745}{P4EST\_FREE}} (src\_gfq);}
+\DoxyCodeLine{  sc\_array\_destroy (g-\/>padata);}
+\DoxyCodeLine{  g-\/>padata = dest\_data;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t1\_trans2 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!g-\/>scaling || g-\/>verylast) \{}
+\DoxyCodeLine{    sc\_stats\_accumulate (g-\/>si + PART\_STATS\_TRANSF, t1\_trans1 -\/ t0\_trans1);}
+\DoxyCodeLine{    sc\_stats\_accumulate (g-\/>si + PART\_STATS\_TRANSC, t1\_trans2 -\/ t0\_trans2);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* reassign cumulative particle counts */}}
+\DoxyCodeLine{  lpnum = 0;}
+\DoxyCodeLine{  lquad = 0;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (tt = g-\/>p4est-\/>first\_local\_tree; tt <= g-\/>\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_abd072c07f3197827fe22c16379de6ab8}{last\_local\_tree}}; ++tt) \{}
+\DoxyCodeLine{    tree = p4est\_tree\_array\_index (g-\/>p4est-\/>trees, tt);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (lq = 0; lq < (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}.elem\_count; ++lq) \{}
+\DoxyCodeLine{      \textcolor{comment}{/* access quadrant */}}
+\DoxyCodeLine{      quad = p4est\_quadrant\_array\_index (\&tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}, lq);}
+\DoxyCodeLine{      qud = (qu\_data\_t *) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{      P4EST\_ASSERT (qud-\/>premain == 0);}
+\DoxyCodeLine{      P4EST\_ASSERT (qud-\/>preceive == 0);}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* back out particle count in quadrant from data size */}}
+\DoxyCodeLine{      lcount = *(\textcolor{keywordtype}{int} *) sc\_array\_index (g-\/>dest\_fixed, lquad);}
+\DoxyCodeLine{      P4EST\_ASSERT (lcount \% ldatasiz == 0);}
+\DoxyCodeLine{      lcount /= ldatasiz;}
+\DoxyCodeLine{      lpnum += lcount;}
+\DoxyCodeLine{      qud-\/>u.lpend = lpnum;}
+\DoxyCodeLine{      ++lquad;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  P4EST\_ASSERT (lquad == dest\_quads);}
+\DoxyCodeLine{  P4EST\_ASSERT (lpnum == dest\_parts);}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&g-\/>dest\_fixed);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{outp (part\_global\_t * g, \textcolor{keywordtype}{int} k)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{char}                filename[BUFSIZ];}
+\DoxyCodeLine{  sc\_array\_t         *pdata;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}}      tt;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lpnum, lq;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lall, ilem\_particles;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__tree}{p4est\_tree\_t}}       *tree;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *quad;}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__vtk_8h_aec7e360e192839f06f58cbfc7afb6d6c}{p4est\_vtk\_context\_t}} *cont;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* only output when specified */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>vtk <= 0 || k \% g-\/>vtk) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return};}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* run-\/once loop for clean return */}}
+\DoxyCodeLine{  cont = NULL;}
+\DoxyCodeLine{  pdata = NULL;}
+\DoxyCodeLine{  \textcolor{keywordflow}{do} \{}
+\DoxyCodeLine{    \textcolor{comment}{/* open files for output */}}
+\DoxyCodeLine{    snprintf (filename, BUFSIZ, \textcolor{stringliteral}{"{}\%s\_\%06d"{}}, g-\/>prefix, k);}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!g-\/>scaling) \{}
+\DoxyCodeLine{      cont = \mbox{\hyperlink{p4est__vtk_8h_a34dbafa8dbc61172ead1a4da4c7103ca}{p4est\_vtk\_context\_new}} (g-\/>p4est, filename);}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (NULL == \mbox{\hyperlink{p4est__vtk_8h_a17ce523f11f580944630c6c604a070da}{p4est\_vtk\_write\_header}} (cont)) \{}
+\DoxyCodeLine{        P4EST\_LERRORF (\textcolor{stringliteral}{"{}Failed to write header for \%s\(\backslash\)n"{}}, filename);}
+\DoxyCodeLine{        \textcolor{keywordflow}{break};}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* prepare cell data for output */}}
+\DoxyCodeLine{    pdata = sc\_array\_new\_count}
+\DoxyCodeLine{      (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{double}), g-\/>p4est-\/>local\_num\_quadrants);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (lpnum = 0, lall = 0, tt = g-\/>p4est-\/>first\_local\_tree;}
+\DoxyCodeLine{         tt <= g-\/>\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_abd072c07f3197827fe22c16379de6ab8}{last\_local\_tree}}; ++tt) \{}
+\DoxyCodeLine{      tree = p4est\_tree\_array\_index (g-\/>p4est-\/>trees, tt);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (lq = 0; lq < (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}.elem\_count; ++lq) \{}
+\DoxyCodeLine{}
+\DoxyCodeLine{        \textcolor{comment}{/* fetch number of particles in quadrant */}}
+\DoxyCodeLine{        quad = p4est\_quadrant\_array\_index (\&tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}, lq);}
+\DoxyCodeLine{        qud = (qu\_data\_t *) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{        ilem\_particles = qud-\/>u.lpend -\/ lpnum;}
+\DoxyCodeLine{        *(\textcolor{keywordtype}{double} *) sc\_array\_index (pdata, lall++) = (double) ilem\_particles;}
+\DoxyCodeLine{}
+\DoxyCodeLine{        \textcolor{comment}{/* move to next quadrant */}}
+\DoxyCodeLine{        lpnum = qud-\/>u.lpend;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* write cell data to file */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!g-\/>scaling) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (NULL == \mbox{\hyperlink{p4est__vtk_8h_a7120e8be889eed8a43a781db9f12f00a}{p4est\_vtk\_write\_cell\_dataf}}}
+\DoxyCodeLine{          (cont, 1, 1, 1, g-\/>mpiwrap, 1, 0, \textcolor{stringliteral}{"{}particles"{}}, pdata, cont)) \{}
+\DoxyCodeLine{        P4EST\_LERRORF (\textcolor{stringliteral}{"{}Failed to write cell data for \%s\(\backslash\)n"{}}, filename);}
+\DoxyCodeLine{        \textcolor{keywordflow}{break};}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    sc\_array\_destroy\_null (\&pdata);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* finish meta information and close files */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!g-\/>scaling) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (\mbox{\hyperlink{p4est__vtk_8h_a23950ebd8b9b99877fa152752b5150d4}{p4est\_vtk\_write\_footer}} (cont)) \{}
+\DoxyCodeLine{        P4EST\_LERRORF (\textcolor{stringliteral}{"{}Failed to write footer for \%s\(\backslash\)n"{}}, filename);}
+\DoxyCodeLine{        \textcolor{keywordflow}{break};}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{while} (0);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (pdata != NULL) \{}
+\DoxyCodeLine{    sc\_array\_destroy\_null (\&pdata);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct }bu\_data}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      count;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{bu\_data\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{buildp\_init\_default (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}},}
+\DoxyCodeLine{                     \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree, \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrant)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  bu\_data\_t          *bud = (bu\_data\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{  bud-\/>count = 0;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{buildp\_init\_add (\mbox{\hyperlink{structp4est}{p4est\_t}} * \mbox{\hyperlink{structp4est}{p4est}},}
+\DoxyCodeLine{                 \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree, \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}} * quadrant)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  part\_global\_t      *g = (part\_global\_t *) \mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_a486eacc9c8e6ce28ff34429d297e703f}{user\_pointer}};}
+\DoxyCodeLine{  bu\_data\_t          *bud = (bu\_data\_t *) quadrant-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* tell new quadrant how many particles are in it */}}
+\DoxyCodeLine{  bud-\/>count = g-\/>add\_count;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{typedef} \textcolor{keyword}{struct }pa\_bitem}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}    quad;}
+\DoxyCodeLine{  sc\_array\_t          parr;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{pa\_bitem\_t;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{buildp\_add (part\_global\_t * g, \mbox{\hyperlink{p4est__build_8h_a29162254418af3724dc93e6f739cc403}{p4est\_build\_t}} * bcon,}
+\DoxyCodeLine{            \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}} which\_tree, pa\_bitem\_t * bit)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 cid, nhits;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 wx, wy, wz;}
+\DoxyCodeLine{  sc\_array\_t         *arr;}
+\DoxyCodeLine{  pa\_bitem\_t          abita[\mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}], *bita;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (bcon != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (bit != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (\mbox{\hyperlink{p4est__bits_8h_a93fdfa19f38d4fca9e42896eda01a558}{p4est\_quadrant\_is\_valid}} (\&bit-\/>quad));}
+\DoxyCodeLine{  P4EST\_ASSERT (bit-\/>parr.elem\_size == sizeof (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (bit-\/>quad.level == g-\/>maxlevel) \{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{    /*** we are at maximum level, all particles go into quadrant ***/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    g-\/>add\_count = (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) bit-\/>parr.elem\_count;}
+\DoxyCodeLine{    \mbox{\hyperlink{p4est__build_8h_ab4211ea70163b7bd5329129ca340a555}{p4est\_build\_add}} (bcon, which\_tree, \&bit-\/>quad);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{    /*** search in children and call buildp\_add recursively ***/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* access parent quadrant */}}
+\DoxyCodeLine{    loopquad (g, which\_tree, \&bit-\/>quad, g-\/>lxyz, g-\/>hxyz, g-\/>dxyz);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* number of child quadrant */}}
+\DoxyCodeLine{    cid = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* number of child quadrants containing particles */}}
+\DoxyCodeLine{    nhits = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* sort remaining particles into the children */}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{    split\_by\_coord}
+\DoxyCodeLine{      (g, \&bit-\/>parr, g-\/>klh, PA\_MODE\_LOCATE, 2, g-\/>lxyz, g-\/>dxyz);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (wz = 0; wz < 2; ++wz) \{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>klh[0] == NULL);}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>klh[1] == NULL);}
+\DoxyCodeLine{    g-\/>klh[0] = \&bit-\/>parr;}
+\DoxyCodeLine{    wz = 0;}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{    split\_by\_coord}
+\DoxyCodeLine{      (g, g-\/>klh[wz], g-\/>jlh, PA\_MODE\_LOCATE, 1, g-\/>lxyz, g-\/>dxyz);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (wy = 0; wy < 2; ++wy) \{}
+\DoxyCodeLine{      split\_by\_coord}
+\DoxyCodeLine{        (g, g-\/>jlh[wy], g-\/>ilh, PA\_MODE\_LOCATE, 0, g-\/>lxyz, g-\/>dxyz);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (wx = 0; wx < 2; ++wx) \{}
+\DoxyCodeLine{        \textcolor{comment}{/* we have a set of particles for child 4 * wz + 2 * wy + wx */}}
+\DoxyCodeLine{        P4EST\_ASSERT (cid == 4 * wz + 2 * wy + wx);}
+\DoxyCodeLine{        \textcolor{keywordflow}{if} ((arr = g-\/>ilh[wx])-\/>elem\_count > 0) \{}
+\DoxyCodeLine{}
+\DoxyCodeLine{          \textcolor{comment}{/* grab next available slot in array */}}
+\DoxyCodeLine{          bita = \&abita[nhits++];}
+\DoxyCodeLine{          \mbox{\hyperlink{p4est__bits_8h_ac715371e458c411ee35b69629ceb733f}{p4est\_quadrant\_child}} (\&bit-\/>quad, \&bita-\/>quad, cid);}
+\DoxyCodeLine{          sc\_array\_init\_count (\&bita-\/>parr, sizeof (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}),}
+\DoxyCodeLine{                               arr-\/>elem\_count);}
+\DoxyCodeLine{          sc\_array\_paste (\&bita-\/>parr, arr);}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{        cid++;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifdef P4\_TO\_P8}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{    \{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{    P4EST\_ASSERT (cid == \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{    g-\/>klh[0] = NULL;}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>klh[1] == NULL);}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* go into recursion for non-\/empty children */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (i = 0; i < nhits; ++i) \{}
+\DoxyCodeLine{      buildp\_add (g, bcon, which\_tree, \&abita[i]);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* this call is expected to clean up the array */}}
+\DoxyCodeLine{  sc\_array\_reset (\&bit-\/>parr);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{buildp (part\_global\_t * g, \textcolor{keywordtype}{int} k)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              t0\_build, t0\_pertreeF, t0\_pertreeB, t1;}
+\DoxyCodeLine{  \textcolor{keywordtype}{char}                filename[BUFSIZ];}
+\DoxyCodeLine{  sc\_array\_t          inq;}
+\DoxyCodeLine{  sc\_array\_t         *pdata;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}}      tt;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lpnum, lq;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lall, ilem\_particles, li;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}     *pertree;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__tree}{p4est\_tree\_t}}       *tree;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *quad;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__build_8h_a29162254418af3724dc93e6f739cc403}{p4est\_build\_t}}      *bcon;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__vtk_8h_aec7e360e192839f06f58cbfc7afb6d6c}{p4est\_vtk\_context\_t}} *cont;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est}{p4est\_t}}            *build;}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{  bu\_data\_t          *bud;}
+\DoxyCodeLine{  pa\_data\_t          *pad;}
+\DoxyCodeLine{  pa\_bitem\_t          abit, *bit = \&abit;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>padata != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>add\_count == 0);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* only output when specified */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>scaling \&\& g-\/>verylast) \{}
+\DoxyCodeLine{    \textcolor{comment}{/* output on the last time step */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>build\_part <= 0) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{return};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{    \textcolor{comment}{/* so this is the usual way of things: every so many steps */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>build\_part <= 0 || g-\/>build\_step <= 0 || k \% g-\/>build\_step) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{return};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t0\_build = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* iterate through particles to choose the relevant ones for new forest */}}
+\DoxyCodeLine{  bcon = \mbox{\hyperlink{p4est__build_8h_ade085b723cb557f255ee96efa9bbf68f}{p4est\_build\_new}} (g-\/>p4est, sizeof (bu\_data\_t),}
+\DoxyCodeLine{                          buildp\_init\_default, g);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__build_8h_ace074702ba4d8198e470a69af93ce155}{p4est\_build\_init\_add}} (bcon, buildp\_init\_add);}
+\DoxyCodeLine{  sc\_array\_init (\&inq, \textcolor{keyword}{sizeof} (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}));}
+\DoxyCodeLine{  pad = (pa\_data\_t *) sc\_array\_index\_begin (g-\/>padata);}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (lpnum = 0, lall = 0, tt = g-\/>p4est-\/>first\_local\_tree;}
+\DoxyCodeLine{       tt <= g-\/>\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_abd072c07f3197827fe22c16379de6ab8}{last\_local\_tree}}; ++tt) \{}
+\DoxyCodeLine{    tree = p4est\_tree\_array\_index (g-\/>p4est-\/>trees, tt);}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (lq = 0; lq < (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}.elem\_count; ++lq) \{}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* fetch number of particles in quadrant */}}
+\DoxyCodeLine{      quad = p4est\_quadrant\_array\_index (\&tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}, lq);}
+\DoxyCodeLine{      qud = (qu\_data\_t *) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{      if ((ilem\_particles = qud-\/>u.lpend -\/ lpnum) == 0) \{}
+\DoxyCodeLine{        \textcolor{comment}{/* no particles in this quadrant at all */}}
+\DoxyCodeLine{        \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* how many particles will we consider? */}}
+\DoxyCodeLine{      P4EST\_ASSERT (inq.elem\_count == 0);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (li = 0; li < ilem\_particles; ++li, ++lall, ++pad) \{}
+\DoxyCodeLine{        \textcolor{keywordflow}{if} (!(pad-\/>id \% g-\/>build\_part)) \{}
+\DoxyCodeLine{          *(\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}} *) sc\_array\_push (\&inq) = lall;}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (inq.elem\_count > 0) \{}
+\DoxyCodeLine{        bit-\/>quad = *quad;}
+\DoxyCodeLine{        sc\_array\_swap\_init (\&bit-\/>parr, \&inq, sizeof (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}));}
+\DoxyCodeLine{        buildp\_add (g, bcon, tt, bit);}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* move to next quadrant */}}
+\DoxyCodeLine{      lpnum = qud-\/>u.lpend;}
+\DoxyCodeLine{      P4EST\_ASSERT (lpnum == lall);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  P4EST\_ASSERT (lall == (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) g-\/>padata-\/>elem\_count);}
+\DoxyCodeLine{  P4EST\_ASSERT (pad == (pa\_data\_t *) sc\_array\_index\_end (g-\/>padata));}
+\DoxyCodeLine{  P4EST\_ASSERT (inq.elem\_count == 0 \&\& inq.array == NULL);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* create a temporary sparse forest */}}
+\DoxyCodeLine{  cont = NULL;}
+\DoxyCodeLine{  pdata = NULL;}
+\DoxyCodeLine{  build = \mbox{\hyperlink{p4est__build_8h_a2e404ba490b1fab9d6af82567231bf76}{p4est\_build\_complete}} (bcon);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!g-\/>scaling || g-\/>verylast) \{}
+\DoxyCodeLine{    P4EST\_GLOBAL\_ESSENTIALF (\textcolor{stringliteral}{"{}Built forest with \%lld quadrants from \%lld\(\backslash\)n"{}},}
+\DoxyCodeLine{                             (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) build-\/>\mbox{\hyperlink{structp4est_a92c7d2fddd5c84a5245f4873d4f2026a}{global\_num\_quadrants}},}
+\DoxyCodeLine{                             (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) g-\/>p4est-\/>global\_num\_quadrants);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!g-\/>scaling || g-\/>verylast) \{}
+\DoxyCodeLine{    sc\_stats\_accumulate (g-\/>si + PART\_STATS\_BUILD, t1 -\/ t0\_build);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* count per-\/tree quadrants */}}
+\DoxyCodeLine{  pertree = \mbox{\hyperlink{p4est__base_8h_a1fef909873d570158d6ac7b43c7d94f1}{P4EST\_ALLOC}} (\mbox{\hyperlink{p4est__base_8h_af4d787f9b2520af0cfe9a10b89235749}{p4est\_gloidx\_t}}, g-\/>conn-\/>num\_trees + 1);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t0\_pertreeF = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* per-\/tree counts of full forest */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__communication_8h_af29e500817471c16943a8f6517e41e6f}{p4est\_comm\_count\_pertree}} (g-\/>p4est, pertree);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!g-\/>scaling || g-\/>verylast) \{}
+\DoxyCodeLine{    sc\_stats\_accumulate (g-\/>si + PART\_STATS\_PERTREEF, t1 -\/ t0\_pertreeF);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  t0\_pertreeB = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* per-\/tree counts of full forest */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__communication_8h_af29e500817471c16943a8f6517e41e6f}{p4est\_comm\_count\_pertree}} (build, pertree);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (!g-\/>scaling || g-\/>verylast) \{}
+\DoxyCodeLine{    sc\_stats\_accumulate (g-\/>si + PART\_STATS\_PERTREEB, t1 -\/ t0\_pertreeB);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* clean up per-\/tree counts */}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a0b2d45f13b66edfed0ccfde75808c745}{P4EST\_FREE}} (pertree);}
+\DoxyCodeLine{  pertree = NULL;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* write temporary sparse forest to disk */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{do} \{}
+\DoxyCodeLine{    \textcolor{comment}{/* open files for output */}}
+\DoxyCodeLine{    snprintf (filename, BUFSIZ, \textcolor{stringliteral}{"{}\%s\_W\_\%06d"{}}, g-\/>prefix, k);}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!g-\/>scaling) \{}
+\DoxyCodeLine{      cont = \mbox{\hyperlink{p4est__vtk_8h_a34dbafa8dbc61172ead1a4da4c7103ca}{p4est\_vtk\_context\_new}} (build, filename);}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (NULL == \mbox{\hyperlink{p4est__vtk_8h_a17ce523f11f580944630c6c604a070da}{p4est\_vtk\_write\_header}} (cont)) \{}
+\DoxyCodeLine{        P4EST\_LERRORF (\textcolor{stringliteral}{"{}Failed to write header for \%s\(\backslash\)n"{}}, filename);}
+\DoxyCodeLine{        \textcolor{keywordflow}{break};}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* prepare cell data for output */}}
+\DoxyCodeLine{    pdata = sc\_array\_new\_count (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{double}), build-\/>\mbox{\hyperlink{structp4est_a40324cbcc175d48f887735afd5c4239f}{local\_num\_quadrants}});}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (lpnum = 0, lall = 0, tt = build-\/>\mbox{\hyperlink{structp4est_a124d4dc0b8cd3b07351de80f19351beb}{first\_local\_tree}};}
+\DoxyCodeLine{         tt <= build-\/>last\_local\_tree; ++tt) \{}
+\DoxyCodeLine{      tree = p4est\_tree\_array\_index (build-\/>\mbox{\hyperlink{structp4est_a6158d35a403f1dbec23833746c5b4a8b}{trees}}, tt);}
+\DoxyCodeLine{      \textcolor{keywordflow}{for} (lq = 0; lq < (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}.elem\_count; ++lq) \{}
+\DoxyCodeLine{}
+\DoxyCodeLine{        \textcolor{comment}{/* fetch number of particles in quadrant */}}
+\DoxyCodeLine{        quad = p4est\_quadrant\_array\_index (\&tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}, lq);}
+\DoxyCodeLine{        bud = (bu\_data\_t *) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{        *(\textcolor{keywordtype}{double} *) sc\_array\_index (pdata, lall++) = (double) bud-\/>count;}
+\DoxyCodeLine{}
+\DoxyCodeLine{        \textcolor{comment}{/* move to next quadrant */}}
+\DoxyCodeLine{        lpnum = qud-\/>u.lpend;}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* write cell data to file */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!g-\/>scaling) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (NULL == \mbox{\hyperlink{p4est__vtk_8h_a7120e8be889eed8a43a781db9f12f00a}{p4est\_vtk\_write\_cell\_dataf}}}
+\DoxyCodeLine{          (cont, 1, 1, 1, g-\/>build\_wrap, 1, 0, \textcolor{stringliteral}{"{}particles"{}}, pdata, cont)) \{}
+\DoxyCodeLine{        P4EST\_LERRORF (\textcolor{stringliteral}{"{}Failed to write cell data for \%s\(\backslash\)n"{}}, filename);}
+\DoxyCodeLine{        \textcolor{keywordflow}{break};}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    sc\_array\_destroy\_null (\&pdata);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* finish meta information and close files */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (!g-\/>scaling) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (\mbox{\hyperlink{p4est__vtk_8h_a23950ebd8b9b99877fa152752b5150d4}{p4est\_vtk\_write\_footer}} (cont)) \{}
+\DoxyCodeLine{        P4EST\_LERRORF (\textcolor{stringliteral}{"{}Failed to write footer for \%s\(\backslash\)n"{}}, filename);}
+\DoxyCodeLine{        \textcolor{keywordflow}{break};}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{while} (0);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (pdata != NULL) \{}
+\DoxyCodeLine{    sc\_array\_destroy\_null (\&pdata);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a1e78f347378fe8b097ef019214f2338e}{p4est\_destroy}} (build);}
+\DoxyCodeLine{  g-\/>add\_count = 0;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{sim (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 k;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              t, h, f;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              t0\_rk, t1;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\_topidx\_t}}      tt;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      lpnum, lq;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}      li, ilem\_particles;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__tree}{p4est\_tree\_t}}       *tree;}
+\DoxyCodeLine{  \mbox{\hyperlink{structp4est__quadrant}{p4est\_quadrant\_t}}   *quad;}
+\DoxyCodeLine{  qu\_data\_t          *qud;}
+\DoxyCodeLine{  pa\_data\_t          *pad;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>padata != NULL);}
+\DoxyCodeLine{  P4EST\_ASSERT (g-\/>stage == 0);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* output initial condition */}}
+\DoxyCodeLine{  t = 0.;}
+\DoxyCodeLine{  k = 0;}
+\DoxyCodeLine{  pprint (g, t);}
+\DoxyCodeLine{  outp (g, k);}
+\DoxyCodeLine{  buildp (g, k);}
+\DoxyCodeLine{  g-\/>verylast = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** loop over simulation time ***/}}
+\DoxyCodeLine{  \textcolor{keywordflow}{while} (t < g-\/>finaltime) \{}
+\DoxyCodeLine{    h = g-\/>deltat;}
+\DoxyCodeLine{    f = t + h;}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (f > g-\/>finaltime -\/ 1e-\/3 * g-\/>deltat) \{}
+\DoxyCodeLine{      f = g-\/>finaltime;}
+\DoxyCodeLine{      h = f -\/ t;}
+\DoxyCodeLine{      P4EST\_ASSERT (!g-\/>verylast);}
+\DoxyCodeLine{      g-\/>verylast = 1;}
+\DoxyCodeLine{      P4EST\_GLOBAL\_ESSENTIALF}
+\DoxyCodeLine{        (\textcolor{stringliteral}{"{}Last time step \%d with \%lld particles and \%lld quadrants\(\backslash\)n"{}}, k,}
+\DoxyCodeLine{         (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) g-\/>gpnum, (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) g-\/>p4est-\/>global\_num\_quadrants);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    P4EST\_GLOBAL\_STATISTICSF (\textcolor{stringliteral}{"{}Time \%g into step \%d with \%g\(\backslash\)n"{}}, t, k, h);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{    /*** loop over Runge Kutta stages ***/}}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (g-\/>stage = 0; g-\/>stage < g-\/>order; ++g-\/>stage) \{}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* if a stage is not the last compute new evaluation location */}}
+\DoxyCodeLine{      \textcolor{comment}{/* for the last stage compute the new location of the particle */}}
+\DoxyCodeLine{      \textcolor{comment}{/* do parallel transfer at end of each stage */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{      /*** time step for local particles ***/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{      t0\_rk = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{      pad = (pa\_data\_t *) sc\_array\_index\_begin (g-\/>padata);}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (pad != NULL) \{}
+\DoxyCodeLine{        lpnum = 0;}
+\DoxyCodeLine{        \textcolor{keywordflow}{for} (tt = g-\/>p4est-\/>first\_local\_tree; tt <= g-\/>\mbox{\hyperlink{structp4est}{p4est}}-\/>\mbox{\hyperlink{structp4est_abd072c07f3197827fe22c16379de6ab8}{last\_local\_tree}};}
+\DoxyCodeLine{             ++tt) \{}
+\DoxyCodeLine{          tree = p4est\_tree\_array\_index (g-\/>p4est-\/>trees, tt);}
+\DoxyCodeLine{          \textcolor{keywordflow}{for} (lq = 0; lq < (\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\_locidx\_t}}) tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}.elem\_count; ++lq) \{}
+\DoxyCodeLine{            quad = p4est\_quadrant\_array\_index (\&tree-\/>\mbox{\hyperlink{structp4est__tree_aa17e5be92cc11b1f53f31a8174c19345}{quadrants}}, lq);}
+\DoxyCodeLine{            qud = (qu\_data\_t *) quad-\/>\mbox{\hyperlink{structp4est__quadrant_a84896efd4c9ace3225253e379fb48a6e}{p}}.\mbox{\hyperlink{unionp4est__quadrant_1_1p4est__quadrant__data_aff6684573d249ebf6af9f035aff5e1a0}{user\_data}};}
+\DoxyCodeLine{            ilem\_particles = qud-\/>u.lpend -\/ lpnum;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{            /*** loop through particles in this quadrant */}}
+\DoxyCodeLine{            for (li = 0; li < ilem\_particles; ++li) \{}
+\DoxyCodeLine{              \textcolor{comment}{/* one Runge Kutta stage for this particle */}}
+\DoxyCodeLine{              rkstage (g, pad++, h);}
+\DoxyCodeLine{            \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{            \textcolor{comment}{/* move to next quadrant */}}
+\DoxyCodeLine{            lpnum = qud-\/>u.lpend;}
+\DoxyCodeLine{          \}}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{      t1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (!g-\/>scaling || g-\/>verylast) \{}
+\DoxyCodeLine{        sc\_stats\_accumulate (g-\/>si + PART\_STATS\_RK, t1 -\/ t0\_rk);}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* begin loop -\/-\/ currently there is no loop */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* find new local quadrant or process for each particle */}}
+\DoxyCodeLine{      presearch (g);}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* send leaving particles to receiver processes */}}
+\DoxyCodeLine{      pack (g);}
+\DoxyCodeLine{      comm (g);}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* process remaining local and newly received particles */}}
+\DoxyCodeLine{      postsearch (g);}
+\DoxyCodeLine{      adapt (g);}
+\DoxyCodeLine{      regroup (g);}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* wait for sent messages to complete */}}
+\DoxyCodeLine{      waitmpi (g);}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* if no refinement occurred, store received particles and break loop */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* partition weighted by current + received count (?) */}}
+\DoxyCodeLine{      \textcolor{comment}{/* partition the forest and send particles along with the partition */}}
+\DoxyCodeLine{      \textcolor{comment}{/* transfer particles accordingly */}}
+\DoxyCodeLine{      \textcolor{comment}{/* think about partitioning and sending particles to future owner? */}}
+\DoxyCodeLine{      part (g);}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{comment}{/* end loop -\/-\/ currently there is no loop */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{      \textcolor{keywordflow}{if} (g-\/>gpnum == 0) \{}
+\DoxyCodeLine{        \textcolor{comment}{/* we have run out of particles */}}
+\DoxyCodeLine{        \textcolor{keywordflow}{break};}
+\DoxyCodeLine{      \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{    /*** finish up time step ***/}}
+\DoxyCodeLine{    ++k;}
+\DoxyCodeLine{    t = f;}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* maybe we have run out of particles and stop */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>gpnum == 0) \{}
+\DoxyCodeLine{      P4EST\_GLOBAL\_PRODUCTIONF}
+\DoxyCodeLine{        (\textcolor{stringliteral}{"{}We have lost all \%lld particles\(\backslash\)n"{}}, (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) g-\/>gplost);}
+\DoxyCodeLine{      \textcolor{keywordflow}{break};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    P4EST\_ASSERT (g-\/>stage == g-\/>order);}
+\DoxyCodeLine{    g-\/>stage = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* write output files */}}
+\DoxyCodeLine{    pprint (g, t);}
+\DoxyCodeLine{    outp (g, k);}
+\DoxyCodeLine{    buildp (g, k);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  P4EST\_GLOBAL\_ESSENTIALF}
+\DoxyCodeLine{    (\textcolor{stringliteral}{"{}Time \%g is final after \%d steps lost \%lld remain \%lld\(\backslash\)n"{}}, t, k,}
+\DoxyCodeLine{     (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) g-\/>gplost, (\textcolor{keywordtype}{long} \textcolor{keywordtype}{long}) g-\/>gpnum);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{notif (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 i, j;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 q, r;}
+\DoxyCodeLine{  \textcolor{keywordtype}{double}              t0\_binary, t0\_nary, t1;}
+\DoxyCodeLine{  sc\_array\_t         *recv1, *send1, *payl1;}
+\DoxyCodeLine{  sc\_array\_t         *recv2, *send2, *payl2;}
+\DoxyCodeLine{  sc\_notify\_t        *notifyc;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  recv1 = sc\_array\_new (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{int}));}
+\DoxyCodeLine{  send1 = sc\_array\_new (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{int}));}
+\DoxyCodeLine{  payl1 = sc\_array\_new (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{int}));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  recv2 = sc\_array\_new (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{int}));}
+\DoxyCodeLine{  send2 = sc\_array\_new (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{int}));}
+\DoxyCodeLine{  payl2 = sc\_array\_new (\textcolor{keyword}{sizeof} (\textcolor{keywordtype}{int}));}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* send to 7 ranks to the left, 11 apart */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < 7; ++i) \{}
+\DoxyCodeLine{    q = g-\/>mpirank -\/ (7 -\/ i) * 11;}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (q >= 0) \{}
+\DoxyCodeLine{      *(\textcolor{keywordtype}{int} *) sc\_array\_push (recv1) = q;}
+\DoxyCodeLine{      *(\textcolor{keywordtype}{int} *) sc\_array\_push (payl1) = g-\/>mpirank \% 19;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{comment}{/* send to 5 ranks to the right, 13 apart */}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < 5; ++i) \{}
+\DoxyCodeLine{    q = g-\/>mpirank + (i + 1) * 13;}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (q < g-\/>mpisize) \{}
+\DoxyCodeLine{      *(\textcolor{keywordtype}{int} *) sc\_array\_push (recv1) = q;}
+\DoxyCodeLine{      *(\textcolor{keywordtype}{int} *) sc\_array\_push (payl1) = g-\/>mpirank \% 19;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  sc\_array\_copy (recv2, recv1);}
+\DoxyCodeLine{  sc\_array\_copy (payl2, payl1);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* allocate notify controller */}}
+\DoxyCodeLine{  notifyc = sc\_notify\_new (g-\/>mpicomm);}
+\DoxyCodeLine{  sc\_notify\_set\_type (notifyc, SC\_NOTIFY\_NARY);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Barrier (g-\/>mpicomm);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t0\_binary = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_notify\_nary\_set\_widths (notifyc, 2, 2, 2);}
+\DoxyCodeLine{  sc\_notify\_payload (recv1, send1, payl1, NULL, 1, notifyc);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{  sc\_stats\_accumulate (g-\/>si + PART\_STATS\_BINARY, t1 -\/ t0\_binary);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Barrier (g-\/>mpicomm);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t0\_nary = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_notify\_nary\_set\_widths (notifyc, g-\/>ntop, g-\/>nint, g-\/>nbot);}
+\DoxyCodeLine{  sc\_notify\_payload (recv2, send2, payl2, NULL, 1, notifyc);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* STATS */}}
+\DoxyCodeLine{  t1 = sc\_MPI\_Wtime ();}
+\DoxyCodeLine{  sc\_stats\_accumulate (g-\/>si + PART\_STATS\_NARY, t1 -\/ t0\_nary);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (send1-\/>elem\_count == payl1-\/>elem\_count, \textcolor{stringliteral}{"{}Send Payl 1"{}});}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (send2-\/>elem\_count == payl2-\/>elem\_count, \textcolor{stringliteral}{"{}Send Payl 2"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (sc\_array\_is\_equal (send1, send2), \textcolor{stringliteral}{"{}Send 1 2"{}});}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (sc\_array\_is\_equal (payl1, payl2), \textcolor{stringliteral}{"{}Payl 1 2"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  j = 0;}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < 5; ++i) \{}
+\DoxyCodeLine{    q = g-\/>mpirank -\/ (5 -\/ i) * 13;}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (q >= 0) \{}
+\DoxyCodeLine{      SC\_CHECK\_ABORT (q == *(\textcolor{keywordtype}{int} *) sc\_array\_index\_int (send1, j), \textcolor{stringliteral}{"{}Left q"{}});}
+\DoxyCodeLine{      r = *(\textcolor{keywordtype}{int} *) sc\_array\_index\_int (payl1, j);}
+\DoxyCodeLine{      SC\_CHECK\_ABORT (q \% 19 == r, \textcolor{stringliteral}{"{}Left r"{}});}
+\DoxyCodeLine{      ++j;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{for} (i = 0; i < 7; ++i) \{}
+\DoxyCodeLine{    q = g-\/>mpirank + (i + 1) * 11;}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (q < g-\/>mpisize) \{}
+\DoxyCodeLine{      SC\_CHECK\_ABORT (q == *(\textcolor{keywordtype}{int} *) sc\_array\_index\_int (send1, j), \textcolor{stringliteral}{"{}Right q"{}});}
+\DoxyCodeLine{      r = *(\textcolor{keywordtype}{int} *) sc\_array\_index\_int (payl1, j);}
+\DoxyCodeLine{      SC\_CHECK\_ABORT (q \% 19 == r, \textcolor{stringliteral}{"{}Right r"{}});}
+\DoxyCodeLine{      ++j;}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  SC\_CHECK\_ABORT (j == (\textcolor{keywordtype}{int}) send1-\/>elem\_count, \textcolor{stringliteral}{"{}Count j"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_notify\_destroy (notifyc);}
+\DoxyCodeLine{  sc\_array\_destroy (recv1);}
+\DoxyCodeLine{  sc\_array\_destroy (send1);}
+\DoxyCodeLine{  sc\_array\_destroy (payl1);}
+\DoxyCodeLine{  sc\_array\_destroy (recv2);}
+\DoxyCodeLine{  sc\_array\_destroy (send2);}
+\DoxyCodeLine{  sc\_array\_destroy (payl2);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void}}
+\DoxyCodeLine{run (part\_global\_t * g)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  pi\_data\_t           spiddata, *piddata = \&spiddata;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** initialize variables ***/}}
+\DoxyCodeLine{  run\_pre (g, piddata);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** initial mesh for domain ***/}}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (g-\/>bricklev > 0) \{}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p4est__connectivity_8h_a524e3271ec0560d269403e5ec1c993dc}{p4est\_connectivity\_new\_brick}} (g-\/>bricklength, g-\/>bricklength}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{                                            , g-\/>bricklength}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{                                            , 1, 1}
+\DoxyCodeLine{\#ifdef P4\_TO\_P8}
+\DoxyCodeLine{                                            , 1}
+\DoxyCodeLine{\#endif}
+\DoxyCodeLine{      );}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#ifndef P4\_TO\_P8}}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p4est__connectivity_8h_aab03936b137ccdc4fa7520e7e017fcf0}{p4est\_connectivity\_new\_unitsquare}} ();}
+\DoxyCodeLine{\textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{    g-\/>conn = \mbox{\hyperlink{p8est__connectivity_8h_a53bdb596e76c52c1e23aaecd0aacc763}{p8est\_connectivity\_new\_unitcube}} ();}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  g-\/>p4est = \mbox{\hyperlink{p4est__extended_8h_ac11cf572e8ac72c4beb78465f98b63f3}{p4est\_new\_ext}} (g-\/>mpicomm, g-\/>conn, 0,}
+\DoxyCodeLine{                            g-\/>minlevel -\/ g-\/>bricklev, 1,}
+\DoxyCodeLine{                            sizeof (qu\_data\_t), NULL, g);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** initial refinement and partition ***/}}
+\DoxyCodeLine{  initrp (g);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** create particles ***/}}
+\DoxyCodeLine{  g-\/>padata = sc\_array\_new (\textcolor{keyword}{sizeof} (pa\_data\_t));}
+\DoxyCodeLine{  create (g);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** run simulation ***/}}
+\DoxyCodeLine{  sim (g);}
+\DoxyCodeLine{  sc\_array\_destroy\_null (\&g-\/>padata);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** destroy mesh ***/}}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est_8h_a1e78f347378fe8b097ef019214f2338e}{p4est\_destroy}} (g-\/>p4est);}
+\DoxyCodeLine{  g-\/>p4est = NULL;}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__connectivity_8h_a208e613cae5e1bd3baffb587387b672c}{p4est\_connectivity\_destroy}} (g-\/>conn);}
+\DoxyCodeLine{  g-\/>conn = NULL;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** extra timings for notify ***/}}
+\DoxyCodeLine{  notif (g);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** clean up variables ***/}}
+\DoxyCodeLine{  run\_post (g);}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{int}}
+\DoxyCodeLine{usagerr (sc\_options\_t * opt, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *msg)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  SC\_GLOBAL\_LERRORF (\textcolor{stringliteral}{"{}Usage required: \%s\(\backslash\)n"{}}, msg);}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{int}}
+\DoxyCodeLine{main (\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char} **argv)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 mpiret;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 first\_argc;}
+\DoxyCodeLine{  \textcolor{keywordtype}{int}                 ue;}
+\DoxyCodeLine{  \textcolor{keyword}{const} \textcolor{keywordtype}{char}         *opt\_notify, *opt\_vtk, *opt\_build;}
+\DoxyCodeLine{  sc\_options\_t       *opt;}
+\DoxyCodeLine{  part\_global\_t global, *g = \&global;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** setup mpi environment ***/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Init (\&argc, \&argv);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  memset (g, 0, \textcolor{keyword}{sizeof} (*g));}
+\DoxyCodeLine{  g-\/>mpicomm = sc\_MPI\_COMM\_WORLD;}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Comm\_size (g-\/>mpicomm, \&g-\/>mpisize);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Comm\_rank (g-\/>mpicomm, \&g-\/>mpirank);}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{  sc\_init (g-\/>mpicomm, 1, 1, NULL, SC\_LP\_DEFAULT);}
+\DoxyCodeLine{  \mbox{\hyperlink{p4est__base_8h_aab4b16aa58790d309e0cf46ed665c6b9}{p4est\_init}} (NULL, SC\_LP\_DEFAULT);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** read command line parameters ***/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  opt = sc\_options\_new (argv[0]);}
+\DoxyCodeLine{  sc\_options\_add\_int (opt, \textcolor{charliteral}{'l'}, \textcolor{stringliteral}{"{}minlevel"{}}, \&g-\/>minlevel, 0, \textcolor{stringliteral}{"{}Lowest level"{}});}
+\DoxyCodeLine{  sc\_options\_add\_int (opt, \textcolor{charliteral}{'L'}, \textcolor{stringliteral}{"{}maxlevel"{}}, \&g-\/>maxlevel,}
+\DoxyCodeLine{                      \mbox{\hyperlink{p4est_8h_a398bac71234696389c90d0f986bb31aa}{P4EST\_QMAXLEVEL}}, \textcolor{stringliteral}{"{}Highest level"{}});}
+\DoxyCodeLine{  sc\_options\_add\_int (opt, \textcolor{charliteral}{'b'}, \textcolor{stringliteral}{"{}bricklev"{}}, \&g-\/>bricklev,}
+\DoxyCodeLine{                      0, \textcolor{stringliteral}{"{}Brick refinement level"{}});}
+\DoxyCodeLine{  sc\_options\_add\_int (opt, \textcolor{charliteral}{'r'}, \textcolor{stringliteral}{"{}rkorder"{}}, \&g-\/>order,}
+\DoxyCodeLine{                      1, \textcolor{stringliteral}{"{}Order of Runge Kutta method"{}});}
+\DoxyCodeLine{  sc\_options\_add\_bool (opt, \textcolor{charliteral}{'p'}, \textcolor{stringliteral}{"{}olap-\/notify"{}}, \&g-\/>olap\_notify, 0,}
+\DoxyCodeLine{                       \textcolor{stringliteral}{"{}Overlap sending with notify"{}});}
+\DoxyCodeLine{  sc\_options\_add\_string (opt, \textcolor{charliteral}{'Y'}, \textcolor{stringliteral}{"{}notify"{}}, \&opt\_notify, NULL,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}Notify ntop:nint:nbot"{}});}
+\DoxyCodeLine{  sc\_options\_add\_double (opt, \textcolor{charliteral}{'n'}, \textcolor{stringliteral}{"{}particles"{}}, \&g-\/>num\_particles,}
+\DoxyCodeLine{                         1e3, \textcolor{stringliteral}{"{}Global number of particles"{}});}
+\DoxyCodeLine{  sc\_options\_add\_double (opt, \textcolor{charliteral}{'e'}, \textcolor{stringliteral}{"{}pperelem"{}}, \&g-\/>elem\_particles,}
+\DoxyCodeLine{                         \mbox{\hyperlink{p4est__connectivity_8h_acb49ce9f7b688a2c6b6d62bda9ff5555}{P4EST\_CHILDREN}}, \textcolor{stringliteral}{"{}Number of particles per quadrant"{}});}
+\DoxyCodeLine{  sc\_options\_add\_double (opt, \textcolor{charliteral}{'h'}, \textcolor{stringliteral}{"{}deltat"{}}, \&g-\/>deltat,}
+\DoxyCodeLine{                         1e-\/1, \textcolor{stringliteral}{"{}Time step size"{}});}
+\DoxyCodeLine{  sc\_options\_add\_double (opt, \textcolor{charliteral}{'T'}, \textcolor{stringliteral}{"{}finaltime"{}}, \&g-\/>finaltime,}
+\DoxyCodeLine{                         1., \textcolor{stringliteral}{"{}Final time of simulation"{}});}
+\DoxyCodeLine{  sc\_options\_add\_int (opt, \textcolor{charliteral}{'R'}, \textcolor{stringliteral}{"{}printn"{}}, \&g-\/>printn, 0,}
+\DoxyCodeLine{                      \textcolor{stringliteral}{"{}Print every nth particle"{}});}
+\DoxyCodeLine{  sc\_options\_add\_string (opt, \textcolor{charliteral}{'V'}, \textcolor{stringliteral}{"{}vtk"{}}, \&opt\_vtk, NULL,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}VTK output everystep:wraprank"{}});}
+\DoxyCodeLine{  sc\_options\_add\_string (opt, \textcolor{charliteral}{'W'}, \textcolor{stringliteral}{"{}build"{}}, \&opt\_build, NULL,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}Build output everystep:particle:wrap"{}});}
+\DoxyCodeLine{  sc\_options\_add\_bool (opt, \textcolor{charliteral}{'S'}, \textcolor{stringliteral}{"{}scaling"{}}, \&g-\/>scaling, 0,}
+\DoxyCodeLine{                       \textcolor{stringliteral}{"{}Configure for scaling test"{}});}
+\DoxyCodeLine{  sc\_options\_add\_bool (opt, \textcolor{charliteral}{'C'}, \textcolor{stringliteral}{"{}collapse"{}}, \&g-\/>collapse, 0,}
+\DoxyCodeLine{                       \textcolor{stringliteral}{"{}Collapse statistics over time"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{  sc\_options\_add\_int (opt, \textcolor{charliteral}{'C'}, \textcolor{stringliteral}{"{}checkp"{}}, \&g-\/>checkp, 0,}
+\DoxyCodeLine{                      \textcolor{stringliteral}{"{}write checkpoint output"{}});}
+\DoxyCodeLine{\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{  sc\_options\_add\_string (opt, \textcolor{charliteral}{'P'}, \textcolor{stringliteral}{"{}prefix"{}}, \&g-\/>prefix,}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}p"{}} PARTICLES\_48 ()\textcolor{stringliteral}{"{}rticles"{}},}
+\DoxyCodeLine{                         \textcolor{stringliteral}{"{}prefix for file output"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{comment}{/* proceed in run-\/once loop for clean abort */}}
+\DoxyCodeLine{  ue = 0;}
+\DoxyCodeLine{  \textcolor{keywordflow}{do} \{}
+\DoxyCodeLine{    \textcolor{comment}{/* read command line and assign variables */}}
+\DoxyCodeLine{    first\_argc = sc\_options\_parse (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_DEFAULT,}
+\DoxyCodeLine{                                   opt, argc, argv);}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (first\_argc < 0 || first\_argc != argc) \{}
+\DoxyCodeLine{      ue = usagerr (opt, \textcolor{stringliteral}{"{}Invalid option format or non-\/option arguments"{}});}
+\DoxyCodeLine{      \textcolor{keywordflow}{break};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    g-\/>ntop = g-\/>nint = g-\/>nbot = 2;}
+\DoxyCodeLine{    part\_string\_to\_int (opt\_notify, 3, \&g-\/>ntop, \&g-\/>nint, \&g-\/>nbot);}
+\DoxyCodeLine{    part\_string\_to\_int (opt\_vtk, 2, \&g-\/>vtk, \&g-\/>mpiwrap);}
+\DoxyCodeLine{    part\_string\_to\_int (opt\_build,}
+\DoxyCodeLine{                        3, \&g-\/>build\_step, \&g-\/>build\_part, \&g-\/>build\_wrap);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* report option and parameter values */}}
+\DoxyCodeLine{    P4EST\_GLOBAL\_ESSENTIALF (\textcolor{stringliteral}{"{}Dimension is \%d\(\backslash\)n"{}}, \mbox{\hyperlink{p4est__connectivity_8h_a2c4786e65053166a16b7afb2711d35cb}{P4EST\_DIM}});}
+\DoxyCodeLine{    sc\_options\_print\_summary (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_ESSENTIAL, opt);}
+\DoxyCodeLine{    P4EST\_GLOBAL\_ESSENTIALF (\textcolor{stringliteral}{"{}Notify parameters: \%d \%d \%d\(\backslash\)n"{}},}
+\DoxyCodeLine{                             g-\/>ntop, g-\/>nint, g-\/>nbot);}
+\DoxyCodeLine{    P4EST\_GLOBAL\_ESSENTIALF (\textcolor{stringliteral}{"{}VTK parameters: \%d \%d\(\backslash\)n"{}}, g-\/>vtk, g-\/>mpiwrap);}
+\DoxyCodeLine{    P4EST\_GLOBAL\_ESSENTIALF (\textcolor{stringliteral}{"{}Build parameters: \%d \%d \%d\(\backslash\)n"{}},}
+\DoxyCodeLine{                             g-\/>build\_step, g-\/>build\_part, g-\/>build\_wrap);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{/* check options for consistency */}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>minlevel < 0 || g-\/>minlevel > \mbox{\hyperlink{p4est_8h_a398bac71234696389c90d0f986bb31aa}{P4EST\_QMAXLEVEL}}) \{}
+\DoxyCodeLine{      ue = usagerr (opt, \textcolor{stringliteral}{"{}Minlevel between 0 and P4EST\_QMAXLEVEL"{}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>maxlevel < g-\/>minlevel || g-\/>maxlevel > \mbox{\hyperlink{p4est_8h_a398bac71234696389c90d0f986bb31aa}{P4EST\_QMAXLEVEL}}) \{}
+\DoxyCodeLine{      ue = usagerr (opt, \textcolor{stringliteral}{"{}Maxlevel between minlevel and P4EST\_QMAXLEVEL"{}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>bricklev < 0 || g-\/>bricklev > g-\/>minlevel) \{}
+\DoxyCodeLine{      ue = usagerr (opt, \textcolor{stringliteral}{"{}Brick level between 0 and minlevel"{}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>order < 1 || g-\/>order > 4) \{}
+\DoxyCodeLine{      ue = usagerr (opt, \textcolor{stringliteral}{"{}Runge Kutta order between 1 and 4"{}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>ntop < 2 || g-\/>nint < 2 || g-\/>nbot < 2) \{}
+\DoxyCodeLine{      ue = usagerr (opt, \textcolor{stringliteral}{"{}Notify parameters greater equal 2"{}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>num\_particles <= 0.) \{}
+\DoxyCodeLine{      ue = usagerr (opt, \textcolor{stringliteral}{"{}Global number of particles positive"{}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>elem\_particles <= 0.) \{}
+\DoxyCodeLine{      ue = usagerr (opt, \textcolor{stringliteral}{"{}Number of particles per quadrant positive"{}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>printn < 0) \{}
+\DoxyCodeLine{      ue = usagerr (opt, \textcolor{stringliteral}{"{}Particle print interval non-\/negative"{}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>vtk < 0 || g-\/>mpiwrap < 0) \{}
+\DoxyCodeLine{      ue = usagerr (opt, \textcolor{stringliteral}{"{}VTK output interval and wrap non-\/negative"{}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>build\_step < 0 || g-\/>build\_part < 0 || g-\/>build\_wrap < 0) \{}
+\DoxyCodeLine{      ue = usagerr (opt, \textcolor{stringliteral}{"{}Build intervals and wrap non-\/negative"{}});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (ue) \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{break};}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{    /*** run program ***/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (g-\/>scaling) \{}
+\DoxyCodeLine{      sc\_package\_set\_verbosity (sc\_package\_id, SC\_LP\_PRODUCTION);}
+\DoxyCodeLine{      sc\_package\_set\_verbosity (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_PRODUCTION);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    run (g);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{  \textcolor{keywordflow}{while} (0);}
+\DoxyCodeLine{  \textcolor{keywordflow}{if} (ue) \{}
+\DoxyCodeLine{    sc\_options\_print\_usage (\mbox{\hyperlink{p4est__base_8h_a8deb5ddec79dfbbadf8bbbf065ec5a9c}{p4est\_package\_id}}, SC\_LP\_ERROR, opt, NULL);}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{  /*** clean up and exit ***/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{  sc\_options\_destroy (opt);}
+\DoxyCodeLine{  sc\_finalize ();}
+\DoxyCodeLine{}
+\DoxyCodeLine{  mpiret = sc\_MPI\_Finalize ();}
+\DoxyCodeLine{  SC\_CHECK\_MPI (mpiret);}
+\DoxyCodeLine{}
+\DoxyCodeLine{  \textcolor{keywordflow}{return} ue ? EXIT\_FAILURE : EXIT\_SUCCESS;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCodeInclude}
+ 

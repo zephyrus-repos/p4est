@@ -1,0 +1,70 @@
+.TH "p8est_wrap_params_t" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p8est_wrap_params_t \- This structure contains the different parameters of wrap creation\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p8est_wrap\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "int \fBhollow\fP"
+.br
+.RI "Do not allocate flags, ghost, and mesh members\&. "
+.ti -1c
+.RI "\fBp8est_mesh_params_t\fP \fBmesh_params\fP"
+.br
+.RI "Parameters for mesh creation\&. "
+.ti -1c
+.RI "\fBp8est_replace_t\fP \fBreplace_fn\fP"
+.br
+.RI "This member may be removed soon\&. "
+.ti -1c
+.RI "int \fBcoarsen_delay\fP"
+.br
+.RI "Non-negative integer telling how many adaptations to wait before any given quadrant may be coarsened again\&. "
+.ti -1c
+.RI "int \fBcoarsen_affect\fP"
+.br
+.RI "Boolean: If true, we delay coarsening not only after refinement, but also between subsequent coarsenings of the same quadrant\&. "
+.ti -1c
+.RI "int \fBpartition_for_coarsening\fP"
+.br
+.RI "If true, the partition is modified to allow one level of coarsening when calling \fBp8est_wrap_partition\fP\&. "
+.ti -1c
+.RI "int \fBstore_adapted\fP"
+.br
+.RI "Boolean: If true, the indices of most recently adapted quadrants are stored in the \fCnewly_refined\fP and \fCnewly_coarsened\fP array of the wrap\&. "
+.ti -1c
+.RI "void * \fBuser_pointer\fP"
+.br
+.RI "Set the user pointer in the \fBp8est_wrap\fP\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+This structure contains the different parameters of wrap creation\&. 
+
+A default instance can be initialized by calling \fBp8est_wrap_params_init\fP and used for wrap creation by calling \fBp8est_wrap_new_params\fP\&. 
+.SH "Field Documentation"
+.PP 
+.SS "\fBp8est_mesh_params_t\fP p8est_wrap_params_t::mesh_params"
+
+.PP
+Parameters for mesh creation\&. The btype member is used for ghost creation as well\&. 
+.SS "\fBp8est_replace_t\fP p8est_wrap_params_t::replace_fn"
+
+.PP
+This member may be removed soon\&. Callback to replace quadrants during refinement, coarsening or balancing in \fBp8est_wrap_adapt\fP\&. May be NULL\&. The callback should not change the \fBp8est\fP's user data\&. 
+.SS "void* p8est_wrap_params_t::user_pointer"
+
+.PP
+Set the user pointer in the \fBp8est_wrap\fP\&. Subsequently, we will never access it\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

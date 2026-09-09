@@ -1,0 +1,46 @@
+.TH "p8est_tree" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p8est_tree \- The \fBp8est\fP tree datatype\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <p8est\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "sc_array_t \fBquadrants\fP"
+.br
+.RI "locally stored quadrants "
+.ti -1c
+.RI "\fBp8est_quadrant_t\fP \fBfirst_desc\fP"
+.br
+.RI "first local descendant "
+.ti -1c
+.RI "\fBp8est_quadrant_t\fP \fBlast_desc\fP"
+.br
+.RI "last local descendant "
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBquadrants_offset\fP"
+.br
+.RI "cumulative sum over earlier trees on this processor (locals only) "
+.ti -1c
+.RI "\fBp4est_locidx_t\fP \fBquadrants_per_level\fP [\fBP8EST_MAXLEVEL\fP+1]"
+.br
+.RI "locals only "
+.ti -1c
+.RI "int8_t \fBmaxlevel\fP"
+.br
+.RI "highest local quadrant level "
+.in -1c
+.SH "Detailed Description"
+.PP 
+The \fBp8est\fP tree datatype\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

@@ -1,0 +1,59 @@
+\hypertarget{userdata_2userdata3_8c-example}{}\doxysection{userdata/userdata3.\+c}
+A 3D example of managing application data.\+The workflow is documented more extensively in \mbox{\hyperlink{example_userdata}{A demonstration of how to manage application data}}.
+
+The 3D version of th this demo compiles from the same code as the 2D example \mbox{\hyperlink{userdata_2userdata2_8c-example}{userdata/userdata2.\+c}} with minimal redefinitions. In this sense, the code is mostly dimension independent.
+
+
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{  This file is part of p4est.}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is a C library to manage a collection (a forest) of multiple}}
+\DoxyCodeLine{\textcolor{comment}{  connected adaptive quadtrees or octrees in parallel.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  Copyright (C) 2010 The University of Texas System}}
+\DoxyCodeLine{\textcolor{comment}{  Additional copyright (C) 2011 individual authors}}
+\DoxyCodeLine{\textcolor{comment}{  Written by Carsten Burstedde, Lucas C. Wilcox, and Tobin Isaac}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is free software; you can redistribute it and/or modify}}
+\DoxyCodeLine{\textcolor{comment}{  it under the terms of the GNU General Public License as published by}}
+\DoxyCodeLine{\textcolor{comment}{  the Free Software Foundation; either version 2 of the License, or}}
+\DoxyCodeLine{\textcolor{comment}{  (at your option) any later version.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  p4est is distributed in the hope that it will be useful,}}
+\DoxyCodeLine{\textcolor{comment}{  but WITHOUT ANY WARRANTY; without even the implied warranty of}}
+\DoxyCodeLine{\textcolor{comment}{  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the}}
+\DoxyCodeLine{\textcolor{comment}{  GNU General Public License for more details.}}
+\DoxyCodeLine{\textcolor{comment}{}}
+\DoxyCodeLine{\textcolor{comment}{  You should have received a copy of the GNU General Public License}}
+\DoxyCodeLine{\textcolor{comment}{  along with p4est; if not, write to the Free Software Foundation, Inc.,}}
+\DoxyCodeLine{\textcolor{comment}{  51 Franklin Street, Fifth Floor, Boston, MA 02110-\/1301, USA.}}
+\DoxyCodeLine{\textcolor{comment}{*/}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{ * This example program demonstrates how to manage application data.}}
+\DoxyCodeLine{\textcolor{comment}{ *}}
+\DoxyCodeLine{\textcolor{comment}{ *   p8est\_userdata <OPTIONS> [<configuration> [<level>]]}}
+\DoxyCodeLine{\textcolor{comment}{ *}}
+\DoxyCodeLine{\textcolor{comment}{ * with possible configurations (default is "{}unit"{}):}}
+\DoxyCodeLine{\textcolor{comment}{ *   o unit          Refinement on the unit cube.}}
+\DoxyCodeLine{\textcolor{comment}{ *   o periodic      Unit cube with all-\/periodic boundary conditions.}}
+\DoxyCodeLine{\textcolor{comment}{ *   o brick         Refinement on a 2x3x5 brick of octrees.}}
+\DoxyCodeLine{\textcolor{comment}{ *   o rotcubes      A collection of six connected rotated cubes.}}
+\DoxyCodeLine{\textcolor{comment}{ *   o sphere        A 13-\/tree geometry of a solid sphere.}}
+\DoxyCodeLine{\textcolor{comment}{ *   o shell         A 24-\/tree geometry of a hollow sphere.}}
+\DoxyCodeLine{\textcolor{comment}{ *   o torus         A multi-\/tree discretization of a torus.}}
+\DoxyCodeLine{\textcolor{comment}{ *}}
+\DoxyCodeLine{\textcolor{comment}{ * The maximum refinement level may be appended (default is 4).}}
+\DoxyCodeLine{\textcolor{comment}{ *}}
+\DoxyCodeLine{\textcolor{comment}{ * The following options are recognized:}}
+\DoxyCodeLine{\textcolor{comment}{ *   -\/-\/help          Display a usage and help message and exit successfully.}}
+\DoxyCodeLine{\textcolor{comment}{ *   -\/-\/level         The level may alternatively be specified as an option.}}
+\DoxyCodeLine{\textcolor{comment}{ *}}
+\DoxyCodeLine{\textcolor{comment}{ * Invalid options or arguments result in an error message and exit status.}}
+\DoxyCodeLine{\textcolor{comment}{ */}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <p4est\_to\_p8est.h>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "{}userdata2.c"{}}}
+
+\end{DoxyCodeInclude}
+ 

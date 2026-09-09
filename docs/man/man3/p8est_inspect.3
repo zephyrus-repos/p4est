@@ -1,0 +1,90 @@
+.TH "p8est_inspect" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+p8est_inspect
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "int \fBuse_balance_ranges\fP"
+.br
+.RI "Use sc_ranges to determine the asymmetric communication pattern\&. "
+.ti -1c
+.RI "int \fBuse_balance_ranges_notify\fP"
+.br
+.RI "If true, call both sc_ranges and sc_notify and verify consistency\&. "
+.ti -1c
+.RI "int \fBuse_balance_verify\fP"
+.br
+.RI "Verify sc_ranges and/or sc_notify as applicable\&. "
+.ti -1c
+.RI "int \fBbalance_max_ranges\fP"
+.br
+.RI "If positive and smaller than p8est_num ranges, overrides it\&. "
+.ti -1c
+.RI "size_t \fBbalance_A_count_in\fP"
+.br
+.ti -1c
+.RI "size_t \fBbalance_A_count_out\fP"
+.br
+.ti -1c
+.RI "size_t \fBbalance_comm_sent\fP"
+.br
+.ti -1c
+.RI "size_t \fBbalance_comm_nzpeers\fP"
+.br
+.ti -1c
+.RI "size_t \fBbalance_B_count_in\fP"
+.br
+.ti -1c
+.RI "size_t \fBbalance_B_count_out\fP"
+.br
+.ti -1c
+.RI "size_t \fBbalance_zero_sends\fP [2]"
+.br
+.ti -1c
+.RI "size_t \fBbalance_zero_receives\fP [2]"
+.br
+.ti -1c
+.RI "double \fBbalance_A\fP"
+.br
+.ti -1c
+.RI "double \fBbalance_comm\fP"
+.br
+.ti -1c
+.RI "double \fBbalance_B\fP"
+.br
+.ti -1c
+.RI "double \fBbalance_ranges\fP"
+.br
+.RI "time spent in sc_ranges "
+.ti -1c
+.RI "double \fBbalance_notify\fP"
+.br
+.RI "time spent in sc_notify "
+.ti -1c
+.RI "double \fBbalance_notify_allgather\fP"
+.br
+.RI "time spent in sc_notify_allgather "
+.ti -1c
+.RI "int \fBuse_B\fP"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "int p8est_inspect::use_balance_ranges"
+
+.PP
+Use sc_ranges to determine the asymmetric communication pattern\&. If \fIuse_balance_ranges\fP is false (the default), sc_notify is used\&. 
+.SS "int p8est_inspect::use_balance_ranges_notify"
+
+.PP
+If true, call both sc_ranges and sc_notify and verify consistency\&. Which is actually used is still determined by \fIuse_balance_ranges\fP\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.

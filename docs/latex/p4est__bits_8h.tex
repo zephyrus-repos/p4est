@@ -1,0 +1,1714 @@
+\hypertarget{p4est__bits_8h}{}\doxysection{src/p4est\+\_\+bits.h File Reference}
+\label{p4est__bits_8h}\index{src/p4est\_bits.h@{src/p4est\_bits.h}}
+
+
+Routines for manipulating quadrants (neighbors, parents, children, etc.)  
+
+
+{\ttfamily \#include $<$p4est.\+h$>$}\newline
+{\ttfamily \#include $<$sc\+\_\+random.\+h$>$}\newline
+Include dependency graph for p4est\+\_\+bits.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p4est__bits_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{p4est__bits_8h_a7d13de5b329b6eca62c4f525223357d7}\label{p4est__bits_8h_a7d13de5b329b6eca62c4f525223357d7}} 
+\#define \mbox{\hyperlink{p4est__bits_8h_a7d13de5b329b6eca62c4f525223357d7}{P4\+EST\+\_\+\+COORDINATES\+\_\+\+IS\+\_\+\+VALID}}(c)~  (\mbox{\hyperlink{p4est__bits_8h_a924e68ca9ff0ccc2c2dd4295524d0e51}{p4est\+\_\+coordinates\+\_\+is\+\_\+valid}} ((c), \mbox{\hyperlink{p4est_8h_a9202bc92ab91dc2b7914e01bb27f8b23}{P4\+EST\+\_\+\+MAXLEVEL}}))
+\begin{DoxyCompactList}\small\item\em Check whether coordinates are a valid quadrant boundary point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{p4est__bits_8h_a34ad030ee3c8d04e5321cc19611939d8}{p4est\+\_\+quadrant\+\_\+pad}} (\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Write -\/1 into the pad8 and pad16 members of a quadrant. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_adb2bf29a05140745a77ddef44622002d}{p4est\+\_\+quadrant\+\_\+print}} (int log\+\_\+priority, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Prints one line with quadrant\textquotesingle{}s x, y and level. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a78be9585dd09db13844006c2ea69c0d8}{p4est\+\_\+quadrant\+\_\+is\+\_\+equal}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q1, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q2)
+\begin{DoxyCompactList}\small\item\em Test if two quadrants have equal Morton indices. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_aa86a13982a13a775d4633f76a30fa198}{p4est\+\_\+quadrant\+\_\+copy}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$copy)
+\begin{DoxyCompactList}\small\item\em Copy the Morton indices of the quadrant {\itshape q}. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_ac0ad6288f590871990cc96bed03d0928}{p4est\+\_\+quadrant\+\_\+overlaps}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q1, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q2)
+\begin{DoxyCompactList}\small\item\em Test if two quadrants overlap. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_af17617d6bc02153d661a5ddb32ae0ed2}{p4est\+\_\+quadrant\+\_\+is\+\_\+equal\+\_\+piggy}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q1, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q2)
+\begin{DoxyCompactList}\small\item\em Test if two quadrants have equal Morton indices and the same tree id. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_ad666fa401c05fd14c516d2041403b438}{p4est\+\_\+quadrant\+\_\+compare}} (const void $\ast$v1, const void $\ast$v2)
+\begin{DoxyCompactList}\small\item\em Compare two quadrants in their Morton ordering. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a10f5aa2481ba7353f47cb9174e1cd4f6}{p4est\+\_\+coordinates\+\_\+compare}} (const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} v1\mbox{[}$\,$\mbox{]}, const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} v2\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Compare two sets of coordinates in their Morton ordering. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a3d486a3923ad205589e5b121c0d2534c}{p4est\+\_\+quadrant\+\_\+disjoint}} (const void $\ast$v1, const void $\ast$v2)
+\begin{DoxyCompactList}\small\item\em Compare two quadrants in their Morton ordering, with equivalence if the two quadrants overlap. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a39a0f31f174a10f029cc67b7ca1e0a4c}{p4est\+\_\+quadrant\+\_\+compare\+\_\+piggy}} (const void $\ast$v1, const void $\ast$v2)
+\begin{DoxyCompactList}\small\item\em Compare two quadrants in their Morton ordering and the which\+\_\+tree member. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a6003c0af1b5041d9963ff2fb0f5156be}{p4est\+\_\+quadrant\+\_\+compare\+\_\+local\+\_\+num}} (const void $\ast$v1, const void $\ast$v2)
+\begin{DoxyCompactList}\small\item\em Compare two quadrants with respect to their local\+\_\+num in the piggy3 member. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_ab6c6fc5ecab77789f99ca5e92f32bc42}{p4est\+\_\+quadrant\+\_\+equal\+\_\+fn}} (const void $\ast$v1, const void $\ast$v2, const void $\ast$u)
+\begin{DoxyCompactList}\small\item\em Test if two quadrants have equal Morton indices, callback version. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__bits_8h_a32e7c58bc29cb9d9fb4e2aeef3afb5ea}\label{p4est__bits_8h_a32e7c58bc29cb9d9fb4e2aeef3afb5ea}} 
+unsigned \mbox{\hyperlink{p4est__bits_8h_a32e7c58bc29cb9d9fb4e2aeef3afb5ea}{p4est\+\_\+quadrant\+\_\+hash\+\_\+fn}} (const void $\ast$v, const void $\ast$u)
+\begin{DoxyCompactList}\small\item\em Computes a hash value for a quadrant by the lookup3 method. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a15bc8348839ea43c39f866fcfc303963}{p4est\+\_\+node\+\_\+equal\+\_\+piggy\+\_\+fn}} (const void $\ast$v1, const void $\ast$v2, const void $\ast$u)
+\begin{DoxyCompactList}\small\item\em Test if two nodes are in the same tree and have equal Morton indices. \end{DoxyCompactList}\item 
+unsigned \mbox{\hyperlink{p4est__bits_8h_a21bed34fcd463423844608b46a8d0b57}{p4est\+\_\+node\+\_\+hash\+\_\+piggy\+\_\+fn}} (const void $\ast$v, const void $\ast$u)
+\begin{DoxyCompactList}\small\item\em Compute hash value of a node based on its tree and Morton index. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_ad126c5e00231b60d0dfe4ef60c831d40}{p4est\+\_\+node\+\_\+clamp\+\_\+inside}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$n, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Clamp a node inside the unit tree if it sits on a high border. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a745cef064b3b2634ab1f2c0208c4e185}{p4est\+\_\+node\+\_\+unclamp}} (\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$n)
+\begin{DoxyCompactList}\small\item\em Move a clamped node out on the border. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a74b5744f0509a88c31d9fd77922f17d8}{p4est\+\_\+node\+\_\+to\+\_\+quadrant}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$n, int level, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Find the enclosing quadrant of a given node at a given level. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a97832daf634ff801181c894a5229ece6}{p4est\+\_\+quadrant\+\_\+contains\+\_\+node}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$n)
+\begin{DoxyCompactList}\small\item\em Decide if a node is completely contained within a quadrant. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_af482fada7d862b0a561ac325fe2b89f1}{p4est\+\_\+quadrant\+\_\+ancestor\+\_\+id}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int level)
+\begin{DoxyCompactList}\small\item\em Compute the position of the ancestor of this child at level {\itshape level} within its siblings. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a2b0cbbd87c0bc9d640fb0ee8b32d9a0f}{p4est\+\_\+quadrant\+\_\+child\+\_\+id}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Compute the position of this child within its siblings. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a718799d86f590417fab1ccba78c6b3b8}{p4est\+\_\+coordinates\+\_\+is\+\_\+inside\+\_\+root}} (const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} coord\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Test if Morton indices are inside the unit tree or on its boundary. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_ab8f88e83d54ea09df2a0d5da476f25e0}{p4est\+\_\+quadrant\+\_\+is\+\_\+inside\+\_\+root}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant is inside the unit tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_adeaae08cdc1852a005b3bdbad8ce642e}{p4est\+\_\+quadrant\+\_\+is\+\_\+inside\+\_\+3x3}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant is inside the 3x3 box around the root tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a53361d47cff1fc29f579b7ba800b92bd}{p4est\+\_\+quadrant\+\_\+is\+\_\+outside\+\_\+face}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant is outside a tree face boundary (no corner). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a5a41088ca3b106949db4275bee8ef6f4}{p4est\+\_\+quadrant\+\_\+is\+\_\+outside\+\_\+corner}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant is outside a tree corner boundary. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a1941e7d00d0d38d89865b4140c172a50}{p4est\+\_\+quadrant\+\_\+is\+\_\+node}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int inside)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant is used to represent a mesh node. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a924e68ca9ff0ccc2c2dd4295524d0e51}{p4est\+\_\+coordinates\+\_\+is\+\_\+valid}} (const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} coord\mbox{[}$\,$\mbox{]}, int level)
+\begin{DoxyCompactList}\small\item\em Test if Morton indices are valid and inside the unit tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a93fdfa19f38d4fca9e42896eda01a558}{p4est\+\_\+quadrant\+\_\+is\+\_\+valid}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant has valid Morton indices and is inside the unit tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_af09c9f3d67c4983b6981d7482f275275}{p4est\+\_\+quadrant\+\_\+is\+\_\+extended}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant has valid Morton indices in the 3x3 box around root. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_ad97b84204654a42cfbcbe39f122af944}{p4est\+\_\+quadrant\+\_\+is\+\_\+sibling}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q1, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q2)
+\begin{DoxyCompactList}\small\item\em Test if two quadrants are siblings. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_ae76d3c27cc27a030ef0bad0d25d4bc6b}{p4est\+\_\+quadrant\+\_\+is\+\_\+sibling\+\_\+D}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q1, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q2)
+\begin{DoxyCompactList}\small\item\em Test if two quadrants are siblings. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__bits_8h_a972391d582f03f5a46d609cba1ef6c6d}\label{p4est__bits_8h_a972391d582f03f5a46d609cba1ef6c6d}} 
+int \mbox{\hyperlink{p4est__bits_8h_a972391d582f03f5a46d609cba1ef6c6d}{p4est\+\_\+quadrant\+\_\+is\+\_\+family}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q0, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q1, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q2, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q3)
+\begin{DoxyCompactList}\small\item\em Test if 4 quadrants are siblings in Morton ordering. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a274f4f9b687d6d5bf08ad539ed198426}{p4est\+\_\+quadrant\+\_\+is\+\_\+familyv}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} q\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Test if 4 quadrants are siblings in Morton ordering, array version. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_adca32a05d2c9022d1ef35e3db7e89eba}{p4est\+\_\+quadrant\+\_\+is\+\_\+familypv}} (\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Test if 4 quadrants are siblings in Morton ordering, array version. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_ab5c720b940cfc460cd58002a25c330cc}{p4est\+\_\+quadrant\+\_\+is\+\_\+parent}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant is the parent of another quadrant. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_ad117ec396630e53c97e4c2436f0b31a0}{p4est\+\_\+quadrant\+\_\+is\+\_\+parent\+\_\+D}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant is the parent of another quadrant. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a280866adc8089fa7117c08304c950ef4}{p4est\+\_\+quadrant\+\_\+is\+\_\+ancestor}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant is an ancestor of another quadrant. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a76de6d1e607eb49bd5dab2edd7de2371}{p4est\+\_\+quadrant\+\_\+is\+\_\+ancestor\+\_\+D}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant is an ancestor of another quadrant. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a0b234948853dc0b821f1dd4ff45f3955}{p4est\+\_\+quadrant\+\_\+is\+\_\+next}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Test if two quadrants follow each other in the tree with no holes. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a9aadb0095aa0f091ce62707bb02c0c47}{p4est\+\_\+quadrant\+\_\+is\+\_\+next\+\_\+D}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Test if two quadrants follow each other in the tree with no holes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__bits_8h_a19b42c02a47b7841b4f96e060f77bc8c}\label{p4est__bits_8h_a19b42c02a47b7841b4f96e060f77bc8c}} 
+int \mbox{\hyperlink{p4est__bits_8h_a19b42c02a47b7841b4f96e060f77bc8c}{p4est\+\_\+quadrant\+\_\+overlaps\+\_\+tree}} (\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$tree, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant has at least partial overlap with a tree. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{p4est__bits_8h_a4a5210836cb99caa76110ff5e43e0e15}\label{p4est__bits_8h_a4a5210836cb99caa76110ff5e43e0e15}} 
+int \mbox{\hyperlink{p4est__bits_8h_a4a5210836cb99caa76110ff5e43e0e15}{p4est\+\_\+quadrant\+\_\+is\+\_\+inside\+\_\+tree}} (\mbox{\hyperlink{p4est_8h_a089317ca800f7a4169540cb37ccba608}{p4est\+\_\+tree\+\_\+t}} $\ast$tree, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Test if a quadrant is completely contained within a tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_afc997b6be848978f666acbf4b2c12ba3}{p4est\+\_\+quadrant\+\_\+is\+\_\+first\+\_\+last}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$f, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$l, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$a)
+\begin{DoxyCompactList}\small\item\em Whether two descendants of a quadrant are first and last, up to size. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a87ad25d14d09522aa78521a767ae7aab}{p4est\+\_\+quadrant\+\_\+enlarge\+\_\+first}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$a, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Enlarge a quadrant as long as its first corner stays the same. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a99e0aaced4135f788ff11de77df2de9f}{p4est\+\_\+quadrant\+\_\+enlarge\+\_\+last}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$a, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q)
+\begin{DoxyCompactList}\small\item\em Enlarge a quadrant as long as its last corner stays the same. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a571cd89e7cf1723a5d0702146d62a61f}{p4est\+\_\+quadrant\+\_\+root}} (\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$root)
+\begin{DoxyCompactList}\small\item\em Generate the root quadrant of any tree. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a86e6b6a9552257b1dd90808bdd3a6351}{p4est\+\_\+quadrant\+\_\+ancestor}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int level, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Compute the ancestor of a quadrant at a given level. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_abf3fcf47f480c00a590f005807c71b9b}{p4est\+\_\+quadrant\+\_\+parent}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Compute the parent of a quadrant. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_ac57bcd028264b0ff48f7d467397d7bd8}{p4est\+\_\+quadrant\+\_\+sibling}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r, int sibling\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Compute a specific sibling of a quadrant. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_ac715371e458c411ee35b69629ceb733f}{p4est\+\_\+quadrant\+\_\+child}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r, int child\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Compute a specific child of a quadrant. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a1c0bd87bc88f3389fa5f224922ce060a}{p4est\+\_\+quadrant\+\_\+volume\+\_\+coordinates}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} coords\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Compute the coordinates of a quadrant\textquotesingle{}s midpoint. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a334cba70e27e9bf64fd577f32c121a6a}{p4est\+\_\+quadrant\+\_\+face\+\_\+neighbor}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int face, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Compute the face neighbor of a quadrant. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{p4est__bits_8h_ab8014577e1240d93975e04a30eaa09bf}{p4est\+\_\+quadrant\+\_\+face\+\_\+neighbor\+\_\+extra}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} t, int face, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r, int $\ast$nface, \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn)
+\begin{DoxyCompactList}\small\item\em Compute the face neighbor of a quadrant, transforming across tree boundaries if necessary. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_afdde134c244033b587878884d19e0ea1}{p4est\+\_\+quadrant\+\_\+half\+\_\+face\+\_\+neighbors}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int face, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} n\mbox{[}2\mbox{]}, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} nur\mbox{[}2\mbox{]})
+\begin{DoxyCompactList}\small\item\em Get the smaller face neighbors of {\itshape q}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a1fd0c691565f0f14d50383996568ff31}{p4est\+\_\+quadrant\+\_\+all\+\_\+face\+\_\+neighbors}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int face, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} n\mbox{[}4\mbox{]})
+\begin{DoxyCompactList}\small\item\em Create all possible face neighbors of {\itshape q}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a3d045f30f00319ac7410db08b8753a3e}{p4est\+\_\+quadrant\+\_\+face\+\_\+coordinates}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int face, \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} coords\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Compute the coordinates of a specific quadrant face\textquotesingle{}s midpoint. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a4dbb4ad73bec73e839f7dc61ce26c9e6}{p4est\+\_\+quadrant\+\_\+corner\+\_\+neighbor}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int corner, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Compute the corner neighbor of a quadrant. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_acde00516d87bb6de93bae5412151e9a0}{p4est\+\_\+quadrant\+\_\+corner\+\_\+neighbor\+\_\+extra}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}} t, int corner, sc\+\_\+array\+\_\+t $\ast$quads, sc\+\_\+array\+\_\+t $\ast$treeids, sc\+\_\+array\+\_\+t $\ast$ncorners, \mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$conn)
+\begin{DoxyCompactList}\small\item\em Compute the corner neighbors of a quadrant, transforming across tree boundaries if necessary. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a04b1067d4f6810bf937cf6ff0ab82f66}{p4est\+\_\+quadrant\+\_\+half\+\_\+corner\+\_\+neighbor}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int corner, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Compute the half size corner neighbor of a quadrant. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_ada26b2e2ae47969c6a58a9fda446847f}{p4est\+\_\+quadrant\+\_\+corner\+\_\+node}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int corner, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Compute a corner node of a quadrant. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_aa415031cb5088b5c1344b2421605c4c1}{p4est\+\_\+quadrant\+\_\+corner\+\_\+coordinates}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int corner, \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} coords\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Compute the coordinates of a specific quadrant corner. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a7b2a9661bdc593d3cc5aee6e5e131c0c}{p4est\+\_\+quadrant\+\_\+children}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$c0, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$c1, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$c2, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$c3)
+\begin{DoxyCompactList}\small\item\em Compute the 4 children of a quadrant. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_ad0bc7c723c6bd672451aa0536b0e17c9}{p4est\+\_\+quadrant\+\_\+childrenv}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} c\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Compute the 4 children of a quadrant, array version. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_afdefc9ca109254596a7607281812c115}{p4est\+\_\+quadrant\+\_\+childrenpv}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$c\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Compute the 4 children of a quadrant, array version. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a643d2d1bab8ebfe3926ece3ea3379863}{p4est\+\_\+quadrant\+\_\+first\+\_\+descendant}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$fd, int level)
+\begin{DoxyCompactList}\small\item\em Compute the first descendant of a quadrant on a given level. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a11608b9e5d2d2ed52fef6f0cff8047a4}{p4est\+\_\+quadrant\+\_\+last\+\_\+descendant}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$ld, int level)
+\begin{DoxyCompactList}\small\item\em Compute the last descendant of a quadrant on a given level. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_ac13db00c3fcbcb1081adaed0ae561a81}{p4est\+\_\+quadrant\+\_\+corner\+\_\+descendant}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r, int c, int level)
+\begin{DoxyCompactList}\small\item\em Compute the descendant of a quadrant touching a given corner. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a44ad1c5953f99f9f2043af09a19192e3}{p4est\+\_\+nearest\+\_\+common\+\_\+ancestor}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q1, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q2, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Computes the nearest common ancestor of two quadrants in the same tree. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a08160350c83e5b291b06b4981fedc2fa}{p4est\+\_\+nearest\+\_\+common\+\_\+ancestor\+\_\+D}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q1, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q2, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Computes the nearest common ancestor of two quadrants in the same tree. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_aea8b9c879585b51c8bc0f465a778694f}{p4est\+\_\+quadrant\+\_\+transform\+\_\+face}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r, const int ftransform\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Transforms a quadrant/node across a face between trees. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_aeb295989af65f9b743a20538d75b8475}{p4est\+\_\+coordinates\+\_\+transform\+\_\+face}} (const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} coords\+\_\+in\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} coords\+\_\+out\mbox{[}$\,$\mbox{]}, const int ftransform\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Transforms coordinates across a face between trees. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_afda3c543b6f66241db7fa7bfe0170129}{p4est\+\_\+quadrant\+\_\+touches\+\_\+corner}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int corner, int inside)
+\begin{DoxyCompactList}\small\item\em Checks if a quadrant touches a corner (diagonally inside or outside). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a52a20b325a8702eaaab90db24dd4dee8}{p4est\+\_\+coordinates\+\_\+transform\+\_\+corner}} (\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}} coords\mbox{[}$\,$\mbox{]}, int corner)
+\begin{DoxyCompactList}\small\item\em Set a coordinate location to a given tree (root quadrant) corner. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a33d171a3c94c4e642ccbc2a285ecd3b9}{p4est\+\_\+quadrant\+\_\+transform\+\_\+corner}} (\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, int corner, int inside)
+\begin{DoxyCompactList}\small\item\em Move a quadrant inside or diagonally outside a corner position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a7eaf658387b754bf3864f25987083254}{p4est\+\_\+quadrant\+\_\+shift\+\_\+corner}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$r, int corner)
+\begin{DoxyCompactList}\small\item\em Shifts a quadrant until it touches the specified corner from the inside. \end{DoxyCompactList}\item 
+uint64\+\_\+t \mbox{\hyperlink{p4est__bits_8h_aa997ddc1a53b4a7e762947069d0f20cc}{p4est\+\_\+quadrant\+\_\+linear\+\_\+id}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$quadrant, int level)
+\begin{DoxyCompactList}\small\item\em Computes the linear position of a quadrant in a uniform grid. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a19966ea2baac6e8d70b5e94d23dc38d2}{p4est\+\_\+quadrant\+\_\+set\+\_\+morton}} (\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$quadrant, int level, uint64\+\_\+t id)
+\begin{DoxyCompactList}\small\item\em Set quadrant Morton indices based on linear position in uniform grid. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a8a6c00b8588a947c676b11c9067e842c}{p4est\+\_\+quadrant\+\_\+successor}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$quadrant, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$result)
+\begin{DoxyCompactList}\small\item\em Compute the successor according to the Morton index in a uniform mesh. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_ae6f537b5494796cb6bab0b22d7210ae6}{p4est\+\_\+quadrant\+\_\+predecessor}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$quadrant, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$result)
+\begin{DoxyCompactList}\small\item\em Compute the predecessor according to the Morton index in a uniform mesh. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_ad04582a2cbc27b809b437977484078c4}{p4est\+\_\+quadrant\+\_\+srand}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$q, sc\+\_\+rand\+\_\+state\+\_\+t $\ast$rstate)
+\begin{DoxyCompactList}\small\item\em Initialize a random number generator by quadrant coordinates. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_a5fb98cc6521d7cd3d5bcecbff0dc5dcb}{p4est\+\_\+neighbor\+\_\+transform\+\_\+quadrant}} (const \mbox{\hyperlink{structp4est__neighbor__transform__t}{p4est\+\_\+neighbor\+\_\+transform\+\_\+t}} $\ast$nt, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$self\+\_\+quad, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$neigh\+\_\+quad)
+\begin{DoxyCompactList}\small\item\em Transform a quadrant from self\textquotesingle{}s coordinate system to neighbor\textquotesingle{}s coordinate system. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{p4est__bits_8h_ab00f2eb6b9793026565988c4cd488a63}{p4est\+\_\+neighbor\+\_\+transform\+\_\+quadrant\+\_\+reverse}} (const \mbox{\hyperlink{structp4est__neighbor__transform__t}{p4est\+\_\+neighbor\+\_\+transform\+\_\+t}} $\ast$nt, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$neigh\+\_\+quad, \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$self\+\_\+quad)
+\begin{DoxyCompactList}\small\item\em Transform a quadrant from a neighbors\textquotesingle{}s coordinate system to self\textquotesingle{}s coordinate system. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_a655a7ef381f64defe086f78357b0f81f}{p4est\+\_\+quadrant\+\_\+is\+\_\+ancestor\+\_\+face}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$descendant, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$ancestor, int face)
+\begin{DoxyCompactList}\small\item\em Check if a descendant shares a face with a (strict) ancestor. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{p4est__bits_8h_ab506e8681b0b1c3f36a6ebada89f9cc6}{p4est\+\_\+quadrant\+\_\+is\+\_\+ancestor\+\_\+corner}} (const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$descendant, const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$ancestor, int corner)
+\begin{DoxyCompactList}\small\item\em Check if a descendant shares a corner with a (strict) ancestor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Routines for manipulating quadrants (neighbors, parents, children, etc.) 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{p4est__bits_8h_a10f5aa2481ba7353f47cb9174e1cd4f6}\label{p4est__bits_8h_a10f5aa2481ba7353f47cb9174e1cd4f6}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_coordinates\_compare@{p4est\_coordinates\_compare}}
+\index{p4est\_coordinates\_compare@{p4est\_coordinates\_compare}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_coordinates\_compare()}{p4est\_coordinates\_compare()}}
+{\footnotesize\ttfamily int p4est\+\_\+coordinates\+\_\+compare (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{v1\mbox{[}$\,$\mbox{]},  }\item[{const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{v2\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Compare two sets of coordinates in their Morton ordering. 
+
+Coordinates are signed, but the sorted order will treat them as unsigned, with negative coordinates being greater than positive coordinates because of their representation in twos-\/complement. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em v1,v2} & Two sets of 2d coordinates. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns $<$ 0 if {\itshape v1} $<$ {\itshape v2}, 0 if {\itshape v1} == {\itshape v2}, $>$ 0 if {\itshape v1} $>$ {\itshape v2} 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{test_coordinates2_8c-example}{test\+\_\+coordinates2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_a718799d86f590417fab1ccba78c6b3b8}\label{p4est__bits_8h_a718799d86f590417fab1ccba78c6b3b8}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_coordinates\_is\_inside\_root@{p4est\_coordinates\_is\_inside\_root}}
+\index{p4est\_coordinates\_is\_inside\_root@{p4est\_coordinates\_is\_inside\_root}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_coordinates\_is\_inside\_root()}{p4est\_coordinates\_is\_inside\_root()}}
+{\footnotesize\ttfamily int p4est\+\_\+coordinates\+\_\+is\+\_\+inside\+\_\+root (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{coord\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Test if Morton indices are inside the unit tree or on its boundary. 
+
+For this function, coordinate values of \mbox{\hyperlink{p4est_8h_ae26167f0411d9845caa84be6d50c0cee}{P4\+EST\+\_\+\+ROOT\+\_\+\+LEN}} are legal. It is like \mbox{\hyperlink{p4est__bits_8h_ab8f88e83d54ea09df2a0d5da476f25e0}{p4est\+\_\+quadrant\+\_\+is\+\_\+inside\+\_\+root}} with infinite level. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em coord} & 2d coordinates. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if {\itshape }(coord\mbox{[}0\mbox{]},coord\mbox{[}1\mbox{]}) is inside the unit tree. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a924e68ca9ff0ccc2c2dd4295524d0e51}\label{p4est__bits_8h_a924e68ca9ff0ccc2c2dd4295524d0e51}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_coordinates\_is\_valid@{p4est\_coordinates\_is\_valid}}
+\index{p4est\_coordinates\_is\_valid@{p4est\_coordinates\_is\_valid}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_coordinates\_is\_valid()}{p4est\_coordinates\_is\_valid()}}
+{\footnotesize\ttfamily int p4est\+\_\+coordinates\+\_\+is\+\_\+valid (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{coord\mbox{[}$\,$\mbox{]},  }\item[{int}]{level }\end{DoxyParamCaption})}
+
+
+
+Test if Morton indices are valid and inside the unit tree. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em coord} & 2d coordinates may validly lie on any tree boundary. \\
+\hline
+\mbox{\texttt{ in}}  & {\em level} & A level between 0 and \mbox{\hyperlink{p4est_8h_a9202bc92ab91dc2b7914e01bb27f8b23}{P4\+EST\+\_\+\+MAXLEVEL}} included. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if {\itshape }(coord\mbox{[}0\mbox{]},coord\mbox{[}1\mbox{]},level) is valid. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a52a20b325a8702eaaab90db24dd4dee8}\label{p4est__bits_8h_a52a20b325a8702eaaab90db24dd4dee8}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_coordinates\_transform\_corner@{p4est\_coordinates\_transform\_corner}}
+\index{p4est\_coordinates\_transform\_corner@{p4est\_coordinates\_transform\_corner}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_coordinates\_transform\_corner()}{p4est\_coordinates\_transform\_corner()}}
+{\footnotesize\ttfamily void p4est\+\_\+coordinates\+\_\+transform\+\_\+corner (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{coords\mbox{[}$\,$\mbox{]},  }\item[{int}]{corner }\end{DoxyParamCaption})}
+
+
+
+Set a coordinate location to a given tree (root quadrant) corner. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em coords} & Output coordinates filled depending on {\itshape corner}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em corner} & Number of the corner in 0..3. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_aeb295989af65f9b743a20538d75b8475}\label{p4est__bits_8h_aeb295989af65f9b743a20538d75b8475}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_coordinates\_transform\_face@{p4est\_coordinates\_transform\_face}}
+\index{p4est\_coordinates\_transform\_face@{p4est\_coordinates\_transform\_face}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_coordinates\_transform\_face()}{p4est\_coordinates\_transform\_face()}}
+{\footnotesize\ttfamily void p4est\+\_\+coordinates\+\_\+transform\+\_\+face (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{coords\+\_\+in\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{coords\+\_\+out\mbox{[}$\,$\mbox{]},  }\item[{const int}]{ftransform\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Transforms coordinates across a face between trees. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em coords\+\_\+in} & Input coordinates. \\
+\hline
+\mbox{\texttt{ out}}  & {\em coords\+\_\+out} & Output coordinates. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ftransform} & This array holds 9 integers. \mbox{[}0,2\mbox{]} The coordinate axis sequence of the origin face. \mbox{[}3,5\mbox{]} The coordinate axis sequence of the target face. \mbox{[}6,8\mbox{]} Edge reverse flag for axis 0; face code for 1. \mbox{[}1,4,7\mbox{]} 0 (unused for compatibility with 3D). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a44ad1c5953f99f9f2043af09a19192e3}\label{p4est__bits_8h_a44ad1c5953f99f9f2043af09a19192e3}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_nearest\_common\_ancestor@{p4est\_nearest\_common\_ancestor}}
+\index{p4est\_nearest\_common\_ancestor@{p4est\_nearest\_common\_ancestor}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_nearest\_common\_ancestor()}{p4est\_nearest\_common\_ancestor()}}
+{\footnotesize\ttfamily void p4est\+\_\+nearest\+\_\+common\+\_\+ancestor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q1,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q2,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Computes the nearest common ancestor of two quadrants in the same tree. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q1} & First input quadrant. \\
+\hline
+\mbox{\texttt{ in}}  & {\em q2} & Second input quadrant. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em r} & Existing quadrant whose Morton index will be filled. Its user\+\_\+data will be untouched. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+{\itshape q1}, {\itshape q2}, {\itshape r} may point to the same quadrant. The user\+\_\+data of {\itshape r} is never modified. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_a08160350c83e5b291b06b4981fedc2fa}\label{p4est__bits_8h_a08160350c83e5b291b06b4981fedc2fa}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_nearest\_common\_ancestor\_D@{p4est\_nearest\_common\_ancestor\_D}}
+\index{p4est\_nearest\_common\_ancestor\_D@{p4est\_nearest\_common\_ancestor\_D}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_nearest\_common\_ancestor\_D()}{p4est\_nearest\_common\_ancestor\_D()}}
+{\footnotesize\ttfamily void p4est\+\_\+nearest\+\_\+common\+\_\+ancestor\+\_\+D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q1,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q2,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Computes the nearest common ancestor of two quadrants in the same tree. 
+
+Descriptive, slower version of {\itshape p4est\+\_\+nearest\+\_\+common\+\_\+ancestor}. For debugging and educationial purposes only. \mbox{\Hypertarget{p4est__bits_8h_a5fb98cc6521d7cd3d5bcecbff0dc5dcb}\label{p4est__bits_8h_a5fb98cc6521d7cd3d5bcecbff0dc5dcb}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_neighbor\_transform\_quadrant@{p4est\_neighbor\_transform\_quadrant}}
+\index{p4est\_neighbor\_transform\_quadrant@{p4est\_neighbor\_transform\_quadrant}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_neighbor\_transform\_quadrant()}{p4est\_neighbor\_transform\_quadrant()}}
+{\footnotesize\ttfamily void p4est\+\_\+neighbor\+\_\+transform\+\_\+quadrant (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structp4est__neighbor__transform__t}{p4est\+\_\+neighbor\+\_\+transform\+\_\+t}} $\ast$}]{nt,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{self\+\_\+quad,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{neigh\+\_\+quad }\end{DoxyParamCaption})}
+
+
+
+Transform a quadrant from self\textquotesingle{}s coordinate system to neighbor\textquotesingle{}s coordinate system. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em nt} & A neighbor transform. \\
+\hline
+\mbox{\texttt{ in}}  & {\em self\+\_\+quad} & Input quadrant in self coordinates. \\
+\hline
+\mbox{\texttt{ out}}  & {\em neigh\+\_\+quad} & Quad transformed into neighbor coordinates.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+This transform gives meaningful results when {\itshape self\+\_\+quad} is inside the tree root or touches the interface between the two trees in the transform. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_ab00f2eb6b9793026565988c4cd488a63}\label{p4est__bits_8h_ab00f2eb6b9793026565988c4cd488a63}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_neighbor\_transform\_quadrant\_reverse@{p4est\_neighbor\_transform\_quadrant\_reverse}}
+\index{p4est\_neighbor\_transform\_quadrant\_reverse@{p4est\_neighbor\_transform\_quadrant\_reverse}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_neighbor\_transform\_quadrant\_reverse()}{p4est\_neighbor\_transform\_quadrant\_reverse()}}
+{\footnotesize\ttfamily void p4est\+\_\+neighbor\+\_\+transform\+\_\+quadrant\+\_\+reverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structp4est__neighbor__transform__t}{p4est\+\_\+neighbor\+\_\+transform\+\_\+t}} $\ast$}]{nt,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{neigh\+\_\+quad,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{self\+\_\+quad }\end{DoxyParamCaption})}
+
+
+
+Transform a quadrant from a neighbors\textquotesingle{}s coordinate system to self\textquotesingle{}s coordinate system. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em nt} & A neighbor transform. \\
+\hline
+\mbox{\texttt{ in}}  & {\em neigh\+\_\+quad} & Input quadrant in neighbor coordinates. \\
+\hline
+\mbox{\texttt{ out}}  & {\em self\+\_\+quad} & Quad transformed into self coordinates.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+This transform gives meaningful results when {\itshape neigh\+\_\+quad} is inside the tree root or touches the interface between the two trees in the transform. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_ad126c5e00231b60d0dfe4ef60c831d40}\label{p4est__bits_8h_ad126c5e00231b60d0dfe4ef60c831d40}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_node\_clamp\_inside@{p4est\_node\_clamp\_inside}}
+\index{p4est\_node\_clamp\_inside@{p4est\_node\_clamp\_inside}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_node\_clamp\_inside()}{p4est\_node\_clamp\_inside()}}
+{\footnotesize\ttfamily void p4est\+\_\+node\+\_\+clamp\+\_\+inside (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{n,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Clamp a node inside the unit tree if it sits on a high border. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em n} & Node to be clamped. Must not yet be clamped. \\
+\hline
+\mbox{\texttt{ out}}  & {\em r} & Existing node overwritten by the clamped result. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a15bc8348839ea43c39f866fcfc303963}\label{p4est__bits_8h_a15bc8348839ea43c39f866fcfc303963}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_node\_equal\_piggy\_fn@{p4est\_node\_equal\_piggy\_fn}}
+\index{p4est\_node\_equal\_piggy\_fn@{p4est\_node\_equal\_piggy\_fn}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_node\_equal\_piggy\_fn()}{p4est\_node\_equal\_piggy\_fn()}}
+{\footnotesize\ttfamily int p4est\+\_\+node\+\_\+equal\+\_\+piggy\+\_\+fn (\begin{DoxyParamCaption}\item[{const void $\ast$}]{v1,  }\item[{const void $\ast$}]{v2,  }\item[{const void $\ast$}]{u }\end{DoxyParamCaption})}
+
+
+
+Test if two nodes are in the same tree and have equal Morton indices. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em v1} & Pointer to a clamped or unclamped node, depending on u. \\
+\hline
+\mbox{\texttt{ in}}  & {\em v2} & Pointer to a clamped or unclamped node, depending on u. \\
+\hline
+\mbox{\texttt{ in}}  & {\em u} & User data, points to an int holding the clamped-\/flag. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a21bed34fcd463423844608b46a8d0b57}\label{p4est__bits_8h_a21bed34fcd463423844608b46a8d0b57}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_node\_hash\_piggy\_fn@{p4est\_node\_hash\_piggy\_fn}}
+\index{p4est\_node\_hash\_piggy\_fn@{p4est\_node\_hash\_piggy\_fn}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_node\_hash\_piggy\_fn()}{p4est\_node\_hash\_piggy\_fn()}}
+{\footnotesize\ttfamily unsigned p4est\+\_\+node\+\_\+hash\+\_\+piggy\+\_\+fn (\begin{DoxyParamCaption}\item[{const void $\ast$}]{v,  }\item[{const void $\ast$}]{u }\end{DoxyParamCaption})}
+
+
+
+Compute hash value of a node based on its tree and Morton index. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em v} & Pointer to a clamped or unclamped node, depending on u. \\
+\hline
+\mbox{\texttt{ in}}  & {\em u} & User data, points to an int holding the clamped-\/flag. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a74b5744f0509a88c31d9fd77922f17d8}\label{p4est__bits_8h_a74b5744f0509a88c31d9fd77922f17d8}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_node\_to\_quadrant@{p4est\_node\_to\_quadrant}}
+\index{p4est\_node\_to\_quadrant@{p4est\_node\_to\_quadrant}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_node\_to\_quadrant()}{p4est\_node\_to\_quadrant()}}
+{\footnotesize\ttfamily void p4est\+\_\+node\+\_\+to\+\_\+quadrant (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{n,  }\item[{int}]{level,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Find the enclosing quadrant of a given node at a given level. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em n} & Clamped node. \\
+\hline
+\mbox{\texttt{ in}}  & {\em level} & Level of the quadrant to be created. \\
+\hline
+\mbox{\texttt{ out}}  & {\em q} & Output quadrant, n == q is permitted. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a745cef064b3b2634ab1f2c0208c4e185}\label{p4est__bits_8h_a745cef064b3b2634ab1f2c0208c4e185}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_node\_unclamp@{p4est\_node\_unclamp}}
+\index{p4est\_node\_unclamp@{p4est\_node\_unclamp}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_node\_unclamp()}{p4est\_node\_unclamp()}}
+{\footnotesize\ttfamily void p4est\+\_\+node\+\_\+unclamp (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{n }\end{DoxyParamCaption})}
+
+
+
+Move a clamped node out on the border. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em n} & Node to be unclamped in-\/place. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a1fd0c691565f0f14d50383996568ff31}\label{p4est__bits_8h_a1fd0c691565f0f14d50383996568ff31}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_all\_face\_neighbors@{p4est\_quadrant\_all\_face\_neighbors}}
+\index{p4est\_quadrant\_all\_face\_neighbors@{p4est\_quadrant\_all\_face\_neighbors}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_all\_face\_neighbors()}{p4est\_quadrant\_all\_face\_neighbors()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+all\+\_\+face\+\_\+neighbors (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{face,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}}}]{n\mbox{[}4\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Create all possible face neighbors of {\itshape q}. 
+
+Gets the face neighbors, possible assuming the 2-\/1 constraint. If the larger or smaller quadrants do not exist than they are returned as initialized by P4\+EST\+\_\+\+QUADRANT\+\_\+\+INIT.
+
+The order of {\itshape n}\mbox{[}0\mbox{]} through {\itshape n}\mbox{[}3\mbox{]} are given in Morton ordering.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & The quadrant whose face neighbors will be constructed. \\
+\hline
+\mbox{\texttt{ in}}  & {\em face} & The face across which to generate the neighbors. \\
+\hline
+\mbox{\texttt{ out}}  & {\em n} & First two positions are filled with the smaller possible face neighbors, which are half of the size if they exist or initialized to P4\+EST\+\_\+\+QUADRANT\+\_\+\+INIT. Third position is filled with the face neighbor, which is the same size. Fourth position is filled with the face neighbor, which is twice the size if it exists or initialized to P4\+EST\+\_\+\+QUADRANT\+\_\+\+INIT. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a86e6b6a9552257b1dd90808bdd3a6351}\label{p4est__bits_8h_a86e6b6a9552257b1dd90808bdd3a6351}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_ancestor@{p4est\_quadrant\_ancestor}}
+\index{p4est\_quadrant\_ancestor@{p4est\_quadrant\_ancestor}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_ancestor()}{p4est\_quadrant\_ancestor()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+ancestor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{level,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Compute the ancestor of a quadrant at a given level. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant. \\
+\hline
+\mbox{\texttt{ in}}  & {\em level} & A smaller level than q. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em r} & Existing quadrant whose Morton index will be filled with the ancestor of q at the given level. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The quadrant q may point to the same quadrant as r. The user\+\_\+data of r are never modified. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_af482fada7d862b0a561ac325fe2b89f1}\label{p4est__bits_8h_af482fada7d862b0a561ac325fe2b89f1}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_ancestor\_id@{p4est\_quadrant\_ancestor\_id}}
+\index{p4est\_quadrant\_ancestor\_id@{p4est\_quadrant\_ancestor\_id}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_ancestor\_id()}{p4est\_quadrant\_ancestor\_id()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+ancestor\+\_\+id (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{level }\end{DoxyParamCaption})}
+
+
+
+Compute the position of the ancestor of this child at level {\itshape level} within its siblings. 
+
+\begin{DoxyReturn}{Returns}
+Returns its child id in 0..3 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_ac715371e458c411ee35b69629ceb733f}\label{p4est__bits_8h_ac715371e458c411ee35b69629ceb733f}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_child@{p4est\_quadrant\_child}}
+\index{p4est\_quadrant\_child@{p4est\_quadrant\_child}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_child()}{p4est\_quadrant\_child()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+child (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r,  }\item[{int}]{child\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Compute a specific child of a quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em r} & Existing quadrant whose Morton index will be filled with the coordinates of its child no. {\bfseries{child\+\_\+id}}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em child\+\_\+id} & The id of the child computed, 0..3. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{particles_2particles2_8c-example}{particles/particles2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_a2b0cbbd87c0bc9d640fb0ee8b32d9a0f}\label{p4est__bits_8h_a2b0cbbd87c0bc9d640fb0ee8b32d9a0f}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_child\_id@{p4est\_quadrant\_child\_id}}
+\index{p4est\_quadrant\_child\_id@{p4est\_quadrant\_child\_id}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_child\_id()}{p4est\_quadrant\_child\_id()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+child\+\_\+id (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Compute the position of this child within its siblings. 
+
+\begin{DoxyReturn}{Returns}
+Returns its child id in 0..3 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}, \mbox{\hyperlink{timings_2timings2_8c-example}{timings/timings2.\+c}}, and \mbox{\hyperlink{userdata_2userdata_run2_8c-example}{userdata/userdata\+\_\+run2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_a7b2a9661bdc593d3cc5aee6e5e131c0c}\label{p4est__bits_8h_a7b2a9661bdc593d3cc5aee6e5e131c0c}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_children@{p4est\_quadrant\_children}}
+\index{p4est\_quadrant\_children@{p4est\_quadrant\_children}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_children()}{p4est\_quadrant\_children()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+children (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{c0,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{c1,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{c2,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{c3 }\end{DoxyParamCaption})}
+
+
+
+Compute the 4 children of a quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em c0} & First computed child. {\itshape q} may point to the same quadrant as {\itshape c0}. \\
+\hline
+\mbox{\texttt{ out}}  & {\em c1} & Second computed child. \\
+\hline
+\mbox{\texttt{ out}}  & {\em c2} & Third computed child. \\
+\hline
+\mbox{\texttt{ out}}  & {\em c3} & Fourth computed child. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The user\+\_\+data of {\itshape c0}, c1, c2, c3 is never modified. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_afdefc9ca109254596a7607281812c115}\label{p4est__bits_8h_afdefc9ca109254596a7607281812c115}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_childrenpv@{p4est\_quadrant\_childrenpv}}
+\index{p4est\_quadrant\_childrenpv@{p4est\_quadrant\_childrenpv}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_childrenpv()}{p4est\_quadrant\_childrenpv()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+childrenpv (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{c\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Compute the 4 children of a quadrant, array version. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em c} & Pointers to the 4 computed children in z-\/order. q may point to the same quadrant as c\mbox{[}0\mbox{]}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The user\+\_\+data of c\mbox{[}i\mbox{]} is never modified. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_ad0bc7c723c6bd672451aa0536b0e17c9}\label{p4est__bits_8h_ad0bc7c723c6bd672451aa0536b0e17c9}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_childrenv@{p4est\_quadrant\_childrenv}}
+\index{p4est\_quadrant\_childrenv@{p4est\_quadrant\_childrenv}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_childrenv()}{p4est\_quadrant\_childrenv()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+childrenv (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}}}]{c\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Compute the 4 children of a quadrant, array version. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em c} & The 4 computed children in z-\/order. q may point to the same quadrant as c\mbox{[}0\mbox{]}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The user\+\_\+data of c\mbox{[}i\mbox{]} is never modified. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_ad666fa401c05fd14c516d2041403b438}\label{p4est__bits_8h_ad666fa401c05fd14c516d2041403b438}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_compare@{p4est\_quadrant\_compare}}
+\index{p4est\_quadrant\_compare@{p4est\_quadrant\_compare}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_compare()}{p4est\_quadrant\_compare()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+compare (\begin{DoxyParamCaption}\item[{const void $\ast$}]{v1,  }\item[{const void $\ast$}]{v2 }\end{DoxyParamCaption})}
+
+
+
+Compare two quadrants in their Morton ordering. 
+
+Both quadrants must be valid. \begin{DoxyReturn}{Returns}
+Returns $<$ 0 if {\itshape v1} $<$ {\itshape v2}, 0 if {\itshape v1} == {\itshape v2}, $>$ 0 if {\itshape v1} $>$ {\itshape v2} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a6003c0af1b5041d9963ff2fb0f5156be}\label{p4est__bits_8h_a6003c0af1b5041d9963ff2fb0f5156be}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_compare\_local\_num@{p4est\_quadrant\_compare\_local\_num}}
+\index{p4est\_quadrant\_compare\_local\_num@{p4est\_quadrant\_compare\_local\_num}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_compare\_local\_num()}{p4est\_quadrant\_compare\_local\_num()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+compare\+\_\+local\+\_\+num (\begin{DoxyParamCaption}\item[{const void $\ast$}]{v1,  }\item[{const void $\ast$}]{v2 }\end{DoxyParamCaption})}
+
+
+
+Compare two quadrants with respect to their local\+\_\+num in the piggy3 member. 
+
+\begin{DoxyReturn}{Returns}
+Returns $<$ 0 if {\itshape v1} $<$ {\itshape v2}, 0 if {\itshape v1} == {\itshape v2}, $>$ 0 if {\itshape v1} $>$ {\itshape v2} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a39a0f31f174a10f029cc67b7ca1e0a4c}\label{p4est__bits_8h_a39a0f31f174a10f029cc67b7ca1e0a4c}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_compare\_piggy@{p4est\_quadrant\_compare\_piggy}}
+\index{p4est\_quadrant\_compare\_piggy@{p4est\_quadrant\_compare\_piggy}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_compare\_piggy()}{p4est\_quadrant\_compare\_piggy()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+compare\+\_\+piggy (\begin{DoxyParamCaption}\item[{const void $\ast$}]{v1,  }\item[{const void $\ast$}]{v2 }\end{DoxyParamCaption})}
+
+
+
+Compare two quadrants in their Morton ordering and the which\+\_\+tree member. 
+
+Both quadrants must be extended (superset of valid, see below). \begin{DoxyReturn}{Returns}
+Returns $<$ 0 if {\itshape v1} $<$ {\itshape v2}, 0 if {\itshape v1} == {\itshape v2}, $>$ 0 if {\itshape v1} $>$ {\itshape v2} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a97832daf634ff801181c894a5229ece6}\label{p4est__bits_8h_a97832daf634ff801181c894a5229ece6}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_contains\_node@{p4est\_quadrant\_contains\_node}}
+\index{p4est\_quadrant\_contains\_node@{p4est\_quadrant\_contains\_node}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_contains\_node()}{p4est\_quadrant\_contains\_node()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+contains\+\_\+node (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{n }\end{DoxyParamCaption})}
+
+
+
+Decide if a node is completely contained within a quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Valid quadrant. \\
+\hline
+\mbox{\texttt{ in}}  & {\em n} & Clamped node. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_aa86a13982a13a775d4633f76a30fa198}\label{p4est__bits_8h_aa86a13982a13a775d4633f76a30fa198}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_copy@{p4est\_quadrant\_copy}}
+\index{p4est\_quadrant\_copy@{p4est\_quadrant\_copy}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_copy()}{p4est\_quadrant\_copy()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+copy (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{copy }\end{DoxyParamCaption})}
+
+
+
+Copy the Morton indices of the quadrant {\itshape q}. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & An extended quadrant. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em copy} & An existing quadrant that Morton indices will be set to the Morton indices of {\itshape q}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_aa415031cb5088b5c1344b2421605c4c1}\label{p4est__bits_8h_aa415031cb5088b5c1344b2421605c4c1}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_corner\_coordinates@{p4est\_quadrant\_corner\_coordinates}}
+\index{p4est\_quadrant\_corner\_coordinates@{p4est\_quadrant\_corner\_coordinates}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_corner\_coordinates()}{p4est\_quadrant\_corner\_coordinates()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+corner\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{corner,  }\item[{\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{coords\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Compute the coordinates of a specific quadrant corner. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant, must be valid. \\
+\hline
+\mbox{\texttt{ in}}  & {\em corner} & The corner for which the coordinates are computed. \\
+\hline
+\mbox{\texttt{ out}}  & {\em coords} & 2D corner coordinates are in/on the unit tree. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{test_coordinates2_8c-example}{test\+\_\+coordinates2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_ac13db00c3fcbcb1081adaed0ae561a81}\label{p4est__bits_8h_ac13db00c3fcbcb1081adaed0ae561a81}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_corner\_descendant@{p4est\_quadrant\_corner\_descendant}}
+\index{p4est\_quadrant\_corner\_descendant@{p4est\_quadrant\_corner\_descendant}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_corner\_descendant()}{p4est\_quadrant\_corner\_descendant()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+corner\+\_\+descendant (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r,  }\item[{int}]{c,  }\item[{int}]{level }\end{DoxyParamCaption})}
+
+
+
+Compute the descendant of a quadrant touching a given corner. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em r} & Existing quadrant whose Morton index will be filled. Its user\+\_\+data will be untouched. \\
+\hline
+\mbox{\texttt{ in}}  & {\em c} & The corner of {\itshape q} that {\itshape r} touches. \\
+\hline
+\mbox{\texttt{ in}}  & {\em level} & The size of {\itshape r}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a4dbb4ad73bec73e839f7dc61ce26c9e6}\label{p4est__bits_8h_a4dbb4ad73bec73e839f7dc61ce26c9e6}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_corner\_neighbor@{p4est\_quadrant\_corner\_neighbor}}
+\index{p4est\_quadrant\_corner\_neighbor@{p4est\_quadrant\_corner\_neighbor}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_corner\_neighbor()}{p4est\_quadrant\_corner\_neighbor()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+corner\+\_\+neighbor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{corner,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Compute the corner neighbor of a quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant, must be valid. \\
+\hline
+\mbox{\texttt{ in}}  & {\em corner} & The corner across which to generate the neighbor. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em r} & Existing quadrant whose Morton index will be filled. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+{\itshape q} may point to the same quadrant as {\itshape r}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_acde00516d87bb6de93bae5412151e9a0}\label{p4est__bits_8h_acde00516d87bb6de93bae5412151e9a0}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_corner\_neighbor\_extra@{p4est\_quadrant\_corner\_neighbor\_extra}}
+\index{p4est\_quadrant\_corner\_neighbor\_extra@{p4est\_quadrant\_corner\_neighbor\_extra}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_corner\_neighbor\_extra()}{p4est\_quadrant\_corner\_neighbor\_extra()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+corner\+\_\+neighbor\+\_\+extra (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est__base_8h_a9f350ee78755ec6e7d25fb1dca474573}{p4est\+\_\+locidx\+\_\+t}}}]{t,  }\item[{int}]{corner,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{quads,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{treeids,  }\item[{sc\+\_\+array\+\_\+t $\ast$}]{ncorners,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn }\end{DoxyParamCaption})}
+
+
+
+Compute the corner neighbors of a quadrant, transforming across tree boundaries if necessary. 
+
+Only computes neighbors that are not face or edge neighbors. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant, must be valid. \\
+\hline
+\mbox{\texttt{ in}}  & {\em t} & Tree that contains {\itshape q}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em corner} & The corner across which to generate the neighbor. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em quads} & An initialized but empty array where the corner neighbors will be placed. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em treeids} & An initialized but empty array where the ids of the trees containing the corner neighbors will be placed. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em ncorners} & if not NULL, filled with the corners of {\itshape quads} that neighbor {\itshape q}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em conn} & The connectivity structure for the forest. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_ada26b2e2ae47969c6a58a9fda446847f}\label{p4est__bits_8h_ada26b2e2ae47969c6a58a9fda446847f}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_corner\_node@{p4est\_quadrant\_corner\_node}}
+\index{p4est\_quadrant\_corner\_node@{p4est\_quadrant\_corner\_node}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_corner\_node()}{p4est\_quadrant\_corner\_node()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+corner\+\_\+node (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{corner,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Compute a corner node of a quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant, must be valid. \\
+\hline
+\mbox{\texttt{ in}}  & {\em corner} & The corner across which to generate the neighbor. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em r} & Node that will not be clamped inside. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+{\itshape q} may point to the same quadrant as {\itshape r}. 
+\end{DoxyNote}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{test_coordinates2_8c-example}{test\+\_\+coordinates2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_a3d486a3923ad205589e5b121c0d2534c}\label{p4est__bits_8h_a3d486a3923ad205589e5b121c0d2534c}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_disjoint@{p4est\_quadrant\_disjoint}}
+\index{p4est\_quadrant\_disjoint@{p4est\_quadrant\_disjoint}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_disjoint()}{p4est\_quadrant\_disjoint()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+disjoint (\begin{DoxyParamCaption}\item[{const void $\ast$}]{v1,  }\item[{const void $\ast$}]{v2 }\end{DoxyParamCaption})}
+
+
+
+Compare two quadrants in their Morton ordering, with equivalence if the two quadrants overlap. 
+
+\begin{DoxyReturn}{Returns}
+Returns $<$ 0 if {\itshape v1} $<$ {\itshape v2} and {\itshape v1} and {\itshape v2} do not overlap, 0 if {\itshape v1} and {\itshape v2} overlap, $>$ 0 if {\itshape v1} $>$ {\itshape v2} and {\itshape v1} and {\itshape v2} do not overlap. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a87ad25d14d09522aa78521a767ae7aab}\label{p4est__bits_8h_a87ad25d14d09522aa78521a767ae7aab}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_enlarge\_first@{p4est\_quadrant\_enlarge\_first}}
+\index{p4est\_quadrant\_enlarge\_first@{p4est\_quadrant\_enlarge\_first}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_enlarge\_first()}{p4est\_quadrant\_enlarge\_first()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+enlarge\+\_\+first (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{a,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Enlarge a quadrant as long as its first corner stays the same. 
+
+We limit the enlargement by containing it in an ancestor quadrant. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em a} & Extended quadrant. On input and output, equal to or strict ancestor of the quadrant {\bfseries{q}} to be modified. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em q} & On input and output, an extended quadrant and also equal or a strict descendant of {\bfseries{a}}. Possibly enlarged by this function. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a99e0aaced4135f788ff11de77df2de9f}\label{p4est__bits_8h_a99e0aaced4135f788ff11de77df2de9f}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_enlarge\_last@{p4est\_quadrant\_enlarge\_last}}
+\index{p4est\_quadrant\_enlarge\_last@{p4est\_quadrant\_enlarge\_last}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_enlarge\_last()}{p4est\_quadrant\_enlarge\_last()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+enlarge\+\_\+last (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{a,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Enlarge a quadrant as long as its last corner stays the same. 
+
+We limit the enlargement by containing it in an ancestor quadrant. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em a} & Extended quadrant. On input and output, equal to or strict ancestor of the quadrant {\bfseries{q}} to be modified. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em q} & On input and output, an extended quadrant and also equal or a strict descendant of {\bfseries{a}}. Possibly enlarged by this function. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_ab6c6fc5ecab77789f99ca5e92f32bc42}\label{p4est__bits_8h_ab6c6fc5ecab77789f99ca5e92f32bc42}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_equal\_fn@{p4est\_quadrant\_equal\_fn}}
+\index{p4est\_quadrant\_equal\_fn@{p4est\_quadrant\_equal\_fn}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_equal\_fn()}{p4est\_quadrant\_equal\_fn()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+equal\+\_\+fn (\begin{DoxyParamCaption}\item[{const void $\ast$}]{v1,  }\item[{const void $\ast$}]{v2,  }\item[{const void $\ast$}]{u }\end{DoxyParamCaption})}
+
+
+
+Test if two quadrants have equal Morton indices, callback version. 
+
+\begin{DoxyReturn}{Returns}
+true if {\itshape v1} describes the same quadrant as {\itshape v2}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a3d045f30f00319ac7410db08b8753a3e}\label{p4est__bits_8h_a3d045f30f00319ac7410db08b8753a3e}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_face\_coordinates@{p4est\_quadrant\_face\_coordinates}}
+\index{p4est\_quadrant\_face\_coordinates@{p4est\_quadrant\_face\_coordinates}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_face\_coordinates()}{p4est\_quadrant\_face\_coordinates()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+face\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{face,  }\item[{\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{coords\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Compute the coordinates of a specific quadrant face\textquotesingle{}s midpoint. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant, must be valid. \\
+\hline
+\mbox{\texttt{ in}}  & {\em face} & The face of which the midpoint coordinates are computed. \\
+\hline
+\mbox{\texttt{ out}}  & {\em coords} & 2D mid-\/face coordinates are in/on the unit tree. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{test_coordinates2_8c-example}{test\+\_\+coordinates2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_a334cba70e27e9bf64fd577f32c121a6a}\label{p4est__bits_8h_a334cba70e27e9bf64fd577f32c121a6a}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_face\_neighbor@{p4est\_quadrant\_face\_neighbor}}
+\index{p4est\_quadrant\_face\_neighbor@{p4est\_quadrant\_face\_neighbor}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_face\_neighbor()}{p4est\_quadrant\_face\_neighbor()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+face\+\_\+neighbor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{face,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Compute the face neighbor of a quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant, must be valid. \\
+\hline
+\mbox{\texttt{ in}}  & {\em face} & The face across which to generate the neighbor. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em r} & Existing quadrant whose Morton index will be filled. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+{\itshape q} may point to the same quadrant as {\itshape r}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_ab8014577e1240d93975e04a30eaa09bf}\label{p4est__bits_8h_ab8014577e1240d93975e04a30eaa09bf}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_face\_neighbor\_extra@{p4est\_quadrant\_face\_neighbor\_extra}}
+\index{p4est\_quadrant\_face\_neighbor\_extra@{p4est\_quadrant\_face\_neighbor\_extra}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_face\_neighbor\_extra()}{p4est\_quadrant\_face\_neighbor\_extra()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} p4est\+\_\+quadrant\+\_\+face\+\_\+neighbor\+\_\+extra (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}}}]{t,  }\item[{int}]{face,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r,  }\item[{int $\ast$}]{nface,  }\item[{\mbox{\hyperlink{p4est__connectivity_8h_a7bfc76825a73a3764b063ef476ed62f3}{p4est\+\_\+connectivity\+\_\+t}} $\ast$}]{conn }\end{DoxyParamCaption})}
+
+
+
+Compute the face neighbor of a quadrant, transforming across tree boundaries if necessary. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant, must be valid. \\
+\hline
+\mbox{\texttt{ in}}  & {\em t} & Tree that contains {\itshape q}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em face} & The face across which to generate the neighbor. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em r} & Existing quadrant whose Morton index will be filled. By convention, if there is no tree across {\itshape face}, {\itshape r} has the same Morton index as {\itshape q}. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em nface} & if not NULL, set to the face of {\itshape r} that neighbors {\itshape q}. nface is encoded with orientation information in the same manner as the tree\+\_\+to\+\_\+face array in the p4est\+\_\+connectivity\+\_\+t struct. \\
+\hline
+\mbox{\texttt{ in}}  & {\em conn} & The connectivity structure for the forest. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the tree that contains {\itshape r}. By convention, if there is no tree across {\itshape face}, then -\/1 is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a643d2d1bab8ebfe3926ece3ea3379863}\label{p4est__bits_8h_a643d2d1bab8ebfe3926ece3ea3379863}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_first\_descendant@{p4est\_quadrant\_first\_descendant}}
+\index{p4est\_quadrant\_first\_descendant@{p4est\_quadrant\_first\_descendant}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_first\_descendant()}{p4est\_quadrant\_first\_descendant()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+first\+\_\+descendant (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{fd,  }\item[{int}]{level }\end{DoxyParamCaption})}
+
+
+
+Compute the first descendant of a quadrant on a given level. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant. \\
+\hline
+\mbox{\texttt{ out}}  & {\em fd} & First descendant of {\itshape q} on level {\itshape level}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em level} & Level must be greater equal than q\textquotesingle{}s level. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a04b1067d4f6810bf937cf6ff0ab82f66}\label{p4est__bits_8h_a04b1067d4f6810bf937cf6ff0ab82f66}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_half\_corner\_neighbor@{p4est\_quadrant\_half\_corner\_neighbor}}
+\index{p4est\_quadrant\_half\_corner\_neighbor@{p4est\_quadrant\_half\_corner\_neighbor}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_half\_corner\_neighbor()}{p4est\_quadrant\_half\_corner\_neighbor()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+half\+\_\+corner\+\_\+neighbor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{corner,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Compute the half size corner neighbor of a quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & The quadrant whose corner neighbor will be constructed. \\
+\hline
+\mbox{\texttt{ in}}  & {\em corner} & The corner across which to generate the neighbor. \\
+\hline
+\mbox{\texttt{ out}}  & {\em r} & Morton index filled with the half size corner neighbor. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_afdde134c244033b587878884d19e0ea1}\label{p4est__bits_8h_afdde134c244033b587878884d19e0ea1}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_half\_face\_neighbors@{p4est\_quadrant\_half\_face\_neighbors}}
+\index{p4est\_quadrant\_half\_face\_neighbors@{p4est\_quadrant\_half\_face\_neighbors}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_half\_face\_neighbors()}{p4est\_quadrant\_half\_face\_neighbors()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+half\+\_\+face\+\_\+neighbors (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{face,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}}}]{n\mbox{[}2\mbox{]},  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}}}]{nur\mbox{[}2\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Get the smaller face neighbors of {\itshape q}. 
+
+Gets the smaller face neighbors, which are half of the size assuming the 2-\/1 constant.
+
+The order of the {\itshape n}\mbox{[}i\mbox{]} is given in the Morton ordering.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & The quadrant whose face neighbors will be constructed. \\
+\hline
+\mbox{\texttt{ in}}  & {\em face} & The face across which to generate the neighbors. \\
+\hline
+\mbox{\texttt{ out}}  & {\em n} & Array filled with the two smaller face neighbors. \\
+\hline
+\mbox{\texttt{ out}}  & {\em nur} & If not NULL, filled with the smallest quadrants that fit in the upper right corners of {\itshape n}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a280866adc8089fa7117c08304c950ef4}\label{p4est__bits_8h_a280866adc8089fa7117c08304c950ef4}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_ancestor@{p4est\_quadrant\_is\_ancestor}}
+\index{p4est\_quadrant\_is\_ancestor@{p4est\_quadrant\_is\_ancestor}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_ancestor()}{p4est\_quadrant\_is\_ancestor()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+ancestor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Test if a quadrant is an ancestor of another quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Quadrant to be tested. \\
+\hline
+\mbox{\texttt{ in}}  & {\em r} & Descendent quadrant. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if {\itshape q} is unequal to and an ancestor of {\itshape r}. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_ab506e8681b0b1c3f36a6ebada89f9cc6}\label{p4est__bits_8h_ab506e8681b0b1c3f36a6ebada89f9cc6}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_ancestor\_corner@{p4est\_quadrant\_is\_ancestor\_corner}}
+\index{p4est\_quadrant\_is\_ancestor\_corner@{p4est\_quadrant\_is\_ancestor\_corner}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_ancestor\_corner()}{p4est\_quadrant\_is\_ancestor\_corner()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+ancestor\+\_\+corner (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{descendant,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{ancestor,  }\item[{int}]{corner }\end{DoxyParamCaption})}
+
+
+
+Check if a descendant shares a corner with a (strict) ancestor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em descendant} & The descendant in question. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ancestor} & The ancestor must not be equal to the descendant. \\
+\hline
+\mbox{\texttt{ in}}  & {\em corner} & The corner of the descendant.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if descendant face touches ancestor corner, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a76de6d1e607eb49bd5dab2edd7de2371}\label{p4est__bits_8h_a76de6d1e607eb49bd5dab2edd7de2371}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_ancestor\_D@{p4est\_quadrant\_is\_ancestor\_D}}
+\index{p4est\_quadrant\_is\_ancestor\_D@{p4est\_quadrant\_is\_ancestor\_D}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_ancestor\_D()}{p4est\_quadrant\_is\_ancestor\_D()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+ancestor\+\_\+D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Test if a quadrant is an ancestor of another quadrant. 
+
+Descriptive, slower version of {\itshape p4est\+\_\+quadrant\+\_\+is\+\_\+ancestor}. Contrary to {\itshape p4est\+\_\+quadrant\+\_\+is\+\_\+ancestor}, it aborts for inter-\/tree q, r. For debugging and educational purposes only. \mbox{\Hypertarget{p4est__bits_8h_a655a7ef381f64defe086f78357b0f81f}\label{p4est__bits_8h_a655a7ef381f64defe086f78357b0f81f}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_ancestor\_face@{p4est\_quadrant\_is\_ancestor\_face}}
+\index{p4est\_quadrant\_is\_ancestor\_face@{p4est\_quadrant\_is\_ancestor\_face}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_ancestor\_face()}{p4est\_quadrant\_is\_ancestor\_face()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+ancestor\+\_\+face (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{descendant,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{ancestor,  }\item[{int}]{face }\end{DoxyParamCaption})}
+
+
+
+Check if a descendant shares a face with a (strict) ancestor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em descendant} & The descendant in question. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ancestor} & The ancestor must not be equal to the descendant. \\
+\hline
+\mbox{\texttt{ in}}  & {\em face} & The face of the descendant.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if descendant face touches ancestor face, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a78be9585dd09db13844006c2ea69c0d8}\label{p4est__bits_8h_a78be9585dd09db13844006c2ea69c0d8}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_equal@{p4est\_quadrant\_is\_equal}}
+\index{p4est\_quadrant\_is\_equal@{p4est\_quadrant\_is\_equal}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_equal()}{p4est\_quadrant\_is\_equal()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+equal (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q1,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q2 }\end{DoxyParamCaption})}
+
+
+
+Test if two quadrants have equal Morton indices. 
+
+\begin{DoxyReturn}{Returns}
+true if {\itshape q1} describes the same quadrant as {\itshape q2}. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_af17617d6bc02153d661a5ddb32ae0ed2}\label{p4est__bits_8h_af17617d6bc02153d661a5ddb32ae0ed2}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_equal\_piggy@{p4est\_quadrant\_is\_equal\_piggy}}
+\index{p4est\_quadrant\_is\_equal\_piggy@{p4est\_quadrant\_is\_equal\_piggy}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_equal\_piggy()}{p4est\_quadrant\_is\_equal\_piggy()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+equal\+\_\+piggy (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q1,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q2 }\end{DoxyParamCaption})}
+
+
+
+Test if two quadrants have equal Morton indices and the same tree id. 
+
+\begin{DoxyReturn}{Returns}
+true if {\itshape q1} describes the same quadrant as {\itshape q2} and the p.\+which\+\_\+tree fields are equal. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_af09c9f3d67c4983b6981d7482f275275}\label{p4est__bits_8h_af09c9f3d67c4983b6981d7482f275275}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_extended@{p4est\_quadrant\_is\_extended}}
+\index{p4est\_quadrant\_is\_extended@{p4est\_quadrant\_is\_extended}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_extended()}{p4est\_quadrant\_is\_extended()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+extended (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Test if a quadrant has valid Morton indices in the 3x3 box around root. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Quadrant to be tested. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if {\itshape q} is extended. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_adca32a05d2c9022d1ef35e3db7e89eba}\label{p4est__bits_8h_adca32a05d2c9022d1ef35e3db7e89eba}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_familypv@{p4est\_quadrant\_is\_familypv}}
+\index{p4est\_quadrant\_is\_familypv@{p4est\_quadrant\_is\_familypv}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_familypv()}{p4est\_quadrant\_is\_familypv()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+familypv (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Test if 4 quadrants are siblings in Morton ordering, array version. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Array of 4 pointers to quadrants. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a274f4f9b687d6d5bf08ad539ed198426}\label{p4est__bits_8h_a274f4f9b687d6d5bf08ad539ed198426}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_familyv@{p4est\_quadrant\_is\_familyv}}
+\index{p4est\_quadrant\_is\_familyv@{p4est\_quadrant\_is\_familyv}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_familyv()}{p4est\_quadrant\_is\_familyv()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+familyv (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}}}]{q\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Test if 4 quadrants are siblings in Morton ordering, array version. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Array of 4 quadrants. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_afc997b6be848978f666acbf4b2c12ba3}\label{p4est__bits_8h_afc997b6be848978f666acbf4b2c12ba3}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_first\_last@{p4est\_quadrant\_is\_first\_last}}
+\index{p4est\_quadrant\_is\_first\_last@{p4est\_quadrant\_is\_first\_last}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_first\_last()}{p4est\_quadrant\_is\_first\_last()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+first\+\_\+last (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{f,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{l,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{a }\end{DoxyParamCaption})}
+
+
+
+Whether two descendants of a quadrant are first and last, up to size. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em f} & An extended quadrant, need not be of maximum level. \\
+\hline
+\mbox{\texttt{ in}}  & {\em l} & An extended quadrant, need not be of maximum level. It must be greater equal {\bfseries{f}} in the space filling curve. \\
+\hline
+\mbox{\texttt{ in}}  & {\em a} & An extended quadrant, equal to or ancestor of {\bfseries{f}}, and likewise to/of {\bfseries{l}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Whether the first corner of {\bfseries{f}} equals that of {\bfseries{a}} and the last corner of {\bfseries{l}} equals that of {\bfseries{a}}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_adeaae08cdc1852a005b3bdbad8ce642e}\label{p4est__bits_8h_adeaae08cdc1852a005b3bdbad8ce642e}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_inside\_3x3@{p4est\_quadrant\_is\_inside\_3x3}}
+\index{p4est\_quadrant\_is\_inside\_3x3@{p4est\_quadrant\_is\_inside\_3x3}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_inside\_3x3()}{p4est\_quadrant\_is\_inside\_3x3()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+inside\+\_\+3x3 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Test if a quadrant is inside the 3x3 box around the root tree. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Quadrant to be tested. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if {\itshape q} is inside the unit tree. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_ab8f88e83d54ea09df2a0d5da476f25e0}\label{p4est__bits_8h_ab8f88e83d54ea09df2a0d5da476f25e0}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_inside\_root@{p4est\_quadrant\_is\_inside\_root}}
+\index{p4est\_quadrant\_is\_inside\_root@{p4est\_quadrant\_is\_inside\_root}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_inside\_root()}{p4est\_quadrant\_is\_inside\_root()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+inside\+\_\+root (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Test if a quadrant is inside the unit tree. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Quadrant (not necessarily valid) to be tested. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if {\itshape q} is inside the unit tree. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a0b234948853dc0b821f1dd4ff45f3955}\label{p4est__bits_8h_a0b234948853dc0b821f1dd4ff45f3955}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_next@{p4est\_quadrant\_is\_next}}
+\index{p4est\_quadrant\_is\_next@{p4est\_quadrant\_is\_next}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_next()}{p4est\_quadrant\_is\_next()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+next (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Test if two quadrants follow each other in the tree with no holes. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & A quadrant \\
+\hline
+\mbox{\texttt{ in}}  & {\em r} & Another quadrant \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if {\itshape q} is immediately before {\itshape r} in the tree. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+for every {\itshape q} there are between 0 and P4\+EST\+\_\+\+MAXLEVEL+1 possible nexts. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_a9aadb0095aa0f091ce62707bb02c0c47}\label{p4est__bits_8h_a9aadb0095aa0f091ce62707bb02c0c47}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_next\_D@{p4est\_quadrant\_is\_next\_D}}
+\index{p4est\_quadrant\_is\_next\_D@{p4est\_quadrant\_is\_next\_D}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_next\_D()}{p4est\_quadrant\_is\_next\_D()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+next\+\_\+D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Test if two quadrants follow each other in the tree with no holes. 
+
+Descriptive, slower version of {\itshape p4est\+\_\+quadrant\+\_\+is\+\_\+next}. For debugging and educational purposes only. \mbox{\Hypertarget{p4est__bits_8h_a1941e7d00d0d38d89865b4140c172a50}\label{p4est__bits_8h_a1941e7d00d0d38d89865b4140c172a50}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_node@{p4est\_quadrant\_is\_node}}
+\index{p4est\_quadrant\_is\_node@{p4est\_quadrant\_is\_node}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_node()}{p4est\_quadrant\_is\_node()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+node (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{inside }\end{DoxyParamCaption})}
+
+
+
+Test if a quadrant is used to represent a mesh node. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Quadrant to be tested. \\
+\hline
+\mbox{\texttt{ in}}  & {\em inside} & If true, boundary nodes must be clamped inside. If false, nodes must align with the quadrant grid. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if {\itshape q} is a node. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{test_coordinates2_8c-example}{test\+\_\+coordinates2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_a5a41088ca3b106949db4275bee8ef6f4}\label{p4est__bits_8h_a5a41088ca3b106949db4275bee8ef6f4}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_outside\_corner@{p4est\_quadrant\_is\_outside\_corner}}
+\index{p4est\_quadrant\_is\_outside\_corner@{p4est\_quadrant\_is\_outside\_corner}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_outside\_corner()}{p4est\_quadrant\_is\_outside\_corner()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+outside\+\_\+corner (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Test if a quadrant is outside a tree corner boundary. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Quadrant to be tested. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if {\itshape q} is outside across a unit tree corner. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a53361d47cff1fc29f579b7ba800b92bd}\label{p4est__bits_8h_a53361d47cff1fc29f579b7ba800b92bd}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_outside\_face@{p4est\_quadrant\_is\_outside\_face}}
+\index{p4est\_quadrant\_is\_outside\_face@{p4est\_quadrant\_is\_outside\_face}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_outside\_face()}{p4est\_quadrant\_is\_outside\_face()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+outside\+\_\+face (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Test if a quadrant is outside a tree face boundary (no corner). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Quadrant to be tested. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if {\itshape q} is outside across a unit tree face. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_ab5c720b940cfc460cd58002a25c330cc}\label{p4est__bits_8h_ab5c720b940cfc460cd58002a25c330cc}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_parent@{p4est\_quadrant\_is\_parent}}
+\index{p4est\_quadrant\_is\_parent@{p4est\_quadrant\_is\_parent}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_parent()}{p4est\_quadrant\_is\_parent()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+parent (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Test if a quadrant is the parent of another quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Quadrant to be tested. \\
+\hline
+\mbox{\texttt{ in}}  & {\em r} & Possible child quadrant. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if {\itshape q} is the parent of {\itshape r}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_ad117ec396630e53c97e4c2436f0b31a0}\label{p4est__bits_8h_ad117ec396630e53c97e4c2436f0b31a0}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_parent\_D@{p4est\_quadrant\_is\_parent\_D}}
+\index{p4est\_quadrant\_is\_parent\_D@{p4est\_quadrant\_is\_parent\_D}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_parent\_D()}{p4est\_quadrant\_is\_parent\_D()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+parent\+\_\+D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Test if a quadrant is the parent of another quadrant. 
+
+Descriptive, slower version of {\itshape p4est\+\_\+quadrant\+\_\+is\+\_\+parent}. For debugging and educational purposes only. \mbox{\Hypertarget{p4est__bits_8h_ad97b84204654a42cfbcbe39f122af944}\label{p4est__bits_8h_ad97b84204654a42cfbcbe39f122af944}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_sibling@{p4est\_quadrant\_is\_sibling}}
+\index{p4est\_quadrant\_is\_sibling@{p4est\_quadrant\_is\_sibling}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_sibling()}{p4est\_quadrant\_is\_sibling()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+sibling (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q1,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q2 }\end{DoxyParamCaption})}
+
+
+
+Test if two quadrants are siblings. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q1} & First quadrant to be tested. \\
+\hline
+\mbox{\texttt{ in}}  & {\em q2} & Second quadrant to be tested. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if {\itshape q1} is unequal to and a sibling of {\itshape q2}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_ae76d3c27cc27a030ef0bad0d25d4bc6b}\label{p4est__bits_8h_ae76d3c27cc27a030ef0bad0d25d4bc6b}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_sibling\_D@{p4est\_quadrant\_is\_sibling\_D}}
+\index{p4est\_quadrant\_is\_sibling\_D@{p4est\_quadrant\_is\_sibling\_D}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_sibling\_D()}{p4est\_quadrant\_is\_sibling\_D()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+sibling\+\_\+D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q1,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q2 }\end{DoxyParamCaption})}
+
+
+
+Test if two quadrants are siblings. 
+
+Descriptive, slower version of {\itshape p4est\+\_\+quadrant\+\_\+is\+\_\+sibling}. For debugging and educational purposes only. \mbox{\Hypertarget{p4est__bits_8h_a93fdfa19f38d4fca9e42896eda01a558}\label{p4est__bits_8h_a93fdfa19f38d4fca9e42896eda01a558}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_is\_valid@{p4est\_quadrant\_is\_valid}}
+\index{p4est\_quadrant\_is\_valid@{p4est\_quadrant\_is\_valid}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_is\_valid()}{p4est\_quadrant\_is\_valid()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+is\+\_\+valid (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Test if a quadrant has valid Morton indices and is inside the unit tree. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Quadrant to be tested. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if {\itshape q} is valid. 
+\end{DoxyReturn}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{particles_2particles2_8c-example}{particles/particles2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_a11608b9e5d2d2ed52fef6f0cff8047a4}\label{p4est__bits_8h_a11608b9e5d2d2ed52fef6f0cff8047a4}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_last\_descendant@{p4est\_quadrant\_last\_descendant}}
+\index{p4est\_quadrant\_last\_descendant@{p4est\_quadrant\_last\_descendant}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_last\_descendant()}{p4est\_quadrant\_last\_descendant()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+last\+\_\+descendant (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{ld,  }\item[{int}]{level }\end{DoxyParamCaption})}
+
+
+
+Compute the last descendant of a quadrant on a given level. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant. \\
+\hline
+\mbox{\texttt{ out}}  & {\em ld} & Last descendant of {\itshape q} on level {\itshape level}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em level} & Level must be greater equal than q\textquotesingle{}s level. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_aa997ddc1a53b4a7e762947069d0f20cc}\label{p4est__bits_8h_aa997ddc1a53b4a7e762947069d0f20cc}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_linear\_id@{p4est\_quadrant\_linear\_id}}
+\index{p4est\_quadrant\_linear\_id@{p4est\_quadrant\_linear\_id}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_linear\_id()}{p4est\_quadrant\_linear\_id()}}
+{\footnotesize\ttfamily uint64\+\_\+t p4est\+\_\+quadrant\+\_\+linear\+\_\+id (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{quadrant,  }\item[{int}]{level }\end{DoxyParamCaption})}
+
+
+
+Computes the linear position of a quadrant in a uniform grid. 
+
+The grid and quadrant levels need not coincide. If they do, this is the inverse of \mbox{\hyperlink{p4est__bits_8h_a19966ea2baac6e8d70b5e94d23dc38d2}{p4est\+\_\+quadrant\+\_\+set\+\_\+morton}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em quadrant} & Quadrant whose linear index will be computed. If the quadrant is smaller than the grid (has a higher quadrant-\/$>$level), the result is computed from its ancestor at the grid\textquotesingle{}s level. If the quadrant has a smaller level than the grid (it is bigger than a grid cell), the grid cell sharing its lower left corner is used as reference. \\
+\hline
+\mbox{\texttt{ in}}  & {\em level} & The level of the regular grid compared to which the linear position is to be computed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the linear position of this quadrant on a grid. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The user\+\_\+data of {\itshape quadrant} is never modified. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_ac0ad6288f590871990cc96bed03d0928}\label{p4est__bits_8h_ac0ad6288f590871990cc96bed03d0928}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_overlaps@{p4est\_quadrant\_overlaps}}
+\index{p4est\_quadrant\_overlaps@{p4est\_quadrant\_overlaps}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_overlaps()}{p4est\_quadrant\_overlaps()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+overlaps (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q1,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q2 }\end{DoxyParamCaption})}
+
+
+
+Test if two quadrants overlap. 
+
+\begin{DoxyReturn}{Returns}
+true if {\itshape q1} and {\itshape q2} are equal or one is the ancestor of the other. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{p4est__bits_8h_a34ad030ee3c8d04e5321cc19611939d8}\label{p4est__bits_8h_a34ad030ee3c8d04e5321cc19611939d8}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_pad@{p4est\_quadrant\_pad}}
+\index{p4est\_quadrant\_pad@{p4est\_quadrant\_pad}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_pad()}{p4est\_quadrant\_pad()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+pad (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Write -\/1 into the pad8 and pad16 members of a quadrant. 
+
+This helps with valgrind cleanliness if a quadrant is sent over MPI. \mbox{\Hypertarget{p4est__bits_8h_abf3fcf47f480c00a590f005807c71b9b}\label{p4est__bits_8h_abf3fcf47f480c00a590f005807c71b9b}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_parent@{p4est\_quadrant\_parent}}
+\index{p4est\_quadrant\_parent@{p4est\_quadrant\_parent}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_parent()}{p4est\_quadrant\_parent()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+parent (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r }\end{DoxyParamCaption})}
+
+
+
+Compute the parent of a quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em r} & Existing quadrant whose Morton index will be filled with the Morton index of the parent of {\itshape q}. Its user\+\_\+data will be untouched. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+{\itshape q} may point to the same quadrant as {\itshape r}. The user\+\_\+data of {\itshape r} is never modified. 
+\end{DoxyNote}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{steps_2p4est_step3_8c-example}{steps/p4est\+\_\+step3.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_ae6f537b5494796cb6bab0b22d7210ae6}\label{p4est__bits_8h_ae6f537b5494796cb6bab0b22d7210ae6}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_predecessor@{p4est\_quadrant\_predecessor}}
+\index{p4est\_quadrant\_predecessor@{p4est\_quadrant\_predecessor}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_predecessor()}{p4est\_quadrant\_predecessor()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+predecessor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{quadrant,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{result }\end{DoxyParamCaption})}
+
+
+
+Compute the predecessor according to the Morton index in a uniform mesh. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em quadrant} & Quadrant whose Morton predecessor will be computed. Must not be the first (bottom left) quadrant in the tree. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em result} & The coordinates and level of the predecessor of {\bfseries{quadrant}} will be saved in {\bfseries{result}}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_adb2bf29a05140745a77ddef44622002d}\label{p4est__bits_8h_adb2bf29a05140745a77ddef44622002d}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_print@{p4est\_quadrant\_print}}
+\index{p4est\_quadrant\_print@{p4est\_quadrant\_print}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_print()}{p4est\_quadrant\_print()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+print (\begin{DoxyParamCaption}\item[{int}]{log\+\_\+priority,  }\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+Prints one line with quadrant\textquotesingle{}s x, y and level. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em log\+\_\+priority} & see log priorities in sc.\+h for the meanings of numerical priority values \\
+\hline
+\mbox{\texttt{ in}}  & {\em q} & quadrant to print \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a571cd89e7cf1723a5d0702146d62a61f}\label{p4est__bits_8h_a571cd89e7cf1723a5d0702146d62a61f}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_root@{p4est\_quadrant\_root}}
+\index{p4est\_quadrant\_root@{p4est\_quadrant\_root}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_root()}{p4est\_quadrant\_root()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+root (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{root }\end{DoxyParamCaption})}
+
+
+
+Generate the root quadrant of any tree. 
+
+Equivalent to \mbox{\hyperlink{p4est__bits_8h_a19966ea2baac6e8d70b5e94d23dc38d2}{p4est\+\_\+quadrant\+\_\+set\+\_\+morton}} with all-\/zero parameters. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em root} & Quadrant structure\textquotesingle{}s coordinates and level are set. As with all other functions that generate or modify quadrants, the other bits of the structured data type are not touched at all. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{test_coordinates2_8c-example}{test\+\_\+coordinates2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_a19966ea2baac6e8d70b5e94d23dc38d2}\label{p4est__bits_8h_a19966ea2baac6e8d70b5e94d23dc38d2}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_set\_morton@{p4est\_quadrant\_set\_morton}}
+\index{p4est\_quadrant\_set\_morton@{p4est\_quadrant\_set\_morton}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_set\_morton()}{p4est\_quadrant\_set\_morton()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+set\+\_\+morton (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{quadrant,  }\item[{int}]{level,  }\item[{uint64\+\_\+t}]{id }\end{DoxyParamCaption})}
+
+
+
+Set quadrant Morton indices based on linear position in uniform grid. 
+
+This is the inverse operation of \mbox{\hyperlink{p4est__bits_8h_aa997ddc1a53b4a7e762947069d0f20cc}{p4est\+\_\+quadrant\+\_\+linear\+\_\+id}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em quadrant} & Quadrant whose Morton indices will be set. \\
+\hline
+\mbox{\texttt{ in}}  & {\em level} & Level of the grid and of the resulting quadrant. \\
+\hline
+\mbox{\texttt{ in}}  & {\em id} & Linear index of the quadrant on a uniform grid. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The user\+\_\+data of {\itshape quadrant} is never modified. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_a7eaf658387b754bf3864f25987083254}\label{p4est__bits_8h_a7eaf658387b754bf3864f25987083254}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_shift\_corner@{p4est\_quadrant\_shift\_corner}}
+\index{p4est\_quadrant\_shift\_corner@{p4est\_quadrant\_shift\_corner}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_shift\_corner()}{p4est\_quadrant\_shift\_corner()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+shift\+\_\+corner (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r,  }\item[{int}]{corner }\end{DoxyParamCaption})}
+
+
+
+Shifts a quadrant until it touches the specified corner from the inside. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Valid input quadrant. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em r} & Quadrant whose Morton index will be filled. \\
+\hline
+\mbox{\texttt{ in}}  & {\em corner} & Corner index. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_ac57bcd028264b0ff48f7d467397d7bd8}\label{p4est__bits_8h_ac57bcd028264b0ff48f7d467397d7bd8}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_sibling@{p4est\_quadrant\_sibling}}
+\index{p4est\_quadrant\_sibling@{p4est\_quadrant\_sibling}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_sibling()}{p4est\_quadrant\_sibling()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+sibling (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r,  }\item[{int}]{sibling\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Compute a specific sibling of a quadrant. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em r} & Existing quadrant whose Morton index will be filled with the coordinates of sibling no. sibling\+\_\+id of q. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sibling\+\_\+id} & The id of the sibling computed, 0..3. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_ad04582a2cbc27b809b437977484078c4}\label{p4est__bits_8h_ad04582a2cbc27b809b437977484078c4}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_srand@{p4est\_quadrant\_srand}}
+\index{p4est\_quadrant\_srand@{p4est\_quadrant\_srand}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_srand()}{p4est\_quadrant\_srand()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+srand (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{sc\+\_\+rand\+\_\+state\+\_\+t $\ast$}]{rstate }\end{DoxyParamCaption})}
+
+
+
+Initialize a random number generator by quadrant coordinates. 
+
+This serves to generate partition-\/independent and reproducible samples. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Valid quadrant. \\
+\hline
+\mbox{\texttt{ out}}  & {\em rstate} & New state of random number generator. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{spheres_2spheres2_8c-example}{spheres/spheres2.\+c}}.\end{Desc}
+\mbox{\Hypertarget{p4est__bits_8h_a8a6c00b8588a947c676b11c9067e842c}\label{p4est__bits_8h_a8a6c00b8588a947c676b11c9067e842c}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_successor@{p4est\_quadrant\_successor}}
+\index{p4est\_quadrant\_successor@{p4est\_quadrant\_successor}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_successor()}{p4est\_quadrant\_successor()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+successor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{quadrant,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{result }\end{DoxyParamCaption})}
+
+
+
+Compute the successor according to the Morton index in a uniform mesh. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em quadrant} & Quadrant whose Morton successor will be computed. Must not be the last (top right) quadrant in the tree. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em result} & The coordinates and level of the successor of {\bfseries{quadrant}} will be saved in {\bfseries{result}}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_afda3c543b6f66241db7fa7bfe0170129}\label{p4est__bits_8h_afda3c543b6f66241db7fa7bfe0170129}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_touches\_corner@{p4est\_quadrant\_touches\_corner}}
+\index{p4est\_quadrant\_touches\_corner@{p4est\_quadrant\_touches\_corner}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_touches\_corner()}{p4est\_quadrant\_touches\_corner()}}
+{\footnotesize\ttfamily int p4est\+\_\+quadrant\+\_\+touches\+\_\+corner (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{corner,  }\item[{int}]{inside }\end{DoxyParamCaption})}
+
+
+
+Checks if a quadrant touches a corner (diagonally inside or outside). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & This quadrant must be valid (if {\itshape inside} is true) or at least extended (if {\itshape inside} is false). It may also be a node respecting the {\itshape inside} argument. \\
+\hline
+\mbox{\texttt{ in}}  & {\em corner} & Valid corner index from 0 to 3. \\
+\hline
+\mbox{\texttt{ in}}  & {\em inside} & Boolean to clarify whether the input {\itshape q} is inside or outside a unit tree (or root quadrant). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_a33d171a3c94c4e642ccbc2a285ecd3b9}\label{p4est__bits_8h_a33d171a3c94c4e642ccbc2a285ecd3b9}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_transform\_corner@{p4est\_quadrant\_transform\_corner}}
+\index{p4est\_quadrant\_transform\_corner@{p4est\_quadrant\_transform\_corner}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_transform\_corner()}{p4est\_quadrant\_transform\_corner()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+transform\+\_\+corner (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{int}]{corner,  }\item[{int}]{inside }\end{DoxyParamCaption})}
+
+
+
+Move a quadrant inside or diagonally outside a corner position. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em q} & This quadrant only requires a valid level. \\
+\hline
+\mbox{\texttt{ in}}  & {\em corner} & Number of the corner in 0..3. \\
+\hline
+\mbox{\texttt{ in}}  & {\em inside} & Boolean flag for inside or diagonally outside. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{p4est__bits_8h_aea8b9c879585b51c8bc0f465a778694f}\label{p4est__bits_8h_aea8b9c879585b51c8bc0f465a778694f}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_transform\_face@{p4est\_quadrant\_transform\_face}}
+\index{p4est\_quadrant\_transform\_face@{p4est\_quadrant\_transform\_face}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_transform\_face()}{p4est\_quadrant\_transform\_face()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+transform\+\_\+face (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{r,  }\item[{const int}]{ftransform\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Transforms a quadrant/node across a face between trees. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant/non-\/clamped node. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em r} & Quadrant/node whose Morton index will be filled. \\
+\hline
+\mbox{\texttt{ in}}  & {\em ftransform} & This array holds 9 integers. \mbox{[}0,2\mbox{]} The coordinate axis sequence of the origin face. \mbox{[}3,5\mbox{]} The coordinate axis sequence of the target face. \mbox{[}6,8\mbox{]} Edge reverse flag for axis 0; face code for 1. \mbox{[}1,4,7\mbox{]} 0 (unused for compatibility with 3D). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+{\itshape q} and {\itshape r} may NOT point to the same quadrant structure. 
+\end{DoxyNote}
+\mbox{\Hypertarget{p4est__bits_8h_a1c0bd87bc88f3389fa5f224922ce060a}\label{p4est__bits_8h_a1c0bd87bc88f3389fa5f224922ce060a}} 
+\index{p4est\_bits.h@{p4est\_bits.h}!p4est\_quadrant\_volume\_coordinates@{p4est\_quadrant\_volume\_coordinates}}
+\index{p4est\_quadrant\_volume\_coordinates@{p4est\_quadrant\_volume\_coordinates}!p4est\_bits.h@{p4est\_bits.h}}
+\doxysubsubsection{\texorpdfstring{p4est\_quadrant\_volume\_coordinates()}{p4est\_quadrant\_volume\_coordinates()}}
+{\footnotesize\ttfamily void p4est\+\_\+quadrant\+\_\+volume\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{p4est_8h_af07461000cd68b5cd5e38b2e66b7f67b}{p4est\+\_\+quadrant\+\_\+t}} $\ast$}]{q,  }\item[{\mbox{\hyperlink{p4est__base_8h_a05ea8ceb664ae2403fbcf7b1dcc70ea0}{p4est\+\_\+qcoord\+\_\+t}}}]{coords\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Compute the coordinates of a quadrant\textquotesingle{}s midpoint. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em q} & Input quadrant, must be valid. \\
+\hline
+\mbox{\texttt{ out}}  & {\em coords} & 2D coordinates are strictly inside the unit tree. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{simple_2simple2_8c-example}{simple/simple2.\+c}}, \mbox{\hyperlink{test_coordinates2_8c-example}{test\+\_\+coordinates2.\+c}}, and \mbox{\hyperlink{userdata_2userdata_run2_8c-example}{userdata/userdata\+\_\+run2.\+c}}.\end{Desc}

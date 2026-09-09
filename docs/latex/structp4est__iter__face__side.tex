@@ -1,0 +1,53 @@
+\hypertarget{structp4est__iter__face__side}{}\doxysection{p4est\+\_\+iter\+\_\+face\+\_\+side Struct Reference}
+\label{structp4est__iter__face__side}\index{p4est\_iter\_face\_side@{p4est\_iter\_face\_side}}
+
+
+Information about one side of a face in the forest.  
+
+
+
+
+{\ttfamily \#include $<$p4est\+\_\+iterate.\+h$>$}
+
+
+
+Collaboration diagram for p4est\+\_\+iter\+\_\+face\+\_\+side\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structp4est__iter__face__side__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+union \mbox{\hyperlink{unionp4est__iter__face__side_1_1p4est__iter__face__side__data}{p4est\+\_\+iter\+\_\+face\+\_\+side\+\_\+data}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp4est__iter__face__side_a60c30739e2e74c9f4bea8039b901fa6a}\label{structp4est__iter__face__side_a60c30739e2e74c9f4bea8039b901fa6a}} 
+\mbox{\hyperlink{p4est__base_8h_a8e849f705b0d4d1702b8f5102823f48c}{p4est\+\_\+topidx\+\_\+t}} \mbox{\hyperlink{structp4est__iter__face__side_a60c30739e2e74c9f4bea8039b901fa6a}{treeid}}
+\begin{DoxyCompactList}\small\item\em the tree on this side \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__iter__face__side_a437fc601ac99c21e9a2d541b904042b7}\label{structp4est__iter__face__side_a437fc601ac99c21e9a2d541b904042b7}} 
+int8\+\_\+t \mbox{\hyperlink{structp4est__iter__face__side_a437fc601ac99c21e9a2d541b904042b7}{face}}
+\begin{DoxyCompactList}\small\item\em which quadrant side the face touches \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__iter__face__side_aaa99624f4e1502443888a9718e099322}\label{structp4est__iter__face__side_aaa99624f4e1502443888a9718e099322}} 
+int8\+\_\+t \mbox{\hyperlink{structp4est__iter__face__side_aaa99624f4e1502443888a9718e099322}{is\+\_\+hanging}}
+\begin{DoxyCompactList}\small\item\em boolean\+: one full quad (0) or two smaller quads (1) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp4est__iter__face__side_a35b98e64deaf2b13dd9b2ade5c7f82ad}\label{structp4est__iter__face__side_a35b98e64deaf2b13dd9b2ade5c7f82ad}} 
+union \mbox{\hyperlink{unionp4est__iter__face__side_1_1p4est__iter__face__side__data}{p4est\+\_\+iter\+\_\+face\+\_\+side\+::p4est\+\_\+iter\+\_\+face\+\_\+side\+\_\+data}} {\bfseries is}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Information about one side of a face in the forest. 
+
+If a {\itshape quad} is local ({\itshape is\+\_\+ghost} is false), then its {\itshape quadid} indexes the tree\textquotesingle{}s quadrant array; otherwise, it indexes the ghosts array. If the face is hanging, then the quadrants are listed in z-\/order. If a quadrant should be present, but it is not included in the ghost layer, then quad = NULL, is\+\_\+ghost is true, and quadid = -\/1. \begin{Desc}
+\item[Examples]\par
+\mbox{\hyperlink{steps_2p4est_step3_8c-example}{steps/p4est\+\_\+step3.\+c}}.\end{Desc}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p4est__iterate_8h}{p4est\+\_\+iterate.\+h}}\end{DoxyCompactItemize}

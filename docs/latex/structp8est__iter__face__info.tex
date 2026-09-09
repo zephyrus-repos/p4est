@@ -1,0 +1,48 @@
+\hypertarget{structp8est__iter__face__info}{}\doxysection{p8est\+\_\+iter\+\_\+face\+\_\+info Struct Reference}
+\label{structp8est__iter__face__info}\index{p8est\_iter\_face\_info@{p8est\_iter\_face\_info}}
+
+
+The information that is available to the user-\/defined p8est\+\_\+iter\+\_\+face\+\_\+t callback.  
+
+
+
+
+{\ttfamily \#include $<$p8est\+\_\+iterate.\+h$>$}
+
+
+
+Collaboration diagram for p8est\+\_\+iter\+\_\+face\+\_\+info\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structp8est__iter__face__info__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structp8est__iter__face__info_a974676df68d108f9bad16fd244dd36e0}\label{structp8est__iter__face__info_a974676df68d108f9bad16fd244dd36e0}} 
+\mbox{\hyperlink{p8est_8h_a65f9b454e1c28c2c9f60ab4a967126af}{p8est\+\_\+t}} $\ast$ {\bfseries p4est}
+\item 
+\mbox{\Hypertarget{structp8est__iter__face__info_a7ae67eea2bf8d37414666406fb6bc373}\label{structp8est__iter__face__info_a7ae67eea2bf8d37414666406fb6bc373}} 
+\mbox{\hyperlink{p8est__ghost_8h_a01f7ba9154de22adb8e8f8c342d697ba}{p8est\+\_\+ghost\+\_\+t}} $\ast$ {\bfseries ghost\+\_\+layer}
+\item 
+\mbox{\Hypertarget{structp8est__iter__face__info_a27e7a18121d3e1e02a8312126b9bb280}\label{structp8est__iter__face__info_a27e7a18121d3e1e02a8312126b9bb280}} 
+int8\+\_\+t \mbox{\hyperlink{structp8est__iter__face__info_a27e7a18121d3e1e02a8312126b9bb280}{orientation}}
+\begin{DoxyCompactList}\small\item\em the orientation of the sides to each other, as in the definition of p8est\+\_\+connectivity\+\_\+t \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__iter__face__info_af5a8467b1342452542b7738859e57327}\label{structp8est__iter__face__info_af5a8467b1342452542b7738859e57327}} 
+int8\+\_\+t \mbox{\hyperlink{structp8est__iter__face__info_af5a8467b1342452542b7738859e57327}{tree\+\_\+boundary}}
+\begin{DoxyCompactList}\small\item\em boolean\+: interior face (0), tree boundary face (true) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structp8est__iter__face__info_a5e298bad1d16c32d9713297c36f01f1d}\label{structp8est__iter__face__info_a5e298bad1d16c32d9713297c36f01f1d}} 
+sc\+\_\+array\+\_\+t {\bfseries sides}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The information that is available to the user-\/defined p8est\+\_\+iter\+\_\+face\+\_\+t callback. 
+
+The orientation is 0 if the face is within one tree; otherwise, it is the same as the orientation value between the two trees given in the connectivity. If the face is on the outside of the forest, then there is only one side. If tree\+\_\+boundary is false, the face is on the interior of a tree. When tree\+\_\+boundary false, sides\mbox{[}0\mbox{]} contains the lowest z-\/order quadrant that touches the face. When tree\+\_\+boundary is true, its value is P8\+EST\+\_\+\+CONNECT\+\_\+\+FACE. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p8est__iterate_8h}{p8est\+\_\+iterate.\+h}}\end{DoxyCompactItemize}

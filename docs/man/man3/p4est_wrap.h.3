@@ -1,0 +1,482 @@
+.TH "src/p4est_wrap.h" 3 "Thu Mar 13 2025" "Version 2.8.6.316-59dc-dirty" "p4est" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/p4est_wrap.h \- This wrapper API encapsulates core \fBp4est\fP data structures and provides functions that clarify the mark-adapt-partition cycle\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <p4est_extended\&.h>\fP
+.br
+\fC#include <sc_refcount\&.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBp4est_wrap_params_t\fP"
+.br
+.RI "This structure contains the different parameters of wrap creation\&. "
+.ti -1c
+.RI "struct \fBp4est_wrap\fP"
+.br
+.RI "Wrapping a \fBp4est\fP object for an alternative API\&. "
+.ti -1c
+.RI "struct \fBp4est_wrap_leaf\fP"
+.br
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBP4EST_LEAF_IS_FIRST_IN_TREE\fP(wleaf)   ((wleaf)\->which_quad == 0)"
+.br
+.RI "Determine whether we have just entered a different tree\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef enum p4est_wrap_flags \fBp4est_wrap_flags_t\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBp4est_wrap\fP \fBp4est_wrap_t\fP"
+.br
+.RI "Wrapping a \fBp4est\fP object for an alternative API\&. "
+.ti -1c
+.RI "typedef struct \fBp4est_wrap_leaf\fP \fBp4est_wrap_leaf_t\fP"
+.br
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBp4est_wrap_flags\fP { \fBP4EST_WRAP_NONE\fP = 0, \fBP4EST_WRAP_REFINE\fP = 0x01, \fBP4EST_WRAP_COARSEN\fP = 0x02 }"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBp4est_wrap_params_init\fP (\fBp4est_wrap_params_t\fP *params)"
+.br
+.RI "Initialize a default \fBp4est_wrap_params_t\fP structure\&. "
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_conn\fP (sc_MPI_Comm mpicomm, \fBp4est_connectivity_t\fP *conn, int initial_level)"
+.br
+.RI "Create a \fBp4est\fP wrapper from a given connectivity structure\&. "
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_p4est\fP (\fBp4est_t\fP *\fBp4est\fP, int hollow, \fBp4est_connect_type_t\fP btype, \fBp4est_replace_t\fP replace_fn, void *user_pointer)"
+.br
+.RI "Create a wrapper for a given \fBp4est\fP structure\&. "
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_p4est_params\fP (\fBp4est_t\fP *\fBp4est\fP, \fBp4est_wrap_params_t\fP *params)"
+.br
+.RI "Create a wrapper for a given \fBp4est\fP structure\&. "
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_ext\fP (sc_MPI_Comm mpicomm, \fBp4est_connectivity_t\fP *conn, int initial_level, int hollow, \fBp4est_connect_type_t\fP btype, \fBp4est_replace_t\fP replace_fn, void *user_pointer)"
+.br
+.RI "Create a \fBp4est\fP wrapper from a given connectivity structure\&. "
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_params\fP (sc_MPI_Comm mpicomm, \fBp4est_connectivity_t\fP *conn, int initial_level, \fBp4est_wrap_params_t\fP *params)"
+.br
+.RI "Create a \fBp4est\fP wrapper from a given connectivity structure\&. "
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_copy\fP (\fBp4est_wrap_t\fP *source, size_t data_size, \fBp4est_replace_t\fP replace_fn, void *user_pointer)"
+.br
+.RI "Create a \fBp4est\fP wrapper from an existing one\&. "
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_unitsquare\fP (sc_MPI_Comm mpicomm, int initial_level)"
+.br
+.RI "Create a \fBp4est_wrap\fP and internal helper data structures\&. "
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_periodic\fP (sc_MPI_Comm mpicomm, int initial_level)"
+.br
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_rotwrap\fP (sc_MPI_Comm mpicomm, int initial_level)"
+.br
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_corner\fP (sc_MPI_Comm mpicomm, int initial_level)"
+.br
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_pillow\fP (sc_MPI_Comm mpicomm, int initial_level)"
+.br
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_moebius\fP (sc_MPI_Comm mpicomm, int initial_level)"
+.br
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_cubed\fP (sc_MPI_Comm mpicomm, int initial_level)"
+.br
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_disk\fP (sc_MPI_Comm mpicomm, int px, int py, int initial_level)"
+.br
+.RI "Create a five-tree setup suitable to build a 2D disk\&. "
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_brick\fP (sc_MPI_Comm mpicomm, int bx, int by, int px, int py, int initial_level)"
+.br
+.RI "The rectangular brick is one of the most useful connectivities\&. "
+.ti -1c
+.RI "\fBp4est_wrap_t\fP * \fBp4est_wrap_new_world\fP (int initial_level)"
+.br
+.RI "Passes sc_MPI_COMM_WORLD to p4est_wrap_new_unitsquare\&. "
+.ti -1c
+.RI "void \fBp4est_wrap_destroy\fP (\fBp4est_wrap_t\fP *pp)"
+.br
+.ti -1c
+.RI "void \fBp4est_wrap_set_hollow\fP (\fBp4est_wrap_t\fP *pp, int hollow)"
+.br
+.RI "Change hollow status of the wrap\&. "
+.ti -1c
+.RI "void \fBp4est_wrap_set_coarsen_delay\fP (\fBp4est_wrap_t\fP *pp, int coarsen_delay, int coarsen_affect)"
+.br
+.RI "Set a parameter that delays coarsening after adaptation\&. "
+.ti -1c
+.RI "void \fBp4est_wrap_set_partitioning\fP (\fBp4est_wrap_t\fP *pp, int partition_for_coarsening)"
+.br
+.RI "Set a parameter that ensures future partitions allow one level of coarsening\&. "
+.ti -1c
+.RI "\fBp4est_ghost_t\fP * \fBp4est_wrap_get_ghost\fP (\fBp4est_wrap_t\fP *pp)"
+.br
+.RI "Return the appropriate ghost layer\&. "
+.ti -1c
+.RI "\fBp4est_mesh_t\fP * \fBp4est_wrap_get_mesh\fP (\fBp4est_wrap_t\fP *pp)"
+.br
+.RI "Return the appropriate mesh structure\&. "
+.ti -1c
+.RI "void \fBp4est_wrap_mark_refine\fP (\fBp4est_wrap_t\fP *pp, \fBp4est_topidx_t\fP which_tree, \fBp4est_locidx_t\fP which_quad)"
+.br
+.RI "Mark a local element for refinement\&. "
+.ti -1c
+.RI "void \fBp4est_wrap_mark_coarsen\fP (\fBp4est_wrap_t\fP *pp, \fBp4est_topidx_t\fP which_tree, \fBp4est_locidx_t\fP which_quad)"
+.br
+.RI "Mark a local element for coarsening\&. "
+.ti -1c
+.RI "int \fBp4est_wrap_adapt\fP (\fBp4est_wrap_t\fP *pp)"
+.br
+.RI "Call p4est_refine, coarsen, and balance to update pp->\fBp4est\fP\&. "
+.ti -1c
+.RI "int \fBp4est_wrap_partition\fP (\fBp4est_wrap_t\fP *pp, int weight_exponent, \fBp4est_locidx_t\fP *unchanged_first, \fBp4est_locidx_t\fP *unchanged_length, \fBp4est_locidx_t\fP *unchanged_old_first)"
+.br
+.RI "Call p4est_partition for equal leaf distribution\&. "
+.ti -1c
+.RI "void \fBp4est_wrap_complete\fP (\fBp4est_wrap_t\fP *pp)"
+.br
+.RI "Free memory for the intermediate mesh\&. "
+.ti -1c
+.RI "\fBp4est_wrap_leaf_t\fP * \fBp4est_wrap_leaf_first\fP (\fBp4est_wrap_t\fP *pp, int track_mirrors)"
+.br
+.ti -1c
+.RI "\fBp4est_wrap_leaf_t\fP * \fBp4est_wrap_leaf_next\fP (\fBp4est_wrap_leaf_t\fP *leaf)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This wrapper API encapsulates core \fBp4est\fP data structures and provides functions that clarify the mark-adapt-partition cycle\&. 
+
+There is also an element iterator that can replace the nested loops over trees and tree quadrants, respectively, which can help make application code cleaner\&.
+.PP
+For most new code, using this API is likely not necessary\&. 
+.SH "Function Documentation"
+.PP 
+.SS "int p4est_wrap_adapt (\fBp4est_wrap_t\fP * pp)"
+
+.PP
+Call p4est_refine, coarsen, and balance to update pp->\fBp4est\fP\&. Checks pp->flags as per-quadrant input against p4est_wrap_flags_t\&. The pp->flags array is updated along with \fBp4est\fP and reset to zeros\&. Creates ghost_aux and mesh_aux to represent the intermediate mesh\&. If zlib is available, the routine checks whether coarsening and balancing the \fBp4est\fP canceled out and skips computing ghost_aux and mesh_aux when possible\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpp\fP The \fBp4est\fP wrapper to work with, must not be hollow\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+boolean whether \fBp4est\fP has changed\&. If true, partition must be called\&. If false, partition must not be called, and complete must not be called either\&. 
+.RE
+.PP
+
+.SS "void p4est_wrap_complete (\fBp4est_wrap_t\fP * pp)"
+
+.PP
+Free memory for the intermediate mesh\&. Sets mesh_aux and ghost_aux to NULL\&. This function must be used if both refinement and partition effect changes\&. After this call, we are ready for another mark-refine-partition cycle\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpp\fP The \fBp4est\fP wrapper to work with, must not be hollow\&. 
+.RE
+.PP
+
+.SS "\fBp4est_ghost_t\fP* p4est_wrap_get_ghost (\fBp4est_wrap_t\fP * pp)"
+
+.PP
+Return the appropriate ghost layer\&. This function is necessary since two versions may exist simultaneously after refinement and before partition/complete\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpp\fP Must have !pp->hollow\&. 
+.RE
+.PP
+
+.SS "\fBp4est_mesh_t\fP* p4est_wrap_get_mesh (\fBp4est_wrap_t\fP * pp)"
+
+.PP
+Return the appropriate mesh structure\&. This function is necessary since two versions may exist simultaneously after refinement and before partition/complete\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpp\fP Must have !pp->hollow\&. 
+.RE
+.PP
+
+.SS "void p4est_wrap_mark_coarsen (\fBp4est_wrap_t\fP * pp, \fBp4est_topidx_t\fP which_tree, \fBp4est_locidx_t\fP which_quad)"
+
+.PP
+Mark a local element for coarsening\&. This will cancel any refinement mark set previously for this element\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpp\fP The \fBp4est\fP wrapper to work with, must not be hollow\&. 
+.br
+\fIwhich_tree\fP The number of the tree this element lives in\&. 
+.br
+\fIwhich_quad\fP The number of this element relative to its tree\&. 
+.RE
+.PP
+
+.SS "void p4est_wrap_mark_refine (\fBp4est_wrap_t\fP * pp, \fBp4est_topidx_t\fP which_tree, \fBp4est_locidx_t\fP which_quad)"
+
+.PP
+Mark a local element for refinement\&. This will cancel any coarsening mark set previously for this element\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpp\fP The \fBp4est\fP wrapper to work with, must not be hollow\&. 
+.br
+\fIwhich_tree\fP The number of the tree this element lives in\&. 
+.br
+\fIwhich_quad\fP The number of this element relative to its tree\&. 
+.RE
+.PP
+
+.SS "\fBp4est_wrap_t\fP* p4est_wrap_new_conn (sc_MPI_Comm mpicomm, \fBp4est_connectivity_t\fP * conn, int initial_level)"
+
+.PP
+Create a \fBp4est\fP wrapper from a given connectivity structure\&. The ghost and mesh members are initialized as well as the flags\&. The btype is set to P4EST_CONNECT_FULL\&. This function sets a subset of the wrap creation parameters\&. For full control use \fBp4est_wrap_new_params\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpicomm\fP We expect sc_MPI_Init to be called already\&. 
+.br
+\fIconn\fP Connectivity structure\&. Wrap takes ownership\&. 
+.br
+\fIinitial_level\fP Initial level of uniform refinement\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A fully initialized \fBp4est_wrap\fP structure\&. 
+.RE
+.PP
+
+.SS "\fBp4est_wrap_t\fP* p4est_wrap_new_copy (\fBp4est_wrap_t\fP * source, size_t data_size, \fBp4est_replace_t\fP replace_fn, void * user_pointer)"
+
+.PP
+Create a \fBp4est\fP wrapper from an existing one\&. 
+.PP
+\fBNote\fP
+.RS 4
+This wrapper must be destroyed before the original one\&. We set it to hollow and copy the original \fBp4est\fP data structure\&. 
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP We access the source for debugging purposes\&. 
+.br
+\fIdata_size\fP The data size installed in the copied forest\&. 
+.br
+\fIreplace_fn\fP Callback to replace quadrants during refinement, coarsening or balancing in \fBp4est_wrap_adapt\fP\&. May be NULL\&. 
+.br
+\fIuser_pointer\fP Set the user pointer in \fBp4est_wrap_t\fP\&. Subsequently, we will never access it\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A fully initialized \fBp4est_wrap\fP structure\&. 
+.RE
+.PP
+
+.SS "\fBp4est_wrap_t\fP* p4est_wrap_new_ext (sc_MPI_Comm mpicomm, \fBp4est_connectivity_t\fP * conn, int initial_level, int hollow, \fBp4est_connect_type_t\fP btype, \fBp4est_replace_t\fP replace_fn, void * user_pointer)"
+
+.PP
+Create a \fBp4est\fP wrapper from a given connectivity structure\&. Like \fBp4est_wrap_new_conn\fP, but with extra parameters \fIhollow\fP and \fIbtype\fP\&. This function sets a subset of the wrap creation parameters\&. For full control use \fBp4est_wrap_new_params\fP\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpicomm\fP We expect sc_MPI_Init to be called already\&. 
+.br
+\fIconn\fP Connectivity structure\&. Wrap takes ownership\&. 
+.br
+\fIinitial_level\fP Initial level of uniform refinement\&. No effect if less/equal to zero\&. 
+.br
+\fIhollow\fP Do not allocate flags, ghost, and mesh members\&. 
+.br
+\fIbtype\fP The neighborhood used for balance, ghost, mesh\&. 
+.br
+\fIreplace_fn\fP Callback to replace quadrants during refinement, coarsening or balancing in \fBp4est_wrap_adapt\fP\&. May be NULL\&. 
+.br
+\fIuser_pointer\fP Set the user pointer in \fBp4est_wrap_t\fP\&. Subsequently, we will never access it\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A fully initialized \fBp4est_wrap\fP structure\&. 
+.RE
+.PP
+
+.SS "\fBp4est_wrap_t\fP* p4est_wrap_new_p4est (\fBp4est_t\fP * p4est, int hollow, \fBp4est_connect_type_t\fP btype, \fBp4est_replace_t\fP replace_fn, void * user_pointer)"
+
+.PP
+Create a wrapper for a given \fBp4est\fP structure\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP Valid \fBp4est\fP object that we will own\&. We take ownership of its connectivity too\&. Its user pointer must be NULL and will be changed\&. Its data size will be set to 0 and the quadrant data will be freed\&. 
+.br
+\fIhollow\fP Do not allocate flags, ghost, and mesh members\&. 
+.br
+\fIbtype\fP The neighborhood used for balance, ghost, mesh\&. 
+.br
+\fIreplace_fn\fP Callback to replace quadrants during refinement, coarsening or balancing in \fBp4est_wrap_adapt\fP\&. May be NULL\&. 
+.br
+\fIuser_pointer\fP Set the user pointer in \fBp4est_wrap_t\fP\&. Subsequently, we will never access it\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A fully initialized \fBp4est_wrap\fP structure\&. 
+.RE
+.PP
+
+.SS "\fBp4est_wrap_t\fP* p4est_wrap_new_p4est_params (\fBp4est_t\fP * p4est, \fBp4est_wrap_params_t\fP * params)"
+
+.PP
+Create a wrapper for a given \fBp4est\fP structure\&. Like \fBp4est_wrap_new_p4est\fP, but with \fIparams\fP to completely control the wrap creation process\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fI\fBp4est\fP\fP Valid \fBp4est\fP object that we will own\&. We take ownership of its connectivity too\&. Its user pointer must be NULL and will be changed\&. Its data size will be set to 0 and the quadrant data will be freed\&. 
+.br
+\fIparams\fP The wrap creation parameters\&. If NULL, the function defaults to the parameters of \fBp4est_wrap_params_init\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A fully initialized \fBp4est_wrap\fP structure\&. 
+.RE
+.PP
+
+.SS "\fBp4est_wrap_t\fP* p4est_wrap_new_params (sc_MPI_Comm mpicomm, \fBp4est_connectivity_t\fP * conn, int initial_level, \fBp4est_wrap_params_t\fP * params)"
+
+.PP
+Create a \fBp4est\fP wrapper from a given connectivity structure\&. Like \fBp4est_wrap_new_conn\fP, but with \fIparams\fP to completely control the wrap creation process\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fImpicomm\fP We expect sc_MPI_Init to be called already\&. 
+.br
+\fIconn\fP Connectivity structure\&. Wrap takes ownership\&. 
+.br
+\fIinitial_level\fP Initial level of uniform refinement\&. No effect if less/equal to zero\&. 
+.br
+\fIparams\fP The wrap creation parameters\&. If NULL, the function defaults to the parameters of \fBp4est_wrap_params_init\fP\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A fully initialized \fBp4est_wrap\fP structure\&. 
+.RE
+.PP
+
+.SS "\fBp4est_wrap_t\fP* p4est_wrap_new_unitsquare (sc_MPI_Comm mpicomm, int initial_level)"
+
+.PP
+Create a \fBp4est_wrap\fP and internal helper data structures\&. Expects sc_MPI_Init to be called beforehand\&. 
+.SS "void p4est_wrap_params_init (\fBp4est_wrap_params_t\fP * params)"
+
+.PP
+Initialize a default \fBp4est_wrap_params_t\fP structure\&. The parameters are set to create the most basic, hollow wrap structure\&. 
+.SS "int p4est_wrap_partition (\fBp4est_wrap_t\fP * pp, int weight_exponent, \fBp4est_locidx_t\fP * unchanged_first, \fBp4est_locidx_t\fP * unchanged_length, \fBp4est_locidx_t\fP * unchanged_old_first)"
+
+.PP
+Call p4est_partition for equal leaf distribution\&. Frees the old ghost and mesh first and updates pp->flags along with \fBp4est\fP\&. The pp->flags array is reset to zeros\&. Creates ghost and mesh to represent the new mesh\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpp\fP The \fBp4est\fP wrapper to work with, must not be hollow\&. 
+.br
+\fIweight_exponent\fP Integer weight assigned to each leaf according to 2 ** (level * exponent)\&. Passing 0 assigns equal weight to all leaves\&. Passing 1 increases the leaf weight by a factor of two for each level increase\&. CURRENTLY ONLY 0 AND 1 ARE LEGAL VALUES\&. 
+.br
+\fIunchanged_first\fP If not NULL, is assigned the processor-local index of the first local quadrant that has stayed on this processor\&. If no quadrant has stayed, the value is set to zero\&. This number is in reference to the new (output) partition\&. 
+.br
+\fIunchanged_length\fP If not NULL, is assigned the number of quadrants that have stayed on this processor\&. If no quadrant has stayed, the value is set to zero\&. 
+.br
+\fIunchanged_old_first\fP If not NULL, is assigned the processor-local index of the first local quadrant that has stayed with reference to the old (input) partition\&. If no quadrant has stayed, the value is set to zero\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+boolean whether \fBp4est\fP has changed\&. If true, complete must be called\&. If false, complete must not be called\&. 
+.RE
+.PP
+
+.SS "void p4est_wrap_set_coarsen_delay (\fBp4est_wrap_t\fP * pp, int coarsen_delay, int coarsen_affect)"
+
+.PP
+Set a parameter that delays coarsening after adaptation\&. If positive each quadrant counts the number of adaptations it has survived\&. Calling this function initializes all quadrant counters to zero\&. On adaptation we only coarsen a quadrant if it is old enough\&. Optionally, we can also delay the time between subsequent coarsenings\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpp\fP A valid \fBp4est_wrap\fP structure\&. 
+.br
+\fIcoarsen_delay\fP Set how many adaptation cycles a quadrant has to wait to be allowed to coarsen\&. Non-negative number; 0 disables the feature\&. Suggested default value: not larger than 2\&. 
+.br
+\fIcoarsen_affect\fP Boolean; If true, we not only count from the most recent refinement but also between subsequent coarsenings\&. Suggested default: 0\&. 
+.RE
+.PP
+
+.SS "void p4est_wrap_set_hollow (\fBp4est_wrap_t\fP * pp, int hollow)"
+
+.PP
+Change hollow status of the wrap\&. A wrap is hollow if the flags, ghost, and mesh members are NULL\&. Legal to set to current hollow status, in which case wrap is not changed\&. If changed from not hollow to hollow, previously set refinement and coarsening flags are zeroed\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpp\fP The present wrap structure, hollow or not\&. 
+.br
+\fIhollow\fP The desired hollow status\&. If set to hollow, refinement flags are zeroed\&. 
+.RE
+.PP
+
+.SS "void p4est_wrap_set_partitioning (\fBp4est_wrap_t\fP * pp, int partition_for_coarsening)"
+
+.PP
+Set a parameter that ensures future partitions allow one level of coarsening\&. The partition_for_coarsening parameter is passed to \fBp4est_partition_ext\fP in \fBp4est_wrap_partition\fP\&. If not zero, all future calls to \fBp4est_wrap_partition\fP will partition in a manner that allows one level of coarsening\&. This function does not automatically repartition the mesh, when switching partition_for_coarsening to a non-zero value\&.
+.PP
+\fBDeprecated\fP
+.RS 4
+The function will be removed in the future\&. Flags for partitioning can be set using \fBp4est_wrap_new_params\fP\&.
+.RE
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIpp\fP A valid \fBp4est_wrap\fP structure\&. 
+.br
+\fIpartition_for_coarsening\fP Boolean: If true, all future partitions of the wrap allow one level of coarsening\&. Suggested default: 1\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for p4est from the source code\&.
