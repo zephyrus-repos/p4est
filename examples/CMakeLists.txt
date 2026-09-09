@@ -2,6 +2,9 @@
 cmake_minimum_required(VERSION 3.20)
 project(p4est_examples C)
 
+# export compile_commands.json for clang tooling
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
