@@ -1,0 +1,11 @@
+# Mirrors example/steps/Makefile.am
+p4est_example(p4est_step1 p4est_step1.c)
+p4est_example(p4est_step2 p4est_step2.c)
+p4est_example(p4est_step3 p4est_step3.c)
+p4est_example(p4est_step4 p4est_step4.c)
+p4est_example(p4est_step5 p4est_step5.c)
+p4est_example(p8est_step1 p8est_step1.c)
+p4est_example(p8est_step2 p8est_step2.c)
+p4est_example(p8est_step3 p8est_step3.c)
+p4est_example(p8est_step4 p8est_step4.c)
+p4est_example(p8est_step5 p8est_step5.c)

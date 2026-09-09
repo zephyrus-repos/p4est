@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.12)
+# CMakeLists.txt
+cmake_minimum_required(VERSION 3.20)
 project(p4est_examples C)
 
 set(CMAKE_C_STANDARD 99)
@@ -11,48 +12,39 @@ find_package(Threads REQUIRED)
 # p4est installation
 set(P4EST_PREFIX "/opt/p4est")
 
-# Find all example sources
-file(GLOB SOURCES CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/*/*.c"
-)
+# All example binaries are placed into ${CMAKE_BINARY_DIR}/bin and named
+# after the upstream example names (see each subdir's Makefile.am), e.g.
+# p4est_simple, p8est_mesh, p4est_step1.
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-# Exclude auxiliary sources
-list(REMOVE_ITEM SOURCES
-    "${CMAKE_CURRENT_SOURCE_DIR}/spheres/p4est_spheres.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/spheres/p8est_spheres.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/userdata/userdata_run2.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/userdata/userdata_run3.c"
-)
-
-# Build one executable per source
-foreach(src IN LISTS SOURCES)
-    get_filename_component(name "${src}" NAME_WE)
-    set(exe_sources "${src}")
-
-    # Add userdata helpers
-    if(name STREQUAL "userdata2")
-        list(APPEND exe_sources
-            "${CMAKE_CURRENT_SOURCE_DIR}/userdata/userdata_run2.c")
-    elseif(name STREQUAL "userdata3")
-        list(APPEND exe_sources
-            "${CMAKE_CURRENT_SOURCE_DIR}/userdata/userdata_run3.c")
-    endif()
-
-    add_executable(${name} ${exe_sources})
-
-    target_include_directories(${name} PRIVATE
-        "${P4EST_PREFIX}/include"
-    )
-
-    # Link p4est and its dependencies
-    target_link_libraries(${name} PRIVATE
+# Create one example executable from the given source file(s).
+#   p4est_example(<target> <source1> [<source2> ...])
+function(p4est_example target)
+    add_executable(${target} ${ARGN})
+    target_include_directories(${target} PRIVATE
+        "${P4EST_PREFIX}/include")
+    target_link_libraries(${target} PRIVATE
         "${P4EST_PREFIX}/lib/libp4est.a"
         "${P4EST_PREFIX}/lib/libsc.a"
         jansson
         z
         m
         MPI::MPI_C
-        Threads::Threads
-    )
+        Threads::Threads)
+endfunction()
 
-endforeach()
+# Each example directory declares its own binaries. The targets and source
+# sets mirror the upstream example/<dir>/Makefile.am files: a *_2.c source
+# builds the p4est (2D quadtree) program, a *_3.c source the p8est (3D
+# octree) program.
+add_subdirectory(balance)
+add_subdirectory(mesh)
+add_subdirectory(particles)
+add_subdirectory(points)
+add_subdirectory(search)
+add_subdirectory(simple)
+add_subdirectory(spheres)
+add_subdirectory(steps)
+add_subdirectory(tetgen)
+add_subdirectory(timings)
+add_subdirectory(userdata)
