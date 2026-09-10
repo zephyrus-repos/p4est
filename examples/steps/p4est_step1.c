@@ -110,7 +110,7 @@ refine_fn(p4est_t *p4est, p4est_topidx_t which_tree, p4est_quadrant_t *quadrant)
 }
 
 /** The main function of the step1 example program.
- *
+ * 
  * It creates a connectivity and forest, refines it, and writes a VTK file.
  */
 int main(int argc, char **argv) {
