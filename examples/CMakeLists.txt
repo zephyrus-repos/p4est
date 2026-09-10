@@ -15,11 +15,6 @@ find_package(Threads REQUIRED)
 # p4est installation
 set(P4EST_PREFIX "/opt/p4est")
 
-# All example binaries are placed into ${CMAKE_BINARY_DIR}/bin and named
-# after the upstream example names (see each subdir's Makefile.am), e.g.
-# p4est_simple, p8est_mesh, p4est_step1.
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-
 # Create one example executable from the given source file(s).
 #   p4est_example(<target> <source1> [<source2> ...])
 function(p4est_example target)
