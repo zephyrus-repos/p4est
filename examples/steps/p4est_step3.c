@@ -172,8 +172,7 @@ step3_get_midpoint(p4est_t *p4est, p4est_topidx_t which_tree, p4est_quadrant_t *
  * \param [in,out] q          the quadrant whose data gets initialized
  */
 static void
-step3_init_initial_condition(p4est_t *p4est, p4est_topidx_t which_tree,
-                             p4est_quadrant_t *q) {
+step3_init_initial_condition(p4est_t *p4est, p4est_topidx_t which_tree, p4est_quadrant_t *q) {
     /* the data associated with a forest is accessible by user_pointer */
     step3_ctx_t *ctx = (step3_ctx_t *)p4est->user_pointer;
     /* the data associated with a quadrant is accessible by p.user_data */
@@ -202,9 +201,8 @@ step3_error_sqr_estimate(p4est_quadrant_t *q) {
     int           i;
     double        diff2;
     double       *du = data->du;
-    double        h =
-        (double)P4EST_QUADRANT_LEN(q->level) / (double)P4EST_ROOT_LEN;
-    double vol;
+    double        h  = (double)P4EST_QUADRANT_LEN(q->level) / (double)P4EST_ROOT_LEN;
+    double        vol;
 
 #ifdef P4_TO_P8
     vol = h * h * h;
@@ -237,14 +235,12 @@ step3_error_sqr_estimate(p4est_quadrant_t *q) {
  * \return 1 if \a q should be refined, 0 otherwise.
  */
 static int
-step3_refine_err_estimate(p4est_t *p4est, p4est_topidx_t which_tree,
-                          p4est_quadrant_t *q) {
+step3_refine_err_estimate(p4est_t *p4est, p4est_topidx_t which_tree, p4est_quadrant_t *q) {
     step3_ctx_t *ctx         = (step3_ctx_t *)p4est->user_pointer;
     double       global_err  = ctx->max_err;
     double       global_err2 = global_err * global_err;
-    double       h =
-        (double)P4EST_QUADRANT_LEN(q->level) / (double)P4EST_ROOT_LEN;
-    double vol, err2;
+    double       h           = (double)P4EST_QUADRANT_LEN(q->level) / (double)P4EST_ROOT_LEN;
+    double       vol, err2;
 
     /* the quadrant's volume is also its volume fraction */
 #ifdef P4_TO_P8
@@ -274,9 +270,7 @@ step3_refine_err_estimate(p4est_t *p4est, p4est_topidx_t which_tree,
  * \return 1 if \a children should be coarsened, 0 otherwise.
  */
 static int
-step3_coarsen_initial_condition(p4est_t          *p4est,
-                                p4est_topidx_t    which_tree,
-                                p4est_quadrant_t *children[]) {
+step3_coarsen_initial_condition(p4est_t *p4est, p4est_topidx_t which_tree, p4est_quadrant_t *children[]) {
     p4est_quadrant_t parent;
     step3_ctx_t     *ctx         = (step3_ctx_t *)p4est->user_pointer;
     double           global_err  = ctx->max_err;
@@ -336,8 +330,7 @@ step3_coarsen_err_estimate(p4est_t          *p4est,
     double        diff;
     int           i;
 
-    h =
-        (double)P4EST_QUADRANT_LEN(children[0]->level) /
+    h = (double)P4EST_QUADRANT_LEN(children[0]->level) /
         (double)P4EST_ROOT_LEN;
     /* the quadrant's volume is also its volume fraction */
 #ifdef P4_TO_P8
@@ -399,8 +392,7 @@ step3_coarsen_err_estimate(p4est_t          *p4est,
  */
 static void
 step3_replace_quads(p4est_t *p4est, p4est_topidx_t which_tree,
-                    int               num_outgoing,
-                    p4est_quadrant_t *outgoing[],
+                    int num_outgoing, p4est_quadrant_t *outgoing[],
                     int num_incoming, p4est_quadrant_t *incoming[]) {
     step3_data_t *parent_data, *child_data;
     int           i, j;
@@ -679,8 +671,7 @@ step3_write_checkpoint(p4est_t *p4est, int timestep) {
 
 #endif /* P4EST_ENABLE_FILE_DEPRECATED */
 
-static void step3_timestep(p4est_t *p4est, double start_time,
-                           double end_time);
+static void step3_timestep(p4est_t *p4est, double start_time, double end_time);
 
 static void step3_run(sc_MPI_Comm mpicomm);
 
@@ -746,8 +737,8 @@ step3_restart(const char *filename, sc_MPI_Comm mpicomm, double time_inc) {
     P4EST_GLOBAL_PRODUCTIONF("Read data with user string: %s\n", user_string);
 
     /* Instead of handling the wrong endianness, we just abort on it.
-   * In a more sophisticated application the data should be converted.
-   */
+    * In a more sophisticated application the data should be converted.
+    */
     SC_CHECK_ABORT(memcmp(&read_check_endianness, &check_endianness,
                           sizeof(uint32_t)) == 0,
                    "Wrong endianness");
@@ -1369,9 +1360,7 @@ step3_run(sc_MPI_Comm mpicomm) {
     int                   recursive, partforcoarsen;
     step3_ctx_t           ctx;
 
-    /* Avoid write of uninitialized bytes (valgrind warning)
-   * due to compiler padding.
-   */
+    /* Avoid write of uninitialized bytes (valgrind warning) due to compiler padding. */
     memset(&ctx, -1, sizeof(ctx));
 
     ctx.bump_width = 0.1;
@@ -1415,19 +1404,17 @@ step3_run(sc_MPI_Comm mpicomm) {
 
     /* refine and coarsen based on an interpolation error estimate */
     recursive = 1;
-    p4est_refine(p4est, recursive, step3_refine_err_estimate,
-                 step3_init_initial_condition);
-    p4est_coarsen(p4est, recursive, step3_coarsen_initial_condition,
-                  step3_init_initial_condition);
+    p4est_refine(p4est, recursive, step3_refine_err_estimate, step3_init_initial_condition);
+    p4est_coarsen(p4est, recursive, step3_coarsen_initial_condition, step3_init_initial_condition);
 
     /* Partition: The quadrants are redistributed for equal element count.  The
-   * partition can optionally be modified such that a family of octants, which
-   * are possibly ready for coarsening, are never split between processors. */
+    * partition can optionally be modified such that a family of octants, which
+    * are possibly ready for coarsening, are never split between processors. */
     partforcoarsen = 1;
 
     /* If we call the 2:1 balance we ensure that neighbors do not differ in size
-   * by more than a factor of 2.  This can optionally include diagonal
-   * neighbors across edges or corners as well; see p4est.h. */
+    * by more than a factor of 2.  This can optionally include diagonal
+    * neighbors across edges or corners as well; see p4est.h. */
     p4est_balance(p4est, P4EST_CONNECT_FACE, step3_init_initial_condition);
     p4est_partition(p4est, partforcoarsen, NULL);
 
@@ -1449,30 +1436,26 @@ int main(int argc, char **argv) {
     const char   *filename;
 
     /* Initialize MPI; see sc_mpi.h.
-   * If configure --enable-mpi is given these are true MPI calls.
-   * Else these are dummy functions that simulate a single-processor run. */
+    * If configure --enable-mpi is given these are true MPI calls.
+    * Else these are dummy functions that simulate a single-processor run. */
     mpiret = sc_MPI_Init(&argc, &argv);
     SC_CHECK_MPI(mpiret);
     mpicomm = sc_MPI_COMM_WORLD;
 
     /* These functions are optional.  If called they store the MPI rank as a
-   * static variable so subsequent global p4est log messages are only issued
-   * from processor zero.  Here we turn off most of the logging; see sc.h. */
+    * static variable so subsequent global p4est log messages are only issued
+    * from processor zero.  Here we turn off most of the logging; see sc.h. */
     sc_init(mpicomm, 1, 1, NULL, SC_LP_ESSENTIAL);
     p4est_init(NULL, SC_LP_PRODUCTION);
-    P4EST_GLOBAL_PRODUCTIONF("This is the p4est %dD demo example/steps/%s_step3\n",
-                             P4EST_DIM, P4EST_STRING);
+    P4EST_GLOBAL_PRODUCTIONF("This is the p4est %dD demo example/steps/%s_step3\n", P4EST_DIM, P4EST_STRING);
 
     /* Read command line options */
     filename = NULL;
     opt      = sc_options_new(argv[0]);
-    sc_options_add_bool(opt, 'H', "help", &help, 0,
-                        "Print the help string and end the program");
+    sc_options_add_bool(opt, 'H', "help", &help, 0, "Print the help string and end the program");
 #ifdef P4EST_ENABLE_FILE_DEPRECATED
-    sc_options_add_bool(opt, 'C', "write-checkpoint", &step3_checkpoint, 0,
-                        "Write checkpoint files to disk");
-    sc_options_add_string(opt, 'L', "load-checkpoint", &filename,
-                          NULL, "Load and start from a checkpoint file");
+    sc_options_add_bool(opt, 'C', "write-checkpoint", &step3_checkpoint, 0, "Write checkpoint files to disk");
+    sc_options_add_string(opt, 'L', "load-checkpoint", &filename, NULL, "Load and start from a checkpoint file");
 #endif
     retval      = sc_options_parse(p4est_package_id, SC_LP_ERROR, opt, argc, argv);
     usage_error = (retval == -1 || retval < argc);
@@ -1484,9 +1467,9 @@ int main(int argc, char **argv) {
         sc_options_print_summary(p4est_package_id, SC_LP_PRODUCTION, opt);
 
         /** Load a checkpoint file and restart the simulation for
-     * read filename != NULL. For filename == NULL the simulation
-     * is run from the beginning (t = 0).
-     */
+        * read filename != NULL. For filename == NULL the simulation
+        * is run from the beginning (t = 0).
+        */
         step3_restart(filename, mpicomm, 0.1);
     }
 
@@ -1494,7 +1477,7 @@ int main(int argc, char **argv) {
     sc_options_destroy(opt);
 
     /* Verify that allocations internal to p4est and sc do not leak memory.
-   * This should be called if sc_init () has been called earlier. */
+    * This should be called if sc_init () has been called earlier. */
     sc_finalize();
 
     /* This is standard MPI programs.  Without --enable-mpi, this is a dummy. */
